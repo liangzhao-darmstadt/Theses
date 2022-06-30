@@ -229,7 +229,7 @@ As the protocols in\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms} 
 
 \autoref{tab:OverviewofsamplingalgorithmsforgeneratingdiscreteLaplaceGaussianrandomvariable} present the combinations of sampling algorithms to generate discrete Laplace random variable and discrete Gaussian random variable as discussed in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}. We implement corresponding protocols in BGMW-based fixed/floating-point arithmetic.
 The benchmark results are listed in \autoref{tab:RuntimesDiscreteLaplaceGaussianProtocols}.
-We found that memory overflow ($>128$ GB) happends for $DLap_1^{\BOOL}$, $DGau_1^{\BOOL}$ and $DGau_2^{\BOOL}$ when we setting the fail probability $p<2^{-40}$.
+We found that memory overflow ($>128$ GB) happends for $DLap_1^{\BOOL}$, $DGau_1^{\BOOL}$ and $DGau_2^{\BOOL}$ when we setting the failure probability $p<2^{-40}$.
 \TODO{Therefore, we reimplement the MPC protocols for $DLap_1$, $DGau_1$ and $DGau_2$ with AGMW-based fixed/floating protocols. }
 
 
@@ -368,7 +368,7 @@ Finally, we present the evaluation of the MPC protocols for differentially priva
 % \textbf{Laplace Mechanisms}
 For comparison, we implement the \textit{insecure} Laplace mechanisms $M_{Lap}$~\cite{eigner2014differentially} and discrete Laplace mechanisms $M_{DLap}$~\cite{eigner2014differentially}.
 Note that Mironov~\cite{mironov2014differentially} showed that $M_{Lap}$~\cite{eigner2014differentially} suffered from floating-point attacks and proposed the snapping mechanism $M_{SM}$ as a solution.
-Integer-Scaling Laplace mechanism $M_{ISLap} $ achieves similar differential privacy protection effect by re-scaling a discrete Laplace random variable. In our work, we implement $M_{ISLap} $ with the rejection sampling-based algorithms (cf.~\autoref{sec:DiscreteGaussianMechanism}) and setting the fail probability $p<2^{-40}$.
+Integer-Scaling Laplace mechanism $M_{ISLap} $ achieves similar differential privacy protection effect by re-scaling a discrete Laplace random variable. In our work, we implement $M_{ISLap} $ with the rejection sampling-based algorithms (cf.~\autoref{sec:DiscreteGaussianMechanism}) and setting the failure probability $p<2^{-40}$.
 We can see that the fixed-point implementation of $M_{ISLap}$ is $1.09\time-1.29\times$ slower than the floating-point implementation of $M_{ISLap}$.
 The reason is that the division operation in fixed-point is more expensive than floating-point.
 The floating-point implementation of $M_{ISLap}$ is $5500\times-9444\times$ slower than the \textit{insecure} floating-point implementation of $M_{Lap}$.

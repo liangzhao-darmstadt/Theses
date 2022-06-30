@@ -110,7 +110,7 @@ As discussed above, each floating-point $U^{*}$ should be output with a probabil
     \textbf{Input: None} \pcskipln \\
     \textbf{Output: $U^{*}\in \mathbb{D} \cap \left(0,1\right)$} \\
     \text{$\left(d_1,\ldots,d_{52}\right)\sample \left\{0,1\right\}^{52} $}\\
-    \text{$x \gets Algo^{Geometric}\left(0.5\right)  $}\\
+    \text{$x \gets Algo^{Geo}\left(0.5\right)  $}\\
     \text{$e \gets 1023-\left(x+1\right) $}\\
     \text{RETURN $U^{*}=\left(1.d_1\ldots d_{52}\right)_2 \times 2^{e-1023}$}
     }}
@@ -500,7 +500,7 @@ In Line $ 3$, the sampling interval $\left(L\ldots R\right] $ is first splitted 
 
     % Note that for $n\approx 2^{96}$, $\sqrt{n}=2^{48}$ can be precisely represented as a double-precision floating-point (cf.~\autoref{subsubsec:floatingPoint}) (see \autoref{app:algorithms} for details).
 
-    % % In $Algo^{Binomial}\left(\sqrt{n}\right) $, $Algo^{RandInt}\left(m\right)$~\cite{barker2015recommendation} generates a uniform random integer $l \in \left[0\ldots m\right) $ and $Algo^{Bernoulli}\left(\frac{\tilde{p}\left(i\right)}{f}\right)$ generates a Bernoulli random variable $c\sim Bern\left(p=\frac{\tilde{p}\left(i\right)}{f}\right) $.\\
+    % % In $Algo^{Binomial}\left(\sqrt{n}\right) $, $Algo^{RandInt}\left(m\right)$~\cite{barker2015recommendation} generates a uniform random integer $l \in \left[0\ldots m\right) $ and $Algo^{Bern}\left(\frac{\tilde{p}\left(i\right)}{f}\right)$ generates a Bernoulli random variable $c\sim Bern\left(p=\frac{\tilde{p}\left(i\right)}{f}\right) $.\\
 
     \begin{algorithm}[tbh!]
         \centering
@@ -510,7 +510,7 @@ In Line $ 3$, the sampling interval $\left(L\ldots R\right] $ is first splitted 
                 \textbf{Output: $i\sim SymmBino\left(n,p=0.5\right) $} \\
                 \text{$m \gets \left\lfloor \sqrt{2}*\sqrt{n}+1\right\rfloor $}\\
                 \text{FOR $j\gets 1$ TO $ITER$ }\\
-                \text{\t\t $s \gets Algo^{Geometric\left(0.5 \right) } $}\\
+                \text{\t\t $s \gets Algo^{Geo\left(0.5 \right) } $}\\
                 \text{\t\t $b \gets RandBit\left(1\right) $}\\
                 \text{\t\t IF $U^{*}<0.5$}\\
                 \text{\t\t \t\t $k \gets s$}\\
@@ -522,7 +522,7 @@ In Line $ 3$, the sampling interval $\left(L\ldots R\right] $ is first splitted 
                 % \text{\t\t $\tilde{p}\left(x\right)=\sqrt{\frac{2}{\pi n}} \cdot e^{-\frac{2 x^{2}}{n}} \cdot \left(1-\nu_{n}\right) $, where $\nu_{n}=\frac{0.4 \ln ^{1.5}(n)}{\sqrt{n}}$}\\
                 \text{\t\t $\tilde{p}\left(x\right)=\sqrt{\frac{2}{\pi n}} \cdot e^{-\frac{2 x^{2}}{n}} \cdot \left(1-\frac{0.4 \ln ^{1.5}(n)}{\sqrt{n}}\right) $ }\\
                 \text{\t\t $f \gets \frac{4}{m\cdot 2^s}$}\\
-                \text{\t\t $c \gets Algo^{Bernoulli}\left(\frac{\tilde{p}\left(x\right)}{f}\right) $}\\
+                \text{\t\t $c \gets Algo^{Bern}\left(\frac{\tilde{p}\left(x\right)}{f}\right) $}\\
                 \text{\t\t IF $-\frac{\sqrt{n\ln n}}{2} \leq x \leq \frac{\sqrt{n\ln n}}{2} \land c==1$}\\
                 \text{\t\t \t\t RETURN $i\gets x$ // success}\\
                 \text{\t\t ELSE}\\
@@ -596,11 +596,11 @@ $Algo^{RandInt}\left(d\right) $ generate a random integer $u\in \left[0,d-1\righ
                 \text{\t\t GOTO Line $9$// $1$th loop terminates}\\
                 \text{FOR $j\gets1$ TO $ITER_1$}\\
                 \text{\t\t $u \gets Algo^{RandInt}\left(d\right) $}\\
-                \text{\t\t $b_1 \gets Algo^{Bernoulli}\left(e^{-\frac{u}{d}}\right)  $}\\
+                \text{\t\t $b_1 \gets Algo^{Bern}\left(e^{-\frac{u}{d}}\right)  $}\\
                 \text{\t\t IF $b_1==1$}\\
                 \text{\t\t \t\t $k \gets 0$, BREAK // $1$th loop terminates}\\
                 \text{FOR $j\gets 1$ TO $ITER_2$}\\
-                \text{\t\t $b_2\gets Algo^{Bernoulli}\left(e^{-1}\right) $}\\
+                \text{\t\t $b_2\gets Algo^{Bern}\left(e^{-1}\right) $}\\
                 \text{\t\t IF $b_2==1$}\\
                 \text{\t\t \t\t $k \gets k+1$}\\
                 \text{\t\t ELSE}\\
@@ -682,7 +682,7 @@ $Algo^{RandInt}\left(d\right) $ generate a random integer $u\in \left[0,d-1\righ
                 \textbf{Input: $t=\frac{d}{n}$} \pcskipln \\
                 \textbf{Output: $Y\sim DLap \left( t=\frac{d}{n}\right)$} \\
                 \text{FOR $j=1$ TO $ITER$}\\
-                \text{\t\t $s\gets Algo^{Bernoulli}\left(0.5\right) $}\\
+                \text{\t\t $s\gets Algo^{Bern}\left(0.5\right) $}\\
                 \text{\t\t $m\gets Algo^{GeoExp}\left(n,d\right) $}\\
                 \text{\t\t IF $\lnot \left(s==1 \land m==0\right) $}\\
                 \text{\t\t \t\t RETURN $Y\gets \left(1-2s\right) \cdot m $ // success}\\
@@ -763,7 +763,7 @@ $Algo^{RandInt}\left(d\right) $ generate a random integer $u\in \left[0,d-1\righ
                 \text{$t\gets \left\lfloor \sigma\right\rfloor +1$}\\
                 \text{FOR $j\gets 1$ TO $ITER$}\\
                 \text{\t\t $L \gets Algo^{DLap}\left(t\right) $}\\
-                \text{\t\t $B \gets Algo^{Bernoulli}\left(e^{{\left( \left\lvert L\right\rvert -{\sigma ^{2}}/{t}\right) ^{2}}/{2\sigma^{2}}} \right) $}\\
+                \text{\t\t $B \gets Algo^{Bern}\left(e^{{\left( \left\lvert L\right\rvert -{\sigma ^{2}}/{t}\right) ^{2}}/{2\sigma^{2}}} \right) $}\\
                 % \text{\t\t IF $B==0$}\\
                 % \text{\t\t \t\t\ CONTINUE}\\
                 % \text{\t\t ELSE}\\

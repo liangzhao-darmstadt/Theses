@@ -11,7 +11,7 @@
 % % \begin{algorithm}[tbh!]
 % %     \centering
 % %     \fbox{
-% %         \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, ELSE IF, ELSE, WHILE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{Geometric}$}]{
+% %         \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, ELSE IF, ELSE, WHILE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{Geo}$}]{
 % %             \textbf{Input: None} \pcskipln \\
 % %             \textbf{Output: $x\sim Geo\left(0.5\right) $} \\
 % %             \text{$x\gets 1$} \\
@@ -37,13 +37,13 @@
 %             \text{\t\t RETURN $0$} \\
 %             \text{WHILE TRUE}\\
 %             \text{\t\t $u \gets Algo^{RandInt}\left(d\right) $}\\
-%             \text{\t\t $b_1 \gets Algo^{BernoulliEXP1}\left(u,d\right) $}\\
+%             \text{\t\t $b_1 \gets Algo^{BernEXP1}\left(u,d\right) $}\\
 %             \text{\t\t IF $b_1==1$}\\
 %             \text{\t\t \t\t BREAK}\\
 %             % geometric (1-exp(-1))
 %             \text{$k \gets 0$}\\
 %             \text{WHILE TRUE}\\
-%             \text{\t\t $b_2\gets Algo^{BernoulliEXP1}\left(1\right) $}\\
+%             \text{\t\t $b_2\gets Algo^{BernEXP1}\left(1\right) $}\\
 %             \text{\t\t IF $b_2==1$}\\
 %             \text{\t\t \t\t $k \gets k+1$}\\
 %             \text{\t\t ELSE}\\
@@ -60,7 +60,7 @@
 % % \begin{algorithm}[tbh!]
 % %     \centering
 % %     \fbox{
-% %         \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, ELSE IF, ELSE, WHILE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{Bernoulli}\left(p\right) $}]{
+% %         \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, ELSE IF, ELSE, WHILE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{Bern}\left(p\right) $}]{
 % %             \textbf{Input: $p$} \pcskipln \\
 % %             \textbf{Output: $x\sim Bern\left(p\right) $} \\
 % %             \text{$u\gets Uniform\left(0,1\right) $}\\
@@ -74,17 +74,17 @@
 % % \end{algorithm}
 % % \FloatBarrier
 
-% % $Algo^{BernoulliEXP1}\left(\gamma\right) $~\cite{canonne2020discrete} generates a random variable $x \sim Bern\left( p=e^{-\gamma}\right)$ for $\gamma \in \left[0,1\right] $. $\text{MOD2}\left(j\right) $ outputs $1$ if $j$ is an odd, and $0$ otherwise.\\
+% % $Algo^{BernEXP1}\left(\gamma\right) $~\cite{canonne2020discrete} generates a random variable $x \sim Bern\left( p=e^{-\gamma}\right)$ for $\gamma \in \left[0,1\right] $. $\text{MOD2}\left(j\right) $ outputs $1$ if $j$ is an odd, and $0$ otherwise.\\
 % % \TODO{Prove correctness}\\
 % \begin{algorithm}[tbh!]
 %     \centering
 %     \fbox{
-%         \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, ELSE IF, ELSE, WHILE, TRUE, FALSE, CONTINUE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{BernoulliEXP1}\left(\gamma\right) $}]{
+%         \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, ELSE IF, ELSE, WHILE, TRUE, FALSE, CONTINUE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{BernEXP1}\left(\gamma\right) $}]{
 %             \textbf{Input: $\gamma$} \pcskipln \\
 %             \textbf{Output: $x\sim Bern \left( p=e^{-\gamma}\right)$, where $\gamma \in \left[0,1\right] $} \\
 %             \text{$j \gets 1$}\\
 %             \text{WHILE TRUE}\\
-%             \text{\t\t $b\gets Algo^{Bernoulli}\left(\frac{\gamma}{j}\right) $}\\
+%             \text{\t\t $b\gets Algo^{Bern}\left(\frac{\gamma}{j}\right) $}\\
 %             \text{\t\t IF $b==1$}\\
 %             \text{\t\t \t\t $j\gets j+1$}\\
 %             \text{\t\t ELSE}\\
@@ -102,18 +102,18 @@
 % \begin{algorithm}[tbh!]
 %     \centering
 %     \fbox{
-%         \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, TO, ELSE IF, ELSE, WHILE, TRUE, FALSE, CONTINUE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{BernoulliEXP}\left(\gamma\right) $}]{
+%         \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, TO, ELSE IF, ELSE, WHILE, TRUE, FALSE, CONTINUE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{BernEXP}\left(\gamma\right) $}]{
 %             \textbf{Input: $\gamma$} \pcskipln \\
 %             \textbf{Output: $x\sim Bern\left( p=e^{-\gamma}\right)$} \\
 %             \text{IF $\gamma \in \left[0,1\right] $}\\
-%             \text{\t\t $b_1\gets Algo^{BernoulliEXP1}\left(\gamma\right) $}\\
+%             \text{\t\t $b_1\gets Algo^{BernEXP1}\left(\gamma\right) $}\\
 %             \text{\t\t RETURN $x \gets b_1$}\\
 %             \text{ELSE}\\
 %             \text{\t\t FOR $j = 0$ TO $ \left\lfloor \gamma\right\rfloor -1 $}\\
-%             \text{\t\t \t\t $b_2 \gets Algo^{BernoulliEXP1}\left(1\right)$}\\
+%             \text{\t\t \t\t $b_2 \gets Algo^{BernEXP1}\left(1\right)$}\\
 %             \text{\t\t \t\t IF $b_2==0$}\\
 %             \text{\t\t \t\t \t\t RETURN $x \gets 0$}\\
-%             \text{\t\t $b_3\gets Algo^{BernoulliEXP1}\left(\gamma-\left\lfloor \gamma\right\rfloor\right)$}\\
+%             \text{\t\t $b_3\gets Algo^{BernEXP1}\left(\gamma-\left\lfloor \gamma\right\rfloor\right)$}\\
 %             \text{RETURN $x\gets b_3$}
 %         }}
 %     \caption{Algorithm for Bernoulli distribution $x\sim Bern\left( p=e^{-\gamma}\right)$~\cite{canonne2020discrete}.}
@@ -217,7 +217,7 @@
 
 % \subsection{Geometric Distribution}
 % \label{prot:GeometricDistribution}
-% \autoref{prot:Geometric} is constructed based on $Algo^{Geometric}$ (cf.~\autoref{algo:Geometric}). 
+% \autoref{prot:Geometric} is constructed based on $Algo^{Geo}$ (cf.~\autoref{algo:Geometric}). 
 % $ \left(u_0,\ldots,u_{iter} \right)\in \left\{0,1\right\}^{iter} $ is a bit string with uniform bits.
 % In line $2,3$, we set the bits in $ b_0,\ldots,b_{iter-1}$ to one when the corresponding bits in $u_0,\ldots,u_{iter} $ are the leading zero bits, and other bits in $ b_0,\ldots,b_{iter-1}$ to zero. 
 % Recall that the geometric distribution (cf.~\autoref{def:GeometricDistribution}) counts the number of Bernoulli trials up to and including the first success. Therefore, we append bit $1$ and compute the Hamming Weight of string $1, b_0,\ldots,b_{iter-1}$.
@@ -294,7 +294,7 @@
 % \end{protocol}
 % \FloatBarrier
 
-% \autoref{prot:BernoulliEXP1} convert $Algo^{BernoulliEXP1}\left(\gamma\right) $~\cite{canonne2020discrete} into MPC protocols. 
+% \autoref{prot:BernoulliEXP1} convert $Algo^{BernEXP1}\left(\gamma\right) $~\cite{canonne2020discrete} into MPC protocols. 
 % \begin{protocol}[tbh!]
 %     \centering
 %     \fbox{
@@ -316,7 +316,7 @@
 % \FloatBarrier
 
 
-% \autoref{prot:BernoulliEXP} converts $Algo^{BernoulliEXP}\left(\gamma\right) $~\cite{canonne2020discrete} into MPC protocol.
+% \autoref{prot:BernoulliEXP} converts $Algo^{BernEXP}\left(\gamma\right) $~\cite{canonne2020discrete} into MPC protocol.
 % % We assume that $\gamma<iter$.
 % % In line $1,2$, the parties calculate the condition and Bernoulli sampling for the first case.
 % % In line $3-13$, the parties calcualte the conditiaon and Bernoulli sampling for the second case. In line $6-8$, the parties extract $b_2==0$ which terminates the for loop under $iter$ iterations. In line $9-12$, the parties calculate the index $j$ where the for loops terminates and compare it with $\left\lfloor \gamma\right\rfloor $ as the condition for case 2.
