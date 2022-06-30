@@ -420,7 +420,7 @@ The whole process is repeated (at most $52$ times) until the remaining interval 
             \text{\t\t \t\t $L\gets M$}\\
             \text{RETURN $x\gets R$}
         }}
-    \caption{Algorithm for sampling from geometric distribution $Geo\left(p=1-e^{-\lambda}\right) $.}
+    \caption{Algorithm for sampling geometric random variable $Geo\left(p=1-e^{-\lambda}\right) $.}
     \label{algo:GeometricExpBinarySearch}
 \end{algorithm}
 \FloatBarrier
@@ -450,7 +450,7 @@ In line $6$, the algorithm fails to a generate discrete random variable in $ITER
             \text{\t\t \t\t RETURN $i \gets s\cdot g$ // success}\\
             \text{RETURN $i \gets 0$ // failure}
         }}
-    \caption{Algorithm for sampling $i\sim DLap\left(t\right) $.}
+    \caption{Algorithm for sampling discrete Laplace random variable $i\sim DLap\left(t\right) $.}
     \label{algo:TwoSideGeometric}
 \end{algorithm}
 \FloatBarrier
@@ -530,7 +530,7 @@ $Algo^{SymmetricBinomial}$ is a modification of the symmetrical binomial samplin
             \text{\t\t ELSE}\\
             \text{\t\t \t\t RETURN $i\gets 0$ // failure}
         }}
-    \caption{Algorithm for sampling $i\sim SymmBino\left(\sqrt{n} ,p=0.5\right) $.}
+    \caption{Algorithm for sampling symmetric binomial random variable $i\sim SymmBino\left(\sqrt{n} ,p=0.5\right) $.}
     \label{algo:SymmetricBinomialLargeN}
 \end{algorithm}
 \FloatBarrier
@@ -612,7 +612,7 @@ One special case is when $d=1$, the $1$th $FOR$ loop directly terminates with $I
             \text{ELSE}\\
             \text{\t\t RETURN $x\gets \left\lfloor \frac{k\cdot d+u}{n}\right\rfloor $ // success}
         }}
-    \caption{Algorithm for sampling from geometric distribution $x\sim Geo\left( p=1-e^{\frac{n}{d}}\right)$~\cite{canonne2020discrete}.}
+    \caption{Algorithm for sampling geometric random variable $x\sim Geo\left( p=1-e^{\frac{n}{d}}\right)$~\cite{canonne2020discrete}.}
     \label{algo:GeometricExp}
 \end{algorithm}
 \FloatBarrier
@@ -690,7 +690,7 @@ We replace the $WHILE$ loop in the original work with the $FOR$ loops (line 1).
             \text{\t\t \t\t RETURN $Y\gets \left(1-2s\right) \cdot m $ // success}\\
             \text{RETURN $Y\gets 0$ // failure}
         }}
-    \caption{Algorithm for sampling $Y \sim  DLap\left(\frac{n}{d}\right)$.}
+    \caption{Algorithm for sampling discrete Laplace random variable $Y \sim  DLap\left(\frac{n}{d}\right)$.}
     \label{algo:DiscreteLapCKS}
 \end{algorithm}
 \FloatBarrier
@@ -771,7 +771,7 @@ We can replace $Algo^{DLap}\left(t\right) $ with other discrete Laplace sampling
             \text{\t\t \t\t RETURN $Y\gets L$ // success}\\
             \text{RETURN $Y\gets 0$ // failure}
         }}
-    \caption{Algorithm for sampling $Y\sim DGau \left(\mu=0,\sigma\right)$.}
+    \caption{Algorithm for sampling discrete Gaussian random variable $Y\sim DGau \left(\mu=0,\sigma\right)$.}
     \label{algo:DiscreteGauss}
 \end{algorithm}
 \FloatBarrier
