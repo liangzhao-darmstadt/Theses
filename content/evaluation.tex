@@ -1,14 +1,14 @@
 \chapter{Evaluation}
 \label{cha:evaluation}
 
-Recall that the two challenges that we have discussed in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}:
+Recall that the two challenges that we proposed in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}:
 \begin{enumerate}
-    \item What is the most efficient MPC protocols for arithmetic operations?
-    \item What is the most efficient sampling algorithms for differentially private mechanisms in MPC?
+    \item What are the most efficient MPC protocols for arithmetic operations?
+    \item What are the most efficient sampling algorithms for differentially private mechanisms in MPC?
 \end{enumerate}
 
-Two answer above questions, we implement and measure the performance of all the protocols that we have discussed in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms} in a semi-honest scenario.
-First, we benchmark the performance of integer, fixed-point and floating-point operations in different MPC protocols (BGMW, AGMW and BMR).
+To answer the above questions, we implement and measure the performance of all the protocols we have discussed in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms} in a semi-honest scenario.
+First, we benchmark the performance of integer, fixed-point and floating-point operations in different MPC protocols (BGMW, AGMW, and BMR).
 Next, we choose the most efficient MPC protocols for arithmetic operations and implement the differentially private mechanisms and corresponding sampling algorithms.
 
 
@@ -16,37 +16,35 @@ Next, we choose the most efficient MPC protocols for arithmetic operations and i
 % We compare our MPC-DP protocols with other work (ref. ) by implementing their protocols in MOTION.
 
 \textbf{Experimental Setup.}
-The experiments are performed in five connected servers (Intel Core i9-7960X process, 128GB RAM, 10 Gbps network). We define two network setting to analyze the performance of our MPC-DP protocols.
+The experiments are performed in five connected servers (Intel Core i9-7960X process, 128GB RAM, 10 Gbps network). We define two network settings to analyze the performance of our MPC-DP protocols.
 \begin{enumerate}
     \item LAN10: 10Gbit/s Bandwidth, 1ms RTT.
     \item WAN: 100Mbit/s Bandwidth, 100ms RTT.
 \end{enumerate}
 
-\section{Arithmetic Operations Benchmarking}
-\label{sec:}
+\section{Arithmetic Operations Performance Evaluation}
+\label{sec:ArithmeticOperationsPerformanceEvaluation}
 In this section, we provide extensive benchmarks for arithmetic protocols (cf.~\autoref{sec:NumberRepresentationsandArithmeticOperations}).
-Based on the benchmarking result, we choose the most efficient MPC protocols for arithmetic operations.
+We choose the most efficient MPC protocols for arithmetic operations based on the benchmark result.
 
 
-\paragraph{Fixed-Point Arithmetic Benchmarking}
+\paragraph{Fixed-Point Benchmarks}
 \label{para:Fixed-PointArithmeticBenchmarking}
 \TODO{add benchmark result of BMR protocols, BMR protocol is only 1x-1.5x faster than BGMW in division and slower in all other operations. Therefore, we choose BGMW as main protocols}
 
-As \autoref{tab:runtimes_fixed_point_circuit} shows that division is the slowest operation for BGMW fixed-point arithmetic. The reason is that the circuits we generated using HyCC~\cite{buscher2018hycc} has depth $6\,432$. In the LAN setting, the $5$-party division is $2.2\times $ slower than the $3$-party division, whereas in the WAN setting the factor were $1.1$.
+\autoref{tab:runtimes_fixed_point_circuit} shows that division is the slowest operation for BGMW fixed-point arithmetic. The reason is that the circuit we generated using HyCC~\cite{buscher2018hycc} have a deeper depth of $6\,432$. In the LAN setting, the $5$-party division is $2.2\times $ slower than the $3$-party division, whereas, in the WAN setting, the factor was $1.1$.
 
-In \autoref{tab:runtimes_fixed_point_agmw}, operation natural exponentiation has the longest run-times. As the number of parties increase from $3$ to $5$, operation subtraction and square root increase the run-times at most by factor $15\times$ and $3.8\times$ in the LAN setting.
+In \autoref{tab:runtimes_fixed_point_agmw}, natural exponentiation has the longest online run-times. In the LAN setting, as the number of parties increases from $3$ to $5$, the online run-times of operation subtraction and square root increase at most by a factor $15\times$ and $3.8\times$.
 
-
-Comparing the run-times of fixed-point arithmetic from \autoref{tab:runtimes_fixed_point_circuit} and \autoref{tab:runtimes_fixed_point_agmw}, we can see that the BGMW-based fixed-point arithmetic ($SIMD=1$) is more efficient than the AGMW-based fixed-point arithmetic only in operations such as exp2, exp and conversion operation with integer, but slower in all other operations.
-However, when we apply SIMD technique, BGMW-based fixed-point arithmetic ($SIMD=1000$) is $4\times-4000\times$ faster than the AGMW-based fixed-point arithmetic for all the operations in the LAN setting. In the WAN setting, the BGMW-based fixed-point arithmetic is $35\times-2800\times$ faster than the AGMW-based fixed-point arithmetic except for addition and multiplication operations.
-That means if the functionalities (e.g., $FOR$ loop in \autoref{prot:TwoSideGeometric}) can be parallelized in to independent and identical operations, the BGMW-based fixed-point arithmetic is a better option in the LAN setting.
-
-Therefore, we finally choose BGMW-based fixed-point arithmetic to implement the MPC protocols for sampling algorithms (cf.~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}).
+Comparing the online run-times of fixed-point arithmetic from \autoref{tab:runtimes_fixed_point_circuit} and \autoref{tab:runtimes_fixed_point_agmw}, we can see that the BGMW-based fixed-point arithmetic (with $SIMD=1$) is more efficient than the AGMW-based fixed-point arithmetic only in operations such as exp2, exp and conversion operation with integer, but slower in all other operations.
+However, when we apply the SIMD technique, BGMW-based fixed-point arithmetic (with $SIMD=1000$) is $4\times-4000\times$ faster than the AGMW-based fixed-point arithmetic for all the operations in the LAN setting. In the WAN setting, the BGMW-based fixed-point arithmetic is $35\times-2800\times$ faster than the AGMW-based fixed-point arithmetic except for addition and multiplication operations.
+That means if the functionalities (e.g., $FOR$ loop in $\Uppi^{prot:TwoSideGeometric}$) can be parallelized into independent and identical operations, the BGMW-based fixed-point arithmetic is a better option than AGMW-based fixed-point arithmetic in the LAN setting.
+Therefore, we choose BGMW-based fixed-point arithmetic to implement the MPC protocols.
 
 
 \begin{table}
     \caption{
-        Online run-times in milliseconds (ms) for fixed-point (k=64, f=16) operations for the GMW (B) and \TODO{add BMR protocol (Y)}.
+        Online run-times in milliseconds (ms) of fixed-point (k=64, f=16) operations for the GMW (B) and \TODO{add BMR protocol (Y)}.
         For the entries with $SIMD=1\,000$, we specify the run-time of a single operation amortized over $ 1\,000 $ SIMD values.
         We take the average over 10 protocol runs in the LAN and WAN environments.
     }
@@ -97,7 +95,7 @@ Therefore, we finally choose BGMW-based fixed-point arithmetic to implement the 
 
 \begin{table}
     \caption{
-        Online run-times in milliseconds (ms) for fixed-point (k=41, f=20) operations for the GMW (A). We take the average over 10 protocol runs in the LAN and WAN environments.
+        Online run-times in milliseconds (ms) of fixed-point (k=41, f=20) operations for the GMW (A). We take the average over 10 protocol runs in the LAN and WAN environments.
     }
     \label{tab:runtimes_fixed_point_agmw}
     % \small
@@ -130,18 +128,17 @@ Therefore, we finally choose BGMW-based fixed-point arithmetic to implement the 
 \end{table}
 \FloatBarrier
 
-\paragraph{Floating-Point Benchmarking}
+\paragraph{Floating-Point Benchmarks}
 \label{para:Floating-PointBenchmarking}
 
 
-In \autoref{tab:runtimes_floating_point_circuit}, operation natural logarithm takes the longest run-times in both LAN and WAN settings. As the number of parties grows from $3$ to $5$, the run-times of conversion operations to integer and fixed-point increase at most by a factor $3.08\times$ and $3.66\times$ (SIMD=1), factor $2.2\times$ and $1.9\times$ (SIMD=1000).
-Comparing the run-times of floating-point arithmetic from \autoref{tab:runtimes_floating_point_circuit} and \autoref{tab:runtimes_floating_point_agmw}, we can see that without applying SIMD, the BGMW-based floating-point arithmetic is faster ($1.3\times-3\times$) than AGMW-based floating-point arithmetic in operations such as addition, subtraction, division, log2 and square root, and slower in all other operations. After applying the SIMD technique, the BGMW-based floating-point arithmetic is $50\times-10911\times$ faster than AGMW-based floating-point arithmetic for all the operations in the LAN setting.
-
-As the protocols in\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms} requires SIMD to eliminate the $FOR$ loop iterations, we choose BGMW-based floating-point arithmetic to implement MPC protocols for sampling algorithms.
+In \autoref{tab:runtimes_floating_point_circuit}, natural logarithm takes the longest online run-times in both LAN and WAN settings. As the number of parties grows from $3$ to $5$, the run-times of conversion operations to integer and fixed-point increase at most by a factor $3.08\times$ and $3.66\times$ ($SIMD=1$), factor $2.2\times$ and $1.9\times$ ($SIMD=1000$).
+Comparing the online run-times of floating-point arithmetic from \autoref{tab:runtimes_floating_point_circuit} and \autoref{tab:runtimes_floating_point_agmw}, we can see that without applying SIMD, the BGMW-based floating-point arithmetic is faster ($1.3\times-3\times$) than AGMW-based floating-point arithmetic in operations such as addition, subtraction, <, log2 and square root, but slower in all other operations. After applying the SIMD technique, the BGMW-based floating-point arithmetic is $50\times-10911\times$ faster than AGMW-based floating-point arithmetic for all the operations in the LAN setting.
+Therefore, we choose BGMW-based floating-point arithmetic to implement MPC protocols for sampling algorithms.
 
 \begin{table}
     \caption{
-        Online run-times in milliseconds (ms) for floating-point operations for the GMW (B) \TODO{and BMR protocol (Y)}. For the entries with $SIMD=1\,000$, we specify the run-time of a single operation amortized over $ 1\,000 $ SIMD values. We take the average over 10 protocol runs in the LAN and WAN environments.
+        Online run-times in milliseconds (ms) of floating-point operations for the GMW (B) \TODO{and BMR protocol (Y)}. For the entries with $SIMD=1\,000$, we specify the run-time of a single operation amortized over $ 1\,000 $ SIMD values. We take the average over 10 protocol runs in the LAN and WAN environments.
     }
     \label{tab:runtimes_floating_point_circuit}
     % \small
@@ -189,7 +186,7 @@ As the protocols in\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms} 
 
 \begin{table}
     \caption{
-        Online run-times in milliseconds (ms) for floating-point operations for the GMW (A). We take the average over 10 protocol runs in the LAN and WAN environments. \TODO{implement FL-FL2Fx and FL-FL2Int}
+        Online run-times in milliseconds (ms) of floating-point operations for the GMW (A). We take the average over 10 protocol runs in the LAN and WAN environments. \TODO{implement FL-FL2Fx and FL-FL2Int}
     }
     \label{tab:runtimes_floating_point_agmw}
     % \small
@@ -227,15 +224,16 @@ As the protocols in\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms} 
 \section{Evaluation of MPC Protocols for Differentially Private Mechanisms}
 \label{sec:EvaluationofMPCProtocolsforDifferentiallyPrivateMechanisms}
 
-\autoref{tab:OverviewofsamplingalgorithmsforgeneratingdiscreteLaplaceGaussianrandomvariable} present the combinations of sampling algorithms to generate discrete Laplace random variable and discrete Gaussian random variable as discussed in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}. We implement corresponding protocols in BGMW-based fixed/floating-point arithmetic.
+\autoref{tab:OverviewofsamplingalgorithmsforgeneratingdiscreteLaplaceGaussianrandomvariable} presents the combinations of different sampling algorithms to generate discrete Laplace random variables and discrete Gaussian random variables as discussed in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}. We implement corresponding protocols in BGMW-based fixed/floating-point arithmetic.
 The benchmark results are listed in \autoref{tab:RuntimesDiscreteLaplaceGaussianProtocols}.
-We found that memory overflow ($>128$ GB) happends for $DLap_1^{\BOOL}$, $DGau_1^{\BOOL}$ and $DGau_2^{\BOOL}$ when we setting the failure probability $p<2^{-40}$.
-\TODO{Therefore, we reimplement the MPC protocols for $DLap_1$, $DGau_1$ and $DGau_2$ with AGMW-based fixed/floating protocols. }
+We found that memory overflow ($>128$ GB) happends for $DLap_1^{\BOOL}$, $DGau_1^{\BOOL}$ and $DGau_2^{\BOOL}$ when we set the failure probability $p<2^{-40}$.
+The reason is that for failure probability $p<2^{-40}$, discrete random variables need a larger number of iterations.
+\TODO{Therefore, we need to reimplement the MPC protocols for $DLap_1$, $DGau_1$ and $DGau_2$ with AGMW-based fixed/floating protocols. }
 
 
 \begin{table}
     \caption{
-        Overview of sampling algorithms for generating discrete Laplace/Gaussian random variable.
+        Overview of sampling algorithms for generating discrete Laplace/Gaussian random variables.
     }
     \label{tab:OverviewofsamplingalgorithmsforgeneratingdiscreteLaplaceGaussianrandomvariable}
     % \small
@@ -264,7 +262,7 @@ We found that memory overflow ($>128$ GB) happends for $DLap_1^{\BOOL}$, $DGau_1
 
 \begin{table}
     \caption{
-        Online run-times in milliseconds (ms) of fixed/floating-point Laplace sampling protocols for the GMW (B). We take the average over 10 protocol runs in the LAN and WAN environments. \TODO{implement $DLap_1$ in AGMW-based fixed/floating-point, as BGMW version memory overflows(>128GB)}
+        Online run-times in milliseconds (ms) of fixed/floating-point Laplace/Gaussian sampling protocols for the GMW (B). We take the average over 10 protocol runs in the LAN and WAN environments.
     }
     \label{tab:RuntimesDiscreteLaplaceGaussianProtocols}
     % \small
@@ -363,29 +361,43 @@ We found that memory overflow ($>128$ GB) happends for $DLap_1^{\BOOL}$, $DGau_1
 % \FloatBarrier
 
 
-Finally, we present the evaluation of the MPC protocols for differentially private mechanisms.
+We present the evaluation of the MPC protocols for differentially private mechanisms in~\autoref{tab:runtimes_aes_sha}.
 
-% \textbf{Laplace Mechanisms}
-For comparison, we implement the \textit{insecure} Laplace mechanisms $M_{Lap}$~\cite{eigner2014differentially} and discrete Laplace mechanisms $M_{DLap}$~\cite{eigner2014differentially}.
+\textbf{Laplace Mechanisms.}
+Recall that Integer-Scaling Laplace mechanism $M_{ISLap} $ achieves similar differential privacy protection effect as Laplace mechanism textit{securely} by re-scaling a discrete Laplace random variable.
+In our work, we generate the discrete Laplace random variable with sampling protocol $\Uppi^{DLap}$ (cf.~\autoref{prot:DiscreteLap}) and set the failure probability $p<2^{-40}$.
+We can see that the $M_{ISLap}$ with fixed-point implementation of $\Uppi^{DLap}$ is $1.09\time-1.29\times$ slower than that with floating-point implementation of $\Uppi^{DLap}$.
+The reason is that the division operation in fixed-point is more expensive than floating-point for BGMW protocols.
+
+For comparison, we implement the \textit{insecure} Laplace mechanisms $M_{Lap}$~\cite{eigner2014differentially}.
 Note that Mironov~\cite{mironov2014differentially} showed that $M_{Lap}$~\cite{eigner2014differentially} suffered from floating-point attacks and proposed the snapping mechanism $M_{SM}$ as a solution.
-Integer-Scaling Laplace mechanism $M_{ISLap} $ achieves similar differential privacy protection effect by re-scaling a discrete Laplace random variable. In our work, we implement $M_{ISLap} $ with the rejection sampling-based algorithms (cf.~\autoref{sec:DiscreteGaussianMechanism}) and setting the failure probability $p<2^{-40}$.
-We can see that the fixed-point implementation of $M_{ISLap}$ is $1.09\time-1.29\times$ slower than the floating-point implementation of $M_{ISLap}$.
-The reason is that the division operation in fixed-point is more expensive than floating-point.
-The floating-point implementation of $M_{ISLap}$ is $5500\times-9444\times$ slower than the \textit{insecure} floating-point implementation of $M_{Lap}$.
-The snapping mechanism $M_{SM}$ has the best online run-times performance that is $5380\times-11940\times $ faster that $M_{ISLap}$.
-However, Covington~\cite{Covington2019} proved that $M_{SM}$ introduce additional errors (beyond the necesary Laplace noise) and it leads to a significant reduction in utility.
-In comparison to $M_{SM}$, $M_{ISLap}$ introduces relative low errors by setting appropriate resolution parameter $r$ (cf.~\autoref{sec:integerScalingMechanism}).
+The snapping mechanism $M_{SM}$ has the best online run-times performance and it is $5380\times-11940\times $ faster than $M_{ISLap}$ and $1.32\time- 1.62\times$ faster than $M_{Lap}$~\cite{eigner2014differentially}.
+However, it is worth to mention that the snapping mechanism $M_{SM}$ introduces additional errors (beyond the necessary amount Laplace noise), that leads to a significant reduction in utility~\cite{Covington2019,googleDP2019}.
+In contract, the Integer-Scaling Laplace mechanism $M_{ISLap}$ introduces relative low errors by setting appropriate resolution parameter $r$ (cf.~\autoref{sec:integerScalingMechanism}).
+
+
+
+% is $5500\times-9444\times$ slower than the \textit{insecure} floating-point implementation of $M_{Lap}$.
+
+
+
+% However, Covington~\cite{Covington2019} proved that $M_{SM}$ introduces additional errors (beyond the necessary Laplace noise), and it leads to a significant reduction in utility.
+% In comparison to $M_{SM}$, $M_{ISLap}$ introduces relative low errors by setting appropriate resolution parameter $r$ (cf.~\autoref{sec:integerScalingMechanism}).
 
 \textbf{Gaussian Mechanisms}
-Recall that $M_{ISGau}$ realize similar differential privacy protection effect as Gaussian mechanism (cf.~\autoref{def:gaussianMechanism}).
-We implement the Integer-Scaling Gaussian mechanism $M_{ISGau}$ under BGMW-based floating-point that has a online run-times of $18$ seconds in the LAN setting of two computation parties.
+Recall that the Integer-Scaling Gaussian mechanism $M_{ISLap}$ deploys the sampling protocol $\Uppi^{SymmBinomial}$ under floating-point arithmetic to simulate the continuous Gaussian random variable.
+We implement $\Uppi^{SymmBinomial}$ with BGMW-based floating-point arithmetic.
+We can see that the Integer-Scaling Gaussian mechanism $M_{ISLap}$ is $2.08\times-3.06\times$ faster than the Integer-Scaling Laplace mechanism $M_{ISLap}$.
+% Recall that $M_{ISGau}$ realize similar differential privacy protection effect as Gaussian mechanism (cf.~\autoref{def:gaussianMechanism}).
+% We implement the Integer-Scaling Gaussian mechanism $M_{ISGau}$ under BGMW-based floating-point that has an online run-times of $18$ seconds in the LAN setting of two computation parties.
 
 \textbf{Discrete Laplace Mechanisms}
-It can be seen, that $M_{DLap}$~\cite{eigner2014differentially} is at least $1068\times$ faster than our implementation of $M_{DLap}$ in BGMW-based fixed/floating-point arithmetic in the LAN setting. However, it remains to prove if $M_{DLap}$~\cite{eigner2014differentially} can satisfy differential privacy under fixed or floating-point implementation.
+The discrete Laplace mechanism $M_{DLap}$ deploys the same sampling protocol $\Uppi^{DLap}$ (cf.~\autoref{prot:DiscreteLap}) as $M_{ISLap}$.
+We also implement $M_{DLap}$~\cite{eigner2014differentially} for comparison.
+It can be seen, that $M_{DLap}$~\cite{eigner2014differentially} is at least $1068\times$ faster than our implementation of $M_{DLap}$ in BGMW-based fixed/floating-point arithmetic in the LAN setting. However, the security of $M_{DLap}$~\cite{eigner2014differentially} remains to prove as it applies similar noise generation procedure as $M_{Lap}$~\cite{eigner2014differentially}.
 
 \text{Discrete Gaussian Mechanisms}
-\TODO{We encounter memory overflow when implement BGMW-based $M_{Dau}$, implement in AGMW-based floating-point arithmetic}
-
+\TODO{We encounter memory overflow when implement BGMW-based $M_{DGau}$, implement in AGMW-based floating-point arithmetic}
 
 
 \begin{table}
