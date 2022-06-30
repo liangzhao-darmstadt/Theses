@@ -252,8 +252,8 @@
 %             % first while loop
 %             \text{FOR $j=0$ TO $ iter_1-1$}\\
 %             \text{\t\t$\left\langle \boldsymbol{u_j}\right\rangle ^{B,UINT}\gets \Uppi^{RandInt}\left(d\right) $}\\
-%             \text{\t\t$\left\langle \boldsymbol{\gamma_{1,j}}\right\rangle ^{B,FP}\gets \frac{\left\langle \boldsymbol{u_j}\right\rangle ^{B,UINT}}{d} $}\\
-%             \text{\t\t$\left\langle b_{1,j}\right\rangle ^B=\Uppi^{BernoulliEXP1}\left(\left\langle \boldsymbol{\gamma_{1,j}}\right\rangle ^{B,FP}\right) $ }\\
+%             \text{\t\t$\left\langle \boldsymbol{\gamma_{1,j}}\right\rangle ^{B,FX}\gets \frac{\left\langle \boldsymbol{u_j}\right\rangle ^{B,UINT}}{d} $}\\
+%             \text{\t\t$\left\langle b_{1,j}\right\rangle ^B=\Uppi^{BernoulliEXP1}\left(\left\langle \boldsymbol{\gamma_{1,j}}\right\rangle ^{B,FX}\right) $ }\\
 %             % \text{$\left(\left\langle e_{1,0}\right\rangle ,\ldots,\left\langle e_{1,iter_1-1}\right\rangle \right) =\Uppi^{PreOr}\left(\left\langle b_{1,0}\right\rangle ^B,\ldots,\left\langle b_{1,iter-1}\right\rangle ^B\right) $}\\
 %             % \text{For $j \in [1\ldots iter_1)$, parties compute $ \left\langle p^{1}_{j}\right\rangle ^B=\left\langle e^{1}_j\right\rangle^B-\left\langle e^{1}_{j-1}\right\rangle^B$, where $ \left\langle p^{1}_{0}\right\rangle ^B=\left\langle e^{1}_{0}\right\rangle ^B$ }\\
 %             % \text{Parties calculate $\left\langle \boldsymbol{u}\right\rangle ^{B,UINT}=\sum_{j=0}^{iter_1-1} \left\langle p^{1}_{j}\right\rangle ^B*\left\langle \boldsymbol{u_j}\right\rangle ^{B,UINT} $}\\
@@ -281,13 +281,13 @@
 % \begin{protocol}[tbh!]
 %     \centering
 %     \fbox{
-%         \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{Bernoulli}\left(\left\langle \boldsymbol{p}\right\rangle ^{B,FP} \right) $ }]{
-%             \textbf{Input: $\left\langle \boldsymbol{p}\right\rangle ^{B,FP}$} \pcskipln \\
+%         \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{Bernoulli}\left(\left\langle \boldsymbol{p}\right\rangle ^{B,FX} \right) $ }]{
+%             \textbf{Input: $\left\langle \boldsymbol{p}\right\rangle ^{B,FX}$} \pcskipln \\
 %             \textbf{Output: $\left\langle x\right\rangle ^{B} $, where $x\sim Bern\left(p\right) $} \\
 %             \text{$\left\langle \boldsymbol{U}\right\rangle ^{B,UINT} \gets \Uppi^{RandBits}\left(11\right) $}\\
-%             \text{$\left\langle \boldsymbol{U}\right\rangle ^{B,FP} \gets \operatorname{UI2FP}\left(\left\langle \boldsymbol{U}\right\rangle ^{B,UINT}\right)  $}\\
-%             \text{$\left\langle \boldsymbol{U}\right\rangle ^{B,FP} \gets \operatorname{right-shift}\left(\left\langle \boldsymbol{U}\right\rangle ^{B,FP} ,11\right)  $}\\
-%             \text{$\left\langle x\right\rangle^{B} \gets \left(\left\langle p\right\rangle^{B,FP} >\left\langle \boldsymbol{U}\right\rangle ^{B,FP}\right) $}
+%             \text{$\left\langle \boldsymbol{U}\right\rangle ^{B,FX} \gets \operatorname{UI2FP}\left(\left\langle \boldsymbol{U}\right\rangle ^{B,UINT}\right)  $}\\
+%             \text{$\left\langle \boldsymbol{U}\right\rangle ^{B,FX} \gets \operatorname{right-shift}\left(\left\langle \boldsymbol{U}\right\rangle ^{B,FX} ,11\right)  $}\\
+%             \text{$\left\langle x\right\rangle^{B} \gets \left(\left\langle p\right\rangle^{B,FX} >\left\langle \boldsymbol{U}\right\rangle ^{B,FX}\right) $}
 %         }}
 %     \caption{MPC Protocol for Bernoulli distribution $x\sim Bern\left(p\right) $.}
 %     \label{prot:Bernoulli}
@@ -298,12 +298,12 @@
 % \begin{protocol}[tbh!]
 %     \centering
 %     \fbox{
-%         \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output,FOR},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{BernoulliEXP1}\left(\left\langle \boldsymbol{\gamma}\right\rangle ^{B,FP}\right) $ }]{
-%             \textbf{Input: $\left\langle \boldsymbol{\gamma}\right\rangle ^{B,FP}$} \pcskipln \\
+%         \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output,FOR},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{BernoulliEXP1}\left(\left\langle \boldsymbol{\gamma}\right\rangle ^{B,FX}\right) $ }]{
+%             \textbf{Input: $\left\langle \boldsymbol{\gamma}\right\rangle ^{B,FX}$} \pcskipln \\
 %             \textbf{Output: $\left\langle x\right\rangle ^{B} $, where $x\sim Bern\left(p=e^{-\gamma}\right) $ and $\gamma \in \left[0,1\right] $} \\
 %             \text{FOR $j \in [1\ldots iter]$}\\
-%             \text{\t\t$\left\langle \boldsymbol{p_j}\right\rangle ^{B,FP}\gets  \frac{\left\langle \boldsymbol{\gamma}\right\rangle ^{B,FP}}{j}  $}\\
-%             \text{\t\t$\left\langle b_j\right\rangle ^{B}\gets \Uppi^{Bernoulli}\left(\left\langle \boldsymbol{p_j}\right\rangle ^{B,FP}\right) $}\\
+%             \text{\t\t$\left\langle \boldsymbol{p_j}\right\rangle ^{B,FX}\gets  \frac{\left\langle \boldsymbol{\gamma}\right\rangle ^{B,FX}}{j}  $}\\
+%             \text{\t\t$\left\langle b_j\right\rangle ^{B}\gets \Uppi^{Bernoulli}\left(\left\langle \boldsymbol{p_j}\right\rangle ^{B,FX}\right) $}\\
 %             \text{\t\t$\left\langle fg_j\right\rangle^{B} \gets \left(\left\langle b_j\right\rangle ^{B}==1\right) $}\\
 %             % \text{Parties run $\left(\left\langle e_0\right\rangle^{B} ,\ldots, \left\langle e_{iter}\right\rangle^{B}\right) =\Uppi^{PreOr}\left(\left\langle fg_0\right\rangle^{B},\ldots,\left\langle fg_{iter}\right\rangle^{B}\right) $}\\
 %             % \text{For $j \in [1\ldots iter)$, parties compute $ \left\langle p_{j}\right\rangle ^B=\left\langle e_j\right\rangle^B-\left\langle e_{j-1}\right\rangle^B$, where $ \left\langle p_{0}\right\rangle ^B=\left\langle e_{0}\right\rangle ^B$ }\\
@@ -333,16 +333,16 @@
 % \begin{protocol}[tbh!]
 %     \centering
 %     \fbox{
-%         \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output,FOR,TO},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{BernoulliEXP}\left(\left\langle \boldsymbol{\gamma}\right\rangle ^{B,FP}\right) $ }]{
-%             \textbf{Input: $\left\langle \boldsymbol{\gamma}\right\rangle ^{B,FP}$} \pcskipln \\
+%         \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output,FOR,TO},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{BernoulliEXP}\left(\left\langle \boldsymbol{\gamma}\right\rangle ^{B,FX}\right) $ }]{
+%             \textbf{Input: $\left\langle \boldsymbol{\gamma}\right\rangle ^{B,FX}$} \pcskipln \\
 %             \textbf{Output: $\left\langle x\right\rangle ^{B} $, where $x\sim Bern\left(p=e^{-\gamma}\right) $} \\
 %             % \gamma \in \left[0,1\right] 
 %             % b_1
-%             \text{$\left\langle cond_{b1}\right\rangle ^B\gets  \left(\left\langle \boldsymbol{\gamma}\right\rangle ^{B,FP}\leq1\right)   $}\\
-%             \text{$\left\langle b_1\right\rangle ^B\gets \Uppi^{BernoulliEXP1}\left(\left\langle \boldsymbol{\gamma}\right\rangle ^{B,FP}\right) $}\\
+%             \text{$\left\langle cond_{b1}\right\rangle ^B\gets  \left(\left\langle \boldsymbol{\gamma}\right\rangle ^{B,FX}\leq1\right)   $}\\
+%             \text{$\left\langle b_1\right\rangle ^B\gets \Uppi^{BernoulliEXP1}\left(\left\langle \boldsymbol{\gamma}\right\rangle ^{B,FX}\right) $}\\
 %             % \gamma >1
 %             % b_2
-%             \text{$\left\langle \boldsymbol{\left\lfloor \gamma\right\rfloor }\right\rangle ^{B,FP}\gets \operatorname{Floor}\left(\left\langle \boldsymbol{\gamma}\right\rangle ^{B,FP}\right) $}\\
+%             \text{$\left\langle \boldsymbol{\left\lfloor \gamma\right\rfloor }\right\rangle ^{B,FX}\gets \operatorname{Floor}\left(\left\langle \boldsymbol{\gamma}\right\rangle ^{B,FX}\right) $}\\
 %             \text{FOR $j=0$ TO $ iter-1 $}\\
 %             \text{\t\t$\left\langle b_{2,j}\right\rangle ^B \gets \Uppi^{BernoulliEXP1}\left(1\right) $}\\
 %             \text{\t\t$\left\langle cond_{b_{2,j}==0}\right\rangle ^B \gets \left(\left\langle b_{2,j}\right\rangle ^B ==0\right) $}\\
@@ -351,9 +351,9 @@
 %             % \text{Parties calculate $\left\langle b_2\right\rangle ^B=\sum_{j=0}^{iter-1} \left\langle p_{j}\right\rangle ^B*\left\langle b_{j,2}\right\rangle ^B $}\\
 %             % \text{Parties calculate $\left\langle \boldsymbol{j_{b_{j,2}==0}}\right\rangle ^{B,UINT}=\Uppi^{LeadingZeros}\left(\left\langle p_{0}\right\rangle ^B,\ldots,\left\langle p_{iter-1}\right\rangle ^B\right) $}\\
 %             % \text{Parties calcualte $\left\langle \boldsymbol{\left\lfloor \gamma\right\rfloor }\right\rangle ^{B,UINT}=\text{FL2UI}\left(\left\langle \boldsymbol{\left\lfloor \gamma\right\rfloor }\right\rangle ^{B,FL}\right) $}\\
-%             \text{\t\t$\left\langle cond_{ b2,j}\right\rangle ^B \gets \left(j< \left\langle \boldsymbol{\left\lfloor \gamma\right\rfloor }\right\rangle ^{B,FP}\right)  \land \left\langle cond_{b_{2,j}==0}\right\rangle ^B  $}\\
+%             \text{\t\t$\left\langle cond_{ b2,j}\right\rangle ^B \gets \left(j< \left\langle \boldsymbol{\left\lfloor \gamma\right\rfloor }\right\rangle ^{B,FX}\right)  \land \left\langle cond_{b_{2,j}==0}\right\rangle ^B  $}\\
 %             % b_3
-%             \text{$\left\langle \boldsymbol{\gamma-\left\lfloor \gamma\right\rfloor }\right\rangle ^{B,FP}\gets \left\langle \boldsymbol{\gamma}\right\rangle ^{B,FP} -\left\langle \boldsymbol{\left\lfloor \gamma\right\rfloor }\right\rangle ^{B,FP}$}\\
+%             \text{$\left\langle \boldsymbol{\gamma-\left\lfloor \gamma\right\rfloor }\right\rangle ^{B,FX}\gets \left\langle \boldsymbol{\gamma}\right\rangle ^{B,FX} -\left\langle \boldsymbol{\left\lfloor \gamma\right\rfloor }\right\rangle ^{B,FX}$}\\
 %             \text{$\left\langle b_{3}\right\rangle ^B =\Uppi^{BernoulliEXP1}\left(\left\langle \boldsymbol{\gamma-\left\lfloor \gamma\right\rfloor }\right\rangle ^{B,FL}\right) $}\\
 %             % final result
 %             \text{$ \left\langle x\right\rangle ^{B} \gets \Uppi^{ObliviousSelection}\left(\left\langle \boldsymbol{b}\right\rangle ^B, \left\langle \boldsymbol{fg}     \right\rangle ^{B}   \right) $}

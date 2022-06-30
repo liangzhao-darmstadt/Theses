@@ -63,29 +63,29 @@ Therefore, we finally choose BGMW-based fixed-point arithmetic to implement the 
             $N{=}2$                                    & $N{=}3$ & $N{=}5$                 &            &
             $N{=}2$                                    & $N{=}3$ & $N{=}5$                                                                                                     \\ \showrowcolors
             \midrule
-            $Fx\_Add^{\BOOL}$                          & 1       & 27.49                   & 29.22      & 39.75                   &  & 507.80      & 516.25      & 556.10      \\
-            $Fx\_Sub^{\BOOL}$                          & 1       & 23.74                   & 60.90      & 39.36                   &  & 527.04      & 565.47      & 562.13      \\
-            $Fx\_Mul^{\BOOL}$                          & 1       & 197.14                  & 199.17     & 219.78                  &  & 1\,487.11   & 1\,772.54   & 1\,829.94   \\
-            $Fx\_Div^{\BOOL}$                          & 1       & 25\,690.22              & 26\,924.64 & 59\,848.43              &  & 336\,749.59 & 354\,113.67 & 391\,287.07 \\
-            $Fx\_Lt^{\BOOL}$                           & 1       & 28.63                   & 96.86      & 183.17                  &  & 885.07      & 867.33      & 995.09      \\
-            $Fx\_Exp2^{\BOOL}$                         & 1       & 239.48                  & 259.27     & 255.51                  &  & 4\,924.61   & 5\,330.73   & 5\,566.90   \\
-            $Fx\_Log2^{\BOOL}$                         & 1       & 2\,880.34               & 2\,898.00  & 2\,887.24               &  & 17\,599.92  & 19\,747.61  & 22\,030.32  \\
-            $Fx\_Exp^{\BOOL}$                          & 1       & 297.63                  & 283.95     & 256.11                  &  & 5\,482.55   & 5\,971.34   & 6\,326.46   \\
-            $Fx\_Ln^{\BOOL}$                           & 1       & 2\,910.26               & 2\,995.85  & 2\,985.79               &  & 18\,903.29  & 19\,957.76  & 22\,555.63  \\
-            $Fx\_Sqrt^{\BOOL}$                         & 1       & 1\,277.98               & 1\,749.13  & 2\,022.90               &  & 19\,957.41  & 20\,955.41  & 23\,665.47  \\
+            $FX\_Add^{\BOOL}$                          & 1       & 27.49                   & 29.22      & 39.75                   &  & 507.80      & 516.25      & 556.10      \\
+            $FX\_Sub^{\BOOL}$                          & 1       & 23.74                   & 60.90      & 39.36                   &  & 527.04      & 565.47      & 562.13      \\
+            $FX\_Mul^{\BOOL}$                          & 1       & 197.14                  & 199.17     & 219.78                  &  & 1\,487.11   & 1\,772.54   & 1\,829.94   \\
+            $FX\_Div^{\BOOL}$                          & 1       & 25\,690.22              & 26\,924.64 & 59\,848.43              &  & 336\,749.59 & 354\,113.67 & 391\,287.07 \\
+            $FX\_Lt^{\BOOL}$                           & 1       & 28.63                   & 96.86      & 183.17                  &  & 885.07      & 867.33      & 995.09      \\
+            $FX\_Exp2^{\BOOL}$                         & 1       & 239.48                  & 259.27     & 255.51                  &  & 4\,924.61   & 5\,330.73   & 5\,566.90   \\
+            $FX\_Log2^{\BOOL}$                         & 1       & 2\,880.34               & 2\,898.00  & 2\,887.24               &  & 17\,599.92  & 19\,747.61  & 22\,030.32  \\
+            $FX\_Exp^{\BOOL}$                          & 1       & 297.63                  & 283.95     & 256.11                  &  & 5\,482.55   & 5\,971.34   & 6\,326.46   \\
+            $FX\_Ln^{\BOOL}$                           & 1       & 2\,910.26               & 2\,995.85  & 2\,985.79               &  & 18\,903.29  & 19\,957.76  & 22\,555.63  \\
+            $FX\_Sqrt^{\BOOL}$                         & 1       & 1\,277.98               & 1\,749.13  & 2\,022.90               &  & 19\,957.41  & 20\,955.41  & 23\,665.47  \\
             $Fx2Int^{\BOOL}$                           & 1       & 14.35                   & 15.53      & 17.53                   &  & 675.69      & 795.63      & 948.14      \\
             $Fx2FL^{\BOOL}$                            & 1       & 683.13                  & 722.25     & 1\,271.52               &  & 10\,781.96  & 11\,794.16  & 12\,818.66  \\
             \midrule
-            $Fx\_Add^{\BOOL}$                          & 1\,000  & 0.03                    & 0.04       & 0.04                    &  & 0.54        & 0.48        & 0.79        \\
-            $Fx\_Sub^{\BOOL}$                          & 1\,000  & 0.01                    & 0.01       & 0.04                    &  & 0.51        & 0.56        & 0.52        \\
-            $Fx\_Mul^{\BOOL}$                          & 1\,000  & 0.10                    & 0.13       & 0.17                    &  & 1.12        & 2.47        & 2.24        \\
-            $Fx\_Div^{\BOOL}$                          & 1\,000  & 24.71                   & 25.25      & 58.90                   &  & 337.73      & 357.79      & 391.94      \\
-            $Fx\_Lt^{\BOOL}$                           & 1\,000  & 0.05                    & 0.15       & 0.14                    &  & 0.79        & 0.80        & 1.00        \\
-            $Fx\_Exp2^{\BOOL}$                         & 1\,000  & 0.21                    & 0.41       & 0.47                    &  & 4.75        & 5.68        & 6.14        \\
-            $Fx\_Log2^{\BOOL}$                         & 1\,000  & 2.61                    & 1.80       & 1.57                    &  & 16.35       & 20.13       & 26.91       \\
-            $Fx\_Exp^{\BOOL}$                          & 1\,000  & 0.24                    & 0.45       & 0.55                    &  & 5.66        & 6.37        & 6.65        \\
-            $Fx\_Ln^{\BOOL}$                           & 1\,000  & 4.35                    & 3.93       & 1.70                    &  & 17.50       & 20.41       & 33.14       \\
-            $Fx\_Sqrt^{\BOOL}$                         & 1\,000  & 4.62                    & 4.33       & 5.11                    &  & 19.44       & 21.60       & 32.91       \\
+            $FX\_Add^{\BOOL}$                          & 1\,000  & 0.03                    & 0.04       & 0.04                    &  & 0.54        & 0.48        & 0.79        \\
+            $FX\_Sub^{\BOOL}$                          & 1\,000  & 0.01                    & 0.01       & 0.04                    &  & 0.51        & 0.56        & 0.52        \\
+            $FX\_Mul^{\BOOL}$                          & 1\,000  & 0.10                    & 0.13       & 0.17                    &  & 1.12        & 2.47        & 2.24        \\
+            $FX\_Div^{\BOOL}$                          & 1\,000  & 24.71                   & 25.25      & 58.90                   &  & 337.73      & 357.79      & 391.94      \\
+            $FX\_Lt^{\BOOL}$                           & 1\,000  & 0.05                    & 0.15       & 0.14                    &  & 0.79        & 0.80        & 1.00        \\
+            $FX\_Exp2^{\BOOL}$                         & 1\,000  & 0.21                    & 0.41       & 0.47                    &  & 4.75        & 5.68        & 6.14        \\
+            $FX\_Log2^{\BOOL}$                         & 1\,000  & 2.61                    & 1.80       & 1.57                    &  & 16.35       & 20.13       & 26.91       \\
+            $FX\_Exp^{\BOOL}$                          & 1\,000  & 0.24                    & 0.45       & 0.55                    &  & 5.66        & 6.37        & 6.65        \\
+            $FX\_Ln^{\BOOL}$                           & 1\,000  & 4.35                    & 3.93       & 1.70                    &  & 17.50       & 20.41       & 33.14       \\
+            $FX\_Sqrt^{\BOOL}$                         & 1\,000  & 4.62                    & 4.33       & 5.11                    &  & 19.44       & 21.60       & 32.91       \\
             $Fx2Int^{\BOOL}$                           & 1\,000  & 0.01                    & 0.02       & 0.05                    &  & 0.62        & 0.56        & 0.80        \\
             $Fx2FL^{\BOOL}$                            & 1\,000  & 0.25                    & 0.40       & 0.55                    &  & 7.36        & 9.64        & 10.38       \\
             \bottomrule
@@ -112,18 +112,18 @@ Therefore, we finally choose BGMW-based fixed-point arithmetic to implement the 
             $N{=}2$                                    & $N{=}3$                 & $N{=}5$   &                         &
             $N{=}2$                                    & $N{=}3$                 & $N{=}5$                                                                        \\ \showrowcolors
             \midrule
-            $Fx\_Add^{\ARITH}$                         & 0.10                    & 0.23      & 0.24                    &   & 0.19       & 0.25       & 0.28       \\
-            $Fx\_Sub^{\ARITH}$                         & 0.14                    & 0.22      & 3.45                    &   & 0.27       & 0.24       & 0.46       \\
-            $Fx\_Mul^{\ARITH}$                         & 16.05                   & 38.24     & 25.20                   &   & 531.76     & 437.77     & 448.93     \\
-            $Fx\_Div^{\ARITH}$                         & 219.16                  & 755.79    & 1\,650.56               &   & 8\,968.31  & 10\,198.43 & 11\,210.29 \\
-            $Fx\_Lt^{\ARITH}$                          & 19.32                   & 13.00     & 18.26                   &   & 350.21     & 334.68     & 372.35     \\
-            $Fx\_Exp2^{\ARITH}$                        & 387.46                  & 752.12    & 1\,891.61               &   & 13\,458.62 & 14\,164.27 & 16\,461.11 \\
-            $Fx\_Log2^{\ARITH}$                        & 181.10                  & 215.64    & 292.53                  &   & 4\,371.94  & 4\,716.72  & 5\,565.20  \\
-            $Fx\_Exp^{\ARITH}$                         & 444.02                  & 1\,043.37 & 1\,924.93               &   & 13\,931.69 & 14\,527.76 & 16\,205.35 \\
-            $Fx\_Ln^{\ARITH}$                          & 223.29                  & 280.02    & 308.78                  &   & 4\,864.74  & 5\,049.57  & 5\,652.10  \\
-            $Fx\_Sqrt^{\ARITH}$                        & 343.14                  & 438.70    & 1\,682.41               &   & 10\,792.22 & 11\,573.25 & 13\,250.91 \\
-            $Fx\_Fx2FL^{\ARITH}$                       & 40.91                   & 50.22     & 187.62                  &   & 1\,653.18  & 1\,733.67  & 1\,866.73  \\
-            $Fx\_Fx2Int^{\ARITH}$                      & 13.81                   & 17.26     & 26.25                   &   & 336.89     & 338.50     & 341.04     \\
+            $FX\_Add^{\ARITH}$                         & 0.10                    & 0.23      & 0.24                    &   & 0.19       & 0.25       & 0.28       \\
+            $FX\_Sub^{\ARITH}$                         & 0.14                    & 0.22      & 3.45                    &   & 0.27       & 0.24       & 0.46       \\
+            $FX\_Mul^{\ARITH}$                         & 16.05                   & 38.24     & 25.20                   &   & 531.76     & 437.77     & 448.93     \\
+            $FX\_Div^{\ARITH}$                         & 219.16                  & 755.79    & 1\,650.56               &   & 8\,968.31  & 10\,198.43 & 11\,210.29 \\
+            $FX\_Lt^{\ARITH}$                          & 19.32                   & 13.00     & 18.26                   &   & 350.21     & 334.68     & 372.35     \\
+            $FX\_Exp2^{\ARITH}$                        & 387.46                  & 752.12    & 1\,891.61               &   & 13\,458.62 & 14\,164.27 & 16\,461.11 \\
+            $FX\_Log2^{\ARITH}$                        & 181.10                  & 215.64    & 292.53                  &   & 4\,371.94  & 4\,716.72  & 5\,565.20  \\
+            $FX\_Exp^{\ARITH}$                         & 444.02                  & 1\,043.37 & 1\,924.93               &   & 13\,931.69 & 14\,527.76 & 16\,205.35 \\
+            $FX\_Ln^{\ARITH}$                          & 223.29                  & 280.02    & 308.78                  &   & 4\,864.74  & 5\,049.57  & 5\,652.10  \\
+            $FX\_Sqrt^{\ARITH}$                        & 343.14                  & 438.70    & 1\,682.41               &   & 10\,792.22 & 11\,573.25 & 13\,250.91 \\
+            $FX\_Fx2FL^{\ARITH}$                       & 40.91                   & 50.22     & 187.62                  &   & 1\,653.18  & 1\,733.67  & 1\,866.73  \\
+            $FX\_Fx2Int^{\ARITH}$                      & 13.81                   & 17.26     & 26.25                   &   & 336.89     & 338.50     & 341.04     \\
             \bottomrule
         \end{tabular}
     }
@@ -279,13 +279,13 @@ We found that memory overflow ($>128$ GB) happends for $DLap_1^{\BOOL}$, $DGau_1
             $N{=}2$                                    & $N{=}3$                 & $N{=}5$    &                         &
             $N{=}2$                                    & $N{=}3$                 & $N{=}5$                                                                               \\ \showrowcolors
             \midrule
-            $DLap_1^{\BOOL,Fx}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
+            $DLap_1^{\BOOL,FX}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
             $DLap_1^{\BOOL,FL}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
-            $DLap_2^{\BOOL,Fx}$                        & 60\,946.33              & 62\,613.41 & 144\,253.44             &   & 893\,460.44 & 947\,818.24 & 1\,040\,754.52 \\
+            $DLap_2^{\BOOL,FX}$                        & 60\,946.33              & 62\,613.41 & 144\,253.44             &   & 893\,460.44 & 947\,818.24 & 1\,040\,754.52 \\
             $DLap_2^{\BOOL,FL}$                        & 48\,874.17              & 49\,236.48 & 105\,650.76             &   & 730\,002.77 & 782\,549.19 & 861\,691.71    \\
-            $DGau_1^{\BOOL,Fx}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
+            $DGau_1^{\BOOL,FX}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
             $DGau_1^{\BOOL,FL}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
-            $DGau_2^{\BOOL,Fx}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
+            $DGau_2^{\BOOL,FX}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
             $DGau_2^{\BOOL,FL}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
             \bottomrule
         \end{tabular}
@@ -317,11 +317,11 @@ We found that memory overflow ($>128$ GB) happends for $DLap_1^{\BOOL}$, $DGau_1
 %             $N{=}2$                                    & $N{=}3$                 & $N{=}5$ &                         &
 %             $N{=}2$                                    & $N{=}3$                 & $N{=}5$                                                             \\ \showrowcolors
 %             \midrule
-%             $DGau_1^{\BOOL,Fx}$                        & ---                     & ---     & ---                     &   & ---       & ---       & --- \\
+%             $DGau_1^{\BOOL,FX}$                        & ---                     & ---     & ---                     &   & ---       & ---       & --- \\
 %             $DGau_1^{\BOOL,FL}$                        & ---                     & ---     & ---                     &   & ---       & ---       & --- \\
-%             $DGau_2^{\BOOL,Fx}$                        & ---                     & ---     & ---                     &   & ---       & ---             \\
+%             $DGau_2^{\BOOL,FX}$                        & ---                     & ---     & ---                     &   & ---       & ---             \\
 %             $DGau_2^{\BOOL,FL}$                        & ---                     & ---     & ---                     &   & ---       & ---       & --- \\
-%             $DGau_3^{\BOOL,Fx}$                        & 614.31                  & 701.92  & ---                     &   & 7\,388.63 & 8\,273.27 & --- \\
+%             $DGau_3^{\BOOL,FX}$                        & 614.31                  & 701.92  & ---                     &   & 7\,388.63 & 8\,273.27 & --- \\
 %             $DGau_3^{\BOOL,FL}$                        & 305.42                  & 303.13  & ---                     &   & 6\,324.08 & 7\,329.42 & --- \\
 %             \bottomrule
 %         \end{tabular}
@@ -366,7 +366,7 @@ We found that memory overflow ($>128$ GB) happends for $DLap_1^{\BOOL}$, $DGau_1
 Finally, we present the evaluation of the MPC protocols for differentially private mechanisms.
 
 % \textbf{Laplace Mechanisms}
-For comparison, we implement the \textif{insecure} Laplace mechanisms $M_{Lap}$~\cite{eigner2014differentially} and discrete Laplace mechanisms $M_{DLap}$~\cite{eigner2014differentially}.
+For comparison, we implement the \textit{insecure} Laplace mechanisms $M_{Lap}$~\cite{eigner2014differentially} and discrete Laplace mechanisms $M_{DLap}$~\cite{eigner2014differentially}.
 Note that Mironov~\cite{mironov2014differentially} showed that $M_{Lap}$~\cite{eigner2014differentially} suffered from floating-point attacks and proposed the snapping mechanism $M_{SM}$ as a solution.
 Integer-Scaling Laplace mechanism $M_{ISLap} $ achieves similar differential privacy protection effect by re-scaling a discrete Laplace random variable. In our work, we implement $M_{ISLap} $ with the rejection sampling-based algorithms (cf.~\autoref{sec:DiscreteGaussianMechanism}) and setting the fail probability $p<2^{-40}$.
 We can see that the fixed-point implementation of $M_{ISLap}$ is $1.09\time-1.29\times$ slower than the floating-point implementation of $M_{ISLap}$.
@@ -405,22 +405,22 @@ It can be seen, that $M_{DLap}$~\cite{eigner2014differentially} is at least $106
             $N{=}2$                                              & $N{=}3$ & $N{=}5$    &                         &
             $N{=}2$                                              & $N{=}3$ & $N{=}5$                                                                                                                     \\ \showrowcolors
             \midrule
-            % $M_{Lap}$~\cite{eigner2014differentially}                                        & 1000    & $\BOOL,Fx$ & 26.09                   & 24.04      & 62.74                   &  & 1\,269.25   & 1\,335.42   & 1\,474.29      \\
+            % $M_{Lap}$~\cite{eigner2014differentially}                                        & 1000    & $\BOOL,FX$ & 26.09                   & 24.04      & 62.74                   &  & 1\,269.25   & 1\,335.42   & 1\,474.29      \\
             $M_{Lap}$~\cite{eigner2014differentially} (insecure) & 1000    & $\BOOL,FL$ & 7.58                    & 8.36       & 11.08                   &  & 197.68      & 223.92      & 248.53         \\
             $M_{SM}$ (\textbf{this work})                        & 1000    & $\BOOL,FL$ & 4.68                    & 5.77       &                         &  & 145.70      & 168.74      & 182.60         \\
-            $M_{ISLap} $ (\textbf{this work})                    & 1       & $\BOOL,Fx$ & 72\,296.53              & 71\,352.89 & 160\,443.40             &  & 949\,907.44 & 994\,913.88 & 1\,091\,406.72 \\
+            $M_{ISLap} $ (\textbf{this work})                    & 1       & $\BOOL,FX$ & 72\,296.53              & 71\,352.89 & 160\,443.40             &  & 949\,907.44 & 994\,913.88 & 1\,091\,406.72 \\
             $M_{ISLap} $ (\textbf{this work})                    & 1       & $\BOOL,FL$ & 55\,858.07              & 47\,186.90 & 111\,232.66             &  & 846\,435.93 & 908\,322.81 & 1\,001\,687.22 \\
             \midrule
             % $M_{Gau}$~\cite{DBLP:journals/corr/WuHWX16}                                      & 100     & $\BOOL,FL$ & 29.82                   & 36.71      & 48.36                   &  & 762.88      & 843.09      & 904.58         \\
             $M_{ISGau}$ (\textbf{this work})                     & 1       & $\BOOL,FL$ & 18\,916.06              & 19\,413.08 & 26\,929.39              &  & 394\,248.57 & 435\,126.28 & 470\,813.95    \\
             \midrule
-            $M_{DLap}$~\cite{eigner2014differentially}           & 1000    & $\BOOL,Fx$ & 2.26                    & 3.26       & 134.97                  &  & 19.01       & 24.11       & 69.88          \\
+            $M_{DLap}$~\cite{eigner2014differentially}           & 1000    & $\BOOL,FX$ & 2.26                    & 3.26       & 134.97                  &  & 19.01       & 24.11       & 69.88          \\
             $M_{DLap}$~\cite{eigner2014differentially}           & 1000    & $\BOOL,FL$ & 5.91                    & 6.60       & 9.06                    &  & 144.93      & 163.96      & 177.91         \\
-            $M_{DLap}$ (\textbf{this work})                      & 1       & $\BOOL,Fx$ & 60\,946.33              & 62\,613.41 & 144\,253.44             &  & 893\,460.44 & 947\,818.24 & 1\,040\,754.52 \\
+            $M_{DLap}$ (\textbf{this work})                      & 1       & $\BOOL,FX$ & 60\,946.33              & 62\,613.41 & 144\,253.44             &  & 893\,460.44 & 947\,818.24 & 1\,040\,754.52 \\
             $M_{DLap}$ (\textbf{this work})                      & 1       & $\BOOL,FL$ & 48\,874.17              & 49\,236.48 & 105\,650.76             &  & 730\,002.77 & 782\,549.19 & 861\,691.71    \\
             \midrule
             % $M_{Dau}$ \TODO{add other work for comparison}                                   & 1       &            &                         &            &                         &  &             &             &                \\
-            % $M_{Dau}$ (\textbf{this work w/~\cite{eigner2014differentially} as subprotocol}) & 50      & $\BOOL,Fx$ & 2.03                    & 2.68       & ---                     &  & 20.43       & 27.53       & ---            \\
+            % $M_{Dau}$ (\textbf{this work w/~\cite{eigner2014differentially} as subprotocol}) & 50      & $\BOOL,FX$ & 2.03                    & 2.68       & ---                     &  & 20.43       & 27.53       & ---            \\
             % $M_{Dau}$ (\textbf{this work w/~\cite{eigner2014differentially} as subprotocol}) & 50      & $\BOOL,FL$ & 6.51                    & 7.80       & 10.45                   &  & 174.76      & 198.04      & 211.05         \\
             $M_{Dau}$ (\textbf{this work})                       & 1       & $\BOOL,FL$ & ---                     & ---        & ---                     &  & ---         & ---         & ---            \\
             \bottomrule
