@@ -398,14 +398,14 @@ To generate a uniform random fixed-point in range $\left[0,1\right)$ with $f$ fr
 
 
                   % \section{MPC Protocols for Integer-scaling Mechanism}
-                  % In this section, we construct MPC protocols for integer-scaling Laplace mechanism (cf.~\autoref{sec:IntegerScalingLaplaceMechanism}) and integer-scaling Gaussian mechanism (cf.~\autoref{subsec:ISGauss}).
+                  % In this section, we construct MPC protocols for Integer-Scaling Laplace mechanism (cf.~\autoref{sec:IntegerScalingLaplaceMechanism}) and Integer-Scaling Gaussian mechanism (cf.~\autoref{subsec:ISGauss}).
 
                   \section{MPC Protocols for Integer-Scaling Laplace Mechanism}
                   \label{sec:MPCProtocolsforInteger-ScalingLaplaceMechanism}
-                  Recall that integer-scaling Laplace mechanism $M_{ISLap}\left(f\left(D\right),r,\varepsilon,\Delta _r\right)=f_r\left(D\right) +ir$ (cf.~\autoref{sec:IntegerScalingLaplaceMechanism}) use a discrete Laplace random variable $i \sim DLap\left(t=\frac{\Delta_r}{r\varepsilon}\right) $ to simulate continuous Laplace random variable.
+                  Recall that Integer-Scaling Laplace mechanism $M_{ISLap}\left(f\left(D\right),r,\varepsilon,\Delta _r\right)=f_r\left(D\right) +ir$ (cf.~\autoref{sec:IntegerScalingLaplaceMechanism}) use a discrete Laplace random variable $i \sim DLap\left(t=\frac{\Delta_r}{r\varepsilon}\right) $ to simulate continuous Laplace random variable.
 
                   As discussed in \autoref{subsec:ISLap}, one way to generate discrete Laplace random variable $i$ is to use $Algo^{GeoExpBinarySearch}$ and $Algo^{TwoSideGeo}$.
-                  We first provide the MPC protocols for both algorithms, and then, the MPC protocols for integer-scaling Laplace mechanism.
+                  We first provide the MPC protocols for both algorithms, and then, the MPC protocols for Integer-Scaling Laplace mechanism.
 
                   \paragraph{MPC Protocols for Binary Search Based Geometric Sampling Algorithm}
                   \label{para::MPCProtocolsforBinarySearchBasedGeometricSamplingAlgorithm}
@@ -507,7 +507,7 @@ To generate a uniform random fixed-point in range $\left[0,1\right)$ with $f$ fr
       \label{para:MPCProtocolforInteger-scalingLaplaceMechanism}
 
       Next, we integrate the protocols to construct the complete MPC protocol for Integer-Scaling Laplace mechanism.
-      % Recall integer-scaling Laplace mechanism $M_{ISLap}\left(f_r\left(D\right),r,\varepsilon,\Delta_r\right)$ (cf.~\autoref{sec:IntegerScalingLaplaceMechanism}) that approximates the Laplace mechanism is defined as:
+      % Recall Integer-Scaling Laplace mechanism $M_{ISLap}\left(f_r\left(D\right),r,\varepsilon,\Delta_r\right)$ (cf.~\autoref{sec:IntegerScalingLaplaceMechanism}) that approximates the Laplace mechanism is defined as:
       % \begin{equation}
       %     \begin{split}
       %         M_{ISLap}\left(f_r\left(D\right),r,\varepsilon,\Delta_r\right)&=f_r\left(D\right) +ir\\
@@ -559,9 +559,9 @@ To generate a uniform random fixed-point in range $\left[0,1\right)$ with $f$ fr
 
       \section{MPC Protocol for Integer-Scaling Gaussian Mechanism}
       \label{sec:MPCProtocolforInteger-ScalingGaussianMechanism}
-      Recall that integer-scaling Gaussian Mechanism $M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\sigma\right)=f_r\left(D\right) +ir$ (cf.~\autoref{subsec:ISGauss}) use a symmetric binomial random variable $i\sim SymmBino\left(n,p=0.5\right)$ to simulate a Gaussian random variable.
+      Recall that Integer-Scaling Gaussian Mechanism $M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\sigma\right)=f_r\left(D\right) +ir$ (cf.~\autoref{subsec:ISGauss}) use a symmetric binomial random variable $i\sim SymmBino\left(n,p=0.5\right)$ to simulate a Gaussian random variable.
 
-      We first provide the MPC protocols for $Algo^{SymmetricBinomial}$, and then, the MPC protocols for integer-scaling Gaussian mechanism.
+      We first provide the MPC protocols for $Algo^{SymmetricBinomial}$, and then, the MPC protocols for Integer-Scaling Gaussian mechanism.
 
       \paragraph{MPC Protocol for Symmetrical Binomial Sampling Algorithm}
       \label{para:MPCProtocolforSymmetricalBinomialSamplingAlgorithm}
@@ -618,7 +618,7 @@ $\Uppi^{SymmBino}\left(n,p=0.5\right) $ samples a symmetric binomial random vari
       \label{para:MPCProtocolforIntegerScalingGaussianMechanism}
       We integrate the protocols to construct the complete MPC protocol for Integer-Scaling Gaussian mechanism $\Uppi^{IsGauss}$.
 
-      % % Recall integer-scaling Gaussian mechanism $M_{ISGauss}\left(f_r\left(D\right),r,\varepsilon,\sigma,\Delta_r\right)$~\autoref{subsec:ISGauss} that approximates the Gaussian mechanism is defined as follows:
+      % % Recall Integer-Scaling Gaussian mechanism $M_{ISGauss}\left(f_r\left(D\right),r,\varepsilon,\sigma,\Delta_r\right)$~\autoref{subsec:ISGauss} that approximates the Gaussian mechanism is defined as follows:
       % % \begin{equation}
       % %     \begin{split}
       % %         M_{ISGauss}\left(f_r\left(D\right),r,\varepsilon,\sigma,\Delta_r\right)&=f_r\left(D\right) +ir\\
@@ -627,7 +627,7 @@ $\Uppi^{SymmBino}\left(n,p=0.5\right) $ samples a symmetric binomial random vari
       % % \end{equation}
       % % where $i\sim SymmBino\left(n,p\right) $.
 
-      % Recall integer-scaling Gaussian mechanism use a symmetrical random variable $i$ as the noise, and can be reformulated in secret shared form as:
+      % Recall Integer-Scaling Gaussian mechanism use a symmetrical random variable $i$ as the noise, and can be reformulated in secret shared form as:
 
       % % In our MPC-DP general framework~\autoref{prot:MPC-DP}, it can be reformulated as:
       Integer-scaling Gaussian mechanism can be reformulated in secret sharing as:

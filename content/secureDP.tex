@@ -1,7 +1,7 @@
 \chapter{Secure Differentially Private Mechanisms On Finite Computer}
 \label{cha:secureDPMechanisms}
 
-Generally, the security analysis of differentially private mechanisms is based on two implicit assumptions: (i) Computations are performed on real numbers and requires machines to have infinite precision, (ii) The noise is sampled from a probability distribution very close to the theoretically correct probability distribution. However, the practical implementataion of differentially private mechanisms are based on floating-point or fixed-point arithmetic that only provides finite order of accuracy. Mironov \cite{mironov2012significance} showed that the porous distribution of the Laplace random noise sampled with textbook algorithm under floating-point implemetation can lead to violation of differential privacy. In this chapter, we describe four types of existing differentially private mechanisms~\cite{mironov2012significance,googleDP2019,ghosh2012universally,canonne2020discrete} and modify corresponding algorithms for sampling secure random noise on finite computer. We construct MPC protocols for these differentially private mechanisms and sampling algorithms in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}.
+Generally, the security analysis of differentially private mechanisms is based on two implicit assumptions: (i) Computations are performed on real numbers and require machines to have infinite precision, (ii) The noise is sampled from a probability distribution that is very close to the theoretically correct probability distribution. However, the practical implementation of differentially private mechanisms is based on floating-point or fixed-point arithmetic that only provides finite order of accuracy. Mironov~\cite{mironov2012significance} showed that the porous distribution of the Laplace random noise sampled with textbook algorithm under floating-point implemetation can lead to violation of differential privacy. In this chapter, we describe four types of existing differentially private mechanisms~\cite{mironov2012significance,googleDP2019,ghosh2012universally,canonne2020discrete} and modify corresponding sampling algorithms for generating secure noise on the finite computer. We construct MPC protocols for these differentially private mechanisms and sampling algorithms in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}.
 
 
 
@@ -14,29 +14,27 @@ Generally, the security analysis of differentially private mechanisms is based o
 
 
 
-However, we only have machines with finite-precision for the practical implementations of differentially private mechanisms. We typically use fixed-point or floating-point arithmetic to approximate the operations of real numbers. Mironov~\cite{mironov2012significance} shows that the porous distribution of the Laplace noise implemented with the textbook noise sampling methods under floating-point arithmetic can lead to severe differential privacy breaching and proposes the snapping mechanism to avoid such security issues by rounding and smoothing the output of the Laplace Mechanism (cf.~\autoref{def:laplaceMechanism}). \CHANGED{Google Differential Privacy Team~\cite{googleDP2019} introduces an alternative secure approach that scales integer noise from certain distribution under floating-point arithmetic to approximate continuous noise in desired distribution and yields better accuracy than the snapping mechanism}. \CHANGED{Canonne et al.~\cite{canonne2020discrete} provide algorithms to sample discrete Laplace and Gaussian noise on finite computer for the query function $f\left(D\right) \in \mathbb{Z} $}.
+% However, we only have machines with finite-precision for the practical implementations of differentially private mechanisms. We typically use fixed-point or floating-point arithmetic to approximate the operations of real numbers. Mironov~\cite{mironov2012significance} shows that the porous distribution of the Laplace noise implemented with the textbook noise sampling methods under floating-point arithmetic can lead to severe differential privacy breaching and proposes the snapping mechanism to avoid such security issues by rounding and smoothing the output of the Laplace Mechanism (cf.~\autoref{def:laplaceMechanism}). \CHANGED{Google Differential Privacy Team~\cite{googleDP2019} introduces an alternative secure approach that scales integer noise from certain distribution under floating-point arithmetic to approximate continuous noise in desired distribution and yields better accuracy than the snapping mechanism}. \CHANGED{Canonne et al.~\cite{canonne2020discrete} provide algorithms to sample discrete Laplace and Gaussian noise on finite computer for the query function $f\left(D\right) \in \mathbb{Z} $}.
 
 
 \section{Snapping Mechanism}
 \label{sec:snappingMechanism}
-Recall that Laplace mechanisms (cf.~\autoref{subsec:DPMechanisms}) guarantee $\varepsilon$ differential privacy by adding Laplace random variable to the query function $f\left(D\right)  $:
+Recall that Laplace mechanism (cf.~\autoref{subsubsec:DPMechanisms}) guarantees $\varepsilon$-DP by adding Laplace random variable $Y \sim Lap\left(\lambda\right) $ to the query function $f\left(D\right)  $ with database $D$:
 \begin{equation}
     \begin{split}
-        M\left(D, \lambda\right)=f\left(D\right)+Y,
+        M\left(D, \lambda\right)=f\left(D\right)+Y.
     \end{split}
 \end{equation}
 
-where $D$ is the database and $Y \sim Lap\left(\lambda\right) $.
 
-As discussed in \autoref{algo:textLaplaceSamplingAlgorithm}, we can generated a Laplace random variable $Y$ by transforming the random chosen sign $S\in \left\{-1,1\right\} $ and a uniform random variable $U \in \left(0,1\right] $ (or $U \in \left(0,1\right) $ if we ignore the \textit(small) probability of genereating the exact $1$) as follows:
+As discussed in \autoref{algo:InverseTransform-BasedLaplaceSamplingMethod}, we can generated a Laplace random variable $Y$ by transforming the random chosen sign $S\in \left\{-1,1\right\} $ and a uniform random variable $U \in \left(0,1\right] $ (or $U \in \left(0,1\right) $ if we ignore the \textit(small) probability of generating exact $1$) as follows:
 \begin{equation}
     \begin{split}
         Y \gets S \cdot \lambda \ln\left(U\right)
     \end{split}
 \end{equation}
 
-
-Mironov~\cite{mironov2012significance} showed that the Laplace random variable $Y$ generated in this method under floating-point arithmetic can lead to severe differential privacy breaching and proposed the snapping mechanism to avoid such security issues by rounding and smoothing the output $f\left(D\right)+Y$.
+Mironov~\cite{mironov2012significance} showed that the Laplace random variable $Y$ generated in this method under floating-point arithmetic can lead to severe differential privacy breaching and proposed the snapping mechanism to avoid such security issues by rounding and smoothing the output $f\left(D\right)+Y$ in a specific approach.
 
 % In this section, we describe the snapping mechanism that is immune to the attack
 % \CHANGED{Laplace random variable $Y \sim Lap\left(\lambda\right) $ (cf.~\autoref{def:LaplaceDistribution}) can be generated with the inverse transform sampling method (cf.~\autoref{theorem:inversionSamplingMethod}):}
@@ -64,9 +62,9 @@ $f\left(D\right) \in \mathbb{D} $ is the query function of database $D$, and $S\
 $S$ is the sign of the noise that is uniformly distributed over $\left\{-1,1\right\} $. $U^{*}$ is a \textit{uniform} distribution over $\mathbb{D} \cap \left(0,1\right) $, and generates floating-point numbers with probability proportional to its \textit{unit in the last palce} (ulp), i.e., spacing between two consecutive floating-point numbers. \CHANGED{$\text{LN}(x )$ is the natural logarithm under floating-point implementation with exact rounding, i.e., $\text{LN}(x )$ rounds input $x$ to the closest floating-point number with probability $p=1$.}
 $\oplus$ and $\otimes$ are the floating-point implementations of addition and multiplication.
 
-Function $\text{clamp}_{B}\left(x\right) $ limits the output to the interval $\left[-B, B\right] $ by outputting $B$ if $x > B$, $-B$ if $x < -B$, and $x$ otherwise.   $\Lambda$ is the smallest power of two greater than or equal to $\lambda$, and we have $\Lambda=2^{n}$ such that $2^{n-1} < \lambda \leq2^{n}$ for $n \in \mathbb{Z} $. Function $\lfloor x\rceil_{\Lambda}$ rounds input $x$ exactly to the nearest multiple of $\Lambda$ by manipulating the binary floating-point representation of $x$.
+Function $\text{clamp}_{B}\left(x\right) $ limits the output to the interval $\left[-B, B\right] $ by outputting $B$ if $x > B$, $-B$ if $x < -B$, and $x$ otherwise.   $\Lambda$ is the smallest power of two greater than or equal to $\lambda$, and we have $\Lambda=2^{n}$ such that $2^{n-1} < \lambda \leq2^{n}$ for $n \in \mathbb{Z} $. Function $\lfloor x\rceil_{\Lambda}$ rounds input $x$ exactly to the nearest multiple of $\Lambda$ by manipulating the binary representation of floating-point number $x$.
 
-Note that the snapping mechanism assumes that the \textit{sensitivity} $\Delta_1 ^{f} $ (cf.~\autoref{def:sensitivity}) of query function $f$ is $1$, which can be extended to an arbitrary query function $f^{\prime}$ with \textit{sensitivity} $\Delta _1^{\left(f^{\prime}\right) }\neq 1$ by scaling the output of $f^{\prime}\left(D\right) $ with $f\left(D\right) =\frac{f^{\prime}\left(D\right) }{\Delta_1 ^{\left(f^{\prime}\right) }}$.
+Note that the snapping mechanism assumes that the \textit{sensitivity} $\Delta_1 ^{\left(f\right) } $ (cf.~\autoref{def:sensitivity}) of query function $f$ is $1$, which can be extended to an arbitrary query function $f^{\prime}$ with \textit{sensitivity} $\Delta _1^{\left(f^{\prime}\right) }\neq 1$ by scaling the output of $f^{\prime}\left(D\right) $ with $f\left(D\right) =\frac{f^{\prime}\left(D\right) }{\Delta_1 ^{\left(f^{\prime}\right) }}$.
 
 \begin{theorem}[{~\cite{mironov2012significance}}]
     The snapping mechanism $M_{S}\left(f\left(D\right),\lambda,B\right)$ satisfies $\left(\frac{1}{\lambda}+\frac{2^{-49}B}{\lambda}\right) $-DP for query function $f$ with \textit{sensitivity} $\Delta _1^{\left(f\right) } =1$ when $\lambda<B<2^{46}\cdot\lambda$.
@@ -78,22 +76,22 @@ Note that the snapping mechanism assumes that the \textit{sensitivity} $\Delta_1
 
 % We introduce snapping mechanism implementations from~\cite{Covington2019} and adapt them into MPC protocols in~\autoref{sec:snappingMPC}, other implementations of snapping mechanism are known as~\cite{George2017, Ristea2021}.
 
-The snapping mechanism consists of the following steps:
+The computation of snapping mechanism consists of the following steps:
 \begin{enumerate}
     \label{enu:snappingSteps}
     \item $\text{clamp}_B\left(\cdot\right) $.
     \item Generation of $U^{*}$ and $S$.
-    \item Floating-point arithmetic operations: $\text{LN}\left(\cdot\right) $, $\oplus$, $\otimes $.
+    \item Floating-point arithmetic operations such as, $\text{LN}\left(\cdot\right) $, $\oplus$, and $\otimes $.
           % \item Calculation of $\Lambda$.
-    \item $\lfloor x\rceil_{\Lambda}$ that rounds input $x$ to the nearest multiple of $\Lambda $.
+    \item Operation $\lfloor x\rceil_{\Lambda}$ that rounds input $x$ to the nearest multiple of $\Lambda $.
 \end{enumerate}
-We briefly describe how to generate $U^{*}$, the implementation details of the rest steps can be found in the Covington's work~\cite{Covington2019}.
+We briefly describe how to generate $U^{*}$, the implementation details of the other steps can be found in the Covington's work~\cite{Covington2019}.
 
 
 % \subsubsection{Generation of $U^{*}$}
 % \label{subsubsec:generationUStar}
 
-\textbf{Generation of $U^{*}$}
+\textbf{Generation of $U^{*}\in\mathbb{D} \cap \left(a,b\right)  $.}
 $U^{*}$ is a \textit{uniform} distribution over $\mathbb{D} \cap \left(0,1\right) $ and can be represented in IEEE 754 floating-point~\cite{IEEE754_2019} as:
 \begin{equation}
     \begin{split}
@@ -101,7 +99,7 @@ $U^{*}$ is a \textit{uniform} distribution over $\mathbb{D} \cap \left(0,1\right
     \end{split}
 \end{equation}
 
-As discussed above, each floating-point $U^{*}$ should be output with a probability proportional to its ulp. We sample a floating-point number from $U^{*}$ using \autoref{algo:RandFloat1}~\cite{walker1974fast,mironov2012significance}, i.e., independently sampling a geometric random variable $x \sim Geo\left(0.5\right) $, and the significant bits $\left(d_{1},\ldots ,d_{52}\right)\in\left\{0,1\right\}^{52} $. Then we set $U^{*}$'s biased exponent $e=1023-\left(x+1\right) $.
+As discussed above, each floating-point $U^{*}$ should be output with a probability proportional to its ulp. We sample a floating-point number from $U^{*}$ using $Algo^{RandFloat1}$~\cite{walker1974fast,mironov2012significance}, i.e., independently sampling a geometric random variable $x \sim Geo\left(0.5\right) $, and the significant bits $\left(d_{1},\ldots ,d_{52}\right)\in\left\{0,1\right\}^{52} $. Then, we set $U^{*}$'s biased exponent $e=1023-\left(x+1\right) $.
 
 \begin{algorithm}[tbh!]
     \centering
@@ -114,16 +112,15 @@ As discussed above, each floating-point $U^{*}$ should be output with a probabil
     \text{$e \gets 1023-\left(x+1\right) $}\\
     \text{RETURN $U^{*}=\left(1.d_1\ldots d_{52}\right)_2 \times 2^{e-1023}$}
     }}
-    \caption{Algorithm for sampling random floating-point number $U^{*}\in\left(0,1\right) $.}
+    \caption{Algorithm for sampling uniform random floating-point number $U^{*}\in\mathbb{D} \cap \left(a,b\right) $.}
     \label{algo:RandFloat1}
 \end{algorithm}
 \FloatBarrier
 
 As $U^{*}$'s significant bits are sampled randomly from $\left\{0,1\right\}^{52} $, the floating-point numbers with identical biased exponent $e-1023$ are distributed uniformly in $U^{*}$.
 Further, $x \sim Geo\left(0.5\right) $ guarantees that the probability of sampling a floating-point number from $U^{*}$ is proportional to its ulp.
-
-Intuitively, \textit{uniformly} sampling a floating-point number can be thought of as first randomly drawing a real number in the interval $\left(0,1\right) $ and rounding it to the nearest floating-point number. However, the floating-point numbers are discrete and not equidistant. For example, there are exactly $2^{52}$ representable reals in interval $[.5, 1)$ and $2^{52}$ reals in interval $[ .25, .5)$. If we only sample the floating-point numbers with equal distance to each other in interval $\left(0,1\right) $, a large part of floating-point numbers would be ignored. As discussed in~\cite{walker1974fast,mironov2012significance}, a better approach is to sample floating-point numbers with probability proportional to its ulp (i.e., spacing to its consecutive neighbor).
-With $x\sim Geo\left(0.5\right) $, the total sampling probability for the floating-point numbers in interval $(0,1)$ with exponent $e-1023=-1$ is $Pr\left(x=0 \,|\,0.5\right) =\frac{1}{2}$.
+Intuitively, \textit{uniformly} sampling a floating-point number can be thought of as first randomly drawing a real number in the interval $\left(0,1\right) $ and rounding it to the nearest floating-point number. However, the floating-point numbers are discrete and not equidistant. For example, there are exactly $2^{52}$ representable reals in interval $[.5, 1)$ and $2^{52}$ reals in the interval $[ .25, .5)$. If we only sample the floating-point numbers with equal distance to each other in the interval $\left(0,1\right) $, a large amount of floating-point numbers would be ignored. As discussed in~\cite{walker1974fast,mironov2012significance}, a better approach is to sample floating-point numbers with probability proportional to its ulp (i.e., spacing to its consecutive neighbor).
+With $x\sim Geo\left(0.5\right) $, the total sampling probability for the floating-point numbers in interval $(0,1)$ with exponent $e-1023=-\left(x+1\right) =-1$ is $Pr\left(x=0 \,|\,0.5\right) =\frac{1}{2}$.
 The total sampling probability for the floating-point numbers in interval $(0,0.5)$ with exponent $e-1023=-2$ is $Pr\left(x=1\,|\,0.5\right) =\frac{1}{2^2}$ , etc.
 Therefore, we have a total sampling probability for the floating-point numbers in in interval $\left(0,1\right)$ is $\sum_{i = 1}^{\infty}\frac{1}{2^{i}}\approx 1$.
 
@@ -236,7 +233,7 @@ Therefore, we have a total sampling probability for the floating-point numbers i
 
 \section{Integer-Scaling Mechanism}
 \label{sec:integerScalingMechanism}
-Google Differential Privacy Team~\cite{googleDP2019} proposed a differentially private algorithm that can achieve similar DP protection as Laplace mechanism (cf.~\autoref{def:laplaceMechanism}) or Gaussian mechanism (cf.~\autoref{def:gaussianMechanism}) by re-scaling a discrete random variable to simulate the continuous random variable, which is defined as follows:
+Google Differential Privacy Team~\cite{googleDP2019} proposed a differentially private algorithm that could achieve similar DP protection effect as Laplace mechanism (cf.~\autoref{def:laplaceMechanism}) or Gaussian mechanism (cf.~\autoref{def:gaussianMechanism}) by re-scaling a discrete random variable to simulate the continuous random variable, which is defined as follows:
 \begin{equation}
     \begin{split}
         M_{IS}\left(f\left(D\right),r, \varepsilon, \delta \right)=f_r\left(D\right) +ir.
@@ -245,20 +242,20 @@ Google Differential Privacy Team~\cite{googleDP2019} proposed a differentially p
 
 % where $i\sim DLap\left(\frac{\Delta_r}{r \epsilon}\right) $ is re-scaled by the resolution parameter $r=2^k$ (with $k \in \left[-1021,970\right] $) to simulate continuous Laplace noise. $\Delta_r =\Delta_1 ^{f}+r$
 where discrete random variable $i $ is re-scaled by the resolution parameter $r=2^k$ (for $k \in \left[-1022,970\right] $) to simulate a continuous random variable.
-;Function $f_r\left(D\right)\in\mathbb{D} $ rounds the output of query function $f\left(D\right)\in\mathbb{R} $ to the nearest multiple of $r$.
-$r$ determines the scale of the continuous random variable $ir$ is simulating and is predefined.
+Function $f_r\left(D\right)\in\mathbb{D} $ rounds the output of query function $f\left(D\right)\in\mathbb{R} $ to the nearest multiple of $r$.
+$r$ determines the scale of the simulated continuous random variable $ir$ and is predefined based on requirement.
 $\varepsilon, \delta$ are the parameters that define the level of differential privacy guarantee.
 
-\textbf{Main Idea. } Assume $f_r\left(D\right) +ir$ satisfy $\left(\varepsilon, \delta\right) $-DP under real number arithmetic, if $f_r\left(D\right) +ir$ can be computed \textit{precisely} under floating-point arithmetic, then we can conclude that $f_r\left(D\right) +ir$ can also satisfies $\left(\varepsilon, \delta\right) $-DP under floating-point arithmetic. \textit{Precisely} indicates that the real numbers are represented as floating numbers without precision loss, and the arithmetic operations of these real numbers yield the exactly same result as when these real numbers are represented as floating-point numbers.
+\textbf{Main Idea.} Let us assume $f_r\left(D\right) +ir$ satisfy $\left(\varepsilon, \delta\right) $-DP under real number arithmetic, if $f_r\left(D\right) +ir$ can be computed \textit{precisely} under floating-point arithmetic, then we can conclude that $f_r\left(D\right) +ir$ also satisfies $\left(\varepsilon, \delta\right) $-DP under floating-point arithmetic. \textit{Precisely} indicates that the real numbers are represented as floating numbers without precision loss, and the arithmetic operations of these real numbers yield the exactly same result as when these real numbers are represented as floating-point numbers.
 If integer $\left\lvert i\right\rvert \leq2^{52}$ (or $\Pr\left(\left\lvert i>2^{52}\right\rvert \right) $ is small enough to be ignored), then we have $    \left\lvert ir\right\rvert  \leq 2^{1022}$. Therefore, $ir$ can be represented precisely as a floating-point number by adding $k$ to the exponent of $i$. Further, by choosing $r$ and limiting $\left\lvert f\left(D\right)\right\rvert< 2^{52}r  $, we can guarantee that $f_r\left(D\right) $ and $f_r\left(D\right)+ir$ can be represented precisely as a floating-point number.
 Finally, it proved that $f_r\left(D\right) +ir$ satisfies $\left(\varepsilon, \delta\right)$-DP under floating-point implementation.
 
 % Note that in original work~\cite{googleDP2019}, the sampling algorithms of integer $i$ is called secure noise generation (SNG).
 
-% % The main idea of integer-scaling mechanism is as follows: We first prove that $M_{IS}\left(f\left(D\right),r\right)$ under exact real number arithemtic satisfy differential privacy. Then, we implement $M_{IS}\left(f\left(D\right),r\right)$ under floating-point number arithmetic such that the difference to exact real number arithmetic is negligible. Finally, we prove that $M_{IS}\left(f\left(D\right),r\right)$ under floating-point number arithmetic also satisfy differential privacy. 
+% % The main idea of Integer-Scaling mechanism is as follows: We first prove that $M_{IS}\left(f\left(D\right),r\right)$ under exact real number arithemtic satisfy differential privacy. Then, we implement $M_{IS}\left(f\left(D\right),r\right)$ under floating-point number arithmetic such that the difference to exact real number arithmetic is negligible. Finally, we prove that $M_{IS}\left(f\left(D\right),r\right)$ under floating-point number arithmetic also satisfy differential privacy. 
 
 % The key challenge thereby is to calculate $M_{IS}\left(f\left(D\right),r\right)$ under floating-point arithmetic \textit{precisely} as if under real number arithmetic. \textit{Precisely} indicates to represent real numbers as floating numbers without precision loss, and the arithmetic operations of those real numbers yield the same result when these real numbers are represented as floating-point numbers. In this way, $M_{IS}\left(f\left(D\right),r\right)$ is immune to the attack described in Mironov's work~\cite{mironov2012significance}. 
-% By sampling integer $i$ from differential distribution, the integer-scaling mechanism can achieve similar DP-guarantee as Laplace mechanism (cf.~\autoref{def:laplaceMechanism}) or Gaussian mechanism (cf.~\autoref{def:gaussianMechanism}). 
+% By sampling integer $i$ from differential distribution, the Integer-Scaling mechanism can achieve similar DP-guarantee as Laplace mechanism (cf.~\autoref{def:laplaceMechanism}) or Gaussian mechanism (cf.~\autoref{def:gaussianMechanism}). 
 
 
 % % \TODO{ origin paper https://github.com/google/differential-privacy/blob/main/common_docs/Secure_Noise_Generation.pdf (page 3) about represent operation in floating-point contains errors}\\
@@ -309,23 +306,23 @@ Finally, it proved that $f_r\left(D\right) +ir$ satisfies $\left(\varepsilon, \d
 
 \subsection{Integer-Scaling Laplace Mechanism}
 \label{subsec:ISLap}
-In this section, we describe the integer-scaling Laplace mechanism~\cite{googleDP2019} and modifying the corresponding sampling algorithms.
+In this section, we describe the Integer-Scaling Laplace mechanism~\cite{googleDP2019} and modifying the corresponding sampling algorithms.
 
-The integer-scaling Laplace mechanism~\cite{googleDP2019} is defined as:
+The Integer-Scaling Laplace mechanism~\cite{googleDP2019} is defined as:
 \begin{equation}
     \begin{split}
         M_{ISLap}\left(f\left(D\right),r,\Delta _r,\varepsilon\right)=f_r\left(D\right) +ir,
     \end{split}
 \end{equation}
 
-where $r$ is the resolution parameter that controls the scale of the simulated continuous Laplace random variable $ir$, integer $i \sim DLap\left(t=\frac{\Delta_r}{r\varepsilon}\right) $ (cf.~\autoref{def:DiscreteLaplaceDistribution}), $\Delta _r=r+\Delta^f_1$, and $\Delta^f_1$ is the sensitivity (cf.~\autoref{def:sensitivity}) of $f\left(D\right)$.
+where $r$ is the resolution parameter that controls the scale of the simulated continuous Laplace random variable $ir$, integer $i \sim DLap\left(t=\frac{\Delta_r}{r\varepsilon}\right) $ (cf.~\autoref{def:DiscreteLaplaceDistribution}), $\Delta _r=r+\Delta^{\left(f\right) }_1$, and $\Delta^{\left(f\right) }_1$ is the $\ell_1$-sensitivity (cf.~\autoref{def:sensitivity}) of $f\left(D\right)$.
 
 \begin{theorem}[\cite{googleDP2019}]
-    The integer-scaling Laplace mechanism $M_{ISLap}\left(f\left(D\right),r,\Delta _r,\varepsilon\right)$ satisfies $\varepsilon$-DP for query function $f$.
+    The Integer-Scaling Laplace mechanism $M_{ISLap}\left(f\left(D\right),r,\Delta _r,\varepsilon\right)$ satisfies $\varepsilon$-DP for query function $f$.
 \end{theorem}
 
-We found three discrete Laplace sampling algorithms~\cite{eigner2014differentially,googleDP2019,canonne2020discrete } that can be used in integer-scaling Laplace mechanism.
-We only describe and modify the discrete Laplace sampling algorithm in work~\cite{googleDP2019} that first generates a geometric random variable $x$ with a binary based geometric sampling algorithm and convert $x$ to a discrete Laplace random variable.
+We found three discrete Laplace sampling algorithms~\cite{eigner2014differentially,googleDP2019,canonne2020discrete } that can be used in Integer-Scaling Laplace mechanism.
+We only describe and modify the discrete Laplace sampling algorithm in work~\cite{googleDP2019}, that first generates a geometric random variable $x$ with a binary search based geometric sampling algorithm, and convert $x$ to a discrete Laplace random variable $i$.
 % As the discrete Laplace distribution can be generate by reflecting the geometric distribution across $y$-axis, we can first sample a geometric random variable and transform it into a discrete Laplace random variable. $r$ is the smallest power of $2$ exceeding $ \frac{\Delta }{2^c\epsilon}$, $\varepsilon$ controls the differential privacy protection level (cf.~\autoref{def:laplaceMechanism}), and $c\in \left\{10, 11,\ldots, 45\right\} $ is a predefined parameter that controls the degree of discretization and accuracy of $M_{ISLap}\left(f\left(D\right),r,\varepsilon,\Delta _r\right)$.\\
 
 % % \TODO{explain, how to choose $c$ in practice, influence on accuracy...}\\
@@ -341,11 +338,11 @@ We only describe and modify the discrete Laplace sampling algorithm in work~\cit
 \paragraph{Binary Search Based Geometric Sampling Algorithm}
 \label{para:BinarySearchBasedGeometricSamplingAlgorithm}
 
-\autoref{algo:GeometricExpBinarySearch} is a modification of the binary search based geometric sampling algorithm from the work~\cite{googleDP2019GitHub} that samples a positive integer $x$ from a geometric distribution $Geo\left(x\,|\,p=1-e^{-\lambda}\right)=\left(1-p\right)^{x-1}\cdot p $.
+$Algo^{GeoExpBinarySearch}$ is a modification of the binary search based geometric sampling algorithm from the work~\cite{googleDP2019GitHub} that samples a positive integer $x$ from a geometric distribution $Geo\left(x\,|\,p=1-e^{-\lambda}\right)=\left(1-p\right)^{x-1}\cdot p $.
 
 \textbf{Sampling Interval of $x$.}
 Let's first define the sampling interval of geometric random variable $x$ and $\lambda$.
-We sample random variable $x \in \left[1, 2^{52}\right] $.
+We sample random variable $x $ in the interval $ \left[1, 2^{52}\right] $.
 In original work~\cite{googleDP2019GitHub}, the sampling interval for $x$ is $ \left[1, 2^{63}-1\right]$. We limit the sampling interval of $x$ to $\left[1, 2^{52}\right]$ because each integer in  $\left[1, 2^{52}\right]$ can be represented exactly as a floating-point number.
 
 % $x\cdot r=x \cdot 2^k$ can be calculated precisely under floating-point arithmetic without additional operations as follows:
@@ -373,419 +370,424 @@ For the geometric distribution's CDF: $\Pr\left(x\leq X \right) =1-\left(1-p\rig
     \end{cases}
 \end{equation}
 
-We require $\lambda\geq 2^{-48}$ which means that the probability \autoref{algo:GeometricExpBinarySearch} fails (to generate $x>2^{52}$) is $ 1- 0.\overline{9}_{\left(27\right) }8396 \approx 2^{-92}$.
+We require $\lambda\geq 2^{-48}$ which means that the probability $Algo^{GeoExpBinarySearch}$ fails (when required to generate $x>2^{52}$) is $ 1- 0.\overline{9}_{\left(27\right) }8396 \approx 2^{-92}$.
 % % The support of the geometric distribution $Geo\left(p\right) $ is $supp\left(Geo\left(p\right) \right)=\left\{z \in \mathbb{Z} \,|\, z>0\right\}  $. However, since we can only sample integers from interval $\left[1, Int_{max52}-1\right] $, $\text{Pr}\left(x \leq Int_{max53}\right)$ should be close to $1$. Thus, we set $\lambda\geq2^{-49}$ to ensure $\text{Pr}\left(x \leq Int_{max53}\right)\geq 0.\overline{9}_{\left(6\right) }8875\ldots$.
 
 \textbf{Algorithm Description. }
-\autoref{algo:GeometricExpBinarySearch} samples a geometric random variable $x$ by splitting the sampling interval into two subintervals with the almost same cumulative probability, then one subinterval is chosen at random and the other is discard. This sampling interval splitting and choosing process is repeated until and the remaining sampling interval only contains one value which is the geometric random variable $x$ we are looking for. In original work~\cite{googleDP2019}, the sampling algorithm additional checks if the generated random variable exceed the sampling interval $\left[0,  2^{63}-1\right] $, that is not necessary in our case because we set $\lambda>2^{-48}$ such that it happens with low probability $p \approx 2^{-92}$.
+$Algo^{GeoExpBinarySearch}$ samples a geometric random variable $x$ by splitting the sampling interval into two subintervals with the almost equal cumulative probability, then one subinterval is chosen at random and the other is discard. This sampling interval splitting and choosing process is repeated until the remaining sampling interval only contains one value which is the geometric random variable $x$ we are looking for. In original work~\cite{googleDP2019}, the sampling algorithm additional checks if the generated random variable exceed the sampling interval $\left[0,  2^{63}-1\right] $, that is not necessary in our case because we set $\lambda>2^{-48}$ such that it happens with low probability $p \approx 2^{-92}$.
 
 % We replace the $WHILE$ loop (line 2) of original work to $FOR$ loop because the number of loop iterations must be determined for MPC computations. 
 In Line $1$, we set the initial sampling interval to $\left(0,2^{52}\right] $.
-In Line $ 3$, the sampling interval $\left(L\ldots R\right] $ is first splitted with function $\text{Split}\left(L,R,\lambda\right)=L-\frac{\ln\left(0.5\right)+\ln\left(1+e^{-\lambda\left(R-L\right) }\right) }{\lambda}$ into two subintervals ($\left(L\ldots M\right] $ and $\left(M\ldots R\right] $), such that they have approximately equal cumulative probability (i.e., $Pr\left(Geo\left(L<x\leq M\right) \right) \approx Pr \left(Geo\left(M  \leq x  < R\right) \right)  $).
-    % More specifically, function $\text{Split}\left(L,R,\lambda\right)=L-\frac{\ln\left(0.5\right)+\ln\left(1+e^{-\lambda\left(R-L\right) }\right) }{\lambda}$ calculates the middle point $M$ of sampling interval $\left(L\ldots R\right] $ such that for $Geo\left(p=1-e^{-\lambda}\right) $'s probability mass function: $\text{Pr}\left(L< x \leq M \, | \, L < x\leq R\right)\approx \frac{1}{2}$.
-    Line $4-7$ ensure that the middle point $M$ lies in interval $(L\ldots R]$ (or relocate $M$ to interval $(L\ldots R]$ otherwise).
-    Line $8$ calculates the cumulative probability proportion $Q$ between $\left(L\ldots M\right] $ and $\left(M\ldots R\right] $ with function $\text{Proportion}\left(L,R,M,\lambda\right)=\frac{e^{-\lambda\left(M-L\right) }-1}{e^{-\lambda\left(R-L\right) }-1} $.
-    In line $9-13$, we randomly choose one interval based on the comparison result of the generated uniform variable $U$ (cf.~\autoref{subsubsec:generationUStar}) and $Q$.
-    % Specifically, suppose $\text{Pr}\left(L< x \leq M \right)=l$ and $\text{Pr}\left(M< x \leq R \right)=r$, we have $Q=\frac{l}{l+r}$. 
-    If $U \leq Q$, we choose $\left(L\ldots M\right] $ as the next sampling interval, $\left(M\ldots R\right] $ otherwise. In other words, the probability that an interval is chosen is proportional to its cumulative probability.
-    The whole process is repeated (less than $52$ times) until the remaining interval contains only one value (Line $2$). Finally, we set $x\gets R$, where $x\sim Geo\left(p=1-e^{-\lambda}\right)$ (details can be found in \autoref{sec:additionalProof}).
+In Line $ 3$, the sampling interval $\left(L\ldots R\right] $ is first splitted with function $\text{Split}\left(L,R,\lambda\right)=L-\frac{\ln\left(0.5\right)+\ln\left(1+e^{-\lambda\left(R-L\right) }\right) }{\lambda}$ into subintervals $\left(L\ldots M\right] $ and $\left(M\ldots R\right] $, such that they have approximately equal cumulative probability (i.e., $Pr\left(Geo\left(L<x\leq M\right) \right) \approx Pr \left(Geo\left(M  \leq x  < R\right) \right)  $).
+% More specifically, function $\text{Split}\left(L,R,\lambda\right)=L-\frac{\ln\left(0.5\right)+\ln\left(1+e^{-\lambda\left(R-L\right) }\right) }{\lambda}$ calculates the middle point $M$ of sampling interval $\left(L\ldots R\right] $ such that for $Geo\left(p=1-e^{-\lambda}\right) $'s probability mass function: $\text{Pr}\left(L< x \leq M \, | \, L < x\leq R\right)\approx \frac{1}{2}$.
+Line $4-7$ ensure that the middle point $M$ lies in the interval $(L\ldots R]$ (or relocates $M$ to interval $(L\ldots R]$ otherwise).
+Line $8$ calculates the cumulative probability proportion $Q$ between $\left(L\ldots M\right] $ and $\left(M\ldots R\right] $ with function $\text{Proportion}\left(L,R,M,\lambda\right)=\frac{e^{-\lambda\left(M-L\right) }-1}{e^{-\lambda\left(R-L\right) }-1} $.
+In line $9-13$, we randomly choose one interval based on the comparison result of the generated uniform variable $U$ (cf.~\autoref{algo:RandFloat1}) and $Q$.
+% Specifically, suppose $\text{Pr}\left(L< x \leq M \right)=l$ and $\text{Pr}\left(M< x \leq R \right)=r$, we have $Q=\frac{l}{l+r}$. 
+If $U \leq Q$, we choose $\left(L\ldots M\right] $ as the next sampling interval, $\left(M\ldots R\right] $ otherwise. In other words, the probability that an interval is chosen is proportional to its cumulative probability.
+The whole process is repeated (at most $52$ times) until the remaining interval contains only one value (condition in Line $2$is not satisfied). Finally, we set $x\gets R$, where $x\sim Geo\left(p=1-e^{-\lambda}\right)$.
 
 
-    % Note that $Q$ should be approximate to $\frac{1}{2}$ as discussed in function $\operatorname{Split}\left(L,R,\lambda\right)$. 
+% Note that $Q$ should be approximate to $\frac{1}{2}$ as discussed in function $\operatorname{Split}\left(L,R,\lambda\right)$. 
 
-    % Then, based on the comparison result of $Q$ and uniform floating-point number $U^{*}\in\mathbb{D}  \cap\left(0,1\right) $, either interval $\left(L\ldots M\right] $ or interval $\left(M\ldots R\right] $ will be chosen. 
-
-
-
-    % Note that one implicit assumption of $Algo^{GeoExpBinarySearch}\left(\lambda\right) $ is that the uniform random variable $U^{*} \leq 1-e^{-\lambda Int_{max52}}$ or $1-e^{-\lambda Int_{max52}} \approx 1$. For example, suppose $\lambda$ is a very small value such than $\lambda \cdot Int_{max52}=4$, then we have CDF: $\text{Pr}\left(x \leq Int_{max52}\right)=1-e^{-4}=0.9816\ldots$ which means the cumulative probability of the sampling interval $\left(0\ldots Int_{max52}\right] $ is $0.9816\ldots$ and random variables $x> Int_{max52}$ (can't be generated by the algorithm) has probability $1-0.9816\ldots$.
-
-    \begin{algorithm}[tbh!]
-        \centering
-        \fbox{
-            \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, ELSE IF, ELSE, WHILE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{GeoExpBinarySearch}\left(\lambda\right) $}]{
-                \textbf{Input: $\lambda$} \pcskipln \\
-                \textbf{Output: $x\sim Geo\left(p=1-e^{-\lambda}\right) $} \\
-                % \text{$U^{*} \gets Algo^{RandFloat1}$}\\
-                % \text{IF $U^{*}>1-e^{-\lambda Int_{max52}}$.}\\
-                % \text{\t\t RETURN $Int_{max52}$} \\
-                \text{$L \gets 0$, $R \gets 2^{52}$}\\
-                \text{WHILE $L+1<R$}\\
-                \text{\t\t $M\gets \text{Split}\left(L,R,\lambda\right) $}\\
-                \text{\t\t IF $M\leq L$}\\
-                \text{\t\t \t\t $M\gets L+1$}\\
-                \text{\t\t ELSE IF $M \geq R$}\\
-                \text{\t\t \t\t $M\gets R-1$}\\
-                \text{\t\t $Q\gets \text{Proportion}\left(L,R,M,\lambda\right) $}\\
-                \text{\t\t $U \gets Algo^{RandFloat1}$}\\
-                \text{\t\t IF $U\leq Q$}\\
-                \text{\t\t \t\t $R\gets M$ }\\
-                \text{\t\t ELSE }\\
-                \text{\t\t \t\t $L\gets M$}\\
-                \text{RETURN $x\gets R$}
-            }}
-        \caption{Modified algorithm for sampling from geometric distribution $Geo\left(p=1-e^{-\lambda}\right) $.}
-        \label{algo:GeometricExpBinarySearch}
-    \end{algorithm}
-    \FloatBarrier
-
-
-    \paragraph{Two-Side Geometric Sampling Algorithm}
-    \label{para:TwoSideGeometricSamplingAlgorithm}
-    In this part, we describe how to transform $x \sim Geo\left(p=1-e^{-\lambda}\right) $ to $i\sim DLap\left(t=\frac{1}{\lambda}\right) $ based on the work~\cite{googleDP2019}.
-
-    \textbf{Algorithm Description. }
-    Recall that two-side geometric distribution (also known as discrete Laplace distribution) can be generated by reflecting a geometric distribution across the $y$-axis (cf. \autoref{def:DiscreteLaplaceDistribution}).
-    \autoref{algo:TwoSideGeometric} generates a discrete Laplace random variable $i=s\cdot g$ with this method. We replace the $WHILE$ loop (line 1) in original work into a $FOR$ loop because the MPC computation needs to determine the number of $FOR$ loops ahead of time.
-    In line $4$, we discard the case $s\cdot g =-0$, otherwise $0$ would be returned with twice probability as in discrete Laplace distribution.
-    In line $5$, we output the correct discrete Laplace random variable $i$.
-    In line $6$, the algorithm fails to generate discrete random variable in $ITER$ loops and output $0$.
-
-    \begin{algorithm}[tbh!]
-        \centering
-        \fbox{
-            \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, ELSE IF, ELSE, WHILE, AND},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{TwoSideGeo}\left(t\right) $}]{
-                \textbf{Input: $t$} \pcskipln \\
-                \textbf{Output: $i\sim DLap\left(t\right) $} \\
-                \text{FOR $i\gets 1$ TO $ITER$}\\
-                \text{\t\t $g \gets Algo^{GeoExpBinarySearch}\left(\lambda=\frac{1}{t}\right)$}\\
-                \text{\t\t $s\gets 2 \cdot Bern\left(0.5\right)-1$}\\
-                \text{\t\t IF $\lnot \left(s== -1 \land g== 0\right) $}\\
-                \text{\t\t \t\t RETURN $i \gets s\cdot g$ // success}\\
-                \text{RETURN $i \gets 0$ // failure}
-            }}
-        \caption{Modified algorithm for sampling $i\sim DLap\left(t\right) $.}
-        \label{algo:TwoSideGeometric}
-    \end{algorithm}
-    \FloatBarrier
-
-    \textbf{Algorithm Fail Probaility Estimation. }
-    Suppose $A_i$ is an event that \autoref{algo:TwoSideGeometric} fails when $ITER=i$.
-    Since each iteration is independent, we estimate the $Pr\left(A_{ITER}\right)$ as follows:
-    \begin{equation}
-        \begin{split}
-            Pr\left(A_{ITER}\right) & = \Pi _{i=1}^{ITER}\left(Pr\left(A_1\right) \right) \\
-            &= \Pi _{i=1}^{ITER} \left(Pr\left(s==-1\right)\cdot  Pr\left(g==0\right) \right)\\
-            &=       \Pi _{i=1}^{ITER} \left(Pr\left(0\gets Bern\left(0.5\right) \right)\cdot Pr\left(0\gets Geo\left(\frac{1}{t}\right) \right)  \right)                   \\
-            &= \Pi _{i=1}^{ITER} \frac{1}{2}  \left(1-e^{-\lambda}\right) \\
-            &= \frac{1}{2^{ITER}}  \left(1-e^{-\lambda}\right)^{ITER}.
-        \end{split}
-    \end{equation}
-
-    To guarantee that $Pr\left(A_{ITER}\right)<2^{-40}$, we have $ITER = 6$ for $\lambda = 0.01$.
+% Then, based on the comparison result of $Q$ and uniform floating-point number $U^{*}\in\mathbb{D}  \cap\left(0,1\right) $, either interval $\left(L\ldots M\right] $ or interval $\left(M\ldots R\right] $ will be chosen. 
 
 
 
+% Note that one implicit assumption of $Algo^{GeoExpBinarySearch}\left(\lambda\right) $ is that the uniform random variable $U^{*} \leq 1-e^{-\lambda Int_{max52}}$ or $1-e^{-\lambda Int_{max52}} \approx 1$. For example, suppose $\lambda$ is a very small value such than $\lambda \cdot Int_{max52}=4$, then we have CDF: $\text{Pr}\left(x \leq Int_{max52}\right)=1-e^{-4}=0.9816\ldots$ which means the cumulative probability of the sampling interval $\left(0\ldots Int_{max52}\right] $ is $0.9816\ldots$ and random variables $x> Int_{max52}$ (can't be generated by the algorithm) has probability $1-0.9816\ldots$.
 
-    \subsection{Integer-Scaling Gaussian Mechanism}
-    \label{subsec:IntegerScalingGaussianMechanism}
-    In this section, we describe the integer-scaling Gaussian mechanism $M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\delta\right)=f_r\left(D\right) +ir$ in work~\cite{googleDP2019}.
-    Specifically, $M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\delta\right)$ uses a symmetrical binomial random variable $i\sim SymmBino\left(n,p=0.5\right) $ (cf.~\autoref{def:binomialdistribution}) to simulate the continuous Gaussian random variable $i_{Gau}\sim \mathcal{N} \left(\mu=0,\sigma^2=\frac{2 \ln\left(1.25/\sigma \cdot \left(\Delta_1^f\right)^2 \right) }{\varepsilon^2}\right) $. The closeness between the symmetrical and Guassian distribution depends on $n$, i.e., a larger $n$ indicates a better approximation effect. $n$ can be estimate with $varepsilon$, $delta$ (cf.~\autoref{ImproveGaussianMechanism}) and $\sqrt{n} $ is guaranteed to be in $\left[2^{56},2^{57}\right] $. Note that in the following part, we use the square root of $n$ instead of $n$ as $n$ is too large to be represented as a 64-bit floating-point number.
-
-    \begin{theorem}[\cite{googleDP2019}]
-        The integer-scaling Gaussian mechanism $M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\delta\right)$ satisfies $ \left(\varepsilon,\delta\right) $-DP for query function $f$.
-    \end{theorem}
-
-    % \TODO{explain the parameter of $M_{ISGauss}$, DP-guarantee of $M_{ISGauss}$, add proof missing in original work, }\\
-    % where $i$ is sampled from a symmetrical binomial distribution $SymmBino\left(n,p=0.5 \right)$. $M_{ISGauss}\left(f\left(D\right),r,\varepsilon,\sigma,\Delta_r\right)$
-    % The binomial distribution $Bino\left(n,p\right)$ is the discrete probability distribution of the number of successes (with probability $p$) in a sequence of $n$ independent experiments.
-
-    % Suppose $x\sim Bino\left(n_x,p\right)$ and $y\sim Bino\left(n_y,p\right)$. We have that $x+y \sim Bino\left(n_x+n_y,p\right)$~\cite[Lemma 4.3]{Devroye1986}. Note that $x$ and $y$ can be generated by independently flipping a coin for $n_x$ and $n_y$ times and counting the numbers of $head$.
-    % However, for a very large $n$ (e.g., $n\approx 2^{96}$), this combination method is infeasible. Therefore, a team from Google~\cite{googleDP2019} proposes a rejection based binomial sampling algorithm (cf.~\autoref{algo:SymmetricBinomialLargeN}) that is efficient for large $n$.
-
-    % \TODO{how to modify exactly, origin algorithms, prove}\\
-    \paragraph{Symmetrical Binomial Sampling Algorithm}
-    \label{para:BinarySearchBasedGeometricSamplingAlgorithm}
-
-    \autoref{algo:SymmetricBinomialLargeN} is an modification of the symmetrical binomial sampling algorithm~\cite{googleDP2019}, that samples $i\sim SymmBino\left(n,p=0.5\right) $ with input $\sqrt{n}\approx 2^{56}$. We modify the original sampling algorithm by replacing the $WHILE$ loop with a $FOR$ loop (line 2), such that it has fixed round of iterations. We also found that when $-\frac{\sqrt{n\ln n}}{2} \leq x \leq \frac{\sqrt{n\ln n}}{2}$, $\tilde{p}\left(x\right)>0$ for $x \in [2^{56},2^{57}]$. Therefore, we replace the $IF$ condition from $\tilde{p}\left(x\right)>0$ (in orignal work) to $\left(-\frac{\sqrt{n\ln n}}{2} \leq x \leq \frac{\sqrt{n\ln n}}{2} \land c==1\right) $ (line 14) that simplifies the construction of MPC protocols.
-
-    % Note that for $n\approx 2^{96}$, $\sqrt{n}=2^{48}$ can be precisely represented as a double-precision floating-point (cf.~\autoref{subsubsec:floatingPoint}) (see \autoref{app:algorithms} for details).
-
-    % % In $Algo^{Binomial}\left(\sqrt{n}\right) $, $Algo^{RandInt}\left(m\right)$~\cite{barker2015recommendation} generates a uniform random integer $l \in \left[0\ldots m\right) $ and $Algo^{Bern}\left(\frac{\tilde{p}\left(i\right)}{f}\right)$ generates a Bernoulli random variable $c\sim Bern\left(p=\frac{\tilde{p}\left(i\right)}{f}\right) $.\\
-
-    \begin{algorithm}[tbh!]
-        \centering
-        \fbox{
-            \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN,AND, FOR, ELSE IF, ELSE, WHILE, TRUE, FALSE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{SymmetricBinomial}\left(\sqrt{n}\right) $}]{
-                \textbf{Input: $\sqrt{n}$} \pcskipln \\
-                \textbf{Output: $i\sim SymmBino\left(n,p=0.5\right) $} \\
-                \text{$m \gets \left\lfloor \sqrt{2}*\sqrt{n}+1\right\rfloor $}\\
-                \text{FOR $j\gets 1$ TO $ITER$ }\\
-                \text{\t\t $s \gets Algo^{Geo\left(0.5 \right) } $}\\
-                \text{\t\t $b \gets RandBit\left(1\right) $}\\
-                \text{\t\t IF $U^{*}<0.5$}\\
-                \text{\t\t \t\t $k \gets s$}\\
-                \text{\t\t ELSE}\\
-                \text{\t\t \t\t $k \gets -s-1$}\\
-                % \text{\t\t $k \gets b\cdot s+\left(1-b\right)\cdot \left(-s-1\right)  $}
-                \text{\t\t $l \gets Algo^{RandInt}\left(m\right) $}\\
-                \text{\t\t $x\gets km+l$}\\
-                % \text{\t\t $\tilde{p}\left(x\right)=\sqrt{\frac{2}{\pi n}} \cdot e^{-\frac{2 x^{2}}{n}} \cdot \left(1-\nu_{n}\right) $, where $\nu_{n}=\frac{0.4 \ln ^{1.5}(n)}{\sqrt{n}}$}\\
-                \text{\t\t $\tilde{p}\left(x\right)=\sqrt{\frac{2}{\pi n}} \cdot e^{-\frac{2 x^{2}}{n}} \cdot \left(1-\frac{0.4 \ln ^{1.5}(n)}{\sqrt{n}}\right) $ }\\
-                \text{\t\t $f \gets \frac{4}{m\cdot 2^s}$}\\
-                \text{\t\t $c \gets Algo^{Bern}\left(\frac{\tilde{p}\left(x\right)}{f}\right) $}\\
-                \text{\t\t IF $-\frac{\sqrt{n\ln n}}{2} \leq x \leq \frac{\sqrt{n\ln n}}{2} \land c==1$}\\
-                \text{\t\t \t\t RETURN $i\gets x$ // success}\\
-                \text{\t\t ELSE}\\
-                \text{\t\t \t\t RETURN $i\gets 0$ // failure}
-            }}
-        \caption{Algorithm for sampling $i\sim SymmBino\left(\sqrt{n} ,p=0.5\right) $.}
-        \label{algo:SymmetricBinomialLargeN}
-    \end{algorithm}
-    \FloatBarrier
-
-    \textbf{Algorithm Fail Probaility Estimation. }
-    Suppose $A_i$ is an event that \autoref{algo:SymmetricBinomialLargeN} fails when $ITER=i$.
-    Bringmann et al.~\cite{Bringmann2014InternalDE} showed that each iteration has probability $\frac{1}{16} $ to terminate, i.e., $Pr\left(A_1\right)=\frac{15}{16} $.
-    Since each iteration is independent, we estimate the $Pr\left(A_{ITER}\right)$ as follows:
-
-    \begin{equation}
-        \begin{split}
-            Pr\left(A_{ITER}\right) &  =  \Pi _{i=1}^{ITER}\left(Pr\left(A_1\right) \right) \\
-            &=\left(\frac{15}{16}\right)^{ITER}
-        \end{split}
-    \end{equation}
-
-    To guarantee that $Pr\left(A_{ITER}\right)<2^{-40}$, we need at least $ITER\geq \log _\frac{15}{16}\left(2^{-40}\right)\approx 430$.
-
-    \section{Discrete Laplace Mechanism}
-    \label{sec:discreteLaplacemechanism}
-
-    In this section, we describe the discrete Laplace mechanism~\cite{chan2012privacy, ghosh2012universally,eigner2014differentially,canonne2020discrete} and present the modified sampling algorithm~\autoref{algo:DiscreteLapCKS}.
-
-    The discrete Laplace mechanism is define as:
-    \begin{equation}
-        \begin{split}
-            M_{DLap}\left(f\left(D\right),r,\varepsilon\right)=f\left(D\right) +Y,
-        \end{split}
-    \end{equation}
-    where query function $f\left(D\right)\in\mathbb{Z} $ and $Y\sim DLap\left(t=\frac{\Delta_1^{f}}{\varepsilon}\right) $.
-
-    \begin{theorem}[\cite{chan2012privacy, ghosh2012universally,eigner2014differentially,canonne2020discrete}]
-        The discrete Laplace mechanism $M_{DLap}\left(f\left(D\right),r,\varepsilon\right)$ satisfies $\varepsilon$-DP for query function $f\left(D\right)\in\mathbb{Z} $.
-    \end{theorem}
-
-    Except the previous introduced discrete Laplace sampling algorithm (cf.~\autoref{algo:DiscreteLaplaceEigner}), Canonne et al.~\cite{canonne2020discrete} proposed a discrete Laplace sampling algorithm that is based on rejection sampling~\cite{casella2004generalized} technique. The algorithm first generate a random geometric random variable, and then, converting it to a discrete Laplace random variable.
+\begin{algorithm}[tbh!]
+    \centering
+    \fbox{
+        \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, ELSE IF, ELSE, WHILE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{GeoExpBinarySearch}\left(\lambda\right) $}]{
+            \textbf{Input: $\lambda$} \pcskipln \\
+            \textbf{Output: $x\sim Geo\left(p=1-e^{-\lambda}\right) $} \\
+            % \text{$U^{*} \gets Algo^{RandFloat1}$}\\
+            % \text{IF $U^{*}>1-e^{-\lambda Int_{max52}}$.}\\
+            % \text{\t\t RETURN $Int_{max52}$} \\
+            \text{$L \gets 0$, $R \gets 2^{52}$}\\
+            \text{WHILE $L+1<R$}\\
+            \text{\t\t $M\gets \text{Split}\left(L,R,\lambda\right) $}\\
+            \text{\t\t IF $M\leq L$}\\
+            \text{\t\t \t\t $M\gets L+1$}\\
+            \text{\t\t ELSE IF $M \geq R$}\\
+            \text{\t\t \t\t $M\gets R-1$}\\
+            \text{\t\t $Q\gets \text{Proportion}\left(L,R,M,\lambda\right) $}\\
+            \text{\t\t $U \gets Algo^{RandFloat1}$}\\
+            \text{\t\t IF $U\leq Q$}\\
+            \text{\t\t \t\t $R\gets M$ }\\
+            \text{\t\t ELSE }\\
+            \text{\t\t \t\t $L\gets M$}\\
+            \text{RETURN $x\gets R$}
+        }}
+    \caption{Modified algorithm for sampling from geometric distribution $Geo\left(p=1-e^{-\lambda}\right) $.}
+    \label{algo:GeometricExpBinarySearch}
+\end{algorithm}
+\FloatBarrier
 
 
-    % mechanism and noise sampling algorithms for query function $f\left(D\right)\in \mathbb{Z} $ with integer output.
+\paragraph{Two-Side Geometric Sampling Algorithm}
+\label{para:TwoSideGeometricSamplingAlgorithm}
+In this part, we describe how to transform $x \sim Geo\left(p=1-e^{-\lambda}\right) $ to $i\sim DLap\left(t=\frac{1}{\lambda}\right) $ based on the work~\cite{googleDP2019}.
+
+\textbf{Algorithm Description. }
+Recall that two-side geometric distribution (also known as discrete Laplace distribution) can be generated by reflecting a geometric distribution across the $y$-axis (cf. \autoref{def:DiscreteLaplaceDistribution}).
+$Algo^{TwoSideGeo}$ generates a discrete Laplace random variable $i=s\cdot g$ with this method. We replace the $WHILE$ loop (line 1) in original work into a $FOR$ loop because the MPC computation needs to determine the number of $FOR$ loop iterations ahead of time.
+In line $4$, we discard the case $s\cdot g =-0$, otherwise $0$ would be returned with twice probability as in the discrete Laplace distribution.
+In line $5$, we output the correct discrete Laplace random variable $i$.
+In line $6$, the algorithm fails to generate discrete random variable in $ITER$ loops and output $0$.
+
+\begin{algorithm}[tbh!]
+    \centering
+    \fbox{
+        \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, ELSE IF, ELSE, WHILE, AND},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{TwoSideGeo}\left(t\right) $}]{
+            \textbf{Input: $t$} \pcskipln \\
+            \textbf{Output: $i\sim DLap\left(t\right) $} \\
+            \text{FOR $i\gets 1$ TO $ITER$}\\
+            \text{\t\t $g \gets Algo^{GeoExpBinarySearch}\left(\lambda=\frac{1}{t}\right)$}\\
+            \text{\t\t $s\gets 2 \cdot Bern\left(0.5\right)-1$}\\
+            \text{\t\t IF $\lnot \left(s== -1 \land g== 0\right) $}\\
+            \text{\t\t \t\t RETURN $i \gets s\cdot g$ // success}\\
+            \text{RETURN $i \gets 0$ // failure}
+        }}
+    \caption{Modified algorithm for sampling $i\sim DLap\left(t\right) $.}
+    \label{algo:TwoSideGeometric}
+\end{algorithm}
+\FloatBarrier
+
+\textbf{Algorithm Fail Probaility Estimation. }
+Suppose $A_i$ is an event that $Algo^{TwoSideGeo}$ fails when $ITER=i$.
+Since each iteration is independent, we estimate the $Pr\left(A_{ITER}\right)$ as follows:
+\begin{equation}
+    \begin{split}
+        Pr\left(A_{ITER}\right) & = \Pi _{i=1}^{ITER}\left(Pr\left(A_1\right) \right) \\
+        &= \Pi _{i=1}^{ITER} \left(Pr\left(s==-1\right)\cdot  Pr\left(g==0\right) \right)\\
+        &=       \Pi _{i=1}^{ITER} \left(Pr\left(0\gets Bern\left(0.5\right) \right)\cdot Pr\left(0\gets Geo\left(\frac{1}{t}\right) \right)  \right)                   \\
+        &= \Pi _{i=1}^{ITER} \frac{1}{2}  \left(1-e^{-\lambda}\right) \\
+        &= \frac{1}{2^{ITER}}  \left(1-e^{-\lambda}\right)^{ITER}.
+    \end{split}
+\end{equation}
+
+To guarantee that $Pr\left(A_{ITER}\right)<2^{-40}$, we have $ITER = 6$ for $\lambda = 0.01$.
 
 
-    % % \TODO{discrete Gaussian mechanism proves, central differential privacy in preliminary part, related works}
 
-    % We briefly introduce the three major algorithms (\autoref{algo:DiscreteGauss} and \autoref{algo:DiscreteLap}) for discrete Gaussian mechanism in work~\cite{canonne2020discrete} (see \autoref{app:algorithms} for details).
 
-    \paragraph{Rejection Sampling Based Geometric Sampling Algorithm}
-    \label{para:RejectionSamplingBasedGeometricSamplingAlgorithm}
+\subsection{Integer-Scaling Gaussian Mechanism}
+\label{subsec:IntegerScalingGaussianMechanism}
+In this section, we describe the Integer-Scaling Gaussian mechanism~\cite{googleDP2019}:
+\begin{equation}
+    \begin{split}
+        M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\delta\right)=f_r\left(D\right) +ir
+    \end{split}
+\end{equation}
+Specifically, $M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\delta\right)$ uses a symmetrical binomial random variable $i\sim SymmBino\left(n,p=0.5\right) $ (cf.~\autoref{def:binomialdistribution}) to simulate the continuous Gaussian random variable $i_{Gau}\sim \mathcal{N} \left(\mu=0,\sigma^2=\frac{2 \ln\left(1.25/\sigma \cdot \left(\Delta_1^f\right)^2 \right) }{\varepsilon^2}\right) $. The closeness between the symmetrical and Guassian distribution depends on $n$, i.e., a larger $n$ indicates a better approximation effect. $n$ can be estimate with $\varepsilon$ and $\delta$~\cite{ImproveGaussianMechanism} and $\sqrt{n} $ is guaranteed to be in the interval $\left[2^{56},2^{57}\right] $. Note that in the following part, we use the square root of $n$ instead of $n$ as $n$ is too large to be represented as a 64-bit floating-point number.
 
-    \autoref{algo:GeometricExp} is a modificaiton of the geometric sampling algorithm from the work~\cite{canonne2020discrete} that samples a positive integer $x\sim Geo\left( p=1-e^{\frac{n}{d}}\right)$, where $n,d$ are positive integers.
+\begin{theorem}[\cite{googleDP2019}]
+    The Integer-Scaling Gaussian mechanism $M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\delta\right)$ satisfies $ \left(\varepsilon,\delta\right) $-DP for query function $f$.
+\end{theorem}
 
-    \textbf{Algorithm Description. }
-    We replace the $WHILE$ loop in original work with two $FOR$ loops (line 4-8,9-14) and adds the checking condition (line 1, 14) of the algorithm failure.
-    \autoref{algo:GeometricExp} consists of two $FOR$ loops and check if these $FOR$ loops terminate in $ITER_1$ and $ITER_2$ iterations. If they both terminate, the sampling algorithm succeeds, fails otherwise.
+% \TODO{explain the parameter of $M_{ISGauss}$, DP-guarantee of $M_{ISGauss}$, add proof missing in original work, }\\
+% where $i$ is sampled from a symmetrical binomial distribution $SymmBino\left(n,p=0.5 \right)$. $M_{ISGauss}\left(f\left(D\right),r,\varepsilon,\sigma,\Delta_r\right)$
+% The binomial distribution $Bino\left(n,p\right)$ is the discrete probability distribution of the number of successes (with probability $p$) in a sequence of $n$ independent experiments.
+
+% Suppose $x\sim Bino\left(n_x,p\right)$ and $y\sim Bino\left(n_y,p\right)$. We have that $x+y \sim Bino\left(n_x+n_y,p\right)$~\cite[Lemma 4.3]{Devroye1986}. Note that $x$ and $y$ can be generated by independently flipping a coin for $n_x$ and $n_y$ times and counting the numbers of $head$.
+% However, for a very large $n$ (e.g., $n\approx 2^{96}$), this combination method is infeasible. Therefore, a team from Google~\cite{googleDP2019} proposes a rejection based binomial sampling algorithm (cf.~\autoref{algo:SymmetricBinomialLargeN}) that is efficient for large $n$.
+
+% \TODO{how to modify exactly, origin algorithms, prove}\\
+\paragraph{Symmetrical Binomial Sampling Algorithm}
+\label{para:BinarySearchBasedGeometricSamplingAlgorithm}
+
+\autoref{algo:SymmetricBinomialLargeN} is an modification of the symmetrical binomial sampling algorithm~\cite{googleDP2019}, that samples $i\sim SymmBino\left(n,p=0.5\right) $ with input $\sqrt{n}\approx 2^{56}$. We modify the original sampling algorithm by replacing the $WHILE$ loop with a $FOR$ loop (line 2), such that it has fixed round of iterations. We also found that when $-\frac{\sqrt{n\ln n}}{2} \leq x \leq \frac{\sqrt{n\ln n}}{2}$, $\tilde{p}\left(x\right)>0$ for $x \in [2^{56},2^{57}]$. Therefore, we replace the $IF$ condition from $\tilde{p}\left(x\right)>0$ (in orignal work) to $\left(-\frac{\sqrt{n\ln n}}{2} \leq x \leq \frac{\sqrt{n\ln n}}{2} \land c==1\right) $ (line 14) that simplifies the construction of MPC protocols.
+
+% Note that for $n\approx 2^{96}$, $\sqrt{n}=2^{48}$ can be precisely represented as a double-precision floating-point (cf.~\autoref{subsubsec:floatingPoint}) (see \autoref{app:algorithms} for details).
+
+% % In $Algo^{Binomial}\left(\sqrt{n}\right) $, $Algo^{RandInt}\left(m\right)$~\cite{barker2015recommendation} generates a uniform random integer $l \in \left[0\ldots m\right) $ and $Algo^{Bern}\left(\frac{\tilde{p}\left(i\right)}{f}\right)$ generates a Bernoulli random variable $c\sim Bern\left(p=\frac{\tilde{p}\left(i\right)}{f}\right) $.\\
+
+\begin{algorithm}[tbh!]
+    \centering
+    \fbox{
+        \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN,AND, FOR, ELSE IF, ELSE, WHILE, TRUE, FALSE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{SymmetricBinomial}\left(\sqrt{n}\right) $}]{
+            \textbf{Input: $\sqrt{n}$} \pcskipln \\
+            \textbf{Output: $i\sim SymmBino\left(n,p=0.5\right) $} \\
+            \text{$m \gets \left\lfloor \sqrt{2}*\sqrt{n}+1\right\rfloor $}\\
+            \text{FOR $j\gets 1$ TO $ITER$ }\\
+            \text{\t\t $s \gets Algo^{Geo\left(0.5 \right) } $}\\
+            \text{\t\t $b \gets RandBit\left(1\right) $}\\
+            \text{\t\t IF $U^{*}<0.5$}\\
+            \text{\t\t \t\t $k \gets s$}\\
+            \text{\t\t ELSE}\\
+            \text{\t\t \t\t $k \gets -s-1$}\\
+            % \text{\t\t $k \gets b\cdot s+\left(1-b\right)\cdot \left(-s-1\right)  $}
+            \text{\t\t $l \gets Algo^{RandInt}\left(m\right) $}\\
+            \text{\t\t $x\gets km+l$}\\
+            % \text{\t\t $\tilde{p}\left(x\right)=\sqrt{\frac{2}{\pi n}} \cdot e^{-\frac{2 x^{2}}{n}} \cdot \left(1-\nu_{n}\right) $, where $\nu_{n}=\frac{0.4 \ln ^{1.5}(n)}{\sqrt{n}}$}\\
+            \text{\t\t $\tilde{p}\left(x\right)=\sqrt{\frac{2}{\pi n}} \cdot e^{-\frac{2 x^{2}}{n}} \cdot \left(1-\frac{0.4 \ln ^{1.5}(n)}{\sqrt{n}}\right) $ }\\
+            \text{\t\t $f \gets \frac{4}{m\cdot 2^s}$}\\
+            \text{\t\t $c \gets Algo^{Bern}\left(\frac{\tilde{p}\left(x\right)}{f}\right) $}\\
+            \text{\t\t IF $-\frac{\sqrt{n\ln n}}{2} \leq x \leq \frac{\sqrt{n\ln n}}{2} \land c==1$}\\
+            \text{\t\t \t\t RETURN $i\gets x$ // success}\\
+            \text{\t\t ELSE}\\
+            \text{\t\t \t\t RETURN $i\gets 0$ // failure}
+        }}
+    \caption{Algorithm for sampling $i\sim SymmBino\left(\sqrt{n} ,p=0.5\right) $.}
+    \label{algo:SymmetricBinomialLargeN}
+\end{algorithm}
+\FloatBarrier
+
+\textbf{Algorithm Fail Probaility Estimation. }
+Suppose $A_i$ is an event that \autoref{algo:SymmetricBinomialLargeN} fails when $ITER=i$.
+Bringmann et al.~\cite{Bringmann2014InternalDE} showed that each iteration has probability $\frac{1}{16} $ to terminate, i.e., $Pr\left(A_1\right)=\frac{15}{16} $.
+Since each iteration is independent, we estimate the $Pr\left(A_{ITER}\right)$ as follows:
+
+\begin{equation}
+    \begin{split}
+        Pr\left(A_{ITER}\right) &  =  \Pi _{i=1}^{ITER}\left(Pr\left(A_1\right) \right) \\
+        &=\left(\frac{15}{16}\right)^{ITER}
+    \end{split}
+\end{equation}
+
+To guarantee that $Pr\left(A_{ITER}\right)<2^{-40}$, we need at least $ITER\geq \log _\frac{15}{16}\left(2^{-40}\right)\approx 430$.
+
+\section{Discrete Laplace Mechanism}
+\label{sec:discreteLaplacemechanism}
+
+In this section, we describe the discrete Laplace mechanism~\cite{chan2012privacy, ghosh2012universally,eigner2014differentially,canonne2020discrete} and present the modified sampling algorithm~\autoref{algo:DiscreteLapCKS}.
+
+The discrete Laplace mechanism is define as:
+\begin{equation}
+    \begin{split}
+        M_{DLap}\left(f\left(D\right),r,\varepsilon\right)=f\left(D\right) +Y,
+    \end{split}
+\end{equation}
+where query function $f\left(D\right)\in\mathbb{Z} $ and $Y\sim DLap\left(t=\frac{\Delta_1^{f}}{\varepsilon}\right) $.
+
+\begin{theorem}[\cite{chan2012privacy, ghosh2012universally,eigner2014differentially,canonne2020discrete}]
+    The discrete Laplace mechanism $M_{DLap}\left(f\left(D\right),r,\varepsilon\right)$ satisfies $\varepsilon$-DP for query function $f\left(D\right)\in\mathbb{Z} $.
+\end{theorem}
+
+Except the previous introduced discrete Laplace sampling algorithm (cf.~\autoref{algo:DiscreteLaplaceEigner}), Canonne et al.~\cite{canonne2020discrete} proposed a discrete Laplace sampling algorithm that is based on rejection sampling~\cite{casella2004generalized} technique. The algorithm first generate a random geometric random variable, and then, converting it to a discrete Laplace random variable.
+
+
+% mechanism and noise sampling algorithms for query function $f\left(D\right)\in \mathbb{Z} $ with integer output.
+
+
+% % \TODO{discrete Gaussian mechanism proves, central differential privacy in preliminary part, related works}
+
+% We briefly introduce the three major algorithms (\autoref{algo:DiscreteGauss} and \autoref{algo:DiscreteLap}) for discrete Gaussian mechanism in work~\cite{canonne2020discrete} (see \autoref{app:algorithms} for details).
+
+\paragraph{Rejection Sampling Based Geometric Sampling Algorithm}
+\label{para:RejectionSamplingBasedGeometricSamplingAlgorithm}
+
+\autoref{algo:GeometricExp} is a modificaiton of the geometric sampling algorithm from the work~\cite{canonne2020discrete} that samples a positive integer $x\sim Geo\left( p=1-e^{\frac{n}{d}}\right)$, where $n,d$ are positive integers.
+
+\textbf{Algorithm Description. }
+We replace the $WHILE$ loop in original work with two $FOR$ loops (line 4-8,9-14) and adds the checking condition (line 1, 14) of the algorithm failure.
+\autoref{algo:GeometricExp} consists of two $FOR$ loops and check if these $FOR$ loops terminate in $ITER_1$ and $ITER_2$ iterations. If they both terminate, the sampling algorithm succeeds, fails otherwise.
 $Algo^{RandInt}\left(d\right) $ generate a random integer $u\in \left[0,d-1\right] $.
-    One special case is when $d=1$, $1$th $FOR$ loop directly terminates with $ITER_1=0$.
+One special case is when $d=1$, $1$th $FOR$ loop directly terminates with $ITER_1=0$.
 
-    \begin{algorithm}[tbh!]
-        \centering
-        \fbox{
-            \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, OR,AND,GOTO,ELSE IF, ELSE, WHILE, TRUE, FALSE, CONTINUE,BREAK},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{GeoExp}\left(n,d\right) $}]{
-                \textbf{Input: $n$, $d$} \pcskipln \\
-                \textbf{Output: $x\sim Geo\left( p=1-e^{\frac{n}{d}}\right)$} \\
-                \text{$k\gets-1$, }\\
-                \text{IF $d==1$}\\
-                \text{\t\t GOTO Line $9$// $1$th loop terminates}\\
-                \text{FOR $j\gets1$ TO $ITER_1$}\\
-                \text{\t\t $u \gets Algo^{RandInt}\left(d\right) $}\\
-                \text{\t\t $b_1 \gets Algo^{Bern}\left(e^{-\frac{u}{d}}\right)  $}\\
-                \text{\t\t IF $b_1==1$}\\
-                \text{\t\t \t\t $k \gets 0$, BREAK // $1$th loop terminates}\\
-                \text{FOR $j\gets 1$ TO $ITER_2$}\\
-                \text{\t\t $b_2\gets Algo^{Bern}\left(e^{-1}\right) $}\\
-                \text{\t\t IF $b_2==1$}\\
-                \text{\t\t \t\t $k \gets k+1$}\\
-                \text{\t\t ELSE}\\
-                \text{\t\t \t\t BREAK // $2$nd loop terminates}\\
-                \text{IF $b_1==0 \land b_2==1 $}\\
-                \text{\t\t RETURN $0$ // failure}\\
-                \text{ELSE}\\
-                \text{\t\t RETURN $x\gets \left\lfloor \frac{k\cdot d+u}{n}\right\rfloor $ // success}
-            }}
-        \caption{Modified algorithm for sampling from geometric distribution $x\sim Geo\left( p=1-e^{\frac{n}{d}}\right)$~\cite{canonne2020discrete}.}
-        \label{algo:GeometricExp}
-    \end{algorithm}
-    \FloatBarrier
+\begin{algorithm}[tbh!]
+    \centering
+    \fbox{
+        \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, OR,AND,GOTO,ELSE IF, ELSE, WHILE, TRUE, FALSE, CONTINUE,BREAK},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{GeoExp}\left(n,d\right) $}]{
+            \textbf{Input: $n$, $d$} \pcskipln \\
+            \textbf{Output: $x\sim Geo\left( p=1-e^{\frac{n}{d}}\right)$} \\
+            \text{$k\gets-1$, }\\
+            \text{IF $d==1$}\\
+            \text{\t\t GOTO Line $9$// $1$th loop terminates}\\
+            \text{FOR $j\gets1$ TO $ITER_1$}\\
+            \text{\t\t $u \gets Algo^{RandInt}\left(d\right) $}\\
+            \text{\t\t $b_1 \gets Algo^{Bern}\left(e^{-\frac{u}{d}}\right)  $}\\
+            \text{\t\t IF $b_1==1$}\\
+            \text{\t\t \t\t $k \gets 0$, BREAK // $1$th loop terminates}\\
+            \text{FOR $j\gets 1$ TO $ITER_2$}\\
+            \text{\t\t $b_2\gets Algo^{Bern}\left(e^{-1}\right) $}\\
+            \text{\t\t IF $b_2==1$}\\
+            \text{\t\t \t\t $k \gets k+1$}\\
+            \text{\t\t ELSE}\\
+            \text{\t\t \t\t BREAK // $2$nd loop terminates}\\
+            \text{IF $b_1==0 \land b_2==1 $}\\
+            \text{\t\t RETURN $0$ // failure}\\
+            \text{ELSE}\\
+            \text{\t\t RETURN $x\gets \left\lfloor \frac{k\cdot d+u}{n}\right\rfloor $ // success}
+        }}
+    \caption{Modified algorithm for sampling from geometric distribution $x\sim Geo\left( p=1-e^{\frac{n}{d}}\right)$~\cite{canonne2020discrete}.}
+    \label{algo:GeometricExp}
+\end{algorithm}
+\FloatBarrier
 
-    % We change the $WHILE$ loop in line to a FOR loop with $ITER_1$ and $ITER_2$ iterations.
-    % Suppose $A_i$ is event that the first $FOR$ loop fails in $ITER_1=i$ iterations and $B_i$ is event that the second $FOR$ loop fails in $ITER_2=i$ iterations. We have
+% We change the $WHILE$ loop in line to a FOR loop with $ITER_1$ and $ITER_2$ iterations.
+% Suppose $A_i$ is event that the first $FOR$ loop fails in $ITER_1=i$ iterations and $B_i$ is event that the second $FOR$ loop fails in $ITER_2=i$ iterations. We have
 
-    \textbf{Algorithm Fail Probaility Estimation. }
-    Suppose $A_i$ is an event that the first $FOR$ loop (line 4-8) not terminates in $ITER_1=i$ iterations, and $B_i$ is an event that the second $FOR$ loop (line 9-14) not terminates in $ITER_2=i$ iterations.
-    To guarantees that \autoref{algo:GeometricExp} fails with probability less than $2^{-40}$, we first compute $Pr\left(A_1\right)$ and $Pr\left(A_1\right)$ as follows:
+\textbf{Algorithm Fail Probaility Estimation. }
+Suppose $A_i$ is an event that the first $FOR$ loop (line 4-8) not terminates in $ITER_1=i$ iterations, and $B_i$ is an event that the second $FOR$ loop (line 9-14) not terminates in $ITER_2=i$ iterations.
+To guarantees that \autoref{algo:GeometricExp} fails with probability less than $2^{-40}$, we first compute $Pr\left(A_1\right)$ and $Pr\left(A_1\right)$ as follows:
 
-    % \begin{equation}
-    %     \begin{split}
-    %         Pr\left(Algo^{GeoExp} \text{ fails}\right) =Pr\left(A_{ITER_1} \lor B_{ITER_2} \right) <2^{-40}
-    %     \end{split}
-    % \end{equation}
+% \begin{equation}
+%     \begin{split}
+%         Pr\left(Algo^{GeoExp} \text{ fails}\right) =Pr\left(A_{ITER_1} \lor B_{ITER_2} \right) <2^{-40}
+%     \end{split}
+% \end{equation}
 
 
+\begin{equation}
+    \begin{split}
+        Pr\left(A_1\right) &= \sum_{i=0 }^{d-1}Pr\left(u=i\right) \cdot Pr\left(b_1=0\right) \\
+        &= \sum_{i=0 }^{d-1}\frac{1}{d} \cdot \left(1-e^{-\frac{i}{d}}\right) \\
+        &=1-\frac{1}{d}\sum_{i=0 }^{d-1}e^{-\frac{i}{d}}\\
+        &=1-\frac{1}{d}\frac{1-e^{-1}}{1-e^{-\frac{1}{d}}}
+    \end{split}
+\end{equation}
+
+\begin{equation}
+    \begin{split}
+        Pr\left(A_{ITER_1}\right) &= \prod_{i=1}^{ITER_2}Pr\left(A_1\right) \\
+        &=\left(1-\frac{1}{d}\frac{1-e^{-1}}{1-e^{-\frac{1}{d}}}\right) ^{ITER_1}
+    \end{split}
+\end{equation}
+
+\begin{equation}
+    \begin{split}
+        Pr\left(B_{ITER_2}\right) &= \prod_{i=1}^{ITER_2}Pr\left(B_1\right) \\
+        &= \prod_{i=1}^{ITER_2}Pr\left(b_2=1\right) \\
+        &=e^{- ITER_2 }
+    \end{split}
+\end{equation}
+
+As event $A_{ITER_1}$ and $B_{ITER_2}$ are independent, we have
+\begin{equation}
+    \begin{split}
+        Pr\left(A_{ITER_1}\lor B_{ITER_2} \right) &= Pr\left(A_{ITER_1} \right)+   Pr\left(B_{ITER_2}\right)-Pr\left(A_{ITER_1} \right)\cdot   Pr\left(B_{ITER_2}\right)\\
+        &=\left(1-\frac{1}{d}\frac{1-e^{-1}}{1-e^{-\frac{1}{d}}}\right) ^{ITER_1} + e^{- ITER_2 }-\left(1-\frac{1}{d}\frac{1-e^{-1}}{1-e^{-\frac{1}{d}}}\right) ^{ITER_1} \cdot e^{- ITER_2 }
+    \end{split}
+\end{equation}
+
+Finally, to guarantee $Pr\left(A_{ITER_1}\lor B_{ITER_2} \right)<2^{-40}$:
+when $n=3$ and $d=2$, we have $ITER_1=27$, $ITER_2=28$,
+when $n=3$ and $d=1$, we have $ITER_1=0$, $ITER_2=28$.
+
+
+\paragraph{Discrete Laplace Sampling Algorithm}
+\label{para:DiscrettLaplaceSamplingAlgorithm}
+% We modify the algorithm from (ref. ) and replace the WHILE loop with the for loop.
+\autoref{algo:DiscreteLapCKS} is a modificaiton of the discrete Laplace sampling algorithm from the work~\cite{canonne2020discrete} that samples $Y\sim DLap\left( t=\frac{d}{n}\right)$, where $d$ and $n$ are positive integers.
+
+\textbf{Algorithm Description.}
+We replace the $WHILE$ loop in original work with the $FOR$ loops (line 1).
+In line 3, we can also replace $Algo^{GeoExp}\left(n,d\right)$ with other geometric sampling algorithms.
+
+\begin{algorithm}[tbh!]
+    \centering
+    \fbox{
+        \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, ELSE IF, ELSE, WHILE, TRUE, FALSE, CONTINUE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{DLap}\left(t=\frac{d}{n}\right) $}]{
+            \textbf{Input: $t=\frac{d}{n}$} \pcskipln \\
+            \textbf{Output: $Y\sim DLap \left( t=\frac{d}{n}\right)$} \\
+            \text{FOR $j=1$ TO $ITER$}\\
+            \text{\t\t $s\gets Algo^{Bern}\left(0.5\right) $}\\
+            \text{\t\t $m\gets Algo^{GeoExp}\left(n,d\right) $}\\
+            \text{\t\t IF $\lnot \left(s==1 \land m==0\right) $}\\
+            \text{\t\t \t\t RETURN $Y\gets \left(1-2s\right) \cdot m $ // success}\\
+            \text{RETURN $Y\gets 0$ // failure}
+        }}
+    \caption{Modified algorithm for sampling $Y \sim  DLap\left(\frac{n}{d}\right)$.}
+    \label{algo:DiscreteLapCKS}
+\end{algorithm}
+\FloatBarrier
+
+\textbf{Algorithm Fail Probaility Estimation. }
+Note that we need to guarantee not only $Algo^{DLap}\left(t=\frac{d}{n}\right) $, and all subprotocols (e.g. $Algo^{GeoExp}\left(n,d\right)$) fail with probability less than $2^{40}$.
+Suppose $A_i$ is an event that $Algo^{DLap}$ fails in $ITER_1=i$ iterations.
+As $Pr\left(s==1\right)$ and  $Pr\left(m==1\right)$ are independent of each other, we have,
+\begin{equation}
+    \begin{split}
+        Pr\left(A_1\right) &=        Pr\left(s==1\right) \cdot Pr\left(m==0 \land Algo^{GeoExp\left(n,d\right) } \text{ successes}  \right)+Pr\left(m==0 \land Algo^{GeoExp\left(n,d\right) } \text{ fails}  \right)\\
+        &=  \frac{1}{2}\cdot Pr\left(m==0 \land Algo^{GeoExp\left(n,d\right) } \text{ successes}  \right)+Pr\left( Algo^{GeoExp\left(n,d\right) } \text{ fails}  \right)\\
+        &=\frac{1}{2}\cdot\left(1-e^{-\frac{n}{d}}\right) + Pr\left( Algo^{GeoExp\left(n,d\right) } \text{ fails} \right)
+    \end{split}
+\end{equation}
+
+Finally, we have
+
+\begin{equation}
+    \begin{split}
+        Pr\left( Algo^{DLap\left(t=\frac{d}{n}\right) } \text{ fails} \right) &=  Pr\left(A_{ITER}\right) \\
+        &=\prod _{i=1}^{ITER}Pr\left(A_1\right)\\
+        &= \left(\frac{1}{2} \cdot \left(1-e^{-\frac{n}{d}}\right) + Pr\left( Algo^{GeoExp\left(n,d\right) } \text{ fails} \right)\right)^{ITER}
+    \end{split}
+\end{equation}
+
+When $n=3$, $d=2$, we have $ITER=30$, $Pr\left( Algo^{DLap\left(d,n\right) } \text{ fails} \right) <2^{-40}$ and $Pr\left( Algo^{GeoExp\left(n,d\right) } \text{ fails} \right)  <2^{-40}$.
+
+\section{Discrete Gaussian Mechanism}
+\label{sec:DiscreteGaussianMechanism}
+Discrete Gaussian mechanism is defined as follows:
+
+In this section, we describe the discrete Gaussian mechanism~\cite{canonne2020discrete} and the modified sampling algorithm~\autoref{algo:DiscreteGauss}.
+
+The discrete Laplace mechanism is define as:
+\begin{equation}
+    \begin{split}
+        M_{DGauss}\left(D\right)=f\left(D\right)+Y,
+    \end{split}
+\end{equation}
+where $f\left(D\right)\in \mathbb{Z} $ and $Y\sim DGau \left(\mu=0,\sigma\right)$ (cf.~\autoref{def:DiscreteGaussianDistribution}).
+
+\begin{theorem}[\cite{canonne2020discrete}]
+    The discrete Gaussian mechanism $M_{DGauss}\left(D\right)=f\left(D\right)+Y$ satisfies $\left(\varepsilon,\delta\right) $-DP for
     \begin{equation}
         \begin{split}
-            Pr\left(A_1\right) &= \sum_{i=0 }^{d-1}Pr\left(u=i\right) \cdot Pr\left(b_1=0\right) \\
-            &= \sum_{i=0 }^{d-1}\frac{1}{d} \cdot \left(1-e^{-\frac{i}{d}}\right) \\
-            &=1-\frac{1}{d}\sum_{i=0 }^{d-1}e^{-\frac{i}{d}}\\
-            &=1-\frac{1}{d}\frac{1-e^{-1}}{1-e^{-\frac{1}{d}}}
+            \delta = Pr\left(Y > \frac{\varepsilon \sigma^2}{\Delta_1^{f}}-\frac{\Delta_1^{f}}{2}\,|\,Y\gets DGau\left(\mu=0,\sigma\right) \right)-e^{\varepsilon} \cdot Pr\left(Y > \frac{\varepsilon \sigma^2}{\Delta_1^{f}}+\frac{\Delta_1^{f}}{2}\,|\,Y\gets DGau\left(\mu=0,\sigma\right) \right),
         \end{split}
     \end{equation}
+    where query function $f\left(D\right)\in\mathbb{Z} $ and $\Delta_1^{f}$ is the sensitivity of $f\left(D\right) $.
+\end{theorem}
 
-    \begin{equation}
-        \begin{split}
-            Pr\left(A_{ITER_1}\right) &= \prod_{i=1}^{ITER_2}Pr\left(A_1\right) \\
-            &=\left(1-\frac{1}{d}\frac{1-e^{-1}}{1-e^{-\frac{1}{d}}}\right) ^{ITER_1}
-        \end{split}
-    \end{equation}
-
-    \begin{equation}
-        \begin{split}
-            Pr\left(B_{ITER_2}\right) &= \prod_{i=1}^{ITER_2}Pr\left(B_1\right) \\
-            &= \prod_{i=1}^{ITER_2}Pr\left(b_2=1\right) \\
-            &=e^{- ITER_2 }
-        \end{split}
-    \end{equation}
-
-    As event $A_{ITER_1}$ and $B_{ITER_2}$ are independent, we have
-    \begin{equation}
-        \begin{split}
-            Pr\left(A_{ITER_1}\lor B_{ITER_2} \right) &= Pr\left(A_{ITER_1} \right)+   Pr\left(B_{ITER_2}\right)-Pr\left(A_{ITER_1} \right)\cdot   Pr\left(B_{ITER_2}\right)\\
-            &=\left(1-\frac{1}{d}\frac{1-e^{-1}}{1-e^{-\frac{1}{d}}}\right) ^{ITER_1} + e^{- ITER_2 }-\left(1-\frac{1}{d}\frac{1-e^{-1}}{1-e^{-\frac{1}{d}}}\right) ^{ITER_1} \cdot e^{- ITER_2 }
-        \end{split}
-    \end{equation}
-
-    Finally, to guarantee $Pr\left(A_{ITER_1}\lor B_{ITER_2} \right)<2^{-40}$:
-    when $n=3$ and $d=2$, we have $ITER_1=27$, $ITER_2=28$,
-    when $n=3$ and $d=1$, we have $ITER_1=0$, $ITER_2=28$.
+Canonne et al.~\cite{canonne2020discrete} proposed a discrete Gaussian sampling algorithm that is based on rejection sampling~\cite{casella2004generalized} technique. The algorithm first generate a random discrete Laplace random variable, and then, converting it to a discrete Gaussian random variable.
 
 
-    \paragraph{Discrete Laplace Sampling Algorithm}
-    \label{para:DiscrettLaplaceSamplingAlgorithm}
-    % We modify the algorithm from (ref. ) and replace the WHILE loop with the for loop.
-    \autoref{algo:DiscreteLapCKS} is a modificaiton of the discrete Laplace sampling algorithm from the work~\cite{canonne2020discrete} that samples $Y\sim DLap\left( t=\frac{d}{n}\right)$, where $d$ and $n$ are positive integers.
+% \TODO{It should be possible to scale $f\left(D\right)\in \mathbb{Z} $ such that $\frac{f\left(D\right)}{r}\in \mathbb{D} $, how to proof?}
 
-    \textbf{Algorithm Description.}
-    We replace the $WHILE$ loop in original work with the $FOR$ loops (line 1).
-    In line 3, we can also replace $Algo^{GeoExp}\left(n,d\right)$ with other geometric sampling algorithms.
+\paragraph{Discrete Gaussian Sampling Algorithm}
+\label{para:DiscreteGaussianSamplingAlgorithm}
+\autoref{algo:DiscreteGauss} is a modificaiton of the discrete Gaussian sampling algorithm from the work~\cite{canonne2020discrete} that samples $Y\sim DGau\left( \mu=0,\delta\right)$ (cf.~\autoref{def:DiscreteGaussianDistribution}).
 
-    \begin{algorithm}[tbh!]
-        \centering
-        \fbox{
-            \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, ELSE IF, ELSE, WHILE, TRUE, FALSE, CONTINUE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{DLap}\left(t=\frac{d}{n}\right) $}]{
-                \textbf{Input: $t=\frac{d}{n}$} \pcskipln \\
-                \textbf{Output: $Y\sim DLap \left( t=\frac{d}{n}\right)$} \\
-                \text{FOR $j=1$ TO $ITER$}\\
-                \text{\t\t $s\gets Algo^{Bern}\left(0.5\right) $}\\
-                \text{\t\t $m\gets Algo^{GeoExp}\left(n,d\right) $}\\
-                \text{\t\t IF $\lnot \left(s==1 \land m==0\right) $}\\
-                \text{\t\t \t\t RETURN $Y\gets \left(1-2s\right) \cdot m $ // success}\\
-                \text{RETURN $Y\gets 0$ // failure}
-            }}
-        \caption{Modified algorithm for sampling $Y \sim  DLap\left(\frac{n}{d}\right)$.}
-        \label{algo:DiscreteLapCKS}
-    \end{algorithm}
-    \FloatBarrier
+\textbf{Algorithm Description. }
+We replace the $WHILE$ loop in original work with one $FOR$ loop (line 2).
+Note that we can replace $Algo^{DLap}\left(t\right) $ with other discrete Laplace sampling algorithms.
 
-    \textbf{Algorithm Fail Probaility Estimation. }
-    Note that we need to guarantee not only $Algo^{DLap}\left(t=\frac{d}{n}\right) $, and all subprotocols (e.g. $Algo^{GeoExp}\left(n,d\right)$) fail with probability less than $2^{40}$.
-    Suppose $A_i$ is an event that $Algo^{DLap}$ fails in $ITER_1=i$ iterations.
-    As $Pr\left(s==1\right)$ and  $Pr\left(m==1\right)$ are independent of each other, we have,
-    \begin{equation}
-        \begin{split}
-            Pr\left(A_1\right) &=        Pr\left(s==1\right) \cdot Pr\left(m==0 \land Algo^{GeoExp\left(n,d\right) } \text{ successes}  \right)+Pr\left(m==0 \land Algo^{GeoExp\left(n,d\right) } \text{ fails}  \right)\\
-            &=  \frac{1}{2}\cdot Pr\left(m==0 \land Algo^{GeoExp\left(n,d\right) } \text{ successes}  \right)+Pr\left( Algo^{GeoExp\left(n,d\right) } \text{ fails}  \right)\\
-            &=\frac{1}{2}\cdot\left(1-e^{-\frac{n}{d}}\right) + Pr\left( Algo^{GeoExp\left(n,d\right) } \text{ fails} \right)
-        \end{split}
-    \end{equation}
+\begin{algorithm}[tbh!]
+    \centering
+    \fbox{
+        \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, ELSE IF, ELSE, WHILE, TRUE, FALSE, CONTINUE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{DGau}\left(\sigma\right)$}]{
+            \textbf{Input: $\sigma$} \pcskipln \\
+            \textbf{Output: $Y\sim DGau \left(\mu=0,\sigma\right)$} \\
+            \text{$t\gets \left\lfloor \sigma\right\rfloor +1$}\\
+            \text{FOR $j\gets 1$ TO $ITER$}\\
+            \text{\t\t $L \gets Algo^{DLap}\left(t\right) $}\\
+            \text{\t\t $B \gets Algo^{Bern}\left(e^{{\left( \left\lvert L\right\rvert -{\sigma ^{2}}/{t}\right) ^{2}}/{2\sigma^{2}}} \right) $}\\
+            % \text{\t\t IF $B==0$}\\
+            % \text{\t\t \t\t\ CONTINUE}\\
+            % \text{\t\t ELSE}\\
+            \text{\t\t IF $B==1$}\\
+            \text{\t\t \t\t RETURN $Y\gets L$ // success}\\
+            \text{RETURN $Y\gets 0$ // failure}
+        }}
+    \caption{Algorithm for sampling $Y\sim DGau \left(\mu=0,\sigma\right)$.}
+    \label{algo:DiscreteGauss}
+\end{algorithm}
+\FloatBarrier
 
-    Finally, we have
+\textbf{Algorithm Fail Probaility Estimation. }
+Suppose $A_i$ is an event that $Algo^{DGau}$ fails in $ITER_1=i$ iterations.
+We first compute $Pr\left(A_1\right) $ as follows:
+\begin{equation}
+    \begin{split}
+        Pr\left(A_1\right) &=\sum_{i = 0}^{\infty}  Pr\left( B= 0 \land L=i \land Algo^{DLap}\left(t\right)  \text{ successes}\right) + Pr\left(Algo^{DLap}\left(t\right)  \text{ fails}\right) \\
+        &= \sum_{i = 0}^{\infty}  \left(Pr\left( B= 0 \right) \cdot Pr\left( L=i \right)\cdot Pr\left(  Algo^{DLap}\left(t\right)  \text{ successes}\right)\right) + Pr\left(Algo^{DLap}\left(t\right)  \text{ fails}\right) \\
+        &=\sum_{i = 0}^{\infty} \left(1-e^{-\frac{\left(\left\lvert i\right\rvert-\frac{\sigma^2}{t}\right)^2  }{2\sigma^2}}\right)  \cdot \frac{\left(e^{\frac{1}{t}}-1\right) \cdot  e^{-\frac{\left\lvert i\right\rvert }{d}}}{e^{\frac{1}{t}}+1} \cdot Pr\left(Algo^{DLap} \text{ successes}\right)  + Pr\left(Algo^{DLap} \text{ fails}\right) \\
+    \end{split}
+\end{equation}
 
-    \begin{equation}
-        \begin{split}
-            Pr\left( Algo^{DLap\left(t=\frac{d}{n}\right) } \text{ fails} \right) &=  Pr\left(A_{ITER}\right) \\
-            &=\prod _{i=1}^{ITER}Pr\left(A_1\right)\\
-            &= \left(\frac{1}{2} \cdot \left(1-e^{-\frac{n}{d}}\right) + Pr\left( Algo^{GeoExp\left(n,d\right) } \text{ fails} \right)\right)^{ITER}
-        \end{split}
-    \end{equation}
-
-    When $n=3$, $d=2$, we have $ITER=30$, $Pr\left( Algo^{DLap\left(d,n\right) } \text{ fails} \right) <2^{-40}$ and $Pr\left( Algo^{GeoExp\left(n,d\right) } \text{ fails} \right)  <2^{-40}$.
-
-    \section{Discrete Gaussian Mechanism}
-    \label{sec:DiscreteGaussianMechanism}
-    Discrete Gaussian mechanism is defined as follows:
-
-    In this section, we describe the discrete Gaussian mechanism~\cite{canonne2020discrete} and the modified sampling algorithm~\autoref{algo:DiscreteGauss}.
-
-    The discrete Laplace mechanism is define as:
-    \begin{equation}
-        \begin{split}
-            M_{DGauss}\left(D\right)=f\left(D\right)+Y,
-        \end{split}
-    \end{equation}
-    where $f\left(D\right)\in \mathbb{Z} $ and $Y\sim DGau \left(\mu=0,\sigma\right)$ (cf.~\autoref{def:DiscreteGaussianDistribution}).
-
-    \begin{theorem}[\cite{canonne2020discrete}]
-        The discrete Gaussian mechanism $M_{DGauss}\left(D\right)=f\left(D\right)+Y$ satisfies $\left(\varepsilon,\delta\right) $-DP for
-        \begin{equation}
-            \begin{split}
-                \delta = Pr\left(Y > \frac{\varepsilon \sigma^2}{\Delta_1^{f}}-\frac{\Delta_1^{f}}{2}\,|\,Y\gets DGau\left(\mu=0,\sigma\right) \right)-e^{\varepsilon} \cdot Pr\left(Y > \frac{\varepsilon \sigma^2}{\Delta_1^{f}}+\frac{\Delta_1^{f}}{2}\,|\,Y\gets DGau\left(\mu=0,\sigma\right) \right),
-            \end{split}
-        \end{equation}
-        where query function $f\left(D\right)\in\mathbb{Z} $ and $\Delta_1^{f}$ is the sensitivity of $f\left(D\right) $.
-    \end{theorem}
-
-    Canonne et al.~\cite{canonne2020discrete} proposed a discrete Gaussian sampling algorithm that is based on rejection sampling~\cite{casella2004generalized} technique. The algorithm first generate a random discrete Laplace random variable, and then, converting it to a discrete Gaussian random variable.
-
-
-    % \TODO{It should be possible to scale $f\left(D\right)\in \mathbb{Z} $ such that $\frac{f\left(D\right)}{r}\in \mathbb{D} $, how to proof?}
-
-    \paragraph{Discrete Gaussian Sampling Algorithm}
-    \label{para:DiscreteGaussianSamplingAlgorithm}
-    \autoref{algo:DiscreteGauss} is a modificaiton of the discrete Gaussian sampling algorithm from the work~\cite{canonne2020discrete} that samples $Y\sim DGau\left( \mu=0,\delta\right)$ (cf.~\autoref{def:DiscreteGaussianDistribution}).
-
-    \textbf{Algorithm Description. }
-    We replace the $WHILE$ loop in original work with one $FOR$ loop (line 2).
-    Note that we can replace $Algo^{DLap}\left(t\right) $ with other discrete Laplace sampling algorithms.
-
-    \begin{algorithm}[tbh!]
-        \centering
-        \fbox{
-            \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, ELSE IF, ELSE, WHILE, TRUE, FALSE, CONTINUE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{DGau}\left(\sigma\right)$}]{
-                \textbf{Input: $\sigma$} \pcskipln \\
-                \textbf{Output: $Y\sim DGau \left(\mu=0,\sigma\right)$} \\
-                \text{$t\gets \left\lfloor \sigma\right\rfloor +1$}\\
-                \text{FOR $j\gets 1$ TO $ITER$}\\
-                \text{\t\t $L \gets Algo^{DLap}\left(t\right) $}\\
-                \text{\t\t $B \gets Algo^{Bern}\left(e^{{\left( \left\lvert L\right\rvert -{\sigma ^{2}}/{t}\right) ^{2}}/{2\sigma^{2}}} \right) $}\\
-                % \text{\t\t IF $B==0$}\\
-                % \text{\t\t \t\t\ CONTINUE}\\
-                % \text{\t\t ELSE}\\
-                \text{\t\t IF $B==1$}\\
-                \text{\t\t \t\t RETURN $Y\gets L$ // success}\\
-                \text{RETURN $Y\gets 0$ // failure}
-            }}
-        \caption{Algorithm for sampling $Y\sim DGau \left(\mu=0,\sigma\right)$.}
-        \label{algo:DiscreteGauss}
-    \end{algorithm}
-    \FloatBarrier
-
-    \textbf{Algorithm Fail Probaility Estimation. }
-    Suppose $A_i$ is an event that $Algo^{DGau}$ fails in $ITER_1=i$ iterations.
-    We first compute $Pr\left(A_1\right) $ as follows:
-    \begin{equation}
-        \begin{split}
-            Pr\left(A_1\right) &=\sum_{i = 0}^{\infty}  Pr\left( B= 0 \land L=i \land Algo^{DLap}\left(t\right)  \text{ successes}\right) + Pr\left(Algo^{DLap}\left(t\right)  \text{ fails}\right) \\
-            &= \sum_{i = 0}^{\infty}  \left(Pr\left( B= 0 \right) \cdot Pr\left( L=i \right)\cdot Pr\left(  Algo^{DLap}\left(t\right)  \text{ successes}\right)\right) + Pr\left(Algo^{DLap}\left(t\right)  \text{ fails}\right) \\
-            &=\sum_{i = 0}^{\infty} \left(1-e^{-\frac{\left(\left\lvert i\right\rvert-\frac{\sigma^2}{t}\right)^2  }{2\sigma^2}}\right)  \cdot \frac{\left(e^{\frac{1}{t}}-1\right) \cdot  e^{-\frac{\left\lvert i\right\rvert }{d}}}{e^{\frac{1}{t}}+1} \cdot Pr\left(Algo^{DLap} \text{ successes}\right)  + Pr\left(Algo^{DLap} \text{ fails}\right) \\
-        \end{split}
-    \end{equation}
-
-    For $\sigma =1.5$, we have $ITER=23$, $Pr\left( Algo^{DGau\left(t\right) } \text{ fails} \right) <2^{-40}$, and $Pr\left( sub-protocols  \text{ fails} \right) <2^{-40}$.
+For $\sigma =1.5$, we have $ITER=23$, $Pr\left( Algo^{DGau\left(t\right) } \text{ fails} \right) <2^{-40}$, and $Pr\left( sub-protocols  \text{ fails} \right) <2^{-40}$.
 

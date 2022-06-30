@@ -774,12 +774,12 @@ Differential privacy can also be defined when considering two databases with mor
 Basic Composition provides a way to evaluate the overall privacy when $k$ privacy mechanisms are applied on the same dataset and the results are released.
 
 % \subsection{Comparison between Differential Private Mechanisms}
-\subsection{Differentially Private Mechanisms}
-\label{subsec:DPMechanisms}
+\subsubsection{Differentially Private Mechanisms}
+\label{subsubsec:DPMechanisms}
 
 Differential privacy is a formal framework to quantify the trade-off between privacy and the accuracy of query results. In this part, we introduce two common differentially private mechanisms.
 
-\subsubsection{$\varepsilon$-Differential Privacy}
+\paragraph{$\varepsilon$-Differential Privacy}
 \begin{definition}[Laplace Mechanism~\cite{dwork2014algorithmic}]\
     \label{def:laplaceMechanism}
     Let $f : \mathcal{X}^{n} \rightarrow \mathbb{R}^{k}$. The Laplace mechanism is defined as $M_{Lap}\left( X\right) =f\left( X\right) +\left( Y_{1},\ldots ,Y_{k}\right) $, where the $Y_{i}$ are independent Laplace random variables drawn from a Laplace distribution $Lap \left(  Y_{i}\,|\, b\right) =\frac{1}{2b}e^{\left( -\frac{\left  | Y_{i}\right|}{b}\right)} $ with $b=\frac{\Delta _{1}^{\left(f\right)}}{\varepsilon }$.
@@ -812,7 +812,7 @@ Differential privacy is a formal framework to quantify the trade-off between pri
 
 % From the definition of $\varepsilon$-DP, it is not difficult to see that $\varepsilon$-DP corresponds to $\left|\mathcal{L}_{D_{0}||D_{1}}\right|$ being bounded by $\varepsilon$ for all neighboring databases $D_{0}$, $D_{1}$. In other words, $\varepsilon$-DP says that the absolute value of the privacy loss random variable is bounded by $\varepsilon$ with probability 1.
 
-\subsubsection{$\left(\varepsilon,\delta\right)$-Differential Privacy}
+\paragraph{$\left(\varepsilon,\delta\right)$-Differential Privacy}
 $\varepsilon$-DP has strong privacy requirement which leads to adding too much noise and affecting the accuracy of the queries. We introduce an relaxation of $\varepsilon$-DP, $\left(\varepsilon,\delta\right)$-DP.
 
 \begin{definition}[Gaussian Mechanism~\cite{dwork2014algorithmic}]
