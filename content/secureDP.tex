@@ -420,7 +420,7 @@ The whole process is repeated (at most $52$ times) until the remaining interval 
             \text{\t\t \t\t $L\gets M$}\\
             \text{RETURN $x\gets R$}
         }}
-    \caption{Modified algorithm for sampling from geometric distribution $Geo\left(p=1-e^{-\lambda}\right) $.}
+    \caption{Algorithm for sampling from geometric distribution $Geo\left(p=1-e^{-\lambda}\right) $.}
     \label{algo:GeometricExpBinarySearch}
 \end{algorithm}
 \FloatBarrier
@@ -450,7 +450,7 @@ In line $6$, the algorithm fails to generate discrete random variable in $ITER$ 
             \text{\t\t \t\t RETURN $i \gets s\cdot g$ // success}\\
             \text{RETURN $i \gets 0$ // failure}
         }}
-    \caption{Modified algorithm for sampling $i\sim DLap\left(t\right) $.}
+    \caption{Algorithm for sampling $i\sim DLap\left(t\right) $.}
     \label{algo:TwoSideGeometric}
 \end{algorithm}
 \FloatBarrier
@@ -481,7 +481,7 @@ In this section, we describe the Integer-Scaling Gaussian mechanism~\cite{google
         M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\delta\right)=f_r\left(D\right) +ir
     \end{split}
 \end{equation}
-Specifically, $M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\delta\right)$ uses a symmetrical binomial random variable $i\sim SymmBino\left(n,p=0.5\right) $ (cf.~\autoref{def:binomialdistribution}) to simulate the continuous Gaussian random variable $i_{Gau}\sim \mathcal{N} \left(\mu=0,\sigma^2=\frac{2 \ln\left(1.25/\sigma \cdot \left(\Delta_1^f\right)^2 \right) }{\varepsilon^2}\right) $. The closeness between the symmetrical and Guassian distribution depends on $n$, i.e., a larger $n$ indicates a better approximation effect. $n$ can be estimate with $\varepsilon$ and $\delta$~\cite{ImproveGaussianMechanism} and $\sqrt{n} $ is guaranteed to be in the interval $\left[2^{56},2^{57}\right] $. Note that in the following part, we use the square root of $n$ instead of $n$ as $n$ is too large to be represented as a 64-bit floating-point number.
+Specifically, $M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\delta\right)$ uses a symmetrical binomial random variable $i\sim SymmBino\left(n,p=0.5\right) $ (cf.~\autoref{def:binomialdistribution}) to simulate the continuous Gaussian random variable $i_{Gau}\sim \mathcal{N} \left(\mu=0,\sigma^2=\frac{2 \ln\left(1.25/\sigma \cdot \left(\Delta_1^f\right)^2 \right) }{\varepsilon^2}\right) $. The closeness between the symmetrical and Guassian distribution depends on $n$, i.e., a larger $n$ indicates a better approximation effect. $n$ can be estimate with $\varepsilon$ and $\delta$~\cite{ImproveGaussianMechanism} and $\sqrt{n} $ is guaranteed to be in the interval $\left[2^{56},2^{57}\right] $. Note that in the following part, we use the square root of $n$, $\sqrt{n}$, as $n$ is too large to be represented as a 64-bit floating-point number.
 
 \begin{theorem}[\cite{googleDP2019}]
     The Integer-Scaling Gaussian mechanism $M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\delta\right)$ satisfies $ \left(\varepsilon,\delta\right) $-DP for query function $f$.
@@ -498,7 +498,7 @@ Specifically, $M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\delta\ri
 \paragraph{Symmetrical Binomial Sampling Algorithm}
 \label{para:BinarySearchBasedGeometricSamplingAlgorithm}
 
-\autoref{algo:SymmetricBinomialLargeN} is an modification of the symmetrical binomial sampling algorithm~\cite{googleDP2019}, that samples $i\sim SymmBino\left(n,p=0.5\right) $ with input $\sqrt{n}\approx 2^{56}$. We modify the original sampling algorithm by replacing the $WHILE$ loop with a $FOR$ loop (line 2), such that it has fixed round of iterations. We also found that when $-\frac{\sqrt{n\ln n}}{2} \leq x \leq \frac{\sqrt{n\ln n}}{2}$, $\tilde{p}\left(x\right)>0$ for $x \in [2^{56},2^{57}]$. Therefore, we replace the $IF$ condition from $\tilde{p}\left(x\right)>0$ (in orignal work) to $\left(-\frac{\sqrt{n\ln n}}{2} \leq x \leq \frac{\sqrt{n\ln n}}{2} \land c==1\right) $ (line 14) that simplifies the construction of MPC protocols.
+$Algo^{SymmetricBinomial}$ is a modification of the symmetrical binomial sampling algorithm~\cite{googleDP2019}, that samples $i\sim SymmBino\left(n,p=0.5\right) $ with input $\sqrt{n}\approx 2^{56}$. We modify the original sampling algorithm by replacing the $WHILE$ loop with a $FOR$ loop (line 2), such that it has fixed round of iterations. We also found that when $-\frac{\sqrt{n\ln n}}{2} \leq x \leq \frac{\sqrt{n\ln n}}{2}$, $\tilde{p}\left(x\right)>0$ for $x \in [2^{56},2^{57}]$. Therefore, we replace the $IF$ condition from $\tilde{p}\left(x\right)>0$ (in orignal work) to $\left(-\frac{\sqrt{n\ln n}}{2} \leq x \leq \frac{\sqrt{n\ln n}}{2} \land c==1\right) $ (line 14) that simplifies the construction of MPC protocols.
 
 % Note that for $n\approx 2^{96}$, $\sqrt{n}=2^{48}$ can be precisely represented as a double-precision floating-point (cf.~\autoref{subsubsec:floatingPoint}) (see \autoref{app:algorithms} for details).
 
@@ -536,9 +536,9 @@ Specifically, $M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\delta\ri
 \FloatBarrier
 
 \textbf{Algorithm Fail Probaility Estimation. }
-Suppose $A_i$ is an event that \autoref{algo:SymmetricBinomialLargeN} fails when $ITER=i$.
+Suppose $A_i$ is an event that $Algo^{SymmetricBinomial}$ fails when $ITER=i$.
 Bringmann et al.~\cite{Bringmann2014InternalDE} showed that each iteration has probability $\frac{1}{16} $ to terminate, i.e., $Pr\left(A_1\right)=\frac{15}{16} $.
-Since each iteration is independent, we estimate the $Pr\left(A_{ITER}\right)$ as follows:
+Since each iteration is independent, we compute the $Pr\left(A_{ITER}\right)$ as follows:
 
 \begin{equation}
     \begin{split}
@@ -552,7 +552,7 @@ To guarantee that $Pr\left(A_{ITER}\right)<2^{-40}$, we need at least $ITER\geq 
 \section{Discrete Laplace Mechanism}
 \label{sec:discreteLaplacemechanism}
 
-In this section, we describe the discrete Laplace mechanism~\cite{chan2012privacy, ghosh2012universally,eigner2014differentially,canonne2020discrete} and present the modified sampling algorithm~\autoref{algo:DiscreteLapCKS}.
+In this section, we describe the discrete Laplace mechanism~\cite{chan2012privacy, ghosh2012universally,eigner2014differentially,canonne2020discrete} and present the modified sampling algorithm $Algo^{GeoExp}$.
 
 The discrete Laplace mechanism is define as:
 \begin{equation}
@@ -566,7 +566,7 @@ where query function $f\left(D\right)\in\mathbb{Z} $ and $Y\sim DLap\left(t=\fra
     The discrete Laplace mechanism $M_{DLap}\left(f\left(D\right),r,\varepsilon\right)$ satisfies $\varepsilon$-DP for query function $f\left(D\right)\in\mathbb{Z} $.
 \end{theorem}
 
-Except the previous introduced discrete Laplace sampling algorithm (cf.~\autoref{algo:DiscreteLaplaceEigner}), Canonne et al.~\cite{canonne2020discrete} proposed a discrete Laplace sampling algorithm that is based on rejection sampling~\cite{casella2004generalized} technique. The algorithm first generate a random geometric random variable, and then, converting it to a discrete Laplace random variable.
+Except the previous introduced discrete Laplace sampling algorithm $Algo^{DLap}$ (cf.~\autoref{algo:DiscreteLaplaceEigner}), Canonne et al.~\cite{canonne2020discrete} proposed a discrete Laplace sampling algorithm that is based on rejection sampling~\cite{casella2004generalized} method. The algorithm first generate a random geometric random variable, and then, converting it to a discrete Laplace random variable.
 
 
 % mechanism and noise sampling algorithms for query function $f\left(D\right)\in \mathbb{Z} $ with integer output.
@@ -579,11 +579,11 @@ Except the previous introduced discrete Laplace sampling algorithm (cf.~\autoref
 \paragraph{Rejection Sampling Based Geometric Sampling Algorithm}
 \label{para:RejectionSamplingBasedGeometricSamplingAlgorithm}
 
-\autoref{algo:GeometricExp} is a modificaiton of the geometric sampling algorithm from the work~\cite{canonne2020discrete} that samples a positive integer $x\sim Geo\left( p=1-e^{\frac{n}{d}}\right)$, where $n,d$ are positive integers.
+$\Algo^{GeoExp}$ is a modificaiton of the geometric sampling algorithm from the work~\cite{canonne2020discrete}, that samples an integer $x\sim Geo\left( p=1-e^{\frac{n}{d}}\right)$, where $n,d$ are positive integers.
 
 \textbf{Algorithm Description. }
-We replace the $WHILE$ loop in original work with two $FOR$ loops (line 4-8,9-14) and adds the checking condition (line 1, 14) of the algorithm failure.
-\autoref{algo:GeometricExp} consists of two $FOR$ loops and check if these $FOR$ loops terminate in $ITER_1$ and $ITER_2$ iterations. If they both terminate, the sampling algorithm succeeds, fails otherwise.
+We replace the $WHILE$ loop in original work with two $FOR$ loops (line $4-8$,$9-14$) and add the checking condition (line $1$, $15$) in case the algorithm failure.
+$\Algo^{GeoExp}$ consists of two $FOR$ loops and check if these $FOR$ loops terminate in $ITER_1$ and $ITER_2$ iterations. If they both terminate, the sampling algorithm succeeds, fails otherwise.
 $Algo^{RandInt}\left(d\right) $ generate a random integer $u\in \left[0,d-1\right] $.
 One special case is when $d=1$, $1$th $FOR$ loop directly terminates with $ITER_1=0$.
 
@@ -612,7 +612,7 @@ One special case is when $d=1$, $1$th $FOR$ loop directly terminates with $ITER_
             \text{ELSE}\\
             \text{\t\t RETURN $x\gets \left\lfloor \frac{k\cdot d+u}{n}\right\rfloor $ // success}
         }}
-    \caption{Modified algorithm for sampling from geometric distribution $x\sim Geo\left( p=1-e^{\frac{n}{d}}\right)$~\cite{canonne2020discrete}.}
+    \caption{Algorithm for sampling from geometric distribution $x\sim Geo\left( p=1-e^{\frac{n}{d}}\right)$~\cite{canonne2020discrete}.}
     \label{algo:GeometricExp}
 \end{algorithm}
 \FloatBarrier
@@ -664,8 +664,8 @@ As event $A_{ITER_1}$ and $B_{ITER_2}$ are independent, we have
 \end{equation}
 
 Finally, to guarantee $Pr\left(A_{ITER_1}\lor B_{ITER_2} \right)<2^{-40}$:
-when $n=3$ and $d=2$, we have $ITER_1=27$, $ITER_2=28$,
-when $n=3$ and $d=1$, we have $ITER_1=0$, $ITER_2=28$.
+(i) when $n=3$ and $d=2$, we have $ITER_1=27$, $ITER_2=28$,
+(ii) when $n=3$ and $d=1$, we have $ITER_1=0$, $ITER_2=28$.
 
 
 \paragraph{Discrete Laplace Sampling Algorithm}
@@ -675,7 +675,7 @@ when $n=3$ and $d=1$, we have $ITER_1=0$, $ITER_2=28$.
 
 \textbf{Algorithm Description.}
 We replace the $WHILE$ loop in original work with the $FOR$ loops (line 1).
-In line 3, we can also replace $Algo^{GeoExp}\left(n,d\right)$ with other geometric sampling algorithms.
+% In line 3, we can also replace $Algo^{GeoExp}\left(n,d\right)$ with other geometric sampling algorithms.
 
 \begin{algorithm}[tbh!]
     \centering
@@ -690,15 +690,15 @@ In line 3, we can also replace $Algo^{GeoExp}\left(n,d\right)$ with other geomet
             \text{\t\t \t\t RETURN $Y\gets \left(1-2s\right) \cdot m $ // success}\\
             \text{RETURN $Y\gets 0$ // failure}
         }}
-    \caption{Modified algorithm for sampling $Y \sim  DLap\left(\frac{n}{d}\right)$.}
+    \caption{Algorithm for sampling $Y \sim  DLap\left(\frac{n}{d}\right)$.}
     \label{algo:DiscreteLapCKS}
 \end{algorithm}
 \FloatBarrier
 
-\textbf{Algorithm Fail Probaility Estimation. }
-Note that we need to guarantee not only $Algo^{DLap}\left(t=\frac{d}{n}\right) $, and all subprotocols (e.g. $Algo^{GeoExp}\left(n,d\right)$) fail with probability less than $2^{40}$.
+\textbf{Algorithm Fail Probaility Estimation.}
+Note that we need to guarantee not only $Algo^{DLap}\left(t=\frac{d}{n}\right) $, but that all subprotocols (e.g. $Algo^{GeoExp}\left(n,d\right)$) fail with probability less than $2^{40}$.
 Suppose $A_i$ is an event that $Algo^{DLap}$ fails in $ITER_1=i$ iterations.
-As $Pr\left(s==1\right)$ and  $Pr\left(m==1\right)$ are independent of each other, we have,
+As $Pr\left(s==1\right)$ and  $Pr\left(m==1\right)$ are independent of each other, we have:
 \begin{equation}
     \begin{split}
         Pr\left(A_1\right) &=        Pr\left(s==1\right) \cdot Pr\left(m==0 \land Algo^{GeoExp\left(n,d\right) } \text{ successes}  \right)+Pr\left(m==0 \land Algo^{GeoExp\left(n,d\right) } \text{ fails}  \right)\\
