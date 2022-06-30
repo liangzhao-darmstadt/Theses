@@ -717,9 +717,10 @@ Suppose the adversary $A$ has chosen two data sets:
     \item $D_{1}=\left\{ 1, 0, 0,\ldots ,0\right\} $ ($0$ one and $99$ zeroes).
 \end{itemize}
 
-The testing set $Q$ is an interval $\left[ T,1\right] $, where the threshold $T$ is chosen by the adversary. The threshold $T$ is set such that when the adversary has $T<M\left( D\right) < 1$, he knows $M$ has input $D=D_{1}$ (or $D=D_{0}$, when $0<M\left( S\right) \leq T$) .
+The testing set $Q$ is an interval $\left[ T,1\right] $, where the threshold $T$ is chosen by the adversary. The threshold $T$ is chosen such that when the adversary has $T<M\left( D\right) < 1$, he knows $M$ has input $D=D_{1}$ (or $D=D_{0}$, when $0<M\left( S\right) \leq T$) .
 
-\textit{The Deterministic Case}. Suppose the challenger wants to calculate the mean value of data sets and  chooses $M\left( D\right) =mean\left( D \right) $. Since $M\left( D_{0}\right) =0$ and $M\left( D_{1}\right) =0.01$, the adversary can set $Q =\left[ 0.005,1\right] $ and identify precisely the $D$ used in $M\left( D\right) $ every time they play the game. In \autoref{img:DPexamplenoisefree}, the green line represents the distribution of $M\left( D_{0}\right)$, whereas the orange line represents the distribution of $M\left( D_{1}\right)$. They are plotted upside down for clarity. The vertical dotted line represents the threshold $T=0.005$ which separates $D_{0}$ and $D_{1}$ perfectly.
+\textbf{The Deterministic Case.}
+Suppose the challenger wants to calculate the mean value of data sets and chooses $M\left( D\right) =mean\left( D \right) $. Since $M\left( D_{0}\right) =0$ and $M\left( D_{1}\right) =0.01$, the adversary can set $Q =\left[ 0.005,1\right] $ and identify precisely the database $D$ used in $M\left( D\right) $ every time they play the game. In \autoref{img:DPexamplenoisefree}, the green line represents the distribution of $M\left( D_{0}\right)$, whereas the orange line represents the distribution of $M\left( D_{1}\right)$ (plotted upside down for clarity). The vertical dotted line represents the threshold $T=0.005$ which separates $D_{0}$ and $D_{1}$ perfectly.
 
 \begin{figure}[htbp]
     \includegraphics[width=10cm]{DPexamplenoisefree}
@@ -729,15 +730,16 @@ The testing set $Q$ is an interval $\left[ T,1\right] $, where the threshold $T$
 \end{figure}
 \FloatBarrier
 
-\textit{The Indeterministic Case}. The challenger needs to take some measures to \textit{blur} the difference between $M\left( D_{0}\right)$ and $M\left( D_{1}\right)$. Suppose the challenger decides to add Laplace noise $lap\sim Laplace\left(b=0.05\right)$ to the result of $M\left(D\right)$ as \autoref{img:DPexamplesmallnoise} shows. The shaded green region is the chance that $M\left( D_{0}\right)$ will return a value greater than the adversary's threshold $T$. In other words, the probability that the adversary will mistake $D_{0}$ for $D_{1}$. In contrast, the shaded orange area is the probability that the adversary identify $D$ for $D_{1}$. The challenger can decrease the adversary's probability of winning by adding more noise as \autoref{img:DPexamplelargenoise} shows, where the shaded green and orange areas are almost of the same size. Comparing $M\left( D\right)$ with $T$ is no longer reliable to distinguish $D_{0}$ and $D_{1}$. In fact, we have
-$\varepsilon=\log \left( \frac{\text{green area}}{\text{orange area}}\right) $, where $\varepsilon$ express the degree of differential privacy and a smaller $\varepsilon$ guarantee a stronger privacy protection. Although the challenger can add more noise to decrease the adversary's success probability, the mean estimation accuracy also decreases.
+\textbf{The Indeterministic Case.}
+The challenger needs to take some measures to \textit{blur} the difference between $M\left( D_{0}\right)$ and $M\left( D_{1}\right)$. Suppose the challenger decides to add Laplace noise $lap\sim Laplace\left(b=0.05\right)$ to the result of $M\left(D\right)$ as \autoref{img:DPexamplesmallnoise} shows. The shaded green region is the chance that $M\left( D_{0}\right)$ would return a value greater than the adversary's threshold $T$. In other words, the probability that the adversary would mistake $D_{0}$ for $D_{1}$. In contrast, the shaded orange area is the probability that the adversary identify $D$ as $D_{1}$. The challenger can decrease the adversary's probability of winning by adding more noise as \autoref{img:DPexamplelargenoise} shows, where the shaded green and orange areas are almost of the same size. Comparing $M\left( D\right)$ with $T$ is no longer reliable to distinguish $D_{0}$ and $D_{1}$. In fact, we have
+$\varepsilon=\log \left( \frac{\text{green area}}{\text{orange area}}\right) $, where $\varepsilon$ expresses the degree of differential privacy and a smaller $\varepsilon$ guarantees a stronger privacy protection. Although the challenger can add more noise to decrease the adversary's success probability, the mean estimation accuracy is also decreased.
 
 
 \TODO{need reproduce following figures}
 \begin{figure}[htbp]
     \includegraphics[width=10cm]{DPexamplesmallnoise}
     \centering
-    \caption{Indeterministic algorithm with small noise ($b=0.005$) (need reproduce).}
+    \caption{Indeterministic algorithm with small noise ($b=0.005$) \TODO{(need reproduce)}.}
     \label{img:DPexamplesmallnoise}
 \end{figure}
 \FloatBarrier
@@ -745,83 +747,42 @@ $\varepsilon=\log \left( \frac{\text{green area}}{\text{orange area}}\right) $, 
 \begin{figure}[htbp]
     \includegraphics[width=10cm]{DPexamplelargenoise}
     \centering
-    \caption{Indeterministic algorithm with large noise ($b=0.05$) (need reproduce).}
+    \caption{Indeterministic algorithm with large noise ($b=0.05$) \TODO{(need reproduce)}.}
     \label{img:DPexamplelargenoise}
 \end{figure}
 \FloatBarrier
 
 \subsubsection{Properties of Differential Privacy}
-One reason for the success of differential privacy is its convenient properties which make it possible to deploy differentially private mechanisms in a modular fashion.
+% One reason for the success of differential privacy is its convenient properties which make it possible to deploy differentially private mechanisms in a modular fashion.
 
 \paragraph{Post-Processing}
 \begin{theorem} Let $M:\mathcal{X}^{n} \rightarrow \mathcal{Y}$ be $\left( \varepsilon ,\delta \right)$-DP mechanism, and let $F:\mathcal{Y}\rightarrow \mathcal{Z}$  be an arbitrary randomized mapping. Then $F\circ M$ is $\left( \varepsilon ,\delta=0 \right)$-DP~\cite{dwork2014algorithmic}.
 \end{theorem}
-The Post-Porcessing properties implies the fact that once a database is privatized, it is still private after further processing.
+The Post-Porcessing properties implies the fact that once a database is privatized, it is still differentially private after further processing.
 
 \paragraph{Group Privacy}
 \begin{theorem} Let $M:\mathcal{X}^{n} \rightarrow \mathcal{Y}$ be $\left( \varepsilon ,\delta \right)$-DP mechanism. For all $T\subseteq \mathcal{Y}$, we have $\Pr \left[ M\left(D_{0}\right) +T\right] \leq e^{k \varepsilon}\cdot \Pr \left[ M\left( D_{1}\right) \in T\right] +\delta$, where $D_{0}$, $D_{1}\in \mathcal{X}^{n}$ are two databases that differ in exactly $k$ entries~\cite{dwork2014algorithmic}.
 \end{theorem}
 
-Differential privacy can also be defined when considering two databases with more than one entry differences. The larger privacy decay rate $e^{k\varepsilon}$ means a smaller $\varepsilon$ and \textit{more} noise are necessary to guarantee the same level of privacy.
+Differential privacy can also be defined when considering two databases with more than one entry differences. The larger privacy decay rate $e^{k\varepsilon}$ implies a smaller $\varepsilon$, where \textit{more} noise are necessary to guarantee the same level of privacy.
 
 \paragraph{Basic Composition}
 \begin{theorem}
-    Suppose $M=\left( M_{1}\ldots M_{k}\right)$  is a sequence of $\left( \varepsilon_[i] ,\delta_{i} \right)$-differentially private mechanisms, where $M_{i}$ is chosen sequentially and adaptively. Then $M$ is $\left(\sum_{i=1}^n\varepsilon_{i} ,\sum_{i=1}^n\delta_{i} \right)$-DP~\cite{dwork2014algorithmic}.
+    Suppose $M=\left( M_{1}\ldots M_{k}\right)$  is a sequence of $\left( \varepsilon_{i} ,\delta_{i} \right)$-differentially private mechanisms, where $M_{i}$ is chosen sequentially and adaptively. Then $M$ is $\left(\sum_{i=1}^n\varepsilon_{i} ,\sum_{i=1}^n\delta_{i} \right)$-DP~\cite{dwork2014algorithmic}.
 \end{theorem}
 
 Basic Composition provides a way to evaluate the overall privacy when $k$ privacy mechanisms are applied on the same dataset and the results are released.
 
 % \subsection{Comparison between Differential Private Mechanisms}
-
-
-\subsubsection{Discussion about Differential Privacy}
-
-\paragraph{Local and Central Differential Privacy}
-Since DP is a definition rather than a specific algorithm, there are many ways to realize DP. Two common modes of DP are centralized differential privacy~\cite{dwork2014algorithmic} and local differential privacy~\cite{dinur2003revealing}.
-
-In centralized DP, all data is stored centrally and managed by a trusted curator before the differentially private mechanism is applied. As \autoref{img:DPcentral} shows, the raw data from clients is first collected in a centralized database, then, the curator applies the privacy mechanism and answers the queries $f\left(x\right)$ with $f^{\prime}\left(x\right)$.
-The local DP mode is, as \autoref{img:DPlocal} shows, where the clients first apply a privacy mechanism on the data, and send the perturbed data to the curator.
-An advantage of local DP mode is that no trusted central curator is needed since the data is perturbed independently before sending. However, the disadvantage is that the collected data may contain too much noise and decrease the utility.
-
-\TODO{reproduce following figures}
-\begin{figure}[htbp]
-    \includegraphics[width=10cm]{DPcentral}
-    \centering
-    \caption{Centralized DP mode (need reproduce).}
-    \label{img:DPcentral}
-\end{figure}
-\FloatBarrier
-
-\begin{figure}[htbp]
-    \includegraphics[width=10cm]{DPlocal}
-    \centering
-    \caption{Local DP mode (need reproduce).}
-    \label{img:DPlocal}
-\end{figure}
-\FloatBarrier
-
-
-\paragraph{Advantages of Differential Privacy}
-From the example \autoref{subsubsec:motivatingexampleDP}, we found that DP can still protect privacy even if the adversary knows the database. Generally speaking, DP ensures privacy protection by making no assumption about the adversary's auxiliary information (even when the adversary is the data provider) or computational strategy (regarding the complexity of modern cryptography)~\cite{vadhan2017complexity}. In addition, DP provides a quantitive theory about safely releasing data and maintaining certain level of accuracy.
-
-\paragraph{Challenges of Differential Privacy}
-\label{subsubsec:challengesOfDP}
-DP provides a method to guarantee and quantify individual privacy at the theoretical level. However, it faces a series of practical challenges.
-
-\emph{Sensitivity Calculation}. For certain types of data, the sensitivity is not difficult to calculate. Take a database with human ages as an example, the ages should be bounded between $0$ and $150$ (longest human lifespan is $122$ years and $164$ days according to~\cite{whitney_1997}). However, the data with an unbounded value range brings great challenges. A common way is to roughly estimate the value range and limit the data within that range. For example, if the value range estimation is $\left[ a,b\right] $, then all values smaller than $a$ are replaced by $a$ and all values bigger than $b$ are replaced by $b$. Finally,  the sensitivity is $\frac{b- a}{n}$. In other words, the estimation decides the sensitivity. However, if value range $\left[ a,b\right] $ is chosen too wide, the utility is potentially destroyed because of the large noise. If the value range $\left[ a,b\right] $ is chosen too narrow, the utility is also potentially destroyed because too many values beyond $\left[ a,b\right] $ are replaced.
-
-\emph{Implementation of DP mechanisms}. The theory of DP operates on the real number field. However, because of the actual machine's limitation, the implementation of differentially private mechanisms based on floating-point or fixed-point number only provides an approximation of the mathematical abstractions. \cite{mironov2012significance} shows the irregularities of floating-point implementations of the Laplace mechanism results in a porous distribution over double-precision number and leads to the breach of differential privacy. Further, \cite{gazeau2016preserving} prove that any differentially private mechanism that perturbs data by adding noise can break the DP when implemented with a finite precision regardless of the actual implementation.
-
-% -------------------------------------------------------------
 \subsection{Differentially Private Mechanisms}
 \label{subsec:DPMechanisms}
 
-Differential privacy is a formal framework to quantify the trade-off between privacy and the accuracy of query results. In this part, we introduce mechanisms to realize DP.
+Differential privacy is a formal framework to quantify the trade-off between privacy and the accuracy of query results. In this part, we introduce two common differentially private mechanisms.
 
 \subsubsection{$\varepsilon$-Differential Privacy}
 \begin{definition}[Laplace Mechanism~\cite{dwork2014algorithmic}]\
     \label{def:laplaceMechanism}
-    Let $f : \mathcal{X}^{n} \rightarrow \mathbb{R}^{k}$. The Laplace mechanism is defined as $M_{Lap}\left( X\right) =f\left( X\right) +\left( Y_{1},\ldots ,Y_{k}\right) $, where the $Y_{i}$ are independent Laplace random variables drawn from distribution $Laplace \left(  Y_{i}\,|\, b\right) =\frac{1}{2b}e^{\left( -\frac{\left  | Y_{i}\right|}{b}\right)} $ with $b=\frac{\Delta _{1}^{\left(f\right)}}{\varepsilon }$.
+    Let $f : \mathcal{X}^{n} \rightarrow \mathbb{R}^{k}$. The Laplace mechanism is defined as $M_{Lap}\left( X\right) =f\left( X\right) +\left( Y_{1},\ldots ,Y_{k}\right) $, where the $Y_{i}$ are independent Laplace random variables drawn from a Laplace distribution $Lap \left(  Y_{i}\,|\, b\right) =\frac{1}{2b}e^{\left( -\frac{\left  | Y_{i}\right|}{b}\right)} $ with $b=\frac{\Delta _{1}^{\left(f\right)}}{\varepsilon }$.
 \end{definition}
 
 \begin{theorem}
@@ -843,22 +804,65 @@ Differential privacy is a formal framework to quantify the trade-off between pri
 %     \end{align*}
 % \end{proof}
 
-\begin{definition}[Privacy Loss~\cite{dwork2014algorithmic}]
-    Let $X$ and $Y$ be two random variables. The privacy loss random variable  $\mathcal{L}_{X||Y}$ is distributed by drawing $t \sim Y$ , and outputting $\ln ( \frac {\Pr \left[ X=t\right] )}{\Pr \left[ Y=t\right] )} $.
-\end{definition}
+% \begin{definition}[Privacy Loss~\cite{dwork2014algorithmic}]
+%     Let $X$ and $Y$ be two random variables. The privacy loss random variable  $\mathcal{L}_{X||Y}$ is distributed by drawing $t \sim Y$ , and outputting $\ln ( \frac {\Pr \left[ X=t\right] )}{\Pr \left[ Y=t\right] )} $.
+% \end{definition}
 
-The definition of \emph{Privacy Loss} relies on the assumption that the supports of $X$ and $Y$ are equal, where $supp\left(f\right)=\left\{x \in X: f\left(x\right) \neq 0\right\}$. Otherwise, the privacy loss is undefined since $\Pr\left\{Y=t\right\}=0$.
+% The definition of \emph{Privacy Loss} relies on the assumption that the supports of $X$ and $Y$ are equal, where $supp\left(f\right)=\left\{x \in X: f\left(x\right) \neq 0\right\}$. Otherwise, the privacy loss is undefined since $\Pr\left\{Y=t\right\}=0$.
 
-From the definition of $\varepsilon$-DP, it is not difficult to see that $\varepsilon$-DP corresponds to $\left|\mathcal{L}_{D_{0}||D_{1}}\right|$ being bounded by $\varepsilon$ for all neighboring databases $D_{0}$, $D_{1}$. In other words, $\varepsilon$-DP says that the absolute value of the privacy loss random variable is bounded by $\varepsilon$ with probability 1.
+% From the definition of $\varepsilon$-DP, it is not difficult to see that $\varepsilon$-DP corresponds to $\left|\mathcal{L}_{D_{0}||D_{1}}\right|$ being bounded by $\varepsilon$ for all neighboring databases $D_{0}$, $D_{1}$. In other words, $\varepsilon$-DP says that the absolute value of the privacy loss random variable is bounded by $\varepsilon$ with probability 1.
 
 \subsubsection{$\left(\varepsilon,\delta\right)$-Differential Privacy}
 $\varepsilon$-DP has strong privacy requirement which leads to adding too much noise and affecting the accuracy of the queries. We introduce an relaxation of $\varepsilon$-DP, $\left(\varepsilon,\delta\right)$-DP.
 
 \begin{definition}[Gaussian Mechanism~\cite{dwork2014algorithmic}]
-    Let $f : \mathcal{X}^{n} \rightarrow \mathbb{R}^{k}$. The Gaussian mechanism is defined as $M\left( X\right) =f\left( X\right) +\left( Y_{1},\ldots ,Y_{k}\right) $, where the $Y_{i}$ are independent Gaussian random variables drawn from distribution $Gauss \left(  Y_{i}| \mu ,\sigma ^{2}\right) =\frac{1}{\sigma \sqrt{2\pi }}e^{-\frac{1}{2}\left( \frac{Y_{i}-\mu}{\sigma }\right) ^{2}}$ with  $\mu=0$, $\sigma ^{2}=2\ln \left( \frac{1.25}{\delta }\cdot \left( \frac{ \Delta _{2}^{\left(f\right)}) ^{2}}{\varepsilon ^{2}}\right) \right)$ .
+    Let $f : \mathcal{X}^{n} \rightarrow \mathbb{R}^{k}$. The Gaussian mechanism is defined as $M\left( X\right) =f\left( X\right) +\left( Y_{1},\ldots ,Y_{k}\right) $, where the $Y_{i}$ are independent Gaussian random variables drawn from distribution $\mathcal{N}  \left(  Y_{i}| \mu ,\sigma ^{2}\right) =\frac{1}{\sigma \sqrt{2\pi }}e^{-\frac{1}{2}\left( \frac{Y_{i}-\mu}{\sigma }\right) ^{2}}$ with  $\mu=0$, $\sigma ^{2}=2\ln \left( \frac{1.25}{\delta }\cdot \left( \frac{ \Delta _{2}^{\left(f\right)}) ^{2}}{\varepsilon ^{2}}\right) \right)$ .
     \label{def:gaussianMechanism}
 \end{definition}
 
 Gaussian mechanism is proved to satisfy $\left(\varepsilon,\delta\right)$-DP~\cite{dwork2014algorithmic}.
 
-Similar to $\varepsilon$-DP, $\left(\varepsilon,\delta\right)$-DP can also be interpreted regarding privacy loss: the absolute value of the privacy loss random variable is bounded by $\varepsilon$ with probability $1 - \delta$~\cite[Lemma 3.17]{dwork2014algorithmic}. In other words, with probability $ \delta$, the privacy of databases is breached.
+
+
+\subsubsection{Discussion about Differential Privacy}
+
+\paragraph{Local and Central Differential Privacy}
+Differential privacy is a definition that can be realized in many ways. Two common modes of DP are centralized differential privacy~\cite{dwork2014algorithmic} and local differential privacy~\cite{dinur2003revealing}.
+
+In centralized DP, all data is stored centrally and managed by a trusted curator before the differentially private mechanism is applied. As \autoref{img:DPcentral} shows, the raw data from clients is first collected in a centralized database, then, the curator applies the privacy mechanism and answers the queries $f\left(x\right)$ with $f^{\prime}\left(x\right)$.
+The local DP mode is, as \autoref{img:DPlocal} shows, where the clients first apply a privacy mechanism on their data, and send the perturbed data to the curator.
+An advantage of local DP mode is that no trusted central curator is needed since the data is perturbed independently before sending to the curator. However, the disadvantage is that the collected data contains redundant noise and may decrease the utility.
+
+\TODO{reproduce following figures}
+\begin{figure}[htbp]
+    \includegraphics[width=10cm]{DPcentral}
+    \centering
+    \caption{Centralized DP mode (need reproduce).}
+    \label{img:DPcentral}
+\end{figure}
+\FloatBarrier
+
+\begin{figure}[htbp]
+    \includegraphics[width=10cm]{DPlocal}
+    \centering
+    \caption{Local DP mode (need reproduce).}
+    \label{img:DPlocal}
+\end{figure}
+\FloatBarrier
+
+
+\paragraph{Advantages of Differential Privacy}
+From the example \autoref{subsubsec:motivatingexampleDP}, we found that DP can still protect privacy even if the adversary has the knowledge of the database. Generally speaking, DP ensures privacy protection by making no assumption about the adversary's auxiliary information (even when the adversary is the data provider) or computational strategy (regarding the complexity of modern cryptography)~\cite{vadhan2017complexity}. In addition, DP provides a quantitive theory about safely releasing data and maintaining certain level of accuracy.
+
+\paragraph{Challenges of Differential Privacy}
+\label{subsubsec:challengesOfDP}
+DP provides a method to guarantee and quantify individual privacy at the theoretical level. However, it faces a series of practical challenges.
+
+\textbf{Sensitivity Calculation}. For certain types of data, the sensitivity is not difficult to calculate. Take a database with human ages as an example, the ages should be bounded between $0$ and $150$ (longest human lifespan is $122$ years and $164$ days according to~\cite{whitney_1997}). However, the data with an unbounded value range brings great challenges. A common solution is to roughly estimate the value range and limit the data within that range. For example, if the value range estimation is $\left[ a,b\right] $, then all values smaller than $a$ are replaced by $a$ and all values bigger than $b$ are replaced by $b$. Finally, the sensitivity of query function that outputs ages is ${b- a}$. If value range $\left[ a,b\right] $ is chosen too wide, the utility is potentially destroyed because of the large magnitude of the noise. If the value range $\left[ a,b\right] $ is chosen too narrow, the utility is also potentially decreased because too many values beyond $\left[ a,b\right] $ are truncated.
+
+\textbf{Implementation of DP Mechanisms}. The theory of DP is built upon the real number arithmetic. The practical implementation of differentially private mechanisms relies on floating-point or fixed-point arithmetic only provides an approximation of the mathematical abstractions. Mironov~\cite{mironov2012significance} showed that the irregularities of floating-point implementations and porouse distribution of the Laplace mechanism with textbook sampling algorithm lead to the breach of differential privacy. Further, Gazeau et al.~\cite{gazeau2016preserving} proved that any differentially private mechanism that perturbs data by adding noise with a finite precision can resulting secret disclosure regardless of the actual implementation.
+
+% -------------------------------------------------------------
+
+
+% Similar to $\varepsilon$-DP, $\left(\varepsilon,\delta\right)$-DP can also be interpreted regarding privacy loss: the absolute value of the privacy loss random variable is bounded by $\varepsilon$ with probability $1 - \delta$~\cite[Lemma 3.17]{dwork2014algorithmic}. In other words, with probability $ \delta$, the privacy of databases is breached.
