@@ -1,0 +1,82 @@
+% write XMP data to .xmpdata file for PDF/A
+% enter your metadata in the following lines:
+\RequirePackage{filecontents}
+\begin{filecontents*}{\jobname.xmpdata}
+\Title{This is the Title}
+\Author{Liang Zhao}
+\Subject{Master Thesis}
+\Keywords{}
+\setRGBcolorprofile{sRGB.icc}
+{IEC sRGB}
+{IEC 61966-2.1 Default RGB colour space - sRGB} red
+{http://www.iec.ch}
+\end{filecontents*}
+
+\newcommand\EncryptoPrintTitle{This is\\the Title} % change this if you want to break the title at a specified position. the words must be equivalent to the XMP-title above!
+\newcommand\EncryptoSupervisor{M.Sc. Helen Möllering \\ M.Sc. Oleksandr Tkachenko}
+
+
+% document class, no need to modify
+\documentclass[paper = a4,
+		headings = normal,
+		headsepline,
+		parskip = half,
+		listof = totoc,
+		bibliography = totoc,
+		numbers = noendperiod,
+		titlepage = firstiscover,
+		captions = tableheading, % table captions on top
+		toc = indentunnumbered
+	]
+	{scrreprt}
+
+% encryptothesis - available options to put in []: draft, twoside, german, colorlinks
+% default values (i.e., empty []): no draft, one-sided, english, black links
+% \usepackage[colorlinks]{encryptothesis}
+
+
+\usepackage[]{encryptothesis}
+\usepackage{upgreek}
+% \usepackage{rotating}
+\usepackage{placeins}
+
+
+\usepackage{amsmath}
+\usepackage{bm}
+
+
+
+\usepackage{booktabs} % For \toprule, \midrule and \bottomrule
+\usepackage{siunitx} % Formats the units and values
+\usepackage{pgfplotstable} % Generates table from .csv
+
+\usepackage{pdflscape}
+\usepackage{float}
+\graphicspath{ {./img/} }
+
+% \theoremstyle{definition}
+% \newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}{Proposition}
+
+% \usepackage{amsmath}
+
+% define \ifsubmission to hide TODOs and other annotations in final version
+\newif\ifsubmission
+%\submissiontrue % uncomment for submission version
+
+% disable hypenation (useful for spell check)
+%\usepackage[none]{hyphenat}
+
+\date{\today}
+
+% \renewcommand*{\othersectionlevelsformat}[3]{\textcolor{DeepSkyBlue2}{#3}\autodot\enskip}
+
+\addbibresource{bibliography.bib} %the name of the .bib file, containting literature references
+
+
+
+\begin{document}
+	\maketitle
+	\input{frontbackmatter/structure} % add your content into the file referenced here
+\end{document}

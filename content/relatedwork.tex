@@ -1,0 +1,50 @@
+\chapter{Related Work}
+\label{cha:RelatedWork}
+
+\textbf{Combining MPC and DP}
+To achieve differential privacy (DP) in a federated learning scenario, either a central trusted server (centralized model) is assumed to perform perturbation to the aggregated result, or each client perturbs its data (decentralized model) before sending it to the central server. However, in the centralized model, the trusted server is responsible for security and privacy and becomes the single point of failure for the entire system. In the decentralized model, when each client perturbs its data to guarantee privacy, the noise in the aggregated result is superﬂuous and may decrease the utility. 
+Several solutions that combine differential privacy and secure multiparty computation (MPC) have been proposed to guarantee privacy and utility. The first key point to solve the problem is deploying MPC instead of the strong assumption of a trusted server. The second point is to reduce redundant noise by ensuring all clients perturbs the data collaboratively rather than independently. 
+
+
+To the best of our knowledge, \cite{dwork2006our} are the first to consider deploying malicious secure MPC to aggregate and perturb data by generating the noise share of clients in a distributed settings. \cite{dwork2006our} propose methods to generate two types of noise: approximate Gaussian noise with Binomial distribtuion, approximate scaled symmetric exponential (also known as discrete Laplace) distribution with Possion distribution. For Binomial distribution, the protocols requires generating $n$ uniform random bits that would be inefficient for $n\approx 2^{48}$. To discrete Laplace distribution, \cite{dwork2006our} securely evaluating a circuit to generating biased bits, that fails with non-zero probability and requires multiple iterations to make the fail probability negligible. 
+
+\cite{eigner2014differentially} present an architecture called PrivaDA, which combines DP and MPC by generating Laplace and discrete Laplace noise using MPC protocols in a distributed manner. However, the Laplace noise suffers from the attack (\cite{mironov2012significance}) that is caused by the irregularities of floating-point and porous of Laplace distribution. 
+
+(Inherit Differential Privacy in Distributed Setting: Multiparty Randomized Function Computation) propose method for generating Laplace and Gaussian noise in MPC using the central limit theory (intro in preliminary), i.e., the aggregation of a series Bernoulli random variable approximate a normal distribution, $\sqrt{n}\left(\frac{\sum_{i = 1}^{n}  Bern\left(0.5\right) }{n}-\mu\right) \approx \mathcal{N} \left(0,\frac{1}{4}\right)   $. However, the central limit theory only hold when $n \to \infty $, and there is no discussion about how large of $n$ should be taken to guarantee the efficiency of MPC protocols without breaking differential privacy. 
+
+(ref. Efficient Noise Generation to Achieve Differential Privacy with Applications to Secure Multiparty Computation) provide two MPC-based differential privacy protocols for generating shares of finite-range discrete Laplace (FDL) noise and Binomial noise. Contrast to discrete Laplace distribution, which can sample arbitrarily large integers with low probability, FDL can only generate integers in the range . In the FDL noise protocol, each client first locally generates uniform random variable to generate a share of a biased bit and then converts the biased bits shares to discrete Laplace noise, which ensures -differentially privacy. The second protocol for generating Binomial noise also deploys pseudorandom secret-sharing (Cramer et al. 2005) for generating shares of uniform random variables non-interactively and use the Binomial mechanism (Agarwal et al. 2018) but only satisfy computationally -differentially privacy (intro in preliminary).
+
+
+??? combine floating-point with fixed-point
+
+\textbf{MPC Protocols for Floating-Point Arithmetic}
+There are prior works that focus on floating-point arithmetic MPC protocols.  
+(ref. Secure Floating-Point Arithmetic and Private Satellite Collision Analysis) provides AGMW based floating-point MPC protocols and using polynomial approximation for $exp$, $sqrt$, etw. 
+
+(ref. Hybrid Model of Fixed and Floating Point Numbers in Secure Multiparty Computations) proposes a hybrid method for AGMW based floating-Point Arithmetic, i.e., representing the mantissa of floating-point as a AGMW based fixed-point and implementing elementary function for it to improved the efficiency of floating-point arithmetic. However, the fixed-point arithmetic is prone to overflow or underflow that requires extra computation check that decrease the overall protocol performance. (ref. Optimizing MPC for Robust and Scalable Integer and Floating-Point Arithmetic) provide optimization for (hybrid model of ....) by parallelizing the polynomial approximation, eliminate branching by representing negative integer using two's complementation, etw. 
+
+(ref. Combining Secret Sharing and Garbled Circuits for Efficient Private IEEE 754 Floating-Point Computations) provides a hybrid protocol for 2-party floating-point arithmetic that convert bgmw sharing to Yao's sharing and evaluate arithmetic operation as Garbled circuits protocols. 
+
+
+
+(SecFloat) propose a precise and efficient arithemtic GMW based 32-bit floating-point library for two-party computation. One highlight contribution is the use of mixed-bitwidth computation technique, that use low bitwidth as much as possible. More specifically, for 32-bit floating-point operation, certain operations can be exceuted with $\ell$-bit integers ($\ell <32$), that saves $32-\ell$ bits for computation and communication. One common method to compute function like $log_{2}x$ is polynomial approximation, where high-degree polynomials yields more accurate result but incur more computation. They replace high-degree polynomial with low-degree piecewise polynomial approximiation without decrease accuracy. In other words, for input $x\in \left(a,b\right) $, we evaluate $log_2 x$ using low polynomial by evaluate it in $k$ subintervals ($\left(a, a_1\right) $, $\left(a_1, a_2\right)  $,$\ldots$, $\left(a_{k-1}, b\right) $  ). To determine which subintervals $x$ belongs to, they deploy $LUT$ to map the correct polynomials coefficients. However, we find that SecFloat can't be extended to $N$-party computations ($N\geq 3$) while preserving its efficiency. First, SecFloat relies heavily on the Oblivious Transfer techniques (ref. crytpflow) for mix-bitwidth and $LUT$ operationsm which is not available in multi-party computations. To verify this, we implement the $MSNZB$ (most significant non-zero bit index) protocol deployed in SecFloat using the idea of mix-bitwidth and $LUT$ (ref. fast LUT) in MOTION framework, and compare it with a another implementation of $MSNZB$ that use Boolean GMW operation and share conversion. 
+
+??? table
+After the benchmarking, we found that for MPC frameworks that support multiparty computations, the efficiency benefit brought by mix-bitwidth would be negligible as $N$ increases. ??? zero-extension, LUT multiparty complexity analysis. 
+
+
+
+(ref. The The Cost of IEEE Arithmetic in Secure Computation) implemente LSSS-based and binary circuit-based floating-point arithmetic MPC protocols and compare their performance. In their benchmarking result, the LSSS-based floating-point operation is about $10-100x$ faster than binary circuit-based floating-point operation. However, in our implementation, the binary circuit-based floating-point operation is $5-10x$ faster than LSSS-based floating-based without SIMD and can be up to $1000x$ faster than LSSS-based floating-point operation when amortized over SIMD=1000.
+
+\textbf{MPC Protocols for Fixed-Point Arithmetic}
+(ref. High-precision Secure Computation of Satellite Collision Probabilities) provides methods for 2-party fixed-point arithmetic by combine AGMW and BGMW, i.e., using AGMW for integer addition and multiplication using AGMW and BGMW for integer comparison, shifting, $exp$, etw. 
+
+(ref.  Benchmarking Privacy Preserving Scientific Operations) provides AGMW based fixed-point arithmetic. 
+
+(ref. Round-Efﬁcient Protocols for Secure Multiparty Fixed-Point Arithmetic) agmw fixed-point. 
+
+
+
+
+
+

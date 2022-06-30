@@ -1,0 +1,174 @@
+This is the README for the encryptothesis package.
+
+v1.14.0 - September 22, 2020
+Daniel Demmler, Marco Holz
+
+In case of questions, please contact:
+	demmler@encrypto.cs.tu-darmstadt.de
+
+
+####
+Prerequisites:
+	Required packages for TexLive on Debian-based distributions (e.g., Ubuntu, Linux Mint):
+		texlive-latex-recommended
+		texlive-fonts-extra
+		texlive-bibtex-extra
+		biber
+		(there might be more, depending on your distribution)
+
+	Arch-based distributions (e.g. Manjaro):
+		texlive-bibtexextra
+		texlive-bin
+		texlive-core
+		texlive-fontsextra
+		texlive-latexextra
+		texlive-pictures
+		texlive-science
+
+	On other Linux distributions, you probably know what to do anyways.
+
+	On Windows, MikTex should install missing packages automatically.
+
+
+####
+Remarks and Usage:
+	* thesis.tex is the root document
+
+	* Set your meta data (author, title, date, supervisor, optional keywords) at the very beginning of thesis.tex
+
+	* All design specific options are defined in encryptothesis.sty, which is included as package in thesis.tex
+
+	* encryptothesis accepts 3 options:
+		* draft - add a draft note to the title page, add timestamps to every page's footer and build PDF-1.5
+		* twoside - use 2-sided layout (chapters start on odd pages on the right, header differs for odd/even pages, page numbers not centered) for printing
+		* german - sets auto-references, some captions, keywords and date format to German.
+		* if none of these options are specified, they default to false, i.e., a document with 1-sided layout in English without draft notes in PDF/A format, e.g., for digital publication is built.
+
+	* References to sections, figures, tables, and such should be added by using the \autoref or \Autoref function, for the short resp. long form of the reference. These have been defined to always start with Capital Letters.
+
+	* Your own content should be added to content/yourcontent.tex with \input{yourtexfile}. Currently there are some dummy files with example content in there, which can be modified and re-used or deleted.
+
+	*The overall structure of the thesis is controlled in frontbackmatter/structure.tex.
+	In case you want to add/remove parts, you can do it there. Please do not change the order of parts.
+
+	* There's a separate floating environment for protocols which can be used similar to figures with:
+		\begin{protocol}
+		\end{protocol}
+		A list of protocols can be added by uncommenting line 31 in frontbackmatter/structure.tex, if needed.
+
+	* Abbreviations can be included by using the \ac{} command. Ideally they should be defined in frontbackmatter/macros.tex so that they are available everywhere from the start of the document.
+
+	* frontbackmatter/macros.tex is included from the start, and allows to define new commands, abbreviations, and such.
+		examples:
+			\newcommand{\server}{\mathcal{S}\xspace}
+			\newcommand{\smpc}{\ac{SMPC}\xspace}
+
+	* To add a bibliography this template relies on biber (as opposed to bibtex)
+
+	* Build commands:
+		pdflatex thesis.tex
+		biber thesis
+		pdflatex thesis.tex
+		pdflatex thesis.tex
+
+		A very basic Makefile is included, which you can invoke by running make.
+		Make clean will delete all temporary latex files in the root directory. Use with caution if you added other files with the same file endings (e.g., *.xml files)
+
+		Alternatively you can use latexmk --pdf thesis.tex
+		Append -C for latexmk's clean option
+
+
+####
+Changelog:
+	v1.14.0 - September 22, 2020
+		updated macros
+		added usage examples for \CHANGED, \add, \del and \TODO
+
+	v1.13.0 - April 26, 2019
+		added ENCRYPTO logo
+		minor tweaks for fonts and bibtex fields
+
+	v1.12.0 - January 15, 2019
+		added explicit RGB color profile for PDF/A, which was default before but was removed from some packages
+		tweaked font sizes in table of contents
+		added colorlinks option
+		added mathsf font
+		removed outdated packages, some replaced with different, up-to-date packages
+		added pgfplotstable example
+		added an example for a citation with many authors
+
+	v1.11.0 - August 01, 2018
+		removed CRISP logo from title page and minor formatting
+		added some useful packages
+
+	v1.10.1 - July 11, 2018
+		fixed problem with including author/subject/date in affidavit
+
+	v1.10.0 - July 09, 2018
+		Always build PDF/A. This required some changes to how meta data is handled.
+		Included workaround for currently broken chngctr package
+		Included workaround for unintuitive pdfx meta data handling
+		Print preliminary version on title page when draft mode is on
+		Removed some hyperref options which are set by pdfx
+		Added \EncryptoPrintTitle to allow manual title line breaks
+
+	v1.9.0 - April 20, 2018
+		Removed compatibility for biblatex <3.3 (older than 2 years)
+
+	v1.8.1 - January 08, 2018
+		added correct language selection to affidavit
+		added separate German captions for abstract, acknowledgments and appendix
+
+	v1.8.0 - December 21, 2017
+		updated declaration/affidavit
+		included PDF/A support
+		improved handling of PDF meta data
+		replaced scrpage2 scrlayer-scrpage and updated related commands
+		clarified README
+
+	v1.7.0 - December 06, 2017
+		new declaration/affidavit
+
+	v1.6.3 - January 23, 2017:
+		minor internal improvements
+		code listing example added
+
+	v1.6.2 - December 12, 2016:
+		clarified \autorefs usage
+
+	v1.6.1 - December 02, 2016:
+		fixed problem in English affidavit
+
+	v1.6 - November 09, 2016 (Trump Edition):
+		added german option
+		added example table
+		added example PDF include
+		extended descriptions
+		moved affidavit to template
+
+	v1.5 - August 02, 2016:
+		added Arch required package list to README
+		added subfloat autoref
+		minor cosmetic changes
+
+	v1.4 - June 20, 2016:
+		renamed root tex file to thesis.tex
+		moved template tex files to subdirectory template
+		more robust font sizes for titlepage
+		Makefile and README improved and extended
+
+	v1.3 - June 16, 2016:
+		Changed title page layout and added Encrypto
+		More biblatex versions detected and handled
+
+	v1.2 - June 15, 2016:
+		Improved biblatex version distinction
+		pgfplots example added
+
+	v1.1 - June 14, 2016:
+		Protocol example and autoref for protocol added
+		Improved bibliography style and added more examples
+		Distinguished biblatex v2 and v3 (thanks Debian…)
+
+	v1.0 - June 13, 2016:
+		Initial Release

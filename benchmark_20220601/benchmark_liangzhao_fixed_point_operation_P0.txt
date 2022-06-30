@@ -1,0 +1,1980 @@
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Add_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.139 ms      0.000 ms      0.000 ms
+MT Setup                 0.189 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               419.024 ms      0.000 ms      0.000 ms
+OT Extension Setup     114.167 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    534.386 ms      0.000 ms      0.000 ms
+Gates Setup             16.594 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           143.213 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation     695.292 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.111 MiB in 1155 messages
+Received: 0.111 MiB in 1155 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Sub_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.310 ms      0.000 ms      0.000 ms
+MT Setup                41.634 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               587.982 ms      0.000 ms      0.000 ms
+OT Extension Setup      13.422 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    644.152 ms      0.000 ms      0.000 ms
+Gates Setup             27.378 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           178.140 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation     854.170 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.111 MiB in 1155 messages
+Received: 0.111 MiB in 1155 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Mul_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              1.716 ms      0.000 ms      0.000 ms
+MT Setup                 9.762 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               623.383 ms      0.000 ms      0.000 ms
+OT Extension Setup      25.513 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    663.057 ms      0.000 ms      0.000 ms
+Gates Setup            126.700 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online          1759.701 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    2550.876 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.894 MiB in 9043 messages
+Received: 0.894 MiB in 9043 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Div_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              1.735 ms      0.000 ms      0.000 ms
+MT Setup                 1.643 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               475.695 ms      0.000 ms      0.000 ms
+OT Extension Setup     107.253 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    589.418 ms      0.000 ms      0.000 ms
+Gates Setup            109.566 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online         11289.041 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   11991.238 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 1.005 MiB in 10165 messages
+Received: 1.005 MiB in 10165 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Div_Goldschmidt_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup             21.342 ms      0.000 ms      0.000 ms
+MT Setup               116.661 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               518.846 ms      0.000 ms      0.000 ms
+OT Extension Setup     233.669 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    893.696 ms      0.000 ms      0.000 ms
+Gates Setup           1285.614 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online         20609.756 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   22797.674 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 10.154 MiB in 102299 messages
+Received: 10.154 MiB in 102299 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Lt_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.146 ms      0.000 ms      0.000 ms
+MT Setup                 0.114 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               521.455 ms      0.000 ms      0.000 ms
+OT Extension Setup      87.540 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    609.846 ms      0.000 ms      0.000 ms
+Gates Setup             22.819 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           158.599 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation     840.530 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.071 MiB in 757 messages
+Received: 0.071 MiB in 757 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Gt_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.158 ms      0.000 ms      0.000 ms
+MT Setup                47.299 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               531.646 ms      0.000 ms      0.000 ms
+OT Extension Setup      11.067 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    590.790 ms      0.000 ms      0.000 ms
+Gates Setup             11.467 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           228.572 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation     832.424 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.071 MiB in 757 messages
+Received: 0.071 MiB in 757 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Eq_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.132 ms      0.000 ms      0.000 ms
+MT Setup                37.406 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               430.564 ms      0.000 ms      0.000 ms
+OT Extension Setup      11.737 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    480.392 ms      0.000 ms      0.000 ms
+Gates Setup              0.898 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           126.438 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation     633.697 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.047 MiB in 515 messages
+Received: 0.047 MiB in 515 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_EQZ_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.129 ms      0.000 ms      0.000 ms
+MT Setup                 0.078 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               446.039 ms      0.000 ms      0.000 ms
+OT Extension Setup      54.349 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    501.191 ms      0.000 ms      0.000 ms
+Gates Setup             22.433 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           112.468 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation     637.100 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.047 MiB in 515 messages
+Received: 0.047 MiB in 515 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_LTZ_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs                 0.000 ms      0.000 ms      0.000 ms
+OT Extension Setup       0.000 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total      0.486 ms      0.000 ms      0.000 ms
+Gates Setup              0.193 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online             0.563 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation       2.128 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.000 MiB in 3 messages
+Received: 0.000 MiB in 3 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Exp2_P1045_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              6.825 ms      0.000 ms      0.000 ms
+MT Setup                54.030 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               492.426 ms      0.000 ms      0.000 ms
+OT Extension Setup      53.732 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    610.086 ms      0.000 ms      0.000 ms
+Gates Setup            258.815 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online          9619.810 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   10493.933 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 2.375 MiB in 23959 messages
+Received: 2.375 MiB in 23959 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Log2_P2508_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup             23.848 ms      0.000 ms      0.000 ms
+MT Setup                15.793 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               385.622 ms      0.000 ms      0.000 ms
+OT Extension Setup     293.490 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    722.352 ms      0.000 ms      0.000 ms
+Gates Setup           1122.076 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online         20425.819 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   22277.854 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 10.634 MiB in 107133 messages
+Received: 10.634 MiB in 107133 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Exp_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              8.573 ms      0.000 ms      0.000 ms
+MT Setup               109.707 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               576.704 ms      0.000 ms      0.000 ms
+OT Extension Setup      71.752 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    769.864 ms      0.000 ms      0.000 ms
+Gates Setup            395.104 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online         11770.566 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   12938.995 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 2.720 MiB in 27441 messages
+Received: 2.720 MiB in 27441 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Ln_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup             24.330 ms      0.000 ms      0.000 ms
+MT Setup                13.564 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               379.878 ms      0.000 ms      0.000 ms
+OT Extension Setup     330.542 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    751.914 ms      0.000 ms      0.000 ms
+Gates Setup           1007.970 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online         20125.129 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   21894.238 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 10.923 MiB in 110033 messages
+Received: 10.923 MiB in 110033 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Sqrt_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup             21.899 ms      0.000 ms      0.000 ms
+MT Setup                12.100 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               455.781 ms      0.000 ms      0.000 ms
+OT Extension Setup     328.589 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    821.580 ms      0.000 ms      0.000 ms
+Gates Setup            980.415 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online         20751.197 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   22562.440 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 10.713 MiB in 107923 messages
+Received: 10.713 MiB in 107923 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Sqrt_P0132_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup             19.365 ms      0.000 ms      0.000 ms
+MT Setup                59.494 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               535.258 ms      0.000 ms      0.000 ms
+OT Extension Setup     134.820 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    751.360 ms      0.000 ms      0.000 ms
+Gates Setup            537.250 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online         10994.850 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   12291.078 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 5.967 MiB in 60125 messages
+Received: 5.967 MiB in 60125 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Ceil_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.181 ms      0.000 ms      0.000 ms
+MT Setup                 0.534 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               561.322 ms      0.000 ms      0.000 ms
+OT Extension Setup      12.559 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    575.297 ms      0.000 ms      0.000 ms
+Gates Setup             35.124 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           259.519 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation     896.911 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.072 MiB in 767 messages
+Received: 0.072 MiB in 767 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Floor_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs                 0.000 ms      0.000 ms      0.000 ms
+OT Extension Setup       0.000 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total      1.312 ms      0.000 ms      0.000 ms
+Gates Setup              0.620 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online             1.187 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation      62.061 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.000 MiB in 3 messages
+Received: 0.000 MiB in 3 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx2Int_circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.287 ms      0.000 ms      0.000 ms
+MT Setup                18.638 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               642.035 ms      0.000 ms      0.000 ms
+OT Extension Setup      13.015 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    675.171 ms      0.000 ms      0.000 ms
+Gates Setup             30.066 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           266.501 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation     975.676 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.101 MiB in 1065 messages
+Received: 0.101 MiB in 1065 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx2FL__circuit bit size 64 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.414 ms      0.000 ms      0.000 ms
+MT Setup                86.881 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               448.117 ms      0.000 ms      0.000 ms
+OT Extension Setup      19.926 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    556.097 ms      0.000 ms      0.000 ms
+Gates Setup             98.937 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online          1825.078 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    2483.741 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.575 MiB in 5831 messages
+Received: 0.575 MiB in 5831 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Add_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup             52.250 ms      0.000 ms      0.000 ms
+MT Setup                93.066 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               391.326 ms      0.000 ms      0.000 ms
+OT Extension Setup    1871.835 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   2409.170 ms      0.000 ms      0.000 ms
+Gates Setup             14.249 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           246.001 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    2673.322 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 6.133 MiB in 1155 messages
+Received: 6.133 MiB in 1155 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Sub_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup             48.111 ms      0.000 ms      0.000 ms
+MT Setup                89.931 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               367.750 ms      0.000 ms      0.000 ms
+OT Extension Setup    1790.025 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   2296.473 ms      0.000 ms      0.000 ms
+Gates Setup              7.692 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           152.250 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    2467.964 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 6.133 MiB in 1155 messages
+Received: 6.133 MiB in 1155 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Mul_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup            577.049 ms      0.000 ms      0.000 ms
+MT Setup              1025.063 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               345.769 ms      0.000 ms      0.000 ms
+OT Extension Setup   20862.377 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total  22812.372 ms      0.000 ms      0.000 ms
+Gates Setup             69.498 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online          1612.584 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   24496.872 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 68.939 MiB in 9043 messages
+Received: 68.939 MiB in 9043 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Div_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup            667.947 ms      0.000 ms      0.000 ms
+MT Setup              1292.262 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               437.835 ms      0.000 ms      0.000 ms
+OT Extension Setup   23436.065 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total  25837.211 ms      0.000 ms      0.000 ms
+Gates Setup            118.456 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online         14607.008 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   40563.683 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 77.873 MiB in 10165 messages
+Received: 77.873 MiB in 10165 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Div_Goldschmidt_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup           7050.238 ms      0.000 ms      0.000 ms
+MT Setup             12055.797 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               380.334 ms      0.000 ms      0.000 ms
+OT Extension Setup  248863.759 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total 268354.617 ms      0.000 ms      0.000 ms
+Gates Setup            607.175 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online         24355.988 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation  293327.995 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 811.465 MiB in 102299 messages
+Received: 811.465 MiB in 102299 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Lt_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup             59.761 ms      0.000 ms      0.000 ms
+MT Setup                41.860 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               423.404 ms      0.000 ms      0.000 ms
+OT Extension Setup    1148.188 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1678.217 ms      0.000 ms      0.000 ms
+Gates Setup             13.000 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online            60.297 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1752.407 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 2.965 MiB in 757 messages
+Received: 2.965 MiB in 757 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Gt_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup             48.403 ms      0.000 ms      0.000 ms
+MT Setup               123.437 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               511.652 ms      0.000 ms      0.000 ms
+OT Extension Setup     950.090 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1634.344 ms      0.000 ms      0.000 ms
+Gates Setup             13.543 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           143.932 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1793.064 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 2.965 MiB in 757 messages
+Received: 2.965 MiB in 757 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Eq_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup             11.582 ms      0.000 ms      0.000 ms
+MT Setup                16.565 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               398.508 ms      0.000 ms      0.000 ms
+OT Extension Setup     403.003 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    830.574 ms      0.000 ms      0.000 ms
+Gates Setup              1.303 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           164.115 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation     997.666 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 1.037 MiB in 515 messages
+Received: 1.037 MiB in 515 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_EQZ_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              9.395 ms      0.000 ms      0.000 ms
+MT Setup                92.148 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               558.032 ms      0.000 ms      0.000 ms
+OT Extension Setup     323.227 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    983.896 ms      0.000 ms      0.000 ms
+Gates Setup              0.982 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           114.620 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1100.472 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 1.037 MiB in 515 messages
+Received: 1.037 MiB in 515 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_LTZ_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs                 0.000 ms      0.000 ms      0.000 ms
+OT Extension Setup       0.000 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total      0.766 ms      0.000 ms      0.000 ms
+Gates Setup              0.278 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online             3.083 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation      10.163 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.000 MiB in 3 messages
+Received: 0.000 MiB in 3 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Exp2_P1045_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup           1781.451 ms      0.000 ms      0.000 ms
+MT Setup              2942.743 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               379.654 ms      0.000 ms      0.000 ms
+OT Extension Setup   56221.812 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total  61329.629 ms      0.000 ms      0.000 ms
+Gates Setup            115.789 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online          9895.860 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   71344.412 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 187.704 MiB in 23959 messages
+Received: 187.704 MiB in 23959 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Log2_P2508_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup           7098.033 ms      0.000 ms      0.000 ms
+MT Setup             13298.227 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               375.082 ms      0.000 ms      0.000 ms
+OT Extension Setup  246317.672 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total 267093.901 ms      0.000 ms      0.000 ms
+Gates Setup            841.486 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online         22774.918 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation  290715.355 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 849.954 MiB in 107133 messages
+Received: 849.954 MiB in 107133 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Exp_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup           1927.150 ms      0.000 ms      0.000 ms
+MT Setup              3216.832 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               534.898 ms      0.000 ms      0.000 ms
+OT Extension Setup   66567.360 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total  72249.951 ms      0.000 ms      0.000 ms
+Gates Setup            134.550 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online         11052.672 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   83438.318 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 215.429 MiB in 27441 messages
+Received: 215.429 MiB in 27441 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Ln_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup           7446.712 ms      0.000 ms      0.000 ms
+MT Setup             13957.577 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               372.037 ms      0.000 ms      0.000 ms
+OT Extension Setup  274400.683 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total 296181.188 ms      0.000 ms      0.000 ms
+Gates Setup            915.667 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online         26641.276 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation  323742.693 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 873.045 MiB in 110033 messages
+Received: 873.045 MiB in 110033 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Sqrt_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup           8281.405 ms      0.000 ms      0.000 ms
+MT Setup             12662.652 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               325.271 ms      0.000 ms      0.000 ms
+OT Extension Setup  260223.629 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total 281503.731 ms      0.000 ms      0.000 ms
+Gates Setup           1383.316 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online         26725.009 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation  309618.283 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 856.244 MiB in 107923 messages
+Received: 856.244 MiB in 107923 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Sqrt_P0132_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup           3999.705 ms      0.000 ms      0.000 ms
+MT Setup              7970.773 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               422.387 ms      0.000 ms      0.000 ms
+OT Extension Setup  166578.210 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total 178974.586 ms      0.000 ms      0.000 ms
+Gates Setup            734.076 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online         17955.497 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation  197671.297 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 475.666 MiB in 60125 messages
+Received: 475.666 MiB in 60125 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Ceil_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup             27.158 ms      0.000 ms      0.000 ms
+MT Setup                47.847 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               413.824 ms      0.000 ms      0.000 ms
+OT Extension Setup    1086.131 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1575.761 ms      0.000 ms      0.000 ms
+Gates Setup             15.869 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           208.936 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1802.847 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 3.044 MiB in 767 messages
+Received: 3.044 MiB in 767 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx_Floor_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs                 0.000 ms      0.000 ms      0.000 ms
+OT Extension Setup       0.000 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total      0.558 ms      0.000 ms      0.000 ms
+Gates Setup              0.174 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online             2.909 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation       4.592 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.000 MiB in 3 messages
+Received: 0.000 MiB in 3 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx2Int_circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup             51.625 ms      0.000 ms      0.000 ms
+MT Setup                89.124 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               454.821 ms      0.000 ms      0.000 ms
+OT Extension Setup    1994.810 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   2591.049 ms      0.000 ms      0.000 ms
+Gates Setup             17.843 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           364.617 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    2975.091 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 5.417 MiB in 1065 messages
+Received: 5.417 MiB in 1065 messages
+===========================================================================
+
+
+BooleanGMW===========================================================================
+Protocol BooleanGMW operation Fx2FL__circuit bit size 64 SIMD 1000
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup            339.011 ms      0.000 ms      0.000 ms
+MT Setup               639.941 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               375.332 ms      0.000 ms      0.000 ms
+OT Extension Setup   12898.365 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total  14253.307 ms      0.000 ms      0.000 ms
+Gates Setup             53.619 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online          2110.004 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   16418.035 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 43.372 MiB in 5831 messages
+Received: 43.372 MiB in 5831 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_Add_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs                 0.000 ms      0.000 ms      0.000 ms
+OT Extension Setup       0.000 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total      1.323 ms      0.000 ms      0.000 ms
+Gates Setup              0.675 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online             1.821 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation       6.805 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.000 MiB in 3 messages
+Received: 0.000 MiB in 3 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_Sub_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs                 0.000 ms      0.000 ms      0.000 ms
+OT Extension Setup       0.000 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total      0.386 ms      0.000 ms      0.000 ms
+Gates Setup             27.959 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online             0.513 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation      30.152 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.000 MiB in 3 messages
+Received: 0.000 MiB in 3 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_Mul_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.335 ms      0.000 ms      0.000 ms
+MT Setup               182.501 ms      0.000 ms      0.000 ms
+SP Presetup              9.435 ms      0.000 ms      0.000 ms
+SP Setup               607.707 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup               812.652 ms      0.000 ms      0.000 ms
+Base OTs               419.641 ms      0.000 ms      0.000 ms
+OT Extension Setup     179.012 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1422.111 ms      0.000 ms      0.000 ms
+Gates Setup            150.368 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.510 ms      0.000 ms      0.000 ms
+Gates Online           134.807 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1708.330 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.630 MiB in 1033 messages
+Received: 1.126 MiB in 1033 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_Div_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.492 ms      0.000 ms      0.000 ms
+MT Setup               744.435 ms      0.000 ms      0.000 ms
+SP Presetup             87.803 ms      0.000 ms      0.000 ms
+SP Setup              5682.515 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup              7216.254 ms      0.000 ms      0.000 ms
+Base OTs               361.560 ms      0.000 ms      0.000 ms
+OT Extension Setup    1896.122 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   9563.340 ms      0.000 ms      0.000 ms
+Gates Setup           1417.506 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.606 ms      0.000 ms      0.000 ms
+Gates Online          1530.161 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   12512.165 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 6.245 MiB in 7567 messages
+Received: 11.365 MiB in 7567 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_DivConst_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup              9.480 ms      0.000 ms      0.000 ms
+SP Setup               683.379 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup               834.337 ms      0.000 ms      0.000 ms
+Base OTs               408.601 ms      0.000 ms      0.000 ms
+OT Extension Setup     182.188 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1435.771 ms      0.000 ms      0.000 ms
+Gates Setup            123.433 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.576 ms      0.000 ms      0.000 ms
+Gates Online           235.150 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1796.418 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.626 MiB in 1029 messages
+Received: 1.122 MiB in 1029 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_Lt_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup             13.132 ms      0.000 ms      0.000 ms
+SP Setup               620.415 ms      0.000 ms      0.000 ms
+SB Presetup              0.006 ms      0.000 ms      0.000 ms
+SB Setup               758.555 ms      0.000 ms      0.000 ms
+Base OTs               425.594 ms      0.000 ms      0.000 ms
+OT Extension Setup     196.335 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1398.771 ms      0.000 ms      0.000 ms
+Gates Setup            125.213 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           115.223 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1640.293 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.626 MiB in 1029 messages
+Received: 1.122 MiB in 1029 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_Gt_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup             13.256 ms      0.000 ms      0.000 ms
+SP Setup               637.602 ms      0.000 ms      0.000 ms
+SB Presetup              0.005 ms      0.000 ms      0.000 ms
+SB Setup               790.218 ms      0.000 ms      0.000 ms
+Base OTs               403.816 ms      0.000 ms      0.000 ms
+OT Extension Setup     192.771 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1401.340 ms      0.000 ms      0.000 ms
+Gates Setup            192.236 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           195.891 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1791.018 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.626 MiB in 1029 messages
+Received: 1.122 MiB in 1029 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_RoundTowardsZero_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup             13.426 ms      0.000 ms      0.000 ms
+SP Setup               617.366 ms      0.000 ms      0.000 ms
+SB Presetup              0.006 ms      0.000 ms      0.000 ms
+SB Setup               762.706 ms      0.000 ms      0.000 ms
+Base OTs               540.167 ms      0.000 ms      0.000 ms
+OT Extension Setup     186.003 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1503.407 ms      0.000 ms      0.000 ms
+Gates Setup            124.626 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.471 ms      0.000 ms      0.000 ms
+Gates Online           117.579 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1746.574 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.626 MiB in 1029 messages
+Received: 1.122 MiB in 1029 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_Neg_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup              9.600 ms      0.000 ms      0.000 ms
+SP Setup               577.455 ms      0.000 ms      0.000 ms
+SB Presetup              0.005 ms      0.000 ms      0.000 ms
+SB Setup               722.109 ms      0.000 ms      0.000 ms
+Base OTs               460.559 ms      0.000 ms      0.000 ms
+OT Extension Setup     169.890 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1363.553 ms      0.000 ms      0.000 ms
+Gates Setup            125.482 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.358 ms      0.000 ms      0.000 ms
+Gates Online           204.822 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1695.284 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.626 MiB in 1029 messages
+Received: 1.122 MiB in 1029 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_Abs_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.348 ms      0.000 ms      0.000 ms
+MT Setup               148.188 ms      0.000 ms      0.000 ms
+SP Presetup              9.642 ms      0.000 ms      0.000 ms
+SP Setup               605.466 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup               755.872 ms      0.000 ms      0.000 ms
+Base OTs               467.594 ms      0.000 ms      0.000 ms
+OT Extension Setup     207.262 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1442.048 ms      0.000 ms      0.000 ms
+Gates Setup            140.698 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.450 ms      0.000 ms      0.000 ms
+Gates Online           126.683 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1710.463 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.630 MiB in 1033 messages
+Received: 1.126 MiB in 1033 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_Eq_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.163 ms      0.000 ms      0.000 ms
+MT Setup               121.232 ms      0.000 ms      0.000 ms
+SP Presetup              9.734 ms      0.000 ms      0.000 ms
+SP Setup               646.721 ms      0.000 ms      0.000 ms
+SB Presetup              0.006 ms      0.000 ms      0.000 ms
+SB Setup               792.592 ms      0.000 ms      0.000 ms
+Base OTs               445.619 ms      0.000 ms      0.000 ms
+OT Extension Setup     208.797 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1458.046 ms      0.000 ms      0.000 ms
+Gates Setup              9.846 ms      0.000 ms      0.000 ms
+Gates Precomputation      1.118 ms      0.000 ms      0.000 ms
+Gates Online           139.366 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1611.770 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.576 MiB in 648 messages
+Received: 1.076 MiB in 648 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_EQZ_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.134 ms      0.000 ms      0.000 ms
+MT Setup               184.690 ms      0.000 ms      0.000 ms
+SP Presetup             10.117 ms      0.000 ms      0.000 ms
+SP Setup               699.320 ms      0.000 ms      0.000 ms
+SB Presetup              0.003 ms      0.000 ms      0.000 ms
+SB Setup               847.337 ms      0.000 ms      0.000 ms
+Base OTs               494.698 ms      0.000 ms      0.000 ms
+OT Extension Setup     198.938 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1552.828 ms      0.000 ms      0.000 ms
+Gates Setup             16.923 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.989 ms      0.000 ms      0.000 ms
+Gates Online           188.409 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1760.489 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.576 MiB in 648 messages
+Received: 1.076 MiB in 648 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_LTZ_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup             12.044 ms      0.000 ms      0.000 ms
+SP Setup               559.668 ms      0.000 ms      0.000 ms
+SB Presetup              0.005 ms      0.000 ms      0.000 ms
+SB Setup               711.587 ms      0.000 ms      0.000 ms
+Base OTs               492.282 ms      0.000 ms      0.000 ms
+OT Extension Setup     172.288 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1389.090 ms      0.000 ms      0.000 ms
+Gates Setup            149.674 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online            98.864 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1639.205 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.626 MiB in 1029 messages
+Received: 1.122 MiB in 1029 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_Exp2_P1045_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup             11.013 ms      0.000 ms      0.000 ms
+MT Setup              2001.685 ms      0.000 ms      0.000 ms
+SP Presetup            288.615 ms      0.000 ms      0.000 ms
+SP Setup             16172.432 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup             20671.569 ms      0.000 ms      0.000 ms
+Base OTs               380.970 ms      0.000 ms      0.000 ms
+OT Extension Setup    6266.559 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total  27619.777 ms      0.000 ms      0.000 ms
+Gates Setup           4470.700 ms      0.000 ms      0.000 ms
+Gates Precomputation      8.450 ms      0.000 ms      0.000 ms
+Gates Online          2974.981 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   35074.878 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 19.235 MiB in 21388 messages
+Received: 34.773 MiB in 21388 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_Log2_P2508_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.719 ms      0.000 ms      0.000 ms
+MT Setup              1401.190 ms      0.000 ms      0.000 ms
+SP Presetup            163.626 ms      0.000 ms      0.000 ms
+SP Setup             10756.691 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup             13582.967 ms      0.000 ms      0.000 ms
+Base OTs               357.831 ms      0.000 ms      0.000 ms
+OT Extension Setup    3932.805 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total  18039.193 ms      0.000 ms      0.000 ms
+Gates Setup           2726.612 ms      0.000 ms      0.000 ms
+Gates Precomputation      1.845 ms      0.000 ms      0.000 ms
+Gates Online          1957.184 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   22726.129 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 12.113 MiB in 13693 messages
+Received: 22.194 MiB in 13693 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_Exp_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              8.370 ms      0.000 ms      0.000 ms
+MT Setup              1998.403 ms      0.000 ms      0.000 ms
+SP Presetup            320.661 ms      0.000 ms      0.000 ms
+SP Setup             17079.867 ms      0.000 ms      0.000 ms
+SB Presetup              0.006 ms      0.000 ms      0.000 ms
+SB Setup             22001.945 ms      0.000 ms      0.000 ms
+Base OTs               398.354 ms      0.000 ms      0.000 ms
+OT Extension Setup    6212.740 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total  28943.216 ms      0.000 ms      0.000 ms
+Gates Setup           4599.656 ms      0.000 ms      0.000 ms
+Gates Precomputation     16.115 ms      0.000 ms      0.000 ms
+Gates Online          3246.732 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   36807.574 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 19.826 MiB in 22027 messages
+Received: 35.860 MiB in 22027 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_Ln_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.557 ms      0.000 ms      0.000 ms
+MT Setup              1529.723 ms      0.000 ms      0.000 ms
+SP Presetup            175.488 ms      0.000 ms      0.000 ms
+SP Setup             12014.501 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup             15060.994 ms      0.000 ms      0.000 ms
+Base OTs               341.675 ms      0.000 ms      0.000 ms
+OT Extension Setup    3998.779 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total  19579.902 ms      0.000 ms      0.000 ms
+Gates Setup           2969.307 ms      0.000 ms      0.000 ms
+Gates Precomputation      1.296 ms      0.000 ms      0.000 ms
+Gates Online          2004.245 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   24555.325 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 12.704 MiB in 14332 messages
+Received: 23.281 MiB in 14332 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_Sqrt_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.567 ms      0.000 ms      0.000 ms
+MT Setup               750.842 ms      0.000 ms      0.000 ms
+SP Presetup            111.142 ms      0.000 ms      0.000 ms
+SP Setup              6692.417 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup              8261.909 ms      0.000 ms      0.000 ms
+Base OTs               471.540 ms      0.000 ms      0.000 ms
+OT Extension Setup    2065.592 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total  10912.641 ms      0.000 ms      0.000 ms
+Gates Setup           1638.080 ms      0.000 ms      0.000 ms
+Gates Precomputation      4.688 ms      0.000 ms      0.000 ms
+Gates Online          1463.218 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   14019.117 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 6.922 MiB in 8227 messages
+Received: 12.619 MiB in 8227 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx_Sqrt_P0132_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              6.046 ms      0.000 ms      0.000 ms
+MT Setup              1052.183 ms      0.000 ms      0.000 ms
+SP Presetup            116.660 ms      0.000 ms      0.000 ms
+SP Setup              7797.575 ms      0.000 ms      0.000 ms
+SB Presetup              0.003 ms      0.000 ms      0.000 ms
+SB Setup              9702.018 ms      0.000 ms      0.000 ms
+Base OTs               373.458 ms      0.000 ms      0.000 ms
+OT Extension Setup    3041.921 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total  13245.258 ms      0.000 ms      0.000 ms
+Gates Setup           1902.826 ms      0.000 ms      0.000 ms
+Gates Precomputation      1.355 ms      0.000 ms      0.000 ms
+Gates Online          1715.062 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation   16865.141 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 9.093 MiB in 10235 messages
+Received: 16.202 MiB in 10235 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation Fx2FL_agmw bit size 128 SIMD 1
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 119830
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.647 ms      0.000 ms      0.000 ms
+MT Setup               221.776 ms      0.000 ms      0.000 ms
+SP Presetup             20.319 ms      0.000 ms      0.000 ms
+SP Setup              1208.887 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup              1524.832 ms      0.000 ms      0.000 ms
+Base OTs               460.291 ms      0.000 ms      0.000 ms
+OT Extension Setup     425.152 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   2432.137 ms      0.000 ms      0.000 ms
+Gates Setup            268.385 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.784 ms      0.000 ms      0.000 ms
+Gates Online           622.970 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    3326.489 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 1.438 MiB in 2166 messages
+Received: 2.586 MiB in 2166 messages
+===========================================================================
+
+

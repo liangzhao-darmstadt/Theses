@@ -1,0 +1,1122 @@
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kEQ bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.132 ms      0.000 ms      0.000 ms
+MT Setup               154.666 ms      0.000 ms      0.000 ms
+SP Presetup             10.899 ms      0.000 ms      0.000 ms
+SP Setup               565.507 ms      0.000 ms      0.000 ms
+SB Presetup              0.003 ms      0.000 ms      0.000 ms
+SB Setup               696.290 ms      0.000 ms      0.000 ms
+Base OTs               334.591 ms      0.000 ms      0.000 ms
+OT Extension Setup     143.051 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1186.102 ms      0.000 ms      0.000 ms
+Gates Setup              1.726 ms      0.000 ms      0.000 ms
+Gates Precomputation      1.008 ms      0.000 ms      0.000 ms
+Gates Online           133.125 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1323.338 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.572 MiB in 647 messages
+Received: 1.068 MiB in 647 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kEQC bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.259 ms      0.000 ms      0.000 ms
+MT Setup               161.888 ms      0.000 ms      0.000 ms
+SP Presetup             15.171 ms      0.000 ms      0.000 ms
+SP Setup               645.682 ms      0.000 ms      0.000 ms
+SB Presetup              0.007 ms      0.000 ms      0.000 ms
+SB Setup               809.061 ms      0.000 ms      0.000 ms
+Base OTs               368.194 ms      0.000 ms      0.000 ms
+OT Extension Setup     195.874 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1389.705 ms      0.000 ms      0.000 ms
+Gates Setup             20.713 ms      0.000 ms      0.000 ms
+Gates Precomputation      1.351 ms      0.000 ms      0.000 ms
+Gates Online           178.676 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1591.216 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.572 MiB in 647 messages
+Received: 1.068 MiB in 647 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kEQZ bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.138 ms      0.000 ms      0.000 ms
+MT Setup               111.278 ms      0.000 ms      0.000 ms
+SP Presetup              9.316 ms      0.000 ms      0.000 ms
+SP Setup               547.557 ms      0.000 ms      0.000 ms
+SB Presetup              0.005 ms      0.000 ms      0.000 ms
+SB Setup               760.312 ms      0.000 ms      0.000 ms
+Base OTs               436.686 ms      0.000 ms      0.000 ms
+OT Extension Setup     143.264 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1350.889 ms      0.000 ms      0.000 ms
+Gates Setup              2.551 ms      0.000 ms      0.000 ms
+Gates Precomputation      2.828 ms      0.000 ms      0.000 ms
+Gates Online           289.205 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1646.957 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.572 MiB in 647 messages
+Received: 1.068 MiB in 647 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kLTBits bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.313 ms      0.000 ms      0.000 ms
+MT Setup                 0.245 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               415.653 ms      0.000 ms      0.000 ms
+OT Extension Setup      12.041 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    429.203 ms      0.000 ms      0.000 ms
+Gates Setup             34.505 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           525.588 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation     990.759 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.149 MiB in 1539 messages
+Received: 0.149 MiB in 1539 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kLTTBits bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.245 ms      0.000 ms      0.000 ms
+MT Setup                 1.061 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               384.382 ms      0.000 ms      0.000 ms
+OT Extension Setup      17.409 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    403.705 ms      0.000 ms      0.000 ms
+Gates Setup             25.491 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           511.476 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation     942.424 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.174 MiB in 1795 messages
+Received: 0.174 MiB in 1795 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kLTC bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.390 ms      0.000 ms      0.000 ms
+MT Setup               182.593 ms      0.000 ms      0.000 ms
+SP Presetup              8.900 ms      0.000 ms      0.000 ms
+SP Setup               613.127 ms      0.000 ms      0.000 ms
+SB Presetup              0.003 ms      0.000 ms      0.000 ms
+SB Setup               740.420 ms      0.000 ms      0.000 ms
+Base OTs               428.345 ms      0.000 ms      0.000 ms
+OT Extension Setup     193.744 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1373.036 ms      0.000 ms      0.000 ms
+Gates Setup             30.854 ms      0.000 ms      0.000 ms
+Gates Precomputation      2.730 ms      0.000 ms      0.000 ms
+Gates Online           680.726 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    2090.712 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.826 MiB in 3205 messages
+Received: 1.322 MiB in 3205 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kLTEQC bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.286 ms      0.000 ms      0.000 ms
+MT Setup               228.566 ms      0.000 ms      0.000 ms
+SP Presetup             21.030 ms      0.000 ms      0.000 ms
+SP Setup               977.198 ms      0.000 ms      0.000 ms
+SB Presetup              0.003 ms      0.000 ms      0.000 ms
+SB Setup              1223.746 ms      0.000 ms      0.000 ms
+Base OTs               359.197 ms      0.000 ms      0.000 ms
+OT Extension Setup     315.640 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1921.104 ms      0.000 ms      0.000 ms
+Gates Setup             33.273 ms      0.000 ms      0.000 ms
+Gates Precomputation      3.351 ms      0.000 ms      0.000 ms
+Gates Online           541.300 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    2500.215 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 1.363 MiB in 3462 messages
+Received: 2.355 MiB in 3462 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kLTS bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.330 ms      0.000 ms      0.000 ms
+MT Setup                20.910 ms      0.000 ms      0.000 ms
+SP Presetup              1.509 ms      0.000 ms      0.000 ms
+SP Setup                22.130 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup                31.473 ms      0.000 ms      0.000 ms
+Base OTs               404.609 ms      0.000 ms      0.000 ms
+OT Extension Setup      77.657 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    517.659 ms      0.000 ms      0.000 ms
+Gates Setup             36.318 ms      0.000 ms      0.000 ms
+Gates Precomputation    213.207 ms      0.000 ms      0.000 ms
+Gates Online           469.042 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1239.058 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.557 MiB in 3078 messages
+Received: 0.555 MiB in 3078 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kLTEQS bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.583 ms      0.000 ms      0.000 ms
+MT Setup                71.312 ms      0.000 ms      0.000 ms
+SP Presetup              3.386 ms      0.000 ms      0.000 ms
+SP Setup                75.920 ms      0.000 ms      0.000 ms
+SB Presetup              0.007 ms      0.000 ms      0.000 ms
+SB Setup                92.507 ms      0.000 ms      0.000 ms
+Base OTs               630.012 ms      0.000 ms      0.000 ms
+OT Extension Setup     115.379 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    855.149 ms      0.000 ms      0.000 ms
+Gates Setup             84.551 ms      0.000 ms      0.000 ms
+Gates Precomputation    352.531 ms      0.000 ms      0.000 ms
+Gates Online           504.563 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1799.944 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.698 MiB in 3207 messages
+Received: 0.695 MiB in 3207 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kLTZ bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup             11.546 ms      0.000 ms      0.000 ms
+SP Setup               549.953 ms      0.000 ms      0.000 ms
+SB Presetup              0.005 ms      0.000 ms      0.000 ms
+SB Setup               718.518 ms      0.000 ms      0.000 ms
+Base OTs               342.140 ms      0.000 ms      0.000 ms
+OT Extension Setup     177.349 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1250.404 ms      0.000 ms      0.000 ms
+Gates Setup            192.765 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           105.865 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1550.609 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.626 MiB in 1029 messages
+Received: 1.122 MiB in 1029 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kLT bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup             13.178 ms      0.000 ms      0.000 ms
+SP Setup               474.112 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup               606.149 ms      0.000 ms      0.000 ms
+Base OTs               584.362 ms      0.000 ms      0.000 ms
+OT Extension Setup     204.026 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1408.827 ms      0.000 ms      0.000 ms
+Gates Setup            168.756 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online            76.195 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1654.601 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.626 MiB in 1029 messages
+Received: 1.122 MiB in 1029 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kModPow2m bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.204 ms      0.000 ms      0.000 ms
+MT Setup               134.099 ms      0.000 ms      0.000 ms
+SP Presetup             10.433 ms      0.000 ms      0.000 ms
+SP Setup               498.236 ms      0.000 ms      0.000 ms
+SB Presetup              0.003 ms      0.000 ms      0.000 ms
+SB Setup               670.773 ms      0.000 ms      0.000 ms
+Base OTs               365.415 ms      0.000 ms      0.000 ms
+OT Extension Setup     163.909 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1211.681 ms      0.000 ms      0.000 ms
+Gates Setup             39.919 ms      0.000 ms      0.000 ms
+Gates Precomputation      2.705 ms      0.000 ms      0.000 ms
+Gates Online           462.931 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1718.644 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.685 MiB in 1782 messages
+Received: 1.181 MiB in 1782 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kObliviousModPow2m bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup             11.877 ms      0.000 ms      0.000 ms
+MT Setup               337.867 ms      0.000 ms      0.000 ms
+SP Presetup             36.188 ms      0.000 ms      0.000 ms
+SP Setup              1894.976 ms      0.000 ms      0.000 ms
+SB Presetup              0.003 ms      0.000 ms      0.000 ms
+SB Setup              2404.055 ms      0.000 ms      0.000 ms
+Base OTs               453.613 ms      0.000 ms      0.000 ms
+OT Extension Setup    1118.341 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   4025.394 ms      0.000 ms      0.000 ms
+Gates Setup            273.266 ms      0.000 ms      0.000 ms
+Gates Precomputation      1.380 ms      0.000 ms      0.000 ms
+Gates Online           655.573 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    4957.783 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 3.833 MiB in 2565 messages
+Received: 5.818 MiB in 2565 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kLogicalRightShift_slow bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.218 ms      0.000 ms      0.000 ms
+MT Setup                97.096 ms      0.000 ms      0.000 ms
+SP Presetup              9.348 ms      0.000 ms      0.000 ms
+SP Setup               496.706 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup               619.374 ms      0.000 ms      0.000 ms
+Base OTs               462.837 ms      0.000 ms      0.000 ms
+OT Extension Setup     169.969 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1262.672 ms      0.000 ms      0.000 ms
+Gates Setup             28.114 ms      0.000 ms      0.000 ms
+Gates Precomputation      2.285 ms      0.000 ms      0.000 ms
+Gates Online           377.029 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1671.176 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.693 MiB in 1786 messages
+Received: 1.197 MiB in 1786 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kLogicalRightShift bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup             10.750 ms      0.000 ms      0.000 ms
+SP Setup               523.198 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup               664.875 ms      0.000 ms      0.000 ms
+Base OTs               340.231 ms      0.000 ms      0.000 ms
+OT Extension Setup     153.143 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1169.726 ms      0.000 ms      0.000 ms
+Gates Setup            155.587 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           123.645 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1449.837 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.626 MiB in 1029 messages
+Received: 1.122 MiB in 1029 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kLogicalLeftShift bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs                 0.000 ms      0.000 ms      0.000 ms
+OT Extension Setup       0.000 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total      0.640 ms      0.000 ms      0.000 ms
+Gates Setup              0.362 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online             0.796 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation       2.780 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.000 MiB in 3 messages
+Received: 0.000 MiB in 3 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kArithmeticRightShift bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup              8.085 ms      0.000 ms      0.000 ms
+SP Setup               511.361 ms      0.000 ms      0.000 ms
+SB Presetup              0.005 ms      0.000 ms      0.000 ms
+SB Setup               632.256 ms      0.000 ms      0.000 ms
+Base OTs               321.542 ms      0.000 ms      0.000 ms
+OT Extension Setup     147.726 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1110.354 ms      0.000 ms      0.000 ms
+Gates Setup            152.750 ms      0.000 ms      0.000 ms
+Gates Precomputation      1.499 ms      0.000 ms      0.000 ms
+Gates Online           146.490 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1412.015 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.626 MiB in 1029 messages
+Received: 1.122 MiB in 1029 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kArithmeticLeftShift bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs                 0.000 ms      0.000 ms      0.000 ms
+OT Extension Setup       0.000 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total      0.443 ms      0.000 ms      0.000 ms
+Gates Setup              0.237 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online             1.017 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation       2.694 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.000 MiB in 3 messages
+Received: 0.000 MiB in 3 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kTruncPr bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup             10.100 ms      0.000 ms      0.000 ms
+SP Setup               517.446 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup               640.289 ms      0.000 ms      0.000 ms
+Base OTs               363.103 ms      0.000 ms      0.000 ms
+OT Extension Setup     167.677 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1182.062 ms      0.000 ms      0.000 ms
+Gates Setup              0.500 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.332 ms      0.000 ms      0.000 ms
+Gates Online             2.829 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1186.163 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.554 MiB in 393 messages
+Received: 1.050 MiB in 265 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kTruncPriv bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              3.516 ms      0.000 ms      0.000 ms
+MT Setup               191.102 ms      0.000 ms      0.000 ms
+SP Presetup             16.144 ms      0.000 ms      0.000 ms
+SP Setup               965.557 ms      0.000 ms      0.000 ms
+SB Presetup              0.003 ms      0.000 ms      0.000 ms
+SB Setup              1206.287 ms      0.000 ms      0.000 ms
+Base OTs               348.695 ms      0.000 ms      0.000 ms
+OT Extension Setup     397.357 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1972.986 ms      0.000 ms      0.000 ms
+Gates Setup            212.871 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           492.981 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    2680.970 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 1.755 MiB in 2053 messages
+Received: 2.747 MiB in 2053 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kTruncateAndReduce bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.311 ms      0.000 ms      0.000 ms
+MT Setup                57.142 ms      0.000 ms      0.000 ms
+SP Presetup              2.777 ms      0.000 ms      0.000 ms
+SP Setup                59.094 ms      0.000 ms      0.000 ms
+SB Presetup              0.003 ms      0.000 ms      0.000 ms
+SB Setup                69.004 ms      0.000 ms      0.000 ms
+Base OTs               377.700 ms      0.000 ms      0.000 ms
+OT Extension Setup     140.880 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    591.673 ms      0.000 ms      0.000 ms
+Gates Setup             18.279 ms      0.000 ms      0.000 ms
+Gates Precomputation    323.991 ms      0.000 ms      0.000 ms
+Gates Online           304.622 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1240.562 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.740 MiB in 3591 messages
+Received: 0.737 MiB in 3591 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kUnsignedExtension bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.331 ms      0.000 ms      0.000 ms
+MT Setup                44.695 ms      0.000 ms      0.000 ms
+SP Presetup              5.270 ms      0.000 ms      0.000 ms
+SP Setup                92.129 ms      0.000 ms      0.000 ms
+SB Presetup              0.003 ms      0.000 ms      0.000 ms
+SB Setup               113.611 ms      0.000 ms      0.000 ms
+Base OTs               429.503 ms      0.000 ms      0.000 ms
+OT Extension Setup     122.899 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    672.661 ms      0.000 ms      0.000 ms
+Gates Setup             59.109 ms      0.000 ms      0.000 ms
+Gates Precomputation      1.459 ms      0.000 ms      0.000 ms
+Gates Online           683.413 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1417.957 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.744 MiB in 3592 messages
+Received: 0.749 MiB in 3592 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kSignedExtension bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.313 ms      0.000 ms      0.000 ms
+MT Setup                50.592 ms      0.000 ms      0.000 ms
+SP Presetup              4.567 ms      0.000 ms      0.000 ms
+SP Setup                94.785 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup               111.600 ms      0.000 ms      0.000 ms
+Base OTs               344.197 ms      0.000 ms      0.000 ms
+OT Extension Setup     102.703 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    566.564 ms      0.000 ms      0.000 ms
+Gates Setup             55.994 ms      0.000 ms      0.000 ms
+Gates Precomputation     12.742 ms      0.000 ms      0.000 ms
+Gates Online           557.837 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1194.489 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.744 MiB in 3592 messages
+Received: 0.749 MiB in 3592 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kUnsignedMultiplicationWithExtension bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              1.470 ms      0.000 ms      0.000 ms
+MT Setup                91.057 ms      0.000 ms      0.000 ms
+SP Presetup              9.117 ms      0.000 ms      0.000 ms
+SP Setup               148.428 ms      0.000 ms      0.000 ms
+SB Presetup              0.003 ms      0.000 ms      0.000 ms
+SB Setup               197.593 ms      0.000 ms      0.000 ms
+Base OTs               351.085 ms      0.000 ms      0.000 ms
+OT Extension Setup     168.302 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    730.783 ms      0.000 ms      0.000 ms
+Gates Setup             51.389 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.917 ms      0.000 ms      0.000 ms
+Gates Online          1083.910 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1868.266 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 1.458 MiB in 6795 messages
+Received: 1.468 MiB in 6795 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kSignedMultiplicationWithExtension bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              1.427 ms      0.000 ms      0.000 ms
+MT Setup                52.364 ms      0.000 ms      0.000 ms
+SP Presetup              9.495 ms      0.000 ms      0.000 ms
+SP Setup               108.591 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup               162.074 ms      0.000 ms      0.000 ms
+Base OTs               345.162 ms      0.000 ms      0.000 ms
+OT Extension Setup     177.262 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    696.479 ms      0.000 ms      0.000 ms
+Gates Setup             66.257 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.923 ms      0.000 ms      0.000 ms
+Gates Online          1089.474 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1853.777 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 1.458 MiB in 6795 messages
+Received: 1.468 MiB in 6795 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_EdaBit bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup              9.713 ms      0.000 ms      0.000 ms
+SP Setup               505.512 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup               626.784 ms      0.000 ms      0.000 ms
+Base OTs               373.422 ms      0.000 ms      0.000 ms
+OT Extension Setup     161.631 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1172.516 ms      0.000 ms      0.000 ms
+Gates Setup              0.445 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.699 ms      0.000 ms      0.000 ms
+Gates Online             1.554 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1175.533 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.546 MiB in 390 messages
+Received: 1.034 MiB in 262 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kB2U bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              3.786 ms      0.000 ms      0.000 ms
+MT Setup               190.788 ms      0.000 ms      0.000 ms
+SP Presetup             15.626 ms      0.000 ms      0.000 ms
+SP Setup               932.315 ms      0.000 ms      0.000 ms
+SB Presetup              0.003 ms      0.000 ms      0.000 ms
+SB Setup              1179.331 ms      0.000 ms      0.000 ms
+Base OTs               334.257 ms      0.000 ms      0.000 ms
+OT Extension Setup     390.422 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1924.398 ms      0.000 ms      0.000 ms
+Gates Setup            172.890 ms      0.000 ms      0.000 ms
+Gates Precomputation      4.894 ms      0.000 ms      0.000 ms
+Gates Online           645.285 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    2748.050 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 1.761 MiB in 2311 messages
+Received: 2.753 MiB in 2311 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kDemux bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.256 ms      0.000 ms      0.000 ms
+MT Setup                 0.426 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs               429.932 ms      0.000 ms      0.000 ms
+OT Extension Setup     132.305 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    567.265 ms      0.000 ms      0.000 ms
+Gates Setup              2.764 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online            10.461 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation     581.454 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.053 MiB in 407 messages
+Received: 0.053 MiB in 407 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kDigitDecomposition bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.853 ms      0.000 ms      0.000 ms
+MT Setup                57.589 ms      0.000 ms      0.000 ms
+SP Presetup              9.831 ms      0.000 ms      0.000 ms
+SP Setup                62.012 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup                80.015 ms      0.000 ms      0.000 ms
+Base OTs               452.205 ms      0.000 ms      0.000 ms
+OT Extension Setup     199.424 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    743.264 ms      0.000 ms      0.000 ms
+Gates Setup             86.656 ms      0.000 ms      0.000 ms
+Gates Precomputation    816.489 ms      0.000 ms      0.000 ms
+Gates Online          1545.789 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    3200.269 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 1.810 MiB in 10876 messages
+Received: 1.591 MiB in 10876 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_MSNZB_ABZS bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.257 ms      0.000 ms      0.000 ms
+MT Setup                41.731 ms      0.000 ms      0.000 ms
+SP Presetup              0.803 ms      0.000 ms      0.000 ms
+SP Setup                41.909 ms      0.000 ms      0.000 ms
+SB Presetup              0.006 ms      0.000 ms      0.000 ms
+SB Setup                42.414 ms      0.000 ms      0.000 ms
+Base OTs               537.857 ms      0.000 ms      0.000 ms
+OT Extension Setup      11.525 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    595.388 ms      0.000 ms      0.000 ms
+Gates Setup            192.521 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           218.323 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1007.908 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.114 MiB in 1102 messages
+Received: 0.112 MiB in 1102 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_MSNZB_SIRNN bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.586 ms      0.000 ms      0.000 ms
+MT Setup                50.505 ms      0.000 ms      0.000 ms
+SP Presetup              3.071 ms      0.000 ms      0.000 ms
+SP Setup                50.293 ms      0.000 ms      0.000 ms
+SB Presetup              0.003 ms      0.000 ms      0.000 ms
+SB Setup                58.839 ms      0.000 ms      0.000 ms
+Base OTs               360.530 ms      0.000 ms      0.000 ms
+OT Extension Setup      64.757 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total    488.890 ms      0.000 ms      0.000 ms
+Gates Setup             40.814 ms      0.000 ms      0.000 ms
+Gates Precomputation   1836.984 ms      0.000 ms      0.000 ms
+Gates Online           495.085 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    2862.253 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.748 MiB in 4259 messages
+Received: 0.625 MiB in 4259 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kPow2 bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              3.789 ms      0.000 ms      0.000 ms
+MT Setup               133.390 ms      0.000 ms      0.000 ms
+SP Presetup             11.955 ms      0.000 ms      0.000 ms
+SP Setup               533.086 ms      0.000 ms      0.000 ms
+SB Presetup              0.004 ms      0.000 ms      0.000 ms
+SB Setup               657.542 ms      0.000 ms      0.000 ms
+Base OTs               468.145 ms      0.000 ms      0.000 ms
+OT Extension Setup     215.335 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   1357.699 ms      0.000 ms      0.000 ms
+Gates Setup            115.846 ms      0.000 ms      0.000 ms
+Gates Precomputation      0.000 ms      0.000 ms      0.000 ms
+Gates Online           391.060 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    1866.312 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 1.160 MiB in 1412 messages
+Received: 1.656 MiB in 1412 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kInt2FL bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.569 ms      0.000 ms      0.000 ms
+MT Setup               202.421 ms      0.000 ms      0.000 ms
+SP Presetup             17.852 ms      0.000 ms      0.000 ms
+SP Setup              1149.716 ms      0.000 ms      0.000 ms
+SB Presetup              0.003 ms      0.000 ms      0.000 ms
+SB Setup              1440.260 ms      0.000 ms      0.000 ms
+Base OTs               395.911 ms      0.000 ms      0.000 ms
+OT Extension Setup     392.877 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total   2248.671 ms      0.000 ms      0.000 ms
+Gates Setup            254.671 ms      0.000 ms      0.000 ms
+Gates Precomputation      3.412 ms      0.000 ms      0.000 ms
+Gates Online           683.729 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation    3191.828 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 1.497 MiB in 2265 messages
+Received: 2.694 MiB in 2265 messages
+===========================================================================
+
+
+ArithmeticGMW===========================================================================
+Protocol ArithmeticGMW operation AGMW_kInt2Fx bit size 128 SIMD 0
+===========================================================================
+MOTION version: d465d60-dirty @ master
+invocation: ./benchmark_liangzhao_arithmetic_gmw_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
+by liangzhao@aw17r4, PID 108890
+===========================================================================
+Run time statistics over 1 iterations
+---------------------------------------------------------------------------
+                          mean        median        stddev
+---------------------------------------------------------------------------
+MT Presetup              0.000 ms      0.000 ms      0.000 ms
+MT Setup                 0.000 ms      0.000 ms      0.000 ms
+SP Presetup              0.000 ms      0.000 ms      0.000 ms
+SP Setup                 0.000 ms      0.000 ms      0.000 ms
+SB Presetup              0.000 ms      0.000 ms      0.000 ms
+SB Setup                 0.000 ms      0.000 ms      0.000 ms
+Base OTs                 0.000 ms      0.000 ms      0.000 ms
+OT Extension Setup       0.000 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Preprocessing Total      0.440 ms      0.000 ms      0.000 ms
+Gates Setup              1.057 ms      0.000 ms      0.000 ms
+Gates Precomputation      2.898 ms      0.000 ms      0.000 ms
+Gates Online             1.352 ms      0.000 ms      0.000 ms
+---------------------------------------------------------------------------
+Circuit Evaluation       7.551 ms      0.000 ms      0.000 ms
+===========================================================================
+Communication with each other party:
+Sent: 0.000 MiB in 3 messages
+Received: 0.000 MiB in 3 messages
+===========================================================================
+
+

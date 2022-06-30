@@ -1,0 +1,4 @@
+Protocol,Preproc. (ms),Total (ms),Sent (ms),Sent Msg,Rec (ms),Rec Msg
+GeoSample,520.633,2791.701,1.249,12617,1.249,12617
+UniformFloat,390.902,2574.189,1.257,12705,1.257,12705
+SnappingMechanism,643.724,43103.285,10.227,104093,10.227,104093

@@ -1,0 +1,156 @@
+\chapter{Benchmark}
+\label{cha:benchmark}
+
+
+% % example plot
+% \begin{figure}[H]
+%     \centering
+%     \begin{tikzpicture}[]
+%         \begin{axis}[
+%             legend style={at={(1.05, 0.5)}, anchor = west}, %place legend outside of diagram. right side, centered vertically.
+%             xlabel={Number of Things},
+%             ylabel={Count [Unit]},
+%             %axis y discontinuity = parallel,
+%             axis y line = left,
+%             axis x line = bottom,
+%             ymin = 0,
+%             ymax = 4,
+%             xmin = 0,
+%             xmax = 9,
+%             grid = both,
+%             minor tick num = 1,
+%             width = 7cm,
+%             height = 5cm,
+%             %legend pos = outer north east,
+%             legend entries = {A, B},
+%             legend cell align = left,
+%         ]
+%         % \addplot+ table[x=inputs, y=timeA] {data/example.dat};
+%         % \addplot+ table[x=inputs, y=timeB] {data/example.dat};
+%         \addplot+ table[x=inputs, y=timeA] {data/benchmark_liangzhao_arithmetic_gmw_operation_P0.csv};
+%         \addplot+ table[x=inputs, y=timeB] {data/benchmark_liangzhao_arithmetic_gmw_operation_P0.csv};
+%         \end{axis}
+%     \end{tikzpicture}
+%     \caption[Example PGF Plot]{Example Plot made with pgfplots. Here we visualize the data from~\autoref{tab:runtimes_aes_sha}.}
+%     \label{fig:example_plot}
+%     \end{figure}
+
+\section{Arithmetic Gmw Operation}
+\begin{table}[H]
+	\centering
+	\caption[Run-times in microseconds for arithmetic gmw operations (128-bit) of two parties]{Run-times in microseconds for arithmetic gmw operations (128-bit) of two parties}
+	\label{tab:table_ex}
+\pgfplotstabletypeset[
+    multicolumn names, % allows to have multicolumn names
+	col sep=comma,
+	columns/Protocol/.style={string type}
+]{data/benchmark_liangzhao_arithmetic_gmw_operation_P0.csv}
+\end{table} 
+\FloatBarrier
+
+\section{Floating-Point Operations}
+\begin{table}[H]
+	\centering
+	\caption[Run-times in microseconds for floating-point operations based on boolean circuit (bgmw, 64-bit, SIMD = 1) of two parties]{Run-times in microseconds for floating-point operations based on boolean circuit (bgmw, 64-bit, SIMD = 1) of two parties}
+	\label{tab:table_ex}
+\pgfplotstabletypeset[
+    multicolumn names, % allows to have multicolumn names
+	col sep=comma,
+	columns/Protocol/.style={string type}
+]{data/benchmark_liangzhao_floating_point_operation_bgmw_simd_1.csv}
+\end{table} 
+\FloatBarrier
+
+\begin{table}[H]
+	\centering
+	\caption[Run-times in microseconds for floating-point operations based on boolean circuit amortized over 1000 SIMD (bgmw, 64-bit) of two parties]{Run-times in microseconds for floating-point operations based on boolean circuit amortized over 1000 SIMD (bgmw, 64-bit) of two parties}
+	\label{tab:table_ex}
+\pgfplotstabletypeset[
+    multicolumn names, % allows to have multicolumn names
+	col sep=comma,
+	columns/Protocol/.style={string type}
+]{data/benchmark_liangzhao_floating_point_operation_bgmw_simd_1000.csv}
+\end{table} 
+\FloatBarrier
+
+
+\begin{table}[H]
+	\centering
+	\caption[Run-times in microseconds for floating-point operations based on arithmetic gmw (128-bit) of two parties]{Run-times in microseconds for floating-point operations based on arithmetic gmw (128-bit) of two parties}
+	\label{tab:table_ex}
+\pgfplotstabletypeset[
+    multicolumn names, % allows to have multicolumn names
+	col sep=comma,
+	columns/Protocol/.style={string type}
+]{data/benchmark_liangzhao_floating_point_operation_agmw.csv}
+\end{table} 
+\FloatBarrier
+
+\section{Fixed-Point Operations}
+\begin{table}[H]
+	\centering
+	\caption[Run-times in microseconds for fixed-point operations based on boolean circuit (bgmw, 64-bit, SIMD = 1) of two parties]{Run-times in microseconds for fixed-point operations based on boolean circuit (bgmw, 64-bit, SIMD = 1) of two parties}
+	\label{tab:table_ex}
+\pgfplotstabletypeset[
+    multicolumn names, % allows to have multicolumn names
+	col sep=comma,
+	columns/Protocol/.style={string type}
+]{data/benchmark_liangzhao_fixed_point_operation_bgmw_simd_1.csv}
+\end{table} 
+\FloatBarrier
+
+\begin{table}[H]
+	\centering
+	\caption[Run-times in microseconds for fixed-point operations based on boolean circuit amortized over 1000 SIMD (bgmw, 64-bit) of two parties]{Run-times in microseconds for fixed-point operations based on boolean circuit amortized over 1000 SIMD (bgmw, 64-bit) of two parties}
+	\label{tab:table_ex}
+\pgfplotstabletypeset[
+    multicolumn names, % allows to have multicolumn names
+	col sep=comma,
+	columns/Protocol/.style={string type}
+]{data/benchmark_liangzhao_fixed_point_operation_bgmw_simd_1000.csv}
+\end{table} 
+\FloatBarrier
+
+
+\begin{table}[H]
+	\centering
+	\caption[Run-times in microseconds for fixed-point operations based on arithmetic gmw (128-bit) of two parties]{Run-times in microseconds for fixed-point operations based on arithmetic gmw (128-bit) of two parties}
+	\label{tab:table_ex}
+\pgfplotstabletypeset[
+    multicolumn names, % allows to have multicolumn names
+	col sep=comma,
+	columns/Protocol/.style={string type}
+]{data/benchmark_liangzhao_fixed_point_operation_agmw.csv}
+\end{table} 
+\FloatBarrier
+
+\section{DP Mechanism}
+\begin{table}[H]
+	\centering
+	\caption[Run-times in microseconds for DP mechanism based on boolean circuit (bgmw, 64-bit, SIMD = 1) of two parties]{Run-times in microseconds for DP mechanism based on boolean circuit (bgmw, 64-bit, SIMD = 1) of two parties}
+	\label{tab:table_ex}
+\pgfplotstabletypeset[
+    multicolumn names, % allows to have multicolumn names
+	col sep=comma,
+	columns/Protocol/.style={string type}
+]{data/benchmark_liangzhao_dp_mechanism_simd_1.csv}
+\end{table} 
+\FloatBarrier
+
+\begin{table}[H]
+	\centering
+	\caption[Run-times in microseconds for DP mechanism based on boolean circuit amortized over 1000 SIMD (bgmw, 64-bit) of two parties]{Run-times in microseconds for DP mechanism based on boolean circuit amortized over 1000 SIMD (bgmw, 64-bit) of two parties}
+	\label{tab:table_ex}
+\pgfplotstabletypeset[
+    multicolumn names, % allows to have multicolumn names
+	col sep=comma,
+	columns/Protocol/.style={string type}
+]{data/benchmark_liangzhao_dp_mechanism_simd_1000.csv}
+\end{table} 
+\FloatBarrier
+
+
+
+
+
+

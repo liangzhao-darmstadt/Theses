@@ -1,0 +1,38 @@
+% macros
+\input{frontbackmatter/macros}
+
+%%%%%%%%%%%%%%%%%%%%
+% Affidavit, Abstract, Acknowledgment
+
+\cleardoublepage
+\ETaffidavit
+\cleardoublepage
+\input{frontbackmatter/abstract}
+\cleardoublepage
+\input{frontbackmatter/acknowledgment}
+\cleardoublepage
+
+\pagenumbering{Roman}
+\tableofcontents
+\cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%
+% Your actual content
+
+\pagenumbering{arabic}
+\input{content/yourcontent} % put your content in there
+
+%%%%%%%%%%%%%%%%%%%%
+% Lists, Bibliography and Appendix
+
+\clearpage
+\listoffigures
+\listoftables
+%\listofprotocols % uncomment if needed
+\input{frontbackmatter/abbreviations}
+\clearpage
+\printbibliography
+
+%The appendix. Comment out if unnecessary.
+\appendix
+\input{frontbackmatter/appendix}

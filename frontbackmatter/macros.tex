@@ -1,0 +1,74 @@
+\newcommand{\smpc}{\ac{SMPC}\xspace}
+
+
+% macros for annotations in the text
+\ifsubmission
+  % hide comments and todos in submission version
+  \newcommand{\TODO}[1]{}
+  \newcommand{\TODOM}[1]{}
+  \newcommand{\CHANGED}[1]{#1}
+  \newcommand{\del}[1]{}
+  \newcommand{\add}[1]{#1}
+  \newcommand{\TOASK}[1]{}
+\else
+  % show comments and todos in draft version
+  \newcommand{\TODO}[1]{\textcolor{red}{TODO: #1}}               % add inline TODOs
+  \newcommand{\TODOM}[1]{\marginpar{\textcolor{red}{TODO: #1}}}  % add TODOs in the sidebar
+  \newcommand{\CHANGED}[1]{\textcolor{blue}{#1}}                 % use \CHANGED{} to highlight changed content for receiving helpful feedback during a review
+  \newcommand{\del}[1]{\textcolor{purple}{\sout{#1}}}            % use \del{} to highlight deleted text
+  \newcommand{\add}[1]{\textcolor{darkgreen}{#1}}              % use \add{} to highlight new text
+  \newcommand{\TOASK}[1]{\marginpar{\textcolor{green}{ASK: #1}}} % annotate things to ask (e.g., during the next meeting with your supervisor)
+\fi
+
+
+% definition of shortcuts for your convenience
+\newcommand{\xangle}{\langle x\rangle}
+\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
+\newcommand{\randomsample}{\ \mathrm{\leftarrow_{\$}}}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{observation}{Observation}[section]
+\newtheorem{remark}{Remark}
+
+
+% definition of symbol commands (use these so that irregularities within the paper can be avoided)
+% feel free to add additional commands here :)
+\newcommand{\On}{\mathcal{O}(n)}
+\newcommand{\Tnlogn}{\Theta(n\log n)}
+\newcommand{\securityparam}{\kappa}
+\newcommand{\tresholdt}{\tau}
+\newcommand{\client}{\mathcal{C}}
+\newcommand{\server}{\mathcal{S}}
+\newcommand{\attacker}{\mathcal{A}}
+\newcommand{\algo}[1]{\textit{#1}}
+
+
+% definition of colors (to be used in pgfplots)
+\definecolor{myblue}{RGB}{0, 37, 173}
+\definecolor{mygreen}{RGB}{0, 173, 78}
+\definecolor{myred}{RGB}{220, 20, 60}
+\definecolor{mygray}{RGB}{119,136,153}
+\definecolor{myorange}{RGB}{184, 134, 11}
+\definecolor{darkgreen}{rgb}{0.0, 0.4, 0}
+
+
+% definition of conferences (to be used in bibliography.bib)
+\newcommand{\acmconf}{CCS'}
+\newcommand{\acmconfel}{Electronic Commerce~(EC'}
+\newcommand{\ieeesymp}{IEEE S\&P'}
+\newcommand{\ieeetrans}{IEEE Transactions on Computers}
+\newcommand{\advcrypt}{Advances in Cryptology -- }
+\newcommand{\foundcs}{FOCS'}
+\newcommand{\stoc}{STOC'}
+\newcommand{\ndss}{NDSS'}
+\newcommand{\fc}{FC'}
+\newcommand{\inscrypt}{Information Security and Cryptology~(INSCRYPT'}
+\newcommand{\icisc}{ICISC'}
+\newcommand{\icalp}{ICALP'}
+\newcommand{\jcrypt}{J.~Cryptology}
+\newcommand{\usenix}{{USENIX} Security'}
+
+% definition of Arithmetic, Boolean and Yao sharing
+\newcommand{\ARITH}{\ensuremath{A}\xspace}
+\newcommand{\BOOL}{\ensuremath{B}\xspace}
+\newcommand{\YAO}{\ensuremath{Y}\xspace}

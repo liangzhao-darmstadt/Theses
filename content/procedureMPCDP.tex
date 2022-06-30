@@ -1,0 +1,450 @@
+\chapter{General Procedure for MPC-DP Protocols}
+\label{cha:ProcedureMPCDP}
+
+% copy to overleaf start from here
+
+% \textbf{To do}:\\
+% prelimineary part:
+% \begin{itemize}
+% 	\item \textit{!suppose MPC, outsource, secret-share, DP is introduced in preliminary part. }
+% 	\item For $n \in \mathbb{N}$, $\left[ n\right] $ denotes $\left\{ z\in \mathbb{Z}:1\leq z\leq n\right\} $.
+% 	\item For $n \in \mathbb{N}$, $\left[ 0\ldots n\right] $ denotes $\left\{ z\in \mathbb{Z}:0\leq z\leq n-1\right\} $
+% 	\item distribution definition (bern, bino, laplace, gaussian, discrete laplace)
+% 	\item central limit theory
+% 	\item inversion method
+% 	\item define infimum
+% 	\item add reference and cross reference.
+% 	\item rename protocol for consistency
+% 	\item define term
+% \end{itemize}
+
+
+\section{MPC-DP Protocols}
+
+\CHANGED{revised based on feedback}
+
+In this chapter, we restate the investigated research problem formally and introduce our new MPC-DP protocol that combines secure multi-party computation protocols and differentially private mechanisms.
+
+Let a dataset $D=\left( D_{1},\ldots, D_{n}\right) $ be distributed among $n$ parties $\left( P_{i}\right) _{i\in \left[ n\right] }$ who do not trust each other, where party $P_{i}$ owns data $D_{i}$. The parties $\left(P_{i}\right)_{i \in \left[ n\right]} $ wish to jointly compute a public function $f$ on their private inputs $\left(pre\left(D_i\right)\right)_{i \in \left[ n\right]} $ and get the result of $f\left(pre\left(D_1\right),\ldots,pre\left(D_n\right)\right)$, where $pre$ is a pre-processing function executing on their local data $\left(D_i\right)_{i \in \left[ n\right]} $. The parties want to achieve both computional privacy (i.e., each party's input is kept secret), output privacy (i.e., an adversary cannot infer sensitive information of parties), and obatin a result with reasonable accuracy.
+% \begin{enumerate}
+% 	\item The computation of $f$ should reveal nothing but the result.
+% 	\item The computation result of $f\left(pre\left(D_1\right),\ldots,pre\left(D_N\right)\right)$ should be identical to the scenario, where a trusted server has access to the whole dataset $D$ and computes $f\left( pre\left(D\right) \right)$ locally, i.e., $f\left(pre\left(D_1\right),\ldots,pre\left(D_N\right)\right)=f\left( pre(D)\right)$.
+% 	\item The result has to satisfy the differential privacy by adding it with noise, i.e., an adversary cannot infer too much information from the noisy result.
+% 	\item The noisy result can still provide statistically useful information.
+% \end{enumerate}
+
+To achieve the computional privacy, the parties can deploy a MPC protocol $\Uppi^{f}$ which takes $\left(pre\left(D_i\right)\right)_{i \in \left[ n\right]} $ as input and reveals only the computation result. For the last two requirements, we design a MPC-DP protocol which combines $\Uppi^{f}$ with a differentially private mechanism. Note that in following, we omit the data pre-processing procedure $pre\left(\cdot\right) $ for simplicity and use $f\left( D\right)$ to represent $f\left(D_1,\ldots,D_n\right)$.
+
+Before describing our MPC-DP protocol, let's consider a trival example that combines MPC protocols with a DP mechanism. Suppose the parties $\left(P_{i}\right)_{i \in \left[ n\right]} $ wish to calculate the sum of their local data $\left(D_{i}\right)_{i \in \left[ n\right]} $ with a public known function $f\left(D_1,\ldots,D_n\right)=\sum_{j=1}^{n} D_j$, and $f$ has $\ell_2$-\textit{sensitivity} $\Delta^{\left(f\right) } _2=1$ (cf.~\autoref{def:sensitivity}). Meanwhile, the parties require that only the computation result of $f$ should be revealed and differential privacy must be satisfied. To achieve this, each party first adds noise $r_i$ to its local data $D_i$ and determines $ y_{i}=D_{i} +r_{i}$. Recall that in \autoref{def:gaussianMechanism}, we have proved that $ y_{i}=$ satisfies $\left(\varepsilon ,\delta \right) $-DP for $r_i \sim \mathcal{N}\left( 0,\sigma ^{2}\right) $, where $\sigma ^{2}=\frac{2}{\varepsilon ^2}\cdot\ln\left(\frac{1.25}{\delta }\right)$ and $i\in \left[n\right] $. Then, the parties jointly run the MPC protocol $\Uppi^{f}$ with their private inputs $y_i$ to compute function $f$. After reconstruction they get:
+
+\begin{equation}
+	\begin{split}
+		f\left(y_1,\ldots,y_n\right)&=\sum_{j=1}^{n} y_j\\
+		&=\sum_{j=1}^{n}\left( D_j+ r_j\right).
+	\end{split}
+\end{equation}
+
+Because of the infinite divisibility of the normal distribution~\cite{patel1996handbook}, we have $\sum_{j=1}^{n} r_j \sim \mathcal{N}\left( 0,\sigma_{sum} ^{2}\right) $ for $\sigma_{sum} ^{2}=\sum ^{n}_{j=1}\sigma ^{2}$. Therefore, the computation result $f\left(y_1,\ldots,y_n\right)$ satisfies $\left(\frac{\varepsilon}{\sqrt{n}},\delta \right) $-DP.
+
+In general, the parties in above example can achieve $\left(\frac{\varepsilon}{\sqrt{n}},\delta \right) $-DP assuming no corrupted parties. However, in realistic scenarios, corrupted parties may try to extract information of certain parties by weaking the achieved differential privacy protection level.
+After executing above steps honestly and obtain the computation result $f\left(y_1,\ldots,y_n\right)$, the corrupted parties subtract the noise they have added from $f\left(y_1,\ldots,y_n\right)$. In the worst case, i.e., $n-1$ parties are corrupted, the differential privacy guarantee of $f\left(y_1,\ldots,y_n\right)$ reduces from $\left(\frac{\varepsilon}{\sqrt{n}},\delta \right) $-DP to $\left(\varepsilon,\delta \right) $-DP. If, however, $\left(\frac{\varepsilon}{\sqrt{n}},\delta \right) $-DP is required, one solution is that each party adds \textit{more} noise,.e.g, $r_i^{\prime} \sim \mathcal{N}\left( 0,n\cdot \sigma ^{2}\right) $, locally before running $\Uppi^{f}$. However, this can lead to a severely reduced accuracy and, thus, utility.
+
+To summarize, a well-designed MPC-DP protocol requires a more careful integration of MPC protocols and DP mechanisms. To guarantee the both the accuracy and privacy of the MPC-DP protocol, we define several requirements,that is based on the comparision to the centralized data server scenario, i.e., a trusted server that has access to all the parties' data $D$ locally computes $f\left( D\right) $ and adds noise for DP:
+
+\begin{enumerate}
+	\item The MPC-DP protocol should achieve the same privacy protection level as in the centralized data server scenario, and the amount of noise $r$ (in above example: $r=\sum_{j=1}^{n} r_j$) should be no more than that in the centralized data server scenario.
+	\item The differential privacy guarantee of the MPC-DP protocol should not degenerate in the presence of corrupted parties.
+\end{enumerate}
+
+We design our MPC-DP protocol that can be used directly among $n$ parties, or in an outsourcing scenario, i.e., an arbitrary amount of parties secret share their private inputs to $N$ ($N\ll n$) non-colluding computing parties. Then, the computing parties execute the $N$-party MPC-DP protocol, where they compute $f$ and add noise shares to get the noisy secret-shared results. Finally, the noisy secret-shared results are sent back to the parties for reconstruction. We assume semi-honest adversaries that follow the protocol specifications but wish to infer additional information.
+
+% Specifically, for $i\in \left[ n\right]$, party $P_{i} $ secret shares his inputs $D_i$ to $N$ computing parties $P_{0},\ldots,P_{N}$. For $j\in \left[ N\right]$, computing party $P_j$ runs MPC protocols for function $f$ with other computing parties using his secret-shared value $\left\langle D_1 \right\rangle _{j},\ldots,\left\langle D_n \right\rangle _{j} $ (received from $n$ parties) and get $\left\langle f\left(D\right) \right\rangle _j$. Then, computing party $P_j$ runs the MPC protocols for distributed noise generation (DNG) with other computing parties and get a secret-shared noise $\left\langle r\right\rangle_j $. Finally, computing party $P_j$ perturbs $\left\langle f\left(D\right) \right\rangle _j$ by computing $\left\langle M\left(D\right)\right\rangle_j=\Uppi^{Perturbation}\left(\left\langle f\left(D\right) \right\rangle_j+\left\langle r\right\rangle_j\right) $ and sends it to the parties responsible for the reconstruction. Note that during the distributed noise generation, each computing party only gets a secret-shared noise $\left\langle r\right\rangle $ and even $N-1$ colluding computing parties cannot reconstruct the noise $r$. After the reconstruction, only the perturbed (noisy) result $M\left(D\right)=\text{Perturb}\left(f\left(D\right)+r\right)  $ is revealed which computes function $f$ and guarantees differential privacy. More important is that we prevent excessive noise and ensure utility since the noise $r$ is generated by all the parties instead of by each party independently (as in the above example).
+
+
+
+~\autoref{prot:MPC-DP} describes the general procedure of our MPC-DP protocol. Note that the parties first calculate $\left\langle f\left(D\right)\right\rangle =\Uppi^{f }\left(\left\langle D_1 \right\rangle ,\ldots,\left\langle D_n \right\rangle\right) $ and add the distributed generated noise $\left\langle r\right\rangle$ (output perturbation) to guarantee differential privacy. In this work, we assume that each party has computed $\left\langle f\left(D\right) \right\rangle$ already and focus more on the process of $\Uppi^{DNG }$, i.e., distributed noise generation (DNG).
+
+\begin{protocol}[tbh!]
+	\centering
+	\fbox{
+		\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{MPC-DP}\left(\left\langle D_1 \right\rangle ,\ldots,\left\langle D_n \right\rangle\right) $}]{
+			\textbf{Input: $\left\langle D_1 \right\rangle ,\ldots,\left\langle D_n \right\rangle$ } \pcskipln \\
+			\textbf{Output: $\left\langle M\left(D\right)\right\rangle=\left\langle f\left(D\right) \right\rangle +\left\langle r\right\rangle$} \\
+			\text{Parties run $\left\langle f\left(D\right)\right\rangle =\Uppi^{f }\left(\left\langle D_1 \right\rangle ,\ldots,\left\langle D_n \right\rangle\right) $.}\\
+			\text{Parties run $\left\langle r\right\rangle =\Uppi^{DNG } $.}\\
+			\text{Parties run $\left\langle M\left(D\right)\right\rangle=\Uppi^{Perturb}\left(\left\langle f\left(D\right) \right\rangle,\left\langle r\right\rangle\right) $ and output $\left\langle M\left(D\right)\right\rangle$.}
+		}}
+	\caption{General framework for MPC-DP protocol.}
+	\label{prot:MPC-DP}
+\end{protocol}
+\FloatBarrier
+
+
+
+\section{Related Works}
+
+\TODO{Related Works, unsecure MPC-DP protocols}
+% % -----------------------------------------------------------------------
+% % algorithms for generating noise
+% \section{Algorithms for Noise Generation}
+% In this section, we first introduce essential algorithms for generating probability distributions. Then we describe the algorithms for generating Gaussian, Laplace, Finite-range discrete Laplace, and discrete Laplace noise.
+
+% \subsection{Basic Algorithms}
+
+% \subsubsection{Algorithm for Binomial Distribution}
+% Algorithm $Algo^{Binomial}$ converts a Bernoulli random variable to a binomial random variable. The input of $Algo^{Binomial}$ is bit string $s$ that takes on values 0 or 1 with equal probability $p=\frac{1}{2}$. Based on the fact that the sum of mutually independent Bernoulli random variables $X_{1},\ldots, X_{d}\sim Bernoulli\left( \frac{1}{2}\right) $ is a binomial random variable $Y=\sum ^{d}_{i=1}X_{i}\sim Binomial\left( d,\frac{1}{2}\right) $, we get a binomial random variable sampled from $ Binomial\left(d, \frac{1}{2}\right)$.
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 	\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{Binomial}$}]{
+% 	\textbf{Input: $s=\left( s_{1},\ldots ,s_{d}\right) \in \left\{ 0,1\right\} ^{d} $} \pcskipln \\
+% 	\textbf{Output: $bino \sim Binomial\left(d, \frac{1}{2}\right)$} \\
+% 	\text{$bino=\sum ^{d}_{i=1}s_{i} $.}
+% 	}}
+% 	\caption{Algorithm for binomial random variables.}
+% 	\label{algo:berntobinomial}
+% \end{protocol}
+% \FloatBarrier
+
+% \subsubsection{Algorithm for Uniform Distribution}
+% \begin{theorem}[Inversion-of-f Method for Monotone Densitiy~{\cite[Theorem 2.1]{Devroye1986}}]
+% 	\label{theorem:inversionfmethod}
+% 	Let $F$ be a continuous distribution function on $\mathbb{R}$ with inverse $F^{-1}$ deﬁned by
+% 	\[F^{-1}\left( u\right) =\inf \{ x:F\left( x\right) =u,0 <u < 1\} \]
+% 	If $U$ is a $Uniform\left( 0,1\right)$ random variate, then $F^{-1}\left( U\right)$ has a distribution function $F$. Also, if $X$ has distribution function $F$ , then $F\left( X\right) $ is uniformly distributed on $F\left( x\right) $.
+% \end{theorem}
+
+% Algorithm $Algo^{Uniform}$ uses the result of theorem \autoref{theorem:inversionfmethod} to generate a uniform random variable $uni \sim Uniform\left(0, 1\right)$.
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 		\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{Uniform}$}]{
+% 			\textbf{Input: $s \sim F$} \pcskipln \\
+% 			\textbf{Output: $uni \sim Uniform\left(0, 1\right)$} \\
+% 			\text{$uni=F\left( s\right)$.}
+% 		}}
+% 	\caption{Algorithms for uniform random variable.}
+% 	\label{algo:invtouniform}
+% \end{protocol}
+% \FloatBarrier
+
+% \subsubsection{Algorithms for Biased Bit}
+% Algorithm $Algo^{BiasedBit\left(\alpha\right)}$ generates a biased bit $b$ with statistical distance at most $2^{-d}$ to a Bernoulli random variable $bern\sim Bernoulli\left( \alpha\right) $. The algorithm is based on the folklore method (???ref): Given $d$ random bits $s_{1},\ldots ,s_{d}$ and find the minimum index $j$ such that $s_{j}\neq \alpha _{j}$ and output $b=1-s_j$, where $\alpha _{j}$ is $j$-th most significant bit in the binary expansion of $\alpha$.
+
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 	\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{BiasedBit\left(\alpha\right)}$}]{
+% 	\textbf{Input: $s=\left( s_{1},\ldots ,s_{d}\right) \in \left\{ 0,1\right\} ^{d} $, $\alpha=\left(\alpha_1, \ldots , \alpha_d\right)$.} \pcskipln \\
+% 	\textbf{Output: $b$} \\
+% 	\text{$j=\min \{ k:s_{k}\neq \alpha _{k},k\in \left[ d\right] \} $.} \\
+% 	\text{$b=1-s_j$.}
+% 	}}
+% 	\caption{Algorithm for biased bit.}
+% 	\label{algo:biasedbit}
+% \end{protocol}
+% \FloatBarrier
+
+
+% \subsection{Algorithms for Noise Generation}
+% \subsubsection{Algorithm for Gaussian Noise}
+% In algorithm $Algo^{Gaussian}$, we generate a gaussian random variable $gau$ using the convergence property of binomial distribution~\cite{rastogi2010differentially}.
+% \begin{theorem}[Convergence of Binomial to Normal~{\cite[Example 10.3.2]{athreya2006measure}}]
+% 	Let $X_{n}\sim Binomial\left( N_{n},p_{n}\right) $ for all $n\geq 1$. Suppose that as $n\to \infty $, $N_{n}\to \infty $ and $s_{n}^{2}\equiv N_{n}p_{n}\left( 1-p_{n}\right) \rightarrow \infty $. Then
+% 	\[Z_{n}\equiv \frac{X_{n}-N_{n}p_{n}}{s_{n}} \sim Gaussian\left( 0,1\right) \]
+% 	where $\to ^{d}$ denotes converge to a probability distribution.
+% \end{theorem}
+
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 	\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{Gaussian}$}]{
+% 	\textbf{Input: $s=\left( s_{1},\ldots ,s_{d}\right) \in \left\{ 0,1\right\} ^{d} $} \pcskipln \\
+% 	\textbf{Output: $gau \sim Gaussian\left(0, \sigma^{2}\right)$} \\
+% 	\text{$bino=Algo^{Binomial}\left(s\right)$.}\\
+% 	\text{$gau=\frac{\sigma\left( bino-\frac{d}{2}\right) }{\frac{\sqrt{d}}{2}}$.}
+% 	}}
+% 	\caption{Algorithm for gaussian noise based on random bits.}
+% 	\label{algo:binomialtogauss}
+% \end{protocol}
+% \FloatBarrier
+
+% \subsubsection{Algorithm for Laplace Noise}
+% \begin{prop}
+% 	\label{prop:gausstolap}
+% 	Let $Y_{i}\sim Gaussian\left( 0,\sigma ^{2}\right) $ for $i\in \left\{ 1,2,3,4\right\} $ be four Gaussian random variables. Then $Z=Y_{1}^{2}+Y_{2}^{2}-Y_{3}^{2}-Y_{4}^{2}$ is a $Laplace\left( 2\sigma^{2}\right) $ random variable~\cite{rastogi2010differentially}.
+% \end{prop}
+% In algorithm $Algo^{Laplace}_{Binomial}$, we first convert four random bit strings to four binomial random variables, then use proposition \autoref{prop:gausstolap} to generate a Laplace random variable.
+
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 	\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{Laplace}_{Binomial}$}]{
+% 	\textbf{Input: $s=\left( s_{t1},\ldots ,s_{td}\right) _{t\in \left\{ 1,2,3,4\right\}} \in \left\{ 0,1\right\} ^{4\times d} $} \pcskipln \\
+% 	\textbf{Output: $lap \sim Laplace\left(2 \sigma^2\right)$} \\
+% 	\text{$gau_t = Algo^{Gaussian}\left(s_{t1},\ldots ,s_{td}\right)$ for $t\in \left\{ 1,2,3,4\right\} $.} \\
+% 	\text{$lap=gau_1^2+gau_2^2-gau_3^2-gau_4^2 $.}
+% 	}}
+% 	\caption{Algorithm for Laplace noise based on random bits.}
+% 	\label{algo:binomialtolap}
+% \end{protocol}
+% \FloatBarrier
+
+% % mathematical result needs to be verified
+% Another way to generate a Laplace random variable is using algorithm $Algo^{Laplace}_{Uniform}$, which converts two uniform random variables $ u_1$, $u_2$ to a Laplace random variable according to the mathematical results (ref Handbook of Mathematical Functions with For- mulas, Graphs, and Mathematical Tables, Non-Uniform Random Variate Generation). Since $Laplace\left( b\right) =Exp\left( \frac{1}{b}\right) -Exp\left( \frac{1}{b}\right) $, where the exponential distribution $Exp$ can be generated by $Exp\left( b^{\prime}\right) =\frac{-\ln u}{b^{\prime}}$ and $u \sim Uniform\left( 0,1\right) $ .
+
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 		\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{Laplace}_{Uniform}$}]{
+% 			\textbf{Input: $u_1$, $u_2 \sim Uniform\left( 0,1\right) $} \pcskipln \\
+% 			\textbf{Output: $lap \sim Laplace\left(b\right)$} \\
+% 			\text{$lap=b\left( \ln u_{1}+\ln u_{2}\right) $.}
+% 		}}
+% 	\caption{Algorithm for Laplace noise based on uniform distribution.}
+% 	\label{algo:uniformtolap}
+% \end{protocol}
+% \FloatBarrier
+
+% \subsubsection{Algorithm for Finite-range Discrete Laplace Noise}
+% \begin{definition} Finite-range discrete Laplace distribution (FDL)~\cite{eriguchi2021efficient} is defined as
+% 	\begin{equation}
+% 		\Pr[ L= k] =
+% 		\begin{cases}
+% 			p^{\left| k\right| }\left(\frac{1-p}{1+p}\right), & if \left| k\right| <N, \\
+% 			\frac{p^{N}}{1+p}, & if\left| k\right| =N, \\
+% 			0, & otherwise.
+% 		\end{cases}
+% 	\end{equation}
+% \end{definition}
+
+% Algorithm $Algo^{FDL\left(p,N \right)}$ first generates $N-1$ biased bits with algorithm $Algo^{BiasedBit\left(\alpha\right)}$, then generate a FDL random variable based on the biased bits. For $FDL\left(p,N \right)$ with $0 <p <1$, set $\alpha_{0}=\frac{1-p}{1+p}$, $\alpha_i=1-p$ for $\left[ N-1\right] $. Then using $\sigma \in Uniform\left( -1,1\right) $ and $b_{i}\sim Bernoulli\left( \alpha _i\right) $, we have $\sigma l\sim FDL\left( p,N\right) $, where $l$ is the smallest index such that $b_{l}=1$. If $l$ not exist, we set $l=N$.
+
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 		\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{FDL\left(p,N \right)}${~\cite{eriguchi2021efficient}}}]{
+% 			\textbf{Input: $s=\left({\left( s_{1}^{\left(j\right)},\ldots ,s_{d}^{\left(j\right)}\right) }_{j\in \left[ N-1\right] },\sigma \right)$, $\alpha =\left( \alpha_0,\ldots ,\alpha_{N-1}\right) $} \pcskipln \\
+% 			\textbf{Output: $k \sim FDL\left(p,N\right)$} \\
+% 			\text{Run algorithm $Algo^{BiasedBit\left(\alpha_{j}\right)}$ with inputs $s_j=\left( s_{1}^{\left(j\right)},\ldots s_{d}^{\left(j\right)}\right) $ and obtain $ b_{j} $ for $j\in \left[ N-1\right] $.}\\
+% 			\text{Calculate $ c_{j} = \vee_{k=1}^j b_{k} $ for $j\in \left[ N-1\right] $.}\\
+% 			\text{Calculate $ l =N-\sum ^{N-1}_{j=0} c_j$.} \\
+% 			\text{Calcualte $ k = \sigma l $.}
+% 		}}
+% 	\caption{Algorithms for Finite-range discrete laplace noise based on biased bits.}
+% 	\label{algo:biasedbitstoFDL}
+% \end{protocol}
+% \FloatBarrier
+
+% \subsubsection{Algorithm for Discrete Laplace Noise}
+% % mathematical result needs to be verified
+% According to the mathematical results (ref Non-Uniform Random Variate Generation, A Discrete Analogue of the Laplace Distribution) algorithm $Algo^{DLaplace}_{Uniform}$ converts two uniform random variables $ u_1$, $u_2$ to a discrete laplace random variable. First, a uniform random variable $u$ is converted to an exponential random variable with $Exp\left( b^{\prime}\right) =\frac{-\ln u}{b^{\prime}}$, then the exponential random variable is transformed to a geometric random variable $Geo\left( b^{\prime}\right) =\big \lfloor Exp\left( -\ln \left( 1-b^{\prime}\right) \right) \big \rfloor $. Finally, we get the discrete Laplace random variable $DLaplace\left( b\right) =Geo\left( 1-b\right) -Geo\left( 1-b\right) $.
+
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 		\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{DLaplace}_{Uniform}$}]{
+% 			\textbf{Input: $u_1$, $u_2 \sim Uniform\left( 0,1\right) $} \pcskipln \\
+% 			\textbf{Output: $lap \sim DLaplace\left(b\right)$} \\
+% 			\text{$ dlap =\bigg\lfloor \frac{1}{\ln b} \ln u_{1} \bigg\rfloor -\bigg\lfloor \frac{1}{\ln b} \ln u_{2} \bigg\rfloor \sim DLaplace\left(b\right) $.}
+% 		}}
+% 	\caption{Algorithms for discrete laplace noise based on uniform distribution.}
+% 	\label{algo:uniformtodLap}
+% \end{protocol}
+% \FloatBarrier
+
+% % --------------------------------------------------------------------------
+% % framework for MPC-DP protocols
+% \section{Framework for MPC-DP Protocols}
+% \label{sec:frameworkMPCDP}
+% Protocol $\Uppi^{MPC-DP}$ consists of a function $f$ computing with parties' private data $x$ and a function $h$ generating noise with random inputs $s$. In the outsourcing scenario, $x$ represents the secret-shared values sent by partys. In this section~\autoref{sec:frameworkMPCDP}, we mainly describe how to realize the algorithms of noise generation $h$ in the MPC. In the following protocol descriptions, the party index $i$ is omitted when not affecting the understanding.
+% % (To do: security analysis regarding adversary's view)
+
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 		\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{MPC-DP}$}]{
+% 			\textbf{Input: $x \in \mathbb{R}^n$, $s \in S^n$} \pcskipln \\
+% 			\textbf{Output: $M\left( x\right) =f\left( x\right) +h\left( s\right) $} \\
+% 			\text{The parties run $\Uppi^f$ with inputs $x$ and obtain $f\left( x\right)$.} \\
+% 			\text{The parties run $\Uppi^h$ with inputs $s$ and obtain $h\left( s\right)$.} \\
+% 			\text{The parties compute $\langle M\left(x\right) \rangle =\langle f\left(x\right) \rangle+\langle h\left(s\right) \rangle$.} \\
+% 			\text{The parties reconstruct $M\left( x\right)$ and output it.}
+% 		}}
+% 	\caption{Framework for MPC-DP protocols.}
+% 	\label{prot:MPCDP}
+% \end{protocol}
+% \FloatBarrier
+
+% % protocol for generating noise distributely
+% % TODO: define number field for integer, floating point, fixed point
+% % ---------------------------------------------------------------------
+
+% \subsection{Building Blocks for Noise Generation}
+% In this section, we first introduce the MPC protocols to generate shares of random bit strings and shares of biased bits among parties.
+% % random bits
+% % \subsubsection{Protocol for Random Bits}
+% % Protocol $\Uppi^{RandBits}_d$ is a basic building block for distributed noise generation. Each party first locally generate $d$ random bits $s=\left( s_{1},\ldots ,s_{d}\right)$ , where each bit takes on values 0 or 1 with equal probability $p=\frac{1}{2}$. Then the parties share each bit of the bit string with other parties. Finally, each party locally $XOR$ (?needs to be defined) all the secret-shared bits ${\langle u_{\ell}\rangle} =\oplus _{ k\in \left[ n\right] } \langle s_{k\ell} \rangle$, where $l\in \left[ d\right] $. Based on the fact that the sum of mutually independent Bernoulli random variables $X_{1},\ldots X_{d}\sim Bernoulli\left( \frac{1}{2}\right) $ is a binomial random variable $Y=\sum ^{d}_{i=1}X_{i}\sim Binomial\left( d,\frac{1}{2}\right) $, $U=\left( u_{i1},\ldots ,u_{id}\right) _{i\in \left[ n\right] }$ correspond to the shares of a random variable drawn from distribution $Binomial\left(d,\frac{1}{2}\right)$.
+% % % (To do:security analysis regarding adversary's view)
+% % % random bits
+% % \begin{protocol}[tbh!]
+% % 	\centering
+% % 	\fbox{
+% % 	\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{RandBits}_d$}]{
+% % 	\textbf{Input: $s=\left( s_{i1},\ldots ,s_{id}\right) _{i\in \left[ n\right] }\in \left( \left\{ 0,1\right\} ^{d}\right) ^{n}$} \pcskipln \\
+% % 	\textbf{Output: $U=\left( u_{i1},\ldots ,u_{id}\right) _{i\in \left[ n\right] }\in \left( \left\{ 0,1\right\} ^{d}\right) ^{n}$} \\
+% % 	\text{Each party shares $s_{l}$ with other parties for $l \in \left[ d\right]$.} \\
+% % 	\text{The parties compute ${\langle u_{l}\rangle} = \oplus _{ k\in \left[ n\right] }\langle s_{kl} \rangle $ and output ${\langle u_{l}\rangle}$ for $l \in \left[ d\right]$.}
+% % 	}}
+% % 	\caption{Protocol for random bits.}
+% % 	\label{prot:randbits} % change label
+% % \end{protocol}
+% % \FloatBarrier
+
+
+
+% Protocol $\Uppi^{RandInt}_d$ can achieve the same purpose as protocol $\Uppi^{RandBits}_d$ and without communications between parties. First, each party locally generate a random $d$-bit integer $s$ and convert $s$ into a $d$-length random bit string $U=\left( u_{1},\ldots ,u_{d}\right)$. This protocol can only be applied for MPC protocols with arithmetic sharing.
+
+% % random integer
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 	\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{RandInt}_d$}]{
+% 	\textbf{Input: $s=\left( s_{i}\right) _{i\in \left[ n\right] }\in \mathbb{Z}_{2^d}^{n}$} \pcskipln \\
+% 	\textbf{Output: $U=\left( u_{i1},\ldots ,u_{id}\right) _{i\in \left[ n\right] }\in \left( \left\{ 0,1\right\} ^{d}\right) ^{n}$} \\
+% 	\text{Each party locally convert integer $s$ to a $d$-length bit string ${\langle u_{il}\rangle}$ for $l \in \left[ d\right]$, $i \in \left[ n\right]$.} \\
+% 	\text{Each party output ${\langle u_{l}\rangle}$ for $l \in \left[ d\right]$.}
+% 	}}
+% 	\caption{Protocol for random integer without interactions.}
+% 	\label{prot:randint}
+% \end{protocol}
+% \FloatBarrier
+
+% % biased bit
+% \subsubsection{Protocol for Biased Bit}
+% Protocol $\Uppi^{BiasedBit\left(\alpha \right)}$ generating a biased bit with statistical distance less than $2^{-d}$ to $Bernoulli\left(\alpha\right)$ using the algorthm $Algo^{BiasedBit\left(\alpha\right)}$ in the MPC. Based on the type of secret sharing, The parties can also use $\Uppi^{FastRandBits}_d$ or $\Uppi^{RandInt}_d$ to generate random bit string share.
+
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 	\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{BiasedBit\left(\alpha \right)}$}]{
+% 	\textbf{Input: $s=\left( s_{i1},\ldots ,s_{id}\right) _{i\in \left[ n\right] }\in \left( \left\{ 0,1\right\} ^{d}\right) ^{n}$, $\alpha=\left( \alpha_1,\ldots ,\alpha_d\right)$} \pcskipln \\
+% 	\textbf{Output: $\left(\langle b_{i} \rangle \right)_{i \in \left[n\right]}$} \\
+% 	\text{The parties run $\Uppi^{RandBits}_d$ with inputs $s=\left( s_{i1},\ldots s_{id}\right) _{i\in \left[ n\right] }$ and obtain $\langle u_{l}\rangle $ for $l \in \left[ d\right]$.}\\
+% 	\text{Each party locally computes $\langle c_{l}\rangle =\langle u_{l}\oplus \alpha _{l}\rangle$ for $l \in \left[ d\right]$. }\\
+% 	\text{The parties compute $\langle e_{l}\rangle =\langle \vee_{k=1}^{l}c_{k}\rangle$ for $l \in \left[ d\right]$.} \\
+% 	\text{Each party locally computes $\langle f_{l}\rangle =\langle e_{l}\rangle -\langle e_{l-1}\rangle$ for $l \in \left[ d\right]$ and $e_{0}=0$.} \\
+% 	\text{The parties compute $\langle f_{l}u_{l}\rangle $ for $l \in \left[ d\right]$.} \\
+% 	\text{The parties compute $\langle b\rangle =1-\sum ^{d}_{i=1} \langle f_{l}u_{l}\rangle$ and output $\langle b\rangle $.}
+% 	}}
+% 	\caption{Protocol for random biased bit.}
+% 	\label{prot:biasedbit}
+% \end{protocol}
+% \FloatBarrier
+
+% % uniform distribution
+% % ??? math formula needs to verify
+% \subsubsection{Protocol for Uniform Distribution}
+% Protocol $\Uppi^{Uniform\left(0,1 \right)}$~\cite{DBLP:journals/corr/WuHWX16} generating a share of a uniform random variable using the algorithm $Algo^{Uniform}$. Specifically, the uniform random variable is generated by inputing a Gaussian distribution function $g=\frac{1}{2}+\frac{1}{\sqrt{2\pi }}\int _{0}^{x}e^{-{t^{2}}}dt$ a Gaussian random variable $gau$ drawn from $g$, where $g$ is the distribution function of $Gaussian\left(0,1\right)$. To calculate the integral term of $g$, we can use composite trapezoidal method~\cite[Chapter 15]{ascher2011first}.
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 	\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{Uniform\left(0,1 \right)}$}]{
+% 	\textbf{Input: $s=\left( s_{i1},\ldots ,s_{id}\right) _{i\in \left[ n\right] }\in \left( \left\{ 0,1\right\} ^{d}\right) ^{n}$ } \pcskipln \\
+% 	\textbf{Output: ${\left( {\langle uni\rangle} _i \right)} _{i\in \left[ n\right] }$} \\
+% 	\text{The parties choose a step length $h$ and step number $r$ such that $hr=1$.}\\
+% 	\text{The parties run $\Uppi^{Gauss\left(0,\sigma^{2} \right)}$ with inputs $s$ and obtain ${ {\langle gau\rangle}}$ .} \\
+% 	\text{Each party locally computes $\langle t_{k}\rangle =hk\langle gau\rangle $ for $k\in \left[ r\right] $. } \\
+% 	\text{The parties compute $g\left( \langle t_{k}\rangle \right) $ for $k\in \left[ r\right] $, where $g\left( t\right) =\frac{1}{2} \frac{1}{\sqrt{2\pi }}e^{\left( -{t^{2}}\right) }$ .}\\
+% 	\text{The parties compute $\langle uni\rangle =\frac{1}{2}+\frac{1}{2} h\langle gau\rangle \left( g\left( 0\right) +g\left( \langle gau\rangle \right) +2 \Sigma _{k=1}^{r-1} {g \left( \langle t_{k}\rangle \right)}\right) $ and output $\langle uni\rangle$.}
+% 	}}
+% 	\caption{Protocol for uniform distribution.}
+% 	\label{prot:uniform}
+% \end{protocol}
+% \FloatBarrier
+
+% \subsection{Protocol for Noise Generation}
+% \subsubsection{Protocol for Gaussian Noise}
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 	\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{Gauss\left(0,\sigma^2 \right)}$}]{
+% 	\textbf{Input: $s=\left( s_{i1},\ldots ,s_{id}\right) _{i\in \left[ n\right] }\in \left( \left\{ 0,1\right\} ^{d}\right) ^{n}$ } \pcskipln \\
+% 	\textbf{Output: ${\left( {\langle gau\rangle} _i \right)} _{i\in \left[ n\right] }$} \\
+% 	\text{The parties run $\Uppi^{RandBits}_d$ with inputs $s$ and obtain $\langle u_{l}\rangle $ for $l \in \left[ d\right]$.}\\
+% 	\text{Each party locally computes ${\langle bino\rangle } = \sum ^{d}_{l=1}\langle u_{l}\rangle $.} \\
+% 	\text{Each party locally computes ${ \langle gau\rangle}=\frac{\langle \sigma bino\rangle -\frac{d\sigma}{2}}{\frac{\sqrt{d}}{2}}$ and output ${ \langle gau\rangle}$. }
+% 	}}
+% 	\caption{Protocol for gaussian noise based on random bits.}
+% 	\label{prot:gauss}
+% \end{protocol}
+% \FloatBarrier
+
+
+% \subsubsection{Protocol for Laplace Noise}
+% Further, based on $Algo^{Laplace}_{Binomial}$ and $Algo^{Laplace}_{Uniform}$, we could generate Laplace noise in MPC.
+
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 	\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{Lap\left(b=\frac{\sigma ^{2}}{2} \right)}_{Binomial}$}]{
+% 	\textbf{Input: $s=\left( s_{it1},\ldots ,s_{itd}\right) _{i\in \left[ n\right] ,{t\in \left\{ 1,2,3,4\right\} }} \in \left( \left\{ 0,1\right\} ^{4\times d}\right) ^{n}$ } \pcskipln \\
+% 	\textbf{Output: ${\left( {\langle lap\rangle} _{it} \right)} _{i\in \left[ n\right],{t\in \left\{ 1,2,3,4\right\} } }$} \\
+% 	\text{The parties run $\Uppi^{Gauss\left(0,\sigma^{2} \right)}$ with inputs $\left( s_{it1},\ldots s_{itd}\right) _{i\in \left[ n\right] }$ and obtain $\langle gau_t\rangle $ for ${t\in \left\{ 1,2,3,4\right\} }$.} \\
+% 	\text{The parties compute ${\langle lap\rangle } =\langle gau_1^2\rangle +\langle gau_2^2\rangle-\langle gau_3^2\rangle-\langle gau_4^2\rangle$ and output ${\langle lap\rangle }$.}
+% 	}}
+% 	\caption{Protocol for Laplace noise based on random bits.}
+% 	\label{prot:randbitstolap}
+% \end{protocol}
+% \FloatBarrier
+
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 	\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{Lap\left(b \right)}$}]{
+% 	\textbf{Input: $s=\left( s_{it1},\ldots ,s_{itd}\right) _{i\in \left[ n\right] ,{t\in \left\{ 1,2\right\} }} \in \left( \left\{ 0,1\right\} ^{2\times d}\right) ^{n}$ } \pcskipln \\
+% 	\textbf{Output: ${\left( {\langle lap\rangle} \right)} _{i\in \left[ n\right] }$} \\
+% 	\text{The parties run $\Uppi^{Uniform\left(0,1 \right)}$ with inputs $\left( s_{it1},\ldots s_{itd}\right) _{i\in \left[ n\right] }$ and obtain $\langle uni_t\rangle $ for ${t\in \left\{ 1,2\right\} }$.} \\
+% 	\text{The parties compute ${\langle lap\rangle} =\langle b\left( \ln uni_{1} - \ln uni_{2} \right)\rangle $ and output ${\langle lap\rangle}$.}
+% 	}}
+% 	\caption{Protocol for Laplace noise based on uniform distribution.}
+% 	\label{prot:uniformtolap}
+% \end{protocol}
+% \FloatBarrier
+
+% \subsubsection{Protocol for Discrete Laplace Noise}
+
+% We generate shares of discrete Laplace noise by using algorithm $Algo^{DLaplace}_{Uniform}$.
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 	\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{DLap\left(b \right)}$}]{
+% 	\textbf{Input: $s=\left( s_{it1},\ldots ,s_{itd}\right) _{i\in \left[ n\right] ,{t\in \left\{ 1,2\right\} }} \in \left( \left\{ 0,1\right\} ^{2\times d}\right) ^{n}$ } \pcskipln \\
+% 	\textbf{Output: ${\left( {\langle dlap\rangle} \right)} _{i\in \left[ n\right] }$} \\
+% 	\text{The parties run $\Uppi^{Uniform\left(0,1 \right)}$ with inputs $\left( s_{it1},\ldots s_{itd}\right) _{i\in \left[ n\right] }$ and obtain $\langle u_t\rangle $ for ${t\in \left\{ 1,2\right\} }$.} \\
+% 	\text{The parties compute $\langle dlap\rangle =\bigg\langle \bigg\lfloor \frac{1}{\ln b} \ln u_{1} \bigg\rfloor - \bigg\lfloor \frac{1}{\ln b} \ln u_{2} \bigg\rfloor\bigg\rangle $ and output $\langle dlap\rangle$.}
+% 	}}
+% 	\caption{Protocol for discrete laplace noise based on unifom distribution.}
+% 	\label{prot:uniformtodlap}
+% \end{protocol}
+% \FloatBarrier
+
+% % TODO: optimize \sigma MPC operation
+% \subsubsection{Protocol for Finite-range Discrete Laplace Noise}
+% \begin{protocol}[tbh!]
+% 	\centering
+% 	\fbox{
+% 	\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{FDL\left(p,N \right)}_d$}]{
+% 	\textbf{Input: $s=\left({\left( s_{i1}^{\left(j\right)},\ldots ,s_{id}^{\left(j\right)}\right) }_{j\in \left[ N-1\right] },\sigma_i \right)_{i\in \left[ n\right]} $, $\alpha =\left( \alpha_0,\ldots ,\alpha_{N-1}\right) $} \pcskipln \\
+% 	\textbf{Output: $\left({ \langle k \rangle} _{i}\right) _{i\in \left[ n\right] } \sim FDL\left(p,N\right)$} \\
+% 	\text{The parties run $\Uppi^{BiasedBit\left(\alpha_j \right)}$ with inputs $s_j=\left( s_{i1}^{\left(j\right)},\ldots s_{id}^{\left(j\right)}\right) _{i\in \left[ n\right] }$ and obtain $\langle b_{j}\rangle $ for $j\in \left[ N-1\right] $.} \\
+% 	\text{The parties compute $ \langle c_{j}\rangle =\langle \vee_{k=1}^j b_{k}\rangle $ for $j\in \left[ N-1\right] $.} \\
+% 	\text{Each party locally computes $\langle l\rangle =N-\sum ^{N-1}_{j=0}\langle c_j\rangle$.} \\
+% 	\text{Each party shares $\sigma_i$ for $i \in \left[ n\right] $.}\\
+% 	\text{The parties compute $\langle \sigma \rangle =\langle \prod _{i\in \left[ n\right] }\sigma_j\rangle $.}\\
+% 	\text{The parties compute $\langle k\rangle =\langle \sigma l \rangle $ and output $\langle k\rangle$.}
+% 	}}
+% 	\caption{Protocol for Finite-range discrete laplace noise.}
+% 	\label{prot:FDL}
+% \end{protocol}
+% \FloatBarrier

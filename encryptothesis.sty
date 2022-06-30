@@ -1,0 +1,663 @@
+% Proceed with caution…
+% Do not modify, unless you know what you're doing
+% created by Daniel Demmler
+% demmler@encrypto.cs.tu-darmstadt.de
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{encryptothesis}[2020/09/22 v1.14.0 Encrypto Thesis Template]
+\RequirePackage{graphicx}
+
+% Global one/two side option
+\newif\if@twoside\@twosidefalse
+\DeclareOption{twoside}{
+	\@twosidetrue
+}
+
+%global draft option
+\newif\if@draft\@draftfalse
+\DeclareOption{draft}{
+	\@drafttrue
+}
+
+%global german option
+\newif\if@german\@germanfalse
+\DeclareOption{german}{
+	\@germantrue
+}
+
+%global colorlinks option
+\newif\if@colorlinks\@colorlinksfalse
+\DeclareOption{colorlinks}{
+	\@colorlinkstrue
+}
+
+%Workaround for old chngctr, should be fixed with version 1.1a of chngcntr in Texlive > May 2018
+	\let\counterwithout\relax
+	\let\counterwithin\relax
+%end of workaround
+
+\ProcessOptions\relax
+
+% enable some twoside options
+\if@twoside
+	\KOMAoption{twoside}{true}
+	\KOMAoption{open}{right}
+\fi
+
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\if@german
+	\RequirePackage[english,ngerman]{babel}
+\else
+	\RequirePackage[ngerman,english]{babel}
+\fi
+\RequirePackage{amsmath,amsthm}
+\RequirePackage[hyphens]{url}
+\RequirePackage[table,x11names,dvipsnames,table]{xcolor}
+\definecolor{lightergray}{rgb}{0.97, 0.97, 0.97}
+\definecolor{darkred}{rgb}{.6, 0, 0}
+\definecolor{darkgreen}{rgb}{0,.4, 0}
+\definecolor{darkblue}{rgb}{0, 0,.6}
+\definecolor{darkergreen}{rgb}{0,.8,0}
+
+\definecolor[named]{ACMBlue}{cmyk}{1,0.1,0,0.1}
+\definecolor[named]{ACMYellow}{cmyk}{0,0.16,1,0}
+\definecolor[named]{ACMOrange}{cmyk}{0,0.42,1,0.01}
+\definecolor[named]{ACMRed}{cmyk}{0,0.90,0.86,0}
+\definecolor[named]{ACMLightBlue}{cmyk}{0.49,0.01,0,0}
+\definecolor[named]{ACMGreen}{cmyk}{0.20,0,1,0.19}
+\definecolor[named]{ACMPurple}{cmyk}{0.55,1,0,0.15}
+\definecolor[named]{ACMDarkBlue}{cmyk}{1,0.58,0,0.21}
+
+\RequirePackage[printonlyused]{acronym}
+
+\RequirePackage{tabularx}
+\RequirePackage[normalem]{ulem}
+%\RequirePackage{pdflscape}
+\RequirePackage{listings}
+\RequirePackage{multirow}
+\RequirePackage{booktabs}
+\RequirePackage{xspace}
+\RequirePackage{tikz}
+\usetikzlibrary{fit, shapes, positioning, calc, arrows.meta, patterns, decorations.text, decorations.pathmorphing, backgrounds, chains, external}
+\RequirePackage{mathtools}
+\RequirePackage{scrhack}
+\RequirePackage{geometry}
+\RequirePackage{numprint}
+\npthousandsep{\,}\npthousandthpartsep{\,}\npdecimalsign{.}
+\RequirePackage{changepage}
+
+\RequirePackage{enumitem}
+% \RequirePackage{enumerate}
+\RequirePackage{fp}
+
+\RequirePackage{pgfplots}
+\RequirePackage{pgfplotstable}
+\pgfplotsset{compat = newest}
+\usepgfplotslibrary{dateplot}
+\RequirePackage{colortbl}
+
+\author{\xmp@Author}
+\title{\xmp@Title}
+\subject{\xmp@Subject}
+
+\RequirePackage[a-1b]{pdfx}
+
+%workaround to add xmp infos to PDF meta data
+\def\sep{; }
+\pdfinfo{
+	/Author (\xmp@Author)
+	/Keywords (\xmp@Keywords)
+}
+
+%needed for \ETaffidavit
+\let\EncryptoSubject\@subject
+\let\EncryptoAuthor\@author
+\let\EncryptoDate\@date
+
+\if@colorlinks
+	\hypersetup{
+		colorlinks=true,
+		linkcolor=black,
+		citecolor=darkgreen,
+		filecolor=ACMDarkBlue,
+		urlcolor=ACMDarkBlue,
+		bookmarksopen=true,
+		bookmarksopenlevel=3,
+		plainpages=false,
+		breaklinks=true,
+		% linktocpage=true,
+	}
+\else
+	\hypersetup{
+		colorlinks=true,
+		linkcolor=black,
+		citecolor=black,
+		filecolor=black,
+		urlcolor=black,
+		bookmarksopen=true,
+		bookmarksopenlevel=3,
+		plainpages=false,
+		breaklinks=true,
+		% linktocpage=true,
+	}
+\fi
+
+% enable some twoside options
+\if@twoside
+	\hypersetup{pdfpagelayout=TwoPageRight}
+\fi
+
+\RequirePackage[
+  n,
+  operators,
+  sets,
+  ff,
+  logic,
+  primitives,
+  keys,
+  noamsfonts]{cryptocode}
+
+% \newcommand*{\supervisor}[1]{\gdef\@supervisor{#1}%
+% }
+% \newcommand*{\@supervisor}{Please set supervisor with~\texttt{\textbackslash supervisor\{\}}}
+
+\newcommand{\swhook}{\mathrel{\rotatebox[origin=c]{45}{$\hookleftarrow$}}}
+
+% the title page layout
+\renewcommand*{\maketitle}{%
+	\begin{titlepage}
+	\newgeometry{right = 2.5cm, top = 2cm, left = 2cm, bottom = 2.5cm}
+	\begin{figure}[h]
+		\includegraphics[width=0.42\textwidth]{img/logos/tud_logo_transparent_noborder.pdf}
+	\end{figure}
+
+	\begin{flushright}
+		{\huge{\@subject}\\}
+		{\Huge\textbf{\textsf{\EncryptoPrintTitle}}\\}
+		\vspace{0.5cm}
+		%\large {[This might be a working title]}
+		\vspace{1.0cm}%
+
+		{\huge{\@author}\\}
+		{\LARGE{\@date}\\}
+
+		\vfill
+
+		\begin{figure}[h]
+			\hfill
+			\includegraphics[width=0.35\textwidth]{img/logos/ENCRYPTO_color_white.pdf}
+		\end{figure}
+
+		\vspace{0.5cm}%
+
+		{\Large
+		Cryptography and Privacy Engineering Group\\
+		Department of Computer Science\\
+		Technische Universit\"at Darmstadt\\
+		}
+
+		\vspace{1cm}%
+
+		\if@german
+		\Large{Betreuer: \EncryptoSupervior\\
+Prof. Dr.-Ing. Thomas Schneider\\}
+		\else
+			\Large{Supervisors: \EncryptoSupervisor\\
+Prof. Dr.-Ing. Thomas Schneider\\}
+		\fi
+		\vspace{1cm}%
+
+		\if@draft
+		\PrelimText
+		\fi
+
+	\end{flushright}
+	\restoregeometry
+	\end{titlepage}
+
+}
+
+
+%%% Chapter-Title format right-aligned with rule
+	\newcommand*{\ORIGchapterheadstartvskip}{}%
+	\let\ORIGchapterheadstartvskip=\chapterheadstartvskip
+	\renewcommand*{\chapterheadstartvskip}{%
+		\let\raggedsection\raggedleft
+	\ORIGchapterheadstartvskip
+	}
+
+	\newcommand*{\ORIGchapterheadendvskip}{}%
+	\let\ORIGchapterheadendvskip=\chapterheadendvskip
+	\renewcommand*{\chapterheadendvskip}{%
+	{%
+		\setlength{\parskip}{0pt}%
+		\raggedleft{\noindent\rule[.3\baselineskip]{.75\linewidth}{.45pt}\par}
+	}%
+	\ORIGchapterheadendvskip
+	\let\raggedsection\raggedright
+	}
+%%%
+
+
+%%% PAGE HEADER
+	\RequirePackage[
+		automark,
+		headsepline=.4pt,
+		ilines
+	]{scrlayer-scrpage}
+	\pagestyle{scrheadings}
+
+	\clearscrheadfoot
+
+	\lehead{\headmark}
+	\lohead{\headmark}
+
+	\if@twoside
+		\lefoot{\pagemark}
+		\rofoot[\pagemark]{\pagemark}
+	\else
+		\cofoot[\pagemark]{\pagemark}
+	\fi
+
+	\automark[]{chapter}
+%%% END PAGE HEADER
+
+
+\clubpenalty=10000 %prevent orphans
+\widowpenalty=10000 %prevent widows
+
+%%%%%
+%%Typo Stuff and Fonts
+	\RequirePackage{ellipsis,ragged2e,marginnote}
+	\RequirePackage[tracking=true]{microtype}
+	\DeclareMicrotypeSet*[tracking]{my}{font = */*/*/sc/*}
+	\SetTracking{encoding = *, shape = sc}{45}
+	\RequirePackage{lmodern}
+	\RequirePackage[bitstream-charter, cal=cmcal]{mathdesign}
+	%\RequirePackage{tgheros}
+	\RequirePackage{sourcesanspro}
+	% \RequirePackage[sfdefault]{FiraSans}
+	\addtokomafont{disposition}{\sffamily\bfseries}
+	\RequirePackage[scaled]{beramono}
+	\SetMathAlphabet{\mathsf}{normal}{T1}{fvs}{m}{n}
+%%%%%
+
+
+\RequirePackage{tocbasic}
+	\DeclareTOCStyleEntry[pagenumberformat=\small]{tocline}{section}
+	\DeclareTOCStyleEntry[pagenumberformat=\small]{tocline}{subsection}
+	\DeclareTOCStyleEntry[pagenumberformat=\sffamily\bfseries\large,entrynumberformat=\Large, beforeskip=1.1em plus 2pt]{tocline}{chapter}
+	\DeclareTOCStyleEntry[entryformat=\sffamily\bfseries\large, pagenumberformat=\sffamily\bfseries\large,entrynumberformat=\sffamily\bfseries\Large, beforeskip=1.1em plus 2pt]{tocline}{part}
+
+\RequirePackage{scrtime}
+\if@draft
+	\RequirePackage[firstpage]{draftwatermark}
+	\RequirePackage[draft,time]{prelim2e}
+\fi
+%\RequirePackage{wrapfig}
+
+%%Trennung in texttt
+%\RequirePackage[htt]{hyphenat} %enable if required
+
+\RequirePackage{pifont}
+\RequirePackage{tablefootnote}
+\RequirePackage{mdframed}
+\RequirePackage{threeparttable}
+
+% \RequirePackage{newfloat}
+% \DeclareFloatingEnvironment[name={Protocol}, fileext=lop, within=chapter]{protocol}
+%\newlistofpsty{protocol}{lop}{List of Protocols}
+
+
+\DeclareNewTOC[
+	type=algorithm,
+	float,
+	floatpos=htbp,
+	name=Algorithm,
+	counterwithin=chapter,
+	listname={List of Algorithms}]
+{loalg}
+\newcounter{subalgorithm}[algorithm] %needed for subfigure
+
+\DeclareNewTOC[
+	type=circuit,
+	float,
+	floatpos=htbp,
+	name=Circuit,
+	counterwithin=chapter,
+	listname={List of Circuits}]
+{locirc}
+\newcounter{subcircuit}[circuit] %needed for subfigure
+
+\DeclareNewTOC[
+	type=protocol,
+	float,
+	floatpos=htbp,
+	name=Protocol,
+	counterwithin=chapter,
+	listname={List of Protocols}]
+{loprot}
+\newcounter{subprotocol}[protocol] %needed for subfigure
+
+%more space (3em) between numbers and entry
+\DeclareTOCStyleEntry[numwidth=3em]{tocline}{figure}
+\DeclareTOCStyleEntry[numwidth=3em]{tocline}{table}
+\DeclareTOCStyleEntry[numwidth=3em]{tocline}{circuit}
+\DeclareTOCStyleEntry[numwidth=3em]{tocline}{protocol}
+\DeclareTOCStyleEntry[numwidth=3em]{tocline}{algorithm}
+
+\RequirePackage[labelfont=bf]{caption}
+% \captionsetup[table]{aboveskip=10pt}
+% \captionsetup[table]{belowskip=10pt}
+\RequirePackage{subcaption}
+
+%%% global figure and protocol counters
+% \RequirePackage{chngcntr}
+% \counterwithin{figure}{chapter}
+% \counterwithout*{protocol}{subsubsection}
+% \counterwithin*{protocol}{section}
+% \counterwithout*{equation}{subsubsection}
+
+\RequirePackage{csquotes}
+\RequirePackage{varioref}
+
+\labelformat{equation}{\textup{(#1)}}
+
+%slightly reduce font size of page number in TOC
+% \RequirePackage{tocloft}
+% \renewcommand\cftsecpagefont{\small}
+% \renewcommand\cftsubsecpagefont{\small}
+
+%\renewcommand\cftchapafterpnum{\par\addvspace{6pt}}
+%\renewcommand\cftsecafterpnum{\par\addvspace{6pt}}
+
+\emergencystretch 1em%
+\Urlmuskip=0mu plus 1mu
+
+%% Set linkcolor=red only for references (not all links)
+\if@colorlinks
+  \newcommand{\setlinkcolor}{\hypersetup{linkcolor=red}}
+\else
+  \newcommand{\setlinkcolor}{\hypersetup{linkcolor=black}}
+\fi
+
+\let\orgref\ref
+\providecommand{\colorref}[1]{\setlinkcolor\orgref{#1}}
+
+%% We need to redefine \autoref. We should use
+%% abbreviations inside the sentence and full names
+%% at the beginning of sentences. Additionally,
+%% need to handle the plural cases.
+%% We distinguish german and english.
+
+
+
+\if@german
+	% \Autoref is the long, written out form
+	\let\orgautoref\autoref
+	\providecommand{\Autoref}[1]
+			{\def\equationautorefname{Gleichung}%
+			 \def\figureautorefname{Abbildung}%
+			 \def\subfigureautorefname{Abbildung}%
+			 \def\subfloatautorefname{Abbildung}%
+			 \def\sectionautorefname{Abschnitt}%
+			 \def\subsectionautorefname{Abschnitt}%
+			 \def\subsubsectionautorefname{Abschnitt}%
+			 \def\Itemautorefname{Punkt}%
+			 \def\tableautorefname{Tabelle}%
+			 \def\chapterautorefname{Kapitel}%
+			 \def\protocolautorefname{Protokoll}%
+			 \def\Appendixautorefname{Anhang}%
+			 {\setlinkcolor\orgautoref{#1}}}
+	% \Autorefs is plural for the long, written out form
+	\providecommand{\Autorefs}[1]
+			{\def\equationautorefname{Gleichungen}%
+			 \def\figureautorefname{Abbildungen}%
+			 \def\subfigureautorefname{Abbildungen}%
+			 \def\subfloatautorefname{Abbildungen}%
+			 \def\sectionautorefname{Abschnitte}%
+			 \def\subsectionautorefname{Abschnitte}%
+			 \def\subsubsectionautorefname{Abschnitte}%
+			 \def\Itemautorefname{Punkte}%
+			 \def\tableautorefname{Tabellen}%
+			 \def\chapterautorefname{Kapitel}%
+			 \def\protocolautorefname{Protokolle}%
+			 \def\Appendixautorefname{Anhänge}%
+			 {\setlinkcolor\orgautoref{#1}}}
+	% \autoref is the short form (abbreviated)
+	% (this is a renew of the standard)
+	\renewcommand{\autoref}[1]
+			{\def\equationautorefname{Gl.}%
+			 \def\figureautorefname{Abb.}%
+			 \def\subfigureautorefname{Abb.}%
+			 \def\subfloatautorefname{Abb.}%
+			 \def\sectionautorefname{\S}%
+			 \def\subsectionautorefname{\S}%
+			 \def\subsubsectionautorefname{\S}%
+			 \def\Itemautorefname{Pkt.}%
+			 \def\tableautorefname{Tab.}%
+			 \def\chapterautorefname{\S}%
+			 \def\protocolautorefname{Prot.}%
+			 \def\Appendixautorefname{\S}%
+			 {\setlinkcolor\orgautoref{#1}}}
+	% \autorefs is plural for the short form (abbreviated)
+	\providecommand{\autorefs}[1]
+			{\def\equationautorefname{Gl.}%
+			 \def\figureautorefname{Abb.}%
+			 \def\subfigureautorefname{Abb.}%
+			 \def\subfloatautorefname{Abb.}%
+			 \def\sectionautorefname{\S}%
+			 \def\subsectionautorefname{\S}%
+			 \def\subsubsectionautorefname{\S}%
+			 \def\Itemautorefname{Pkt.}%
+			 \def\tableautorefname{Tab.}%
+			 \def\chapterautorefname{\S}%
+			 \def\protocolautorefname{Prot.}%
+			 \def\Appendixautorefname{\S}%
+			 {\setlinkcolor\orgautoref{#1}}}
+\else
+	% \Autoref is the long, written out form
+	\let\orgautoref\autoref
+	\providecommand{\Autoref}[1]
+			{\def\equationautorefname{Equation}%
+			 \def\figureautorefname{Figure}%
+			 \def\subfigureautorefname{Figure}%
+			 \def\subfloatautorefname{Figure}%
+			 \def\sectionautorefname{Section}%
+			 \def\subsectionautorefname{Section}%
+			 \def\subsubsectionautorefname{Section}%
+			 \def\Itemautorefname{Item}%
+			 \def\tableautorefname{Table}%
+			 \def\chapterautorefname{Chapter}%
+			 \def\protocolautorefname{Protocol}%
+			 \def\Appendixautorefname{Appendix}%
+			 {\setlinkcolor\orgautoref{#1}}}
+	% \Autorefs is plural for the long, written out form
+	\providecommand{\Autorefs}[1]
+			{\def\equationautorefname{Equations}%
+			 \def\figureautorefname{Figures}%
+			 \def\subfigureautorefname{Figures}%
+			 \def\subfloatautorefname{Figures}%
+			 \def\sectionautorefname{Sections}%
+			 \def\subsectionautorefname{Sections}%
+			 \def\subsubsectionautorefname{Sections}%
+			 \def\Itemautorefname{Items}%
+			 \def\tableautorefname{Tables}%
+			 \def\chapterautorefname{Chapters}%
+			 \def\protocolautorefname{Protocols}%
+			 \def\Appendixautorefname{Appendices}%
+			 {\setlinkcolor\orgautoref{#1}}}
+	% \autoref is the short form (abbreviated)
+	% (this is a renew of the standard)
+	\renewcommand{\autoref}[1]
+			{\def\equationautorefname{Eq.}%
+			 \def\figureautorefname{Fig.}%
+			 \def\subfigureautorefname{Fig.}%
+			 \def\subfloatautorefname{Fig.}%
+			 \def\sectionautorefname{\S}%
+			 \def\subsectionautorefname{\S}%
+			 \def\subsubsectionautorefname{\S}%
+			 \def\Itemautorefname{It.}%
+			 \def\tableautorefname{Tab.}%
+			 \def\chapterautorefname{\S}%
+			 \def\protocolautorefname{Prot.}%
+			 \def\Appendixautorefname{\S}%
+			 {\setlinkcolor\orgautoref{#1}}}
+	% \autorefs is plural for the short form (abbreviated)
+	\providecommand{\autorefs}[1]
+			{\def\equationautorefname{Eqs.}%
+			 \def\figureautorefname{Figs.}%
+			 \def\subfigureautorefname{Figs.}%
+			 \def\subfloateautorefname{Figs.}%
+			 \def\sectionautorefname{\S}%
+			 \def\subsectionautorefname{\S}%
+			 \def\subsubsectionautorefname{\S}%
+			 \def\Itemautorefname{Its.}%
+			 \def\tableautorefname{Tabs.}%
+			 \def\chapterautorefname{\S}%
+			 \def\protocolautorefname{Prots.}%
+			 \def\Appendixautorefname{\S}%
+			 {\setlinkcolor\orgautoref{#1}}}
+\fi
+
+
+%%% biblatex and biber
+\RequirePackage[
+	style=alphabetic,
+	isbn=false,
+	doi=false,
+	pagetracker=true,
+	autocite=inline,
+	minbibnames=3,
+	maxbibnames=99, %print ALL the authors in the bibliography
+	mincitenames=3,
+	maxcitenames=4,
+	minalphanames=3,
+	maxalphanames=4,
+	block=space,
+	% backref=true, %TODO enable if desired
+	backrefstyle=three+,
+	% date=short,
+	backend=biber,
+	url=false,
+	date=year,
+	% defernumbers,
+	% labelalpha
+]{biblatex}
+
+\renewcommand*{\labelalphaothers}{$^+$}
+% \renewcommand*{\sortalphaothers}{$^+$}
+
+%Author format: Single letters for first name. Last name in sc-font
+% the following assumes biblatex v3.3, or newer, which is currently shipped by MikTex
+\DeclareNameFormat{author}{%
+	\ifdefvoid{\namepartgiveni}{}{\namepartgiveni~}%
+	\ifdefvoid{\namepartprefixi}{}{\namepartprefixi~}%
+	{\textsc{\namepartfamily}}%
+	\ifdefvoid{\namepartsuffix}{}{, \namepartsuffix~}%
+	\ifthenelse{\value{listcount}<\value{liststop}}%
+	{\addcomma\space}%
+	{}%
+}%
+
+%compatible with biblatex v3.2 or older (e.g., v2.8a from Debian stable) - God, please update your OS!
+% \DeclareNameFormat{author}{%
+% 	#4%
+% 	\ifblank{#6}{}{ #6}%
+% 	\textsc{ #1}%
+% 	\ifblank{#7}{}{ #7}%
+% 	\ifthenelse{\value{listcount}<\value{liststop}}%
+% 	{\addcomma\space}%
+% 	{}%
+% }%
+
+
+\DeclareFieldFormat[inproceedings,inbook,article,misc,thesis,book,report,online]{title}{\textbf{``#1''}}
+
+\AtEveryBibitem{\clearlist{location}} %do not show addresses, locations
+\AtEveryBibitem{\clearname{editor}} %do not show editors
+\AtEveryBibitem{\clearname{language}} %do not show language
+
+%only list sections in the TOC
+\setcounter{tocdepth}{2}
+
+%counters for protocols
+% \newcommand*{\ORGprotocol}{}
+% \let\ORGprotocol\protocol
+% \def\protocol{%
+% 	\addtocounter{protocol}{1}%
+% 	\let\ORIGINALcaption\caption
+% 	\def\caption{%
+% 		\addtocounter{protocol}{-1}%
+% 		\ORIGINALcaption
+% 	}%
+% 	\ORGprotocol
+% }
+
+% \newcounter{tempeq}
+% \newenvironment{proto}{%
+% 	\counterwithout{equation}{protocol}%
+% 	\setcounter{tempeq}{\value{equation}}%
+% 	\setcounter{equation}{0}%
+% 	\begin{protocol}[htbp]
+% }{%
+% 	\end{protocol}%
+% 	\setcounter{equation}{\value{tempeq}}%
+% 	\counterwithin{equation}{chapter}%
+% }
+
+%set pagenumbering for title page to avoid warnings (should later be overriden in structure.tex)
+\pagenumbering{alph}
+
+%Provide translated section/chapter headlines for typical parts
+\if@german
+	\newcommand{\abbrvchapheadline}{\addchap{{Abkürzungsverzeichnis}}}
+	\newcommand{\appendixchapheadline}{\chapter{{Anhang}}}
+	\newcommand{\abstractsectheadline}{\section*{Zusammenfassung}}
+	\newcommand{\acksectheadline}{\section*{Danksagung}}
+\else
+	\newcommand{\abbrvchapheadline}{\addchap{{List of Abbreviations}}}
+	\newcommand{\appendixchapheadline}{\chapter{{Appendix}}}
+	\newcommand{\abstractsectheadline}{\section*{Abstract}}
+	\newcommand{\acksectheadline}{\section*{Acknowledgments}}
+\fi
+
+\newcommand{\ETaffidavit}{
+	\selectlanguage{ngerman}
+	\section*{Erklärung zur Abschlussarbeit\\gemäß \S23 Abs. 7 APB der TU Darmstadt}
+	\thispagestyle{empty}
+	Hiermit versichere ich, \EncryptoAuthor, die vorliegende \EncryptoSubject\ ohne Hilfe Dritter und nur mit den angegebenen Quellen und Hilfsmitteln angefertigt zu haben.
+	Alle Stellen, die Quellen entnommen wurden, sind als solche kenntlich gemacht worden. Diese Arbeit hat in gleicher oder ähnlicher Form noch keiner Prüfungsbehörde vorgelegen.
+	\par
+	Mir ist bekannt, dass im Falle eines Plagiats (§38 Abs.2 APB) ein Täuschungsversuch vorliegt, der dazu führt, dass die Arbeit mit 5,0 bewertet und damit ein Prüfungsversuch verbraucht wird.
+	Abschlussarbeiten dürfen nur einmal wiederholt werden.
+	\par
+	Bei der abgegebenen Thesis stimmen die schriftliche und die zur Archivierung eingereichte elektronische Fassung überein.
+	\par
+	\noindent\rule{.75\linewidth}{0.4pt}
+	\selectlanguage{english}
+	\section*{Thesis Statement\\pursuant to \S23 paragraph 7 of APB TU Darmstadt}
+	I herewith formally declare that I, \EncryptoAuthor, have written the submitted \EncryptoSubject\ independently.
+	I did not use any outside support except for the quoted literature and other sources mentioned in the paper.
+	I clearly marked and separately listed all of the literature and all of the other sources which I employed when producing this academic work, either literally or in content.
+	This thesis has not been handed in or published before in the same or similar form.
+	\par
+	I am aware, that in case of an attempt at deception based on plagiarism (\S38 Abs. 2 APB), the thesis would be graded with 5,0 and counted as one failed examination attempt.
+	The thesis may only be repeated once.
+	\par
+	In the submitted thesis the written copies and the electronic version for archiving are identical in content.
+	\par
+	Darmstadt,
+	\EncryptoDate%
+	\par
+	\vspace{2cm}%
+	\begin{tabular}{@{}l@{}}\hline%
+	\makebox[10cm]{\EncryptoAuthor}%
+	\end{tabular}\hspace*{\fill}%
+	\if@german
+		\selectlanguage{ngerman}
+	\else
+		\selectlanguage{english}
+	\fi
+}
