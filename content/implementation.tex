@@ -5,10 +5,10 @@
 \section{Implementations Details}
 \label{sec:implementationsdetails}
 
-In this section, we introduce the implementation details of the differentially private mechanisms (cf.) described in the previous section. A technical challenge is to identify the most efficient implementations among the SMPC schemes (cf.). We implemente both fixed-point and floating-point arithmetic, that are based on LSSS (ref.) and GBmw(ref.). After the benchmarking, we finally choose LSSS-based fixed-point and LSSS-based floating-point arithmetic as the number representation for our differentially private mechanism. 
+In this section, we introduce the implementation details of the differentially private mechanisms (cf.) described in the previous section. A technical challenge is to identify the most efficient implementations among the SMPC schemes (cf.). We implement both fixed-point and floating-point arithmetic, that are based on LSSS (ref.) and GBmw(ref.). After the benchmarking, we finally choose LSSS-based fixed-point and LSSS-based floating-point arithmetic as the number representation for our differentially private mechanism. 
 
-\textbf{bgmw signed integer arithemtic}
-except (unsigned integer), we also implemente signed integer arithmetic that support conversion with bgmw fixed-point and bgmw floating-point. The circuit is generate with HyCC. 
+\textbf{bgmw signed integer arithmetic}
+except (unsigned integer), we also implement signed integer arithmetic that support conversion with bgmw fixed-point and bgmw floating-point. The circuit is generate with HyCC. 
 
 
 \textbf{LSSS fixed-point arithmetic implementation}
@@ -20,7 +20,7 @@ For floating-point form, each real value is representa as a quadruple, ??? detai
 ??? ref protocol, modification. The work by ref. provides the MPC protocols for exp2, and ,,,,
 convert exp with. 
 work by ref works on prime field, which can compute inverse of elements,
-But MOTION support arithemtic under 2^n, we use protocols from (ref. ) to replace the steps that involves computation of the inverse of elements. More specifically, ??? , right shift, 
+But MOTION support arithmetic under 2^n, we use protocols from (ref. ) to replace the steps that involves computation of the inverse of elements. More specifically, ??? , right shift, 
 
 
 
@@ -38,7 +38,7 @@ For operation like convert between, we generate circuit with CBMC-2.0 for (c lib
 \textbf{benchmark of different number representation and protocols}
 table, benchmark result, between the LSSS-based fixed-point, floating-point and bgmw fixed-point arithmetic and floating-point arithmetic. 
 
-From benchmark result above, it can be seen that the LSSS-based arithmetic is an order of magnitude slower that bgmw arithmetic. Therefore, we finally choose bgmw arithemtic to implemente the differentially private mechanisms. 
+From benchmark result above, it can be seen that the LSSS-based arithmetic is an order of magnitude slower that bgmw arithmetic. Therefore, we finally choose bgmw arithmetic to implement the differentially private mechanisms. 
 
 
 

@@ -411,12 +411,12 @@ $Algo^{Geo}\left(0.5\right)$~\cite{walker1974fast, googleDP2019} generates a geo
 \FloatBarrier
 
 \paragraph{Sampling from a Discrete Laplace Distribution}
-$Algo^{Dlap}\left(t\right)$~\cite{eigner2014differentially} generates a discrete Laplace random variable $x\sim DLap\left(t\right) $ by transforming two independent uniform random variables $u1, u2 \in \left(0,1\right) $ as follows:
+$Algo^{DLap\_EKMPP}\left(t\right)$~\cite{eigner2014differentially} generates a discrete Laplace random variable $x\sim DLap\left(t\right) $ by transforming two independent uniform random variables $u1, u2 \in \left(0,1\right) $ as follows:
 
 \begin{algorithm}[tbh!]
     \centering
     \fbox{
-        \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, ELSE IF, ELSE, WHILE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{DLap}\left(t\right) $}]{
+        \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Algorithm, Input, Output, IF,TO,RETURN, FOR, ELSE IF, ELSE, WHILE},linenumbering, skipfirstln, head=\textbf{Algorithm: $Algo^{DLap\_EKMPP}\left(t\right) $}]{
             \textbf{Input: $t$} \pcskipln \\
             \textbf{Output: $x\sim DLap\left(t\right) $} \\
             \text{$u_1 \gets Uni\left(0,1\right) $} \\
@@ -541,7 +541,7 @@ $k-anonymity$ alleviates re-identification attacks but is still vulnerable to th
 \end{table}
 \FloatBarrier
 
-Instead of releasing anonymized data, a more promising method is to limit the data analyst's access by deploying a curator who manages all the individual's data in a database. The curator answers the data analysts' queries, protects each individual's privacy, and ensures that the database can provide statistically useful information. However, protecting privacy in such a system is nontrivial. For instance, the curator must prohibit queries targeting a specific individual, such as, "Does Bob suffers from heart disease?". In addition, a single query that seems not to target individuals may still leak sensitive information when several such queries are combined. Instead of releasing the actual query result, releasing approximate statistics could prevent the above attack. However, Dinur et al.~\cite{dinur2003revealing} showed that the adversary could reconstruct the entire database when sufficient queries were allowed and the approximate statistics error was bound to a certain level. Therefore, there are fundamental limits between what privacy protection can achieve and what useful statistical information the queries can provide.
+Instead of releasing anonymized data, a more promising method is to limit the data analyst's access by deploying a curator who manages all the individual's data in a database. The curator answers the data analysts' queries, protects each individual's privacy, and ensures that the database can provide statistically useful information. However, protecting privacy in such a system is nontrivial. For instance, the curator must prohibit queries targeting a specific individual, such as "Does Bob suffers from heart disease?". In addition, a single query that seems not to target individuals may still leak sensitive information when several such queries are combined. Instead of releasing the actual query result, releasing approximate statistics could prevent the above attack. However, Dinur et al.~\cite{dinur2003revealing} showed that the adversary could reconstruct the entire database when sufficient queries were allowed and the approximate statistics error was bound to a certain level. Therefore, there are fundamental limits between what privacy protection can achieve and what useful statistical information the queries can provide.
 Finally, the problem turns into finding a theory that can interpret the relation between preserving privacy and providing valuable statistical information. Differential privacy~\cite{dwork2006differential} is a robust definition that can support quantitative analysis of how much useful statistical information should be released while preserving a desired level of privacy.
 
 

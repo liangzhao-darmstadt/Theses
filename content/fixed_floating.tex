@@ -32,7 +32,7 @@ To extend SecFloat~\cite{cryptoeprint:2022:322} to multiparty settings, we desig
     \text{Parties generate edaBit and each party holds $\left(\left\langle r\right\rangle^A_i, \left\langle r_0\right\rangle^B_i,\ldots,  \left\langle r_{\ell-1}\right\rangle^B_i \right) $, where $ r=\sum_{j=0}^{\ell-1} 2^{j}\cdot  r_j  $.}\\
     \text{Each party locally computes $t_i^{\left(1\right) }=LT\left(\left[\left\langle x\right\rangle ^A_i +\left\langle r \right\rangle^A_i \right] ,\left\langle r\right\rangle^A_i\right) $ by taking $ \left\langle x\right\rangle ^A_i   $ and $\left\langle r\right\rangle^A_i$ as plaintext values.}\\
     \text{Each party broadcasts the computed $ \left[\left\langle x\right\rangle ^A_i+\left\langle r\right\rangle^A_i \right]  $ to other parties.}\\
-    \text{Each party locally computes the public known $t^{(2)}$, where $\sum_{i = 0}^{N-1}\left[\left\langle x\right\rangle ^A_i+\left\langle r\right\rangle^A_i \right] = \left[x+r \right]   + t^{(2)}\cdot 2^{\ell} $.}\\
+    \text{Each party locally computes the publicly known $t^{(2)}$, where $\sum_{i = 0}^{N-1}\left[\left\langle x\right\rangle ^A_i+\left\langle r\right\rangle^A_i \right] = \left[x+r \right]   + t^{(2)}\cdot 2^{\ell} $.}\\
     \text{Parties compute $\left\langle t^{(3)}\right\rangle^A$ using $\Uppi_{BitAdder}$, where $\sum_{i = 0}^{N-1} \left\langle r\right\rangle ^A_i=r+  t^{(3)} \cdot 2^{\ell} $.}\\
     \text{Parties compute $\left\langle t^{(4)}\right\rangle ^A=\Uppi_{LT}\left(\left[x+r\right] , \left\langle r\right\rangle^A  \right) $.}\\
     \text{Parties set $\left\langle t\right\rangle^A_i =\left[t^{(1)}+t^{\left(2\right) }_i-\left\langle t^{(3)}\right\rangle^A_i-\left\langle t^{(4)}\right\rangle^A_i \right] $ as an arithmetic share of $t$.}
@@ -107,7 +107,7 @@ Next, we explain how to compute the first two terms $ \sum_{i = 0}^{N-1} \left[\
 \label{wrap:step2}
 
 
-Each party can locally compute $ \left[\left\langle x\right\rangle ^A_i+\left\langle r\right\rangle^A_i\right]    $ by taking $\left\langle x\right\rangle ^A_i$ and $\left\langle r\right\rangle^A_i$ as plaintext values, compute the addition and modulo operation, and broadcast it to other parties. Then all parties use the received values to compute $\sum_{i = 0}^{N-1}\left[ \left\langle x\right\rangle ^A_i+\left\langle r\right\rangle^A_i  \right]  = \left[x+r  \right]   + t^{(2)}\cdot 2^{\ell} $ in plaintext, where $t^{(2)}$ is an integer. Note that both $ \left[x+r \right]  $ and $t^{(2)}$ are public known, but as $r$ is a random value, $ \left[x+r \right]  $ reveals no information about $x$.
+Each party can locally compute $ \left[\left\langle x\right\rangle ^A_i+\left\langle r\right\rangle^A_i\right]    $ by taking $\left\langle x\right\rangle ^A_i$ and $\left\langle r\right\rangle^A_i$ as plaintext values, compute the addition and modulo operation, and broadcast it to other parties. Then all parties use the received values to compute $\sum_{i = 0}^{N-1}\left[ \left\langle x\right\rangle ^A_i+\left\langle r\right\rangle^A_i  \right]  = \left[x+r  \right]   + t^{(2)}\cdot 2^{\ell} $ in plaintext, where $t^{(2)}$ is an integer. Note that both $ \left[x+r \right]  $ and $t^{(2)}$ are publicly known, but as $r$ is a random value, $ \left[x+r \right]  $ reveals no information about $x$.
 
 
 \subsection{Step 3. Compute $\left\langle t^{\left(3\right) }\right\rangle^A$, where $\sum_{i = 0}^{N-1}\left\langle r\right\rangle^A_i=r+  t^{\left(3\right) } \cdot 2^{\ell}$}
@@ -159,9 +159,9 @@ As $\left[ \left[x+r\right]   -r \right]=x$, \autoref{eq:wrap3} can be transform
     \end{split}
 \end{equation}
 
-The parties compute and obtain $\left\langle t^{\left(4\right) }\right\rangle^A $ together, where $t^{\left(4\right) }=LT\left(\left[x+r  \right] ,r\right) $. Note that $\left[x+r  \right] $ is public known and $r$ is secret shared as $\left\langle r\right\rangle^A $. Therefore, we use the $\Uppi^{LT}$~\cite{cryptoeprint:2021:119} to compare the public known $ \left[x+r  \right] $ with arithmetic share $\left\langle r\right\rangle ^A $ of $r$ and convert the comparison result into arithmetic share $\left\langle t^{\left(4\right) }\right\rangle^A$.
+The parties compute and obtain $\left\langle t^{\left(4\right) }\right\rangle^A $ together, where $t^{\left(4\right) }=LT\left(\left[x+r  \right] ,r\right) $. Note that $\left[x+r  \right] $ is publicly known and $r$ is secret shared as $\left\langle r\right\rangle^A $. Therefore, we use the $\Uppi^{LT}$~\cite{cryptoeprint:2021:119} to compare the publicly known $ \left[x+r  \right] $ with arithmetic share $\left\langle r\right\rangle ^A $ of $r$ and convert the comparison result into arithmetic share $\left\langle t^{\left(4\right) }\right\rangle^A$.
 
-Finally, each party $i$ set $\left\langle t\right\rangle^A_i =\left[t^{(1)}_i+t^{\left(2\right) }-\left\langle t^{(3)}\right\rangle^A_i-\left\langle t^{(4)}\right\rangle^A_i \right] $ as an arithmetic share of $t$, where $t^{(2)}$ is public known and $\left(t_i^{\left(1\right) },\left\langle t^{(3)}\right\rangle^A_i,\left\langle t^{(4)}\right\rangle^A_i\right) $ are only known to party $i$.
+Finally, each party $i$ set $\left\langle t\right\rangle^A_i =\left[t^{(1)}_i+t^{\left(2\right) }-\left\langle t^{(3)}\right\rangle^A_i-\left\langle t^{(4)}\right\rangle^A_i \right] $ as an arithmetic share of $t$, where $t^{(2)}$ is publicly known and $\left(t_i^{\left(1\right) },\left\langle t^{(3)}\right\rangle^A_i,\left\langle t^{(4)}\right\rangle^A_i\right) $ are only known to party $i$.
 
 
 \section{Toy Example of $\Uppi^{Wrap}\left(\left\langle x\right\rangle_0^A, \ldots ,\left\langle x\right\rangle_{\left(N-1\right)}^A  \right) $}
@@ -188,7 +188,7 @@ $P_2$: $t^{(1)}_2=LT\left(\left[\left\langle x\right\rangle_2^A + \left\langle r
 
 $P_0$, $P_1$, $P_2$: $\sum_{i = 0}^{2}  \left[ \left\langle x\right\rangle_i^A+ \left\langle r\right\rangle^A_i \right]=\left[7+3\right] +\left[6+4\right]+\left[5+7\right] =2+2+4=8=0+1\times 2^{3}$
 
-We get public known values: $\left[x+r  \right]=0$, $t^{(2)}=1$\\
+We get publicly known values: $\left[x+r  \right]=0$, $t^{(2)}=1$\\
 
 \textbf{3. Compute $\left\langle t^{\left(3\right) }\right\rangle^A$, where $\sum_{i = 0}^{2}\left\langle r\right\rangle^A_i=r+  t^{\left(3\right) } \cdot 2^{3}$}
 
@@ -205,7 +205,7 @@ $P_2$: $\left\langle t^{\left(3\right) }\right\rangle^A_2=5$
 
 \textbf{4. Compute $\left\langle t^{\left(4\right) }\right\rangle^A $, where $t^{\left(4\right) }=LT\left(\left[x+r  \right] ,  r  \right) $}
 
-As $\left[x+r  \right] =0$, we deploy $\Uppi^{LT}$ to compare public known value $\left[x+r  \right] =0$ with secret $r$.
+As $\left[x+r  \right] =0$, we deploy $\Uppi^{LT}$ to compare publicly known value $\left[x+r  \right] =0$ with secret $r$.
 Suppose after comparison, each party get $\left\langle t^{\left(4\right) }\right\rangle^A_i $ (i.e., $\left[\sum_{i=0}^{2}  \left\langle t^{\left(4\right) }\right\rangle^A_i\right] _{2^{3}} =\left(\left[x+r  \right]<r\right) =1$) as follows:
 
 $P_0$: $\left\langle t^{\left(4\right) }\right\rangle^A_0 =3$
@@ -222,6 +222,6 @@ $P_1$: $\left\langle t\right\rangle^A_1= \left[t^{(1)}_1-\left\langle t^{(3)}\ri
 
 $P_2$: $\left\langle t\right\rangle^A_2= \left[t^{(1)}_2-\left\langle t^{(3)}\right\rangle^A_2-\left\langle t^{(4)}\right\rangle^A_2\right]   =\left[1-5-7\right]=5 $
 
-Note that as $t^{\left(2\right) }$ is public known, we only involve that in the computation of $\left\langle t\right\rangle^A_0$.
+Note that as $t^{\left(2\right) }$ is publicly known, we only involve that in the computation of $\left\langle t\right\rangle^A_0$.
 
 It is easy to verify $\left[\left\langle t\right\rangle^A_0+\left\langle t\right\rangle^A_1+\left\langle t\right\rangle^A_2\right]=\left[2+3+5\right] =2 $, which equals to $t=2$.

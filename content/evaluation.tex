@@ -37,8 +37,8 @@ As \autoref{tab:runtimes_fixed_point_circuit} shows that division is the slowest
 In \autoref{tab:runtimes_fixed_point_agmw}, operation natural exponentiation has the longest run-times. As the number of parties increase from $3$ to $5$, operation subtraction and square root increase the run-times at most by factor $15\times$ and $3.8\times$ in the LAN setting.
 
 
-Comparing the run-times of fixed-point arithmetic from \autoref{tab:runtimes_fixed_point_circuit} and \autoref{tab:runtimes_fixed_point_agmw}, we can see that the BGMW-based fixed-point arithmetic ($SIMD=1$) is more efficient than the AGMW-based fixed-point arithemtic only in operations such as, exp2, exp and conversion operation with integer, but slower in all other operations.
-However, when we apply SIMD technique, BGMW-based fixed-point arithmetic ($SIMD=1000$) is $4\times-4000\times$ faster than the AGMW-based fixed-point arithemtic for all the operations in the LAN setting. In the WAN setting, the BGMW-based fixed-point arithmetic is $35\times-2800\times$ faster than the AGMW-based fixed-point arithemtic except for addition and multiplication operations.
+Comparing the run-times of fixed-point arithmetic from \autoref{tab:runtimes_fixed_point_circuit} and \autoref{tab:runtimes_fixed_point_agmw}, we can see that the BGMW-based fixed-point arithmetic ($SIMD=1$) is more efficient than the AGMW-based fixed-point arithmetic only in operations such as exp2, exp and conversion operation with integer, but slower in all other operations.
+However, when we apply SIMD technique, BGMW-based fixed-point arithmetic ($SIMD=1000$) is $4\times-4000\times$ faster than the AGMW-based fixed-point arithmetic for all the operations in the LAN setting. In the WAN setting, the BGMW-based fixed-point arithmetic is $35\times-2800\times$ faster than the AGMW-based fixed-point arithmetic except for addition and multiplication operations.
 That means if the functionalities (e.g., $FOR$ loop in \autoref{prot:TwoSideGeometric}) can be parallelized in to independent and identical operations, the BGMW-based fixed-point arithmetic is a better option in the LAN setting.
 
 Therefore, we finally choose BGMW-based fixed-point arithmetic to implement the MPC protocols for sampling algorithms (cf.~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}).
@@ -135,7 +135,7 @@ Therefore, we finally choose BGMW-based fixed-point arithmetic to implement the 
 
 
 In \autoref{tab:runtimes_floating_point_circuit}, operation natural logarithm takes the longest run-times in both LAN and WAN settings. As the number of parties grows from $3$ to $5$, the run-times of conversion operations to integer and fixed-point increase at most by a factor $3.08\times$ and $3.66\times$ (SIMD=1), factor $2.2\times$ and $1.9\times$ (SIMD=1000).
-Comparing the run-times of floating-point arithmetic from \autoref{tab:runtimes_floating_point_circuit} and \autoref{tab:runtimes_floating_point_agmw}, we can see that without applying SIMD, the BGMW-based floating-point arithmetic is faster ($1.3\times-3\times$) than AGMW-based floating-point arithmetic in operations such as, addition, subtraction, division, log2 and square root, and slower in all other operations. After applying the SIMD technique, the BGMW-based floating-point arithmetic is $50\times-10911\times$ faster than AGMW-based floating-point arithmetic for all the operations in the LAN setting.
+Comparing the run-times of floating-point arithmetic from \autoref{tab:runtimes_floating_point_circuit} and \autoref{tab:runtimes_floating_point_agmw}, we can see that without applying SIMD, the BGMW-based floating-point arithmetic is faster ($1.3\times-3\times$) than AGMW-based floating-point arithmetic in operations such as addition, subtraction, division, log2 and square root, and slower in all other operations. After applying the SIMD technique, the BGMW-based floating-point arithmetic is $50\times-10911\times$ faster than AGMW-based floating-point arithmetic for all the operations in the LAN setting.
 
 As the protocols in\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms} requires SIMD to eliminate the $FOR$ loop iterations, we choose BGMW-based floating-point arithmetic to implement MPC protocols for sampling algorithms.
 
@@ -384,7 +384,7 @@ We implement the Integer-Scaling Gaussian mechanism $M_{ISGau}$ under BGMW-based
 It can be seen, that $M_{DLap}$~\cite{eigner2014differentially} is at least $1068\times$ faster than our implementation of $M_{DLap}$ in BGMW-based fixed/floating-point arithmetic in the LAN setting. However, it remains to prove if $M_{DLap}$~\cite{eigner2014differentially} can satisfy differential privacy under fixed or floating-point implementation.
 
 \text{Discrete Gaussian Mechanisms}
-\TODO{We encounter memory overflow when implement BGMW-based $M_{Dau}$, implemente in AGMW-based floating-point arithmetic}
+\TODO{We encounter memory overflow when implement BGMW-based $M_{Dau}$, implement in AGMW-based floating-point arithmetic}
 
 
 
