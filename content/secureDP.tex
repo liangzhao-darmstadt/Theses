@@ -322,7 +322,7 @@ where $r$ is the resolution parameter that controls the scale of the simulated c
     The Integer-Scaling Laplace mechanism $M_{ISLap}\left(f\left(D\right),r,\Delta _r,\varepsilon\right)$ satisfies $\varepsilon$-DP for query function $f$.
 \end{theorem}
 
-We found three discrete Laplace sampling algorithms~\cite{eigner2014differentially,googleDP2019,canonne2020discrete } that can be used in the Integer-Scaling Laplace mechanism.
+We found three discrete Laplace sampling algorithms~\cite{eigner2014differentially,googleDP2019,canonne2020discrete} that can be used in the Integer-Scaling Laplace mechanism.
 We only describe and modify the discrete Laplace sampling algorithm in work~\cite{googleDP2019}, that first generates a geometric random variable $x$ with a binary search-based geometric sampling algorithm and converts $x$ to a discrete Laplace random variable $i$.
 % As the discrete Laplace distribution can be generate by reflecting the geometric distribution across $y$-axis, we can first sample a geometric random variable and transform it into a discrete Laplace random variable. $r$ is the smallest power of $2$ exceeding $ \frac{\Delta }{2^c\epsilon}$, $\varepsilon$ controls the differential privacy protection level (cf.~\autoref{def:laplaceMechanism}), and $c\in \left\{10, 11,\ldots, 45\right\} $ is a predefined parameter that controls the degree of discretization and accuracy of $M_{ISLap}\left(f\left(D\right),r,\varepsilon,\Delta _r\right)$.\\
 
