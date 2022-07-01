@@ -2,7 +2,8 @@
 % enter your metadata in the following lines:
 \RequirePackage{filecontents}
 \begin{filecontents*}{\jobname.xmpdata}
-\Title{This is the Title}
+	 \maketitle
+\Title{Securely Realizing Output Privacy in MPC}
 \Author{Liang Zhao}
 \Subject{Master Thesis}
 \Keywords{}
@@ -10,11 +11,14 @@
 {IEC sRGB}
 {IEC 61966-2.1 Default RGB colour space - sRGB} red
 {http://www.iec.ch}
-\end{filecontents*}
+\end{filecontents*};;
 
-\newcommand\EncryptoPrintTitle{This is\\the Title} % change this if you want to break the title at a specified position. the words must be equivalent to the XMP-title above!
+
+%\newcommand\EncryptoPrintTitle{This is\\the Title} % change this if you want to break the title at a specified position. the words must be equivalent to the XMP-title above!
+\newcommand\EncryptoPrintTitle{Securely Realizing Output Privacy in MPC} % change this if you want to break the title at a specified position. the words must be equivalent to the XMP-title above!
 \newcommand\EncryptoSupervisor{M.Sc. Helen Möllering \\ M.Sc. Oleksandr Tkachenko}
 
+\newcommand\EncryptoAuthor{Liang Zhao}
 
 % document class, no need to modify
 \documentclass[paper = a4,
@@ -77,6 +81,8 @@
 
 
 \begin{document}
+
+	
 	\maketitle
 	\input{frontbackmatter/structure} % add your content into the file referenced here
 \end{document}

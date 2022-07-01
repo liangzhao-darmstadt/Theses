@@ -14,7 +14,7 @@ Let $\mathbb{D}$ denote the set of floating-point numbers, and $\mathbb{D} \cap 
 
 Let $P_1, \ldots P_{N} $ denote $N$ computation parties. The value $x$ that is secret shared among $N$ parties are denoted by $\left\langle x\right\rangle ^S=\left(\left\langle x\right\rangle_1^S ,\ldots, \left\langle x\right\rangle_N^S\right) $, where
 $\left\langle x\right\rangle _i^S$ is hold by party $P_i$.
-$S \in \left\{\ARITH,\BOOL,\YAO\right\} $ denotes the sharing type (cf.~\autoref{subsec:secretSharingAndSharingConversions}): $\ARITH$ for arithmetic sharing, $\BOOL$ for Boolean sharing with GMW, $\YAO$ for Yao sharing with BMR. $\operatorname{B2A}$ denotes the share conversion from $\BOOL$ to $\ARITH$, and other share conversions are defined similarly as discussed in~\cite{DSZ15}.
+$S \in \left\{\ARITH,\BOOL,\YAO\right\} $ denotes the sharing type (cf.~\autoref{subsec:secretSharingAndSharingConversions}): $\ARITH$ for arithmetic sharing, $\BOOL$ for Boolean sharing with GMW, $\YAO$ for Yao sharing with BMR. $\operatorname{B2A}$ denotes the share conversion from $\BOOL$ to $\ARITH$, and other share conversions are defined similarly as discussed in~\cite{demmler2015aby}.
 $\left\langle \boldsymbol{x}\right\rangle $ denotes a vector of $\ell$ shared bits.
 $D \in \left\{UINT,INT,FX,FL\right\} $ indicates the data type: $UINT$ for unsigned integer, $INT$ for signed integer, $FX$ for fixed-point number, and $FL$ for floating-point number. We omit subscript and subscript when it is clear from the context.
 
@@ -30,9 +30,9 @@ Let $\left\langle a\right\rangle ^B \cdot \left\langle \boldsymbol{b}\right\rang
 
 \section{Secure Multi-Party Computation}
 \label{sec:secureMultipartyComputation}
-Yao~\cite{Yao86} first introduced the secure two-party computation with Yao's Millionaires' problem (i.e., two millionaires wish to know who is richer without revealing their actual wealth) and proposed the garbled circuit protocol as a solution.
+Yao~\cite{yao1986generate} first introduced the secure two-party computation with Yao's Millionaires' problem (i.e., two millionaires wish to know who is richer without revealing their actual wealth) and proposed the garbled circuit protocol as a solution.
 % In Yao's Millionaires' problem, two millionaires wish to know who is richer without revealing their actual wealth.
-Afterwards, Beaver, Micali and Rogaway (BMR)~\cite{beaver1990round} generalized Yao's garbled circuit protocol to multi-party settings. Goldreich, Micali and Wigderson (GMW)~\cite{goldwasser1987play} use Boolean sharing to realize multi-party computation.
+Afterwards, Beaver, Micali and Rogaway (BMR)~\cite{beaver1990round} generalized Yao's garbled circuit protocol to multi-party settings. Goldreich, Micali and Wigderson (GMW)~\cite{goldreich2019play} use Boolean sharing to realize multi-party computation.
 Generally, the execution of MPC protocols is divided into the offline phase (no private inputs are involved) and the online phase (private inputs are involved).
 
 \textbf{Adversary Model}
@@ -42,11 +42,11 @@ We consider the semi-honest (passively corrupted)~\cite[Chapter~2]{evans2017prag
 \label{subsec:UsefulToolsforMulti-PartyComputation}
 \subsubsection{Oblivious Transfer}
 \label{subsubsec:OT}
-Oblivious transfer (OT) was first defined by Rabin~\cite{rabinOT1981} as a mode of transferring information, where the receiver $P_R$ received the message from the sender $P_S$ successfully with probability $p=0.5$, and the sender was oblivious of whether the message was received.
-Later, Even et al.~\cite{even1985} redefined OT as the $1$-out-of-$2$ OT ($\binom{2}{1}$-OT). $\binom{2}{1}$-OT has the functionality that accepts inputs ($x_0$, $x_1$) from the sender and a choice bit $c$ from the receiver. After computation, it outputs $\bot $ to the sender and $x_c$ to the receiver. $\binom{2}{1}$-OT guarantees that the sender does not learn anything about $c$ and the receiver does not learn about $x_{1-c}$.
-Impagliazzo and Rudich~\cite{Russel1990} showed that a \textit{black-box} reduction from OT to a one-way function~\cite[Chapter~2]{oded2006foundations} is as hard as proving $P\neq NP$, which implies that OT requires relatively expensive (than symmetric cryptography) public-key cryptography~\cite{rivest1978method}.
+Oblivious transfer (OT) was first defined by Rabin~\cite{rabin2005exchange} as a mode of transferring information, where the receiver $P_R$ received the message from the sender $P_S$ successfully with probability $p=0.5$, and the sender was oblivious of whether the message was received.
+Later, Even et al.~\cite{even1985randomized} redefined OT as the $1$-out-of-$2$ OT ($\binom{2}{1}$-OT). $\binom{2}{1}$-OT has the functionality that accepts inputs ($x_0$, $x_1$) from the sender and a choice bit $c$ from the receiver. After computation, it outputs $\bot $ to the sender and $x_c$ to the receiver. $\binom{2}{1}$-OT guarantees that the sender does not learn anything about $c$ and the receiver does not learn about $x_{1-c}$.
+Impagliazzo and Rudich~\cite{impagliazzo1989limits} showed that a \textit{black-box} reduction from OT to a one-way function~\cite[Chapter~2]{oded2006foundations} is as hard as proving $P\neq NP$, which implies that OT requires relatively expensive (than symmetric cryptography) public-key cryptography~\cite{rivest1978method}.
 
-Nevertheless, Ishai et al.~\cite{IKNP03} proposed OT \textit{extension} technique that extends a small number of OTs based on public-key cryptography to a large number of OTs with efficient symmetric cryptography.
+Nevertheless, Ishai et al.~\cite{ishai2003extending} proposed OT \textit{extension} technique that extends a small number of OTs based on public-key cryptography to a large number of OTs with efficient symmetric cryptography.
 Asharov et al.~\cite{asharov2017more} proposed specific OT functionalities for the optimization of MPC protocols such as correlated OT (C-OT) and random OT (R-OT). In C-OT, the sender inputs a correlation function $f_{\Delta }$ (e.g., $f_{\Delta }\left(x\right)=x\oplus \Delta $, where $\Delta$ is only known by the sender) and receives random values $x_0$ and $x_1=f_{\Delta }\left(x_0\right)$, the receiver inputs a choice bit $c$ and receives $x_{c}$. In R-OT, the sender has no inputs and receives random values ($x_0$, $x_1$), the receiver inputs a choice bit $c$ and receives $x_c$.
 
 \subsubsection{Multiplication Triples}
@@ -54,7 +54,7 @@ Asharov et al.~\cite{asharov2017more} proposed specific OT functionalities for t
 Multiplication triples (MTs) are proposed by Beaver~\cite{beaver1991efficient} that can be precomputed to reduce the time cost in the online phase of MPC protocols.
 A multiplication triple has the form $\left(\left\langle a\right\rangle^S , \left\langle b\right\rangle^S,\left\langle c\right\rangle^S\right) $ with $S\in \left\{B,A\right\} $.
 In Boolean sharing with GMW (cf.~\autoref{para:BooleanSharing}), we have $c=a\land b$ is for Boolean sharing  and $c=a \times  b$ in arithmetic sharing (cf.~\autoref{para:arithmeticSharing}).
-Multiplication triples can be generated using C-OT (cf.~\autoref{subsubsec:OT}) as Braun et al.~\cite{DSZ15,braun2020motion} showed.
+Multiplication triples can be generated using C-OT (cf.~\autoref{subsubsec:OT}) as Braun et al.~\cite{braun2022motion} showed.
 The advantage of MTs is that it can reduce the MPC protocols' online complexity by converting expensive operations (e.g., arithmetic multiplication and logical $\operatorname{AND}$) to linear operations (e.g., arithmetic addition and logical $\operatorname{XOR}$).
 
 
@@ -66,7 +66,7 @@ The advantage of MTs is that it can reduce the MPC protocols' online complexity 
 \label{subsec:BMR}
 
 We first present Yao's Garbled Circuit protocol, and then, extend it to multiparty setting with BMR~\cite{beaver1990round} protocols.
-Yao~\cite{Yao86} introduced the garbled circuit protocol that enables two parties (garbler $P_G$ and evaluator $P_E$) to securely evaluate any functionality represented as a Boolean circuit.
+Yao~\cite{yao1986generate} introduced the garbled circuit protocol that enables two parties (garbler $P_G$ and evaluator $P_E$) to securely evaluate any functionality represented as a Boolean circuit.
 % \subsubsection{Execution of Garbled Circuit Protocol}
 We follow the steps of Yao's garbled circuit protocol described in~\cite{lindell2009proof}: circuit garbling, input encoding, and circuit evaluation.
 
@@ -117,12 +117,12 @@ Fixed-Key AES garbling~\cite{bellare2013efficient} reduces the encryption and de
 Two-halves garbling~\cite{zahur2015two} reduces the entry number of each $\operatorname{AND}$ gate from three to two by splitting each $\operatorname{AND}$ gate into two half-gates at the cost of one more decryption operation of $P_E$.
 Three-halves garbling~\cite{rosulek2021three} requires less $25\%$ communication bits than two-halves garbling at the cost of more computation.
 
-BMR protocol~\cite{beaver1990round} extends Yao's garbled circuit protocol~\cite{Yao86} to the multi-party setting. Recall that in Yao's garbled circuit protocol (cf.~\autoref{subsec:YaoGarbledCircuitProtocol}), the circuit is first garbled by one party and evaluated by another party. BMR protocol enables the multi-party computation by jointly garbling the circuit by all parties, and then, each party evaluates the garbled circuit locally. Ben-Efraim et al.~\cite{ben2016optimizing} proposed several optimization techniques for BMR protocol, e.g., OT-based garbling and BGW-based garbling~\cite{wigderson1988completeness}F.
+BMR protocol~\cite{beaver1990round} extends Yao's garbled circuit protocol~\cite{yao1986generate} to the multi-party setting. Recall that in Yao's garbled circuit protocol, the circuit is first garbled by one party and evaluated by another party. BMR protocol enables the multi-party computation by jointly garbling the circuit by all parties, and then, each party evaluates the garbled circuit locally. Ben-Efraim et al.~\cite{ben2016optimizing} proposed several optimization techniques for BMR protocol, e.g., OT-based garbling and BGW-based garbling~\cite{ben2019completeness}F.
 
 
 \subsection{Goldreich-Micali-Wigderson (GMW)}
 \label{subsec:GMW}
-GMW protocol~\cite{goldwasser1987play} enables multiple parties to evaluate a function represented as a Boolean circuit (or arithmetic circuit).
+GMW protocol~\cite{goldreich2019play} enables multiple parties to evaluate a function represented as a Boolean circuit (or arithmetic circuit).
 We describe a generic case of GMW protocol where two parties $P_0$ and $P_1$ wish to securely evaluate a Boolean circuit $C$.
 Each party first secret shares its input bits with other parties using an $\operatorname{XOR}$-based secret sharing scheme. For example, $P_{0}$ has input bit $x$ and sends its share $x_{1} $ to $P_1$, where $x=x_0 \oplus x_1$. $P_1$ with input bit $y$ follows the same secret sharing steps.
 The $\operatorname{XOR}$ gate $z=x\oplus y$ can be evaluated by each party $P_i$ locally with $z_i= x_i \oplus y_i$ since $z= x\oplus y = \left(x_0 \oplus x_1\right) \oplus \left(y_0 \oplus y_1\right) =\left(x_0 \oplus y_0\right) \oplus \left(x_1 \oplus y_1\right)$.
@@ -146,7 +146,7 @@ $P_1$ acts as the receiver with choice $\left(x_1y_1\right)_2 $ and receives $z_
 
 \subsection{Secret Sharing and Sharing Conversions}
 \label{subsec:secretSharingAndSharingConversions}
-We introduce the secret sharing types and sharing conversions used based on work~\cite{DSZ15}.
+We introduce the secret sharing types and sharing conversions used based on work~\cite{demmler2015aby}.
 
 % \subsubsection{Secret Sharing}
 
@@ -160,18 +160,18 @@ A bit $x$ is shared among $N$ parties as $\left(\left\langle x\right\rangle ^B_1
 
 \paragraph{Yao Sharing with BMR (Y)}
 \label{para:YaoSharing}
-Recall that in Yao's garbled circuit protocol (cf.~\autoref{subsec:YaoGarbledCircuitProtocol}), we introduce the optimization techniques such as point and permute~\cite{beaver1990round} and Free-XOR~\cite{kolesnikov2008improved}. Specifically, the garbler generates a random $\kappa$-bit string $R$ with $R\left[0\right] =1$ (as permutation bit) and a random key $k_0^i$, and set $k_1^i=k_0^i\oplus R$ for each wire $i$.
+Recall that in Yao's garbled circuit protocol (cf.~\autoref{subsec:BMR}), we introduce the optimization techniques such as point and permute~\cite{beaver1990round} and Free-XOR~\cite{kolesnikov2008improved}. Specifically, the garbler generates a random $\kappa$-bit string $R$ with $R\left[0\right] =1$ (as permutation bit) and a random key $k_0^i$, and set $k_1^i=k_0^i\oplus R$ for each wire $i$.
 Based on the above techniques, the evaluator can share a bit $x$ with the garbler by running a C-OT (cf.~\autoref{subsubsec:OT}). The garbler inputs a correlation function $f_{R }$, obtains $\left(k_0,k_1 \right) $ with $k_1=k_0\oplus R$, and set $\left\langle x\right\rangle^Y_0 =k_0$. The evaluator inputs a choice bit $x$, and receives $\left\langle x\right\rangle^Y_1 =k_x=k_0\oplus x R$. To reconstruct $x$, the evaluator sends $\left\langle x\right\rangle^Y_1\left[0\right] $ to the garbler who computes $x=\left\langle x\right\rangle^Y_0\left[0\right]\oplus \left\langle x\right\rangle^Y_1\left[0\right]$.
 For the evaluation of $\operatorname{XOR}$ gate, each party can locally calculate $\left\langle z\right\rangle ^Y=\left\langle x\right\rangle^Y\oplus \left\langle y\right\rangle ^Y $ based on Free-XOR~\cite{kolesnikov2008improved}. The $\operatorname{AND}$ gate $\left\langle z\right\rangle ^Y=\left\langle x\right\rangle^Y \land\left\langle y\right\rangle ^Y $ can be evaluated using the method from~\cite{bellare2013efficient}, where one party garbles the circuit with its share and another party evalutes the garbled circuit with its share.
-Yao's sharing can also be extended to multi-party case as the work~\cite{Braun} showed.
+Yao's sharing can also be extended to multi-party case as the work~\cite{braun2022motion} showed.
 
 \subsubsection{Sharing Conversions}
 \label{subsubsec:SharingConversions}
-Different sharing types and corresponding MPC protocols have advantages in specific operations, e.g., arithmetic GMW (cf.~\autoref{subsec:GMW}) allows parties to execute linear operations locally, and BMR (cf.~\autoref{subsec:BMR}) is often more efficient for comparison. Therefore, we consider the sharing conversion methods introduced in works~\cite{DSZ15,braun2020motion}.
+Different sharing types and corresponding MPC protocols have advantages in specific operations, e.g., arithmetic GMW (cf.~\autoref{subsec:GMW}) allows parties to execute linear operations locally, and BMR (cf.~\autoref{subsec:BMR}) is often more efficient for comparison. Therefore, we consider the sharing conversion methods introduced in works~\cite{demmler2015aby,braun2022motion}.
 
 \subsection{MPC Framework - MOTION}
 \label{subsection:MOTIONFramework}
-We build upon the recent MPC framework MOTION~\cite{braun2020motion} that provides the following novel features:
+We build upon the recent MPC framework MOTION~\cite{braun2022motion} that provides the following novel features:
 \begin{enumerate}
     \item Support for MPC with $N$ parties, full-threshold security (i.e., tolerating up to $N-1$ passive corruptions) and sharing conversions between $ABY$.
     \item Implementation of primitive operations of MPC protocols at the circuit's gate level and evaluate it asynchronously, i.e., each gate is separately evaluated once their parent gates become ready.
@@ -348,7 +348,7 @@ $x \sim DGau \left(\mu,\sigma\right)$ is a discrete Gaussian random variable.
 
 \paragraph{Inverse Transform Sampling Method}
 Inverse transform sampling method is a common method to generate random variables from certain distribution $f$ using its inverted cumulative distribution $F^{-1}$.
-\begin{theorem}[Inverse Transform Sampling Method{~\cite[Theorem 2.1]{Devroye1986}}]
+\begin{theorem}[Inverse Transform Sampling Method{~\cite[Theorem 2.1]{steele1987non}}]
     \label{theorem:inversionSamplingMethod}
     Let $F$ be a continuous distribution function on $\mathbb{R}$ with inverse $F^{-1}$ defined as follows:
     \begin{equation}
@@ -434,7 +434,8 @@ $Algo^{DLap\_EKMPP}\left(t\right)$~\cite{eigner2014differentially} generates a d
 In this work, we rely on fixed-point and floating-point to perform the arithmetic operations.
 
 \textbf{Floating-Point Representation.}
-Double-precision floating-point numbers~\cite{IEEE754_2019} occupy 64 bits (1 bit for sign, 11 bits for exponent, 52 bits for mantissa/significant) and are represented as follows:
+% Double-precision floating-point numbers~\cite{IEEE754_2019} occupy 64 bits (1 bit for sign, 11 bits for exponent, 52 bits for mantissa/significant) and are represented as follows:
+Double-precision floating-point numbers occupy 64 bits (1 bit for sign, 11 bits for exponent, 52 bits for mantissa/significant) and are represented as follows:
 \begin{equation}
     \begin{split}
         \left(-1\right)^S\left(1.d_{1}\ldots d_{52}\right)_2\times 2^{\left(e_{1}\ldots e_{11}\right)_2 -1023} ,
@@ -487,7 +488,7 @@ Let us assume that the released data is already anonymized by removing the ident
 
 A typical attack is the re-identification attack~\cite{sweeney1997weaving} that combines the released anonymized data with publicly available information to re-identify individuals. One traditional approach against the re-identification attacks is to deploy privacy preservation methods that satisfy the notion of $k-anonymity$~\cite{samarati1998protecting} to anonymize the data and prevent the data subjects from being re-identified. More specifically, the $k-anonymity$ requires that for all individuals whose information appears in the dataset, each individual's information cannot be distinguished from at least $k-1$ other individuals.
 
-Samarati et al.~\cite{samarati1998protecting} introduced two techniques to achieve $k-anonymity$: data generalization and suppression. The former method makes the data less informative by mapping specific attribute values to a broader value range, and the latter method removes specific attribute values. As~\cite{tabular:4-anonymousinpatientmicrodata} shows, the values of attribute $Age$ in the first eight records are replaced by value ranges such as $<30$ and $\geq 40$ after generalization. The values of attribute $Nationality$ are suppressed by being replaced with $*$. Finally, the records in \autoref{tabular:4-anonymousinpatientmicrodata} satisfy the $4-anonymity$ requirement. For example, given one patient's non-sensitive attribute values (e.g., $Zip Code$: $130**$, $Age$: $<30$), there are at least three other patients with the same non-sensitive attribute values.
+Samarati et al.~\cite{samarati1998protecting} introduced two techniques to achieve $k-anonymity$: data generalization and suppression. The former method makes the data less informative by mapping specific attribute values to a broader value range, and the latter method removes specific attribute values. As~\autoref{tabular:4-anonymousinpatientmicrodata} shows, the values of attribute $Age$ in the first eight records are replaced by value ranges such as $<30$ and $\geq 40$ after generalization. The values of attribute $Nationality$ are suppressed by being replaced with $*$. Finally, the records in \autoref{tabular:4-anonymousinpatientmicrodata} satisfy the $4-anonymity$ requirement. For example, given one patient's non-sensitive attribute values (e.g., $Zip Code$: $130**$, $Age$: $<30$), there are at least three other patients with the same non-sensitive attribute values.
 
 
 
@@ -720,26 +721,26 @@ Suppose the adversary $A$ has chosen two data sets:
 The testing set $Q$ is an interval $\left[ T,1\right] $, where the threshold $T$ is chosen by the adversary. The threshold $T$ is chosen such that when the adversary has $T<M\left( D\right) < 1$, he knows $M$ has input $D=D_{1}$ (or $D=D_{0}$, when $0<M\left( S\right) \leq T$) .
 
 \textbf{The Deterministic Case.}
-Suppose the challenger wants to calculate the mean value of data sets and chooses $M\left( D\right) =mean\left( D \right) $. Since $M\left( D_{0}\right) =0$ and $M\left( D_{1}\right) =0.01$, the adversary can set $Q =\left[ 0.005,1\right] $ and identify precisely the database $D$ used in $M\left( D\right) $ every time they play the game. In \autoref{img:DPexamplenoisefree}, the green line represents the distribution of $M\left( D_{0}\right)$, whereas the orange line represents the distribution of $M\left( D_{1}\right)$ (plotted upside down for clarity). The vertical dotted line represents the threshold $T=0.005$ which separates $D_{0}$ and $D_{1}$ perfectly.
+Suppose the challenger wants to calculate the mean value of data sets and chooses $M\left( D\right) =mean\left( D \right) $. Since $M\left( D_{0}\right) =0$ and $M\left( D_{1}\right) =0.01$, the adversary can set $Q =\left[ 0.005,1\right] $ and identify precisely the database $D$ used in $M\left( D\right) $ every time they play the game. In \autoref{img:DPexamplenoisefree}, the blue line represents the distribution of $M\left( D_{0}\right)$, whereas the orange line represents the distribution of $M\left( D_{1}\right)$ (plotted upside down for clarity). The vertical dotted line represents the threshold $T=0.005$ which separates $D_{0}$ and $D_{1}$ perfectly.
 
 \begin{figure}[htbp]
     \includegraphics[width=10cm]{DPexamplenoisefree}
     \centering
-    \caption{Deterministic algorithm (need reproduce).}
+    \caption{Deterministic algorithm.}
     \label{img:DPexamplenoisefree}
 \end{figure}
 \FloatBarrier
 
 \textbf{The Indeterministic Case.}
-The challenger needs to take some measures to \textit{blur} the difference between $M\left( D_{0}\right)$ and $M\left( D_{1}\right)$. Suppose the challenger decides to add Laplace noise $lap\sim Laplace\left(b=0.05\right)$ to the result of $M\left(D\right)$ as \autoref{img:DPexamplesmallnoise} shows. The shaded green region is the chance that $M\left( D_{0}\right)$ would return a value greater than the adversary's threshold $T$. In other words, the probability that the adversary would mistake $D_{0}$ for $D_{1}$. In contrast, the shaded orange area is the probability that the adversary identify $D$ as $D_{1}$. The challenger can decrease the adversary's probability of winning by adding more noise as \autoref{img:DPexamplelargenoise} shows, where the shaded green and orange areas are almost of the same size. Comparing $M\left( D\right)$ with $T$ is no longer reliable to distinguish $D_{0}$ and $D_{1}$. In fact, we have
-$\varepsilon=\log \left( \frac{\text{green area}}{\text{orange area}}\right) $, where $\varepsilon$ expresses the degree of differential privacy and a smaller $\varepsilon$ guarantees a stronger privacy protection. Although the challenger can add more noise to decrease the adversary's success probability, the mean estimation accuracy is also decreased.
+The challenger needs to take some measures to \textit{blur} the difference between $M\left( D_{0}\right)$ and $M\left( D_{1}\right)$. Suppose the challenger decides to add Laplace noise $lap\sim Laplace\left(b=0.05\right)$ to the result of $M\left(D\right)$ as \autoref{img:DPexamplesmallnoise} shows. The shaded blue region is the chance that $M\left( D_{0}\right)$ would return a value greater than the adversary's threshold $T$. In other words, the probability that the adversary would mistake $D_{0}$ for $D_{1}$. In contrast, the shaded orange area is the probability that the adversary identify $D$ as $D_{1}$. The challenger can decrease the adversary's probability of winning by adding more noise as \autoref{img:DPexamplelargenoise} shows, where the shaded blue and orange areas are almost of the same size. Comparing $M\left( D\right)$ with $T$ is no longer reliable to distinguish $D_{0}$ and $D_{1}$. In fact, we have
+$\varepsilon=\log \left( \frac{\text{blue area}}{\text{orange area}}\right) $, where $\varepsilon$ expresses the degree of differential privacy and a smaller $\varepsilon$ guarantees a stronger privacy protection. Although the challenger can add more noise to decrease the adversary's success probability, the mean estimation accuracy is also decreased.
 
 
 \TODO{need reproduce following figures}
 \begin{figure}[htbp]
     \includegraphics[width=10cm]{DPexamplesmallnoise}
     \centering
-    \caption{Indeterministic algorithm with small noise ($b=0.005$) \TODO{(need reproduce)}.}
+    \caption{Indeterministic algorithm with small noise ($b=0.005$).}
     \label{img:DPexamplesmallnoise}
 \end{figure}
 \FloatBarrier
@@ -747,7 +748,7 @@ $\varepsilon=\log \left( \frac{\text{green area}}{\text{orange area}}\right) $, 
 \begin{figure}[htbp]
     \includegraphics[width=10cm]{DPexamplelargenoise}
     \centering
-    \caption{Indeterministic algorithm with large noise ($b=0.05$) \TODO{(need reproduce)}.}
+    \caption{Indeterministic algorithm with large noise ($b=0.05$).}
     \label{img:DPexamplelargenoise}
 \end{figure}
 \FloatBarrier
@@ -837,7 +838,7 @@ An advantage of local DP mode is that no trusted central curator is needed since
 \begin{figure}[htbp]
     \includegraphics[width=10cm]{DPcentral}
     \centering
-    \caption{Centralized DP mode (need reproduce).}
+    \caption{Centralized DP mode.}
     \label{img:DPcentral}
 \end{figure}
 \FloatBarrier
@@ -845,7 +846,7 @@ An advantage of local DP mode is that no trusted central curator is needed since
 \begin{figure}[htbp]
     \includegraphics[width=10cm]{DPlocal}
     \centering
-    \caption{Local DP mode (need reproduce).}
+    \caption{Local DP mode.}
     \label{img:DPlocal}
 \end{figure}
 \FloatBarrier

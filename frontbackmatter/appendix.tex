@@ -1,5 +1,5 @@
-% \appendixchapheadline % do not modify this unless you really want to
-% \label{cha:appendix}
+\appendixchapheadline % do not modify this unless you really want to
+\label{cha:appendix}
 
 % \section{Algorithms for Probability Sampling Methods}
 % \label{app:algorithms}
@@ -141,22 +141,22 @@
 % \FloatBarrier
 
 
-% \section{MPC Protocols}
-% \label{app:MPCBuildingBlocks}
-% % \TODO{ABY, share conversion in preliminary part}\\
-% % ${Pow2}\left(\left\langle \boldsymbol{x}\right\rangle\right) $ calculates $2^{x}$, and the share type of $x$ could be boolean or arthmetic sharings.\\
+\section{MPC Protocols}
+\label{app:MPCBuildingBlocks}
+% \TODO{ABY, share conversion in preliminary part}\\
+% ${Pow2}\left(\left\langle \boldsymbol{x}\right\rangle\right) $ calculates $2^{x}$, and the share type of $x$ could be boolean or arthmetic sharings.\\
 
-% % \label{prot:PreOr}
-% % Protocol $\Uppi^{PreOr}\left(\left\langle \boldsymbol{x}\right\rangle ^B\right) $ calculate the prefix-OR of a $l$-bit string $\left\langle \boldsymbol{x}\right\rangle^B= \left(\left\langle x_{0}\right\rangle ^B,\ldots, \left\langle x_{l}\right\rangle ^B\right) $ and output $\left\langle \boldsymbol{y}\right\rangle^B= \left(\left\langle y_{0}\right\rangle ^B,\ldots, \left\langle y_{l}\right\rangle ^B\right) $ such that $\left\langle y_{j}\right\rangle^B = \lor _{k=0}^{j} \left\langle x_{k} \right\rangle ^B$ for $j \in [0,l)$, where $\left\langle y_{0}\right\rangle^B =\left\langle x_{0} \right\rangle ^B$.
+% \label{prot:PreOr}
+% Protocol $\Uppi^{PreOr}\left(\left\langle \boldsymbol{x}\right\rangle ^B\right) $ calculate the prefix-OR of a $l$-bit string $\left\langle \boldsymbol{x}\right\rangle^B= \left(\left\langle x_{0}\right\rangle ^B,\ldots, \left\langle x_{l}\right\rangle ^B\right) $ and output $\left\langle \boldsymbol{y}\right\rangle^B= \left(\left\langle y_{0}\right\rangle ^B,\ldots, \left\langle y_{l}\right\rangle ^B\right) $ such that $\left\langle y_{j}\right\rangle^B = \lor _{k=0}^{j} \left\langle x_{k} \right\rangle ^B$ for $j \in [0,l)$, where $\left\langle y_{0}\right\rangle^B =\left\langle x_{0} \right\rangle ^B$.
 
-% % \label{prot:RandBits}
-% % Protocol $\Uppi^{RandBits}\left(l\right) $ can generate a share of a $l$-bit publicly unknown random string $\left\langle \boldsymbol{y}\right\rangle^B =\left( \left\langle y_{0}\right\rangle^B ,\ldots ,\left\langle y_{l-1}\right\rangle ^B\right)$ without communications between parties. To achieve this, each party locally generate a random $l$-bit string $\boldsymbol{x}$ and set $\left\langle \boldsymbol{y}\right\rangle^B= \boldsymbol{x}$.
+% \label{prot:RandBits}
+% Protocol $\Uppi^{RandBits}\left(l\right) $ can generate a share of a $l$-bit publicly unknown random string $\left\langle \boldsymbol{y}\right\rangle^B =\left( \left\langle y_{0}\right\rangle^B ,\ldots ,\left\langle y_{l-1}\right\rangle ^B\right)$ without communications between parties. To achieve this, each party locally generate a random $l$-bit string $\boldsymbol{x}$ and set $\left\langle \boldsymbol{y}\right\rangle^B= \boldsymbol{x}$.
 
-% % \label{prot:Bits}
-% % Protocol $\Uppi^{Bits}\left(x,l\right) $ outputs the $l$ least significand bits $y_0,\ldots,y_{l-1}$ of the binary representation of $x$, where $y_0$ is the least siginificant bit.
+% \label{prot:Bits}
+% Protocol $\Uppi^{Bits}\left(x,l\right) $ outputs the $l$ least significand bits $y_0,\ldots,y_{l-1}$ of the binary representation of $x$, where $y_0$ is the least siginificant bit.
 
-% \subsection{Oblivious Array Access}
-% \label{subsec:ObliviousSelection}
+\paragraph{Oblivious Array Access}
+\label{para:ObliviousSelection}
 % Given an array of $\ell$ unsigned integers $y_0 ,\ldots,y_{\ell-1}$ and $\ell$-bit string $c_0,\ldots,c_{\ell-1}$. $\Uppi^{ObliviousSelection}$ outputs $y_i$ where $i$ is the first index such that $c_{i}==1$ for $i\in \left[0,\ell-1\right] $. We present $\Uppi^{OAA_a}$~\autoref{prot:OAA_a} and $\Uppi^{OAA_b}$ to realize this functionality.
 
 
@@ -178,41 +178,41 @@
 
 
 % Note that $\Uppi^{PreOr}$ in $\Uppi^{OAA_a}$ (cf.~\autoref{prot:OAA_a}) has at least $\ell$-depth for $\operatorname{AND}$ gate, that can be inefficient for large $\ell$ using GMW (cf.~\autoref{subsec:GMW}).
-% $\Uppi^{OAA_b}$ is inspired by the works\cite{jarvinen2019pilot,mohassel2020practical}. $\Uppi^{OAA_b}$ uses the inverted binary tree, i.e., the leaves represent input elements, and the root represents the output element. The tree has $\log_2{\ell}$-depth for input array of length $\ell$ and each node hold two shares: $\left\langle c\right\rangle^B $ and $\left\langle \boldsymbol{y}\right\rangle ^{B,UINT} $. \autoref{img:OAA_b} shows an example of the inverted binary tree. For $i\in \left[0,\ell-1\right] $ and $j\in \left[\log_2 \ell\right] $, the values of node ($\left(\left\langle c_{a,b}\right\rangle , \left\langle \boldsymbol{y_{a,b}}\right\rangle ^{B,UINT}\right) $) in the $j$-th layer are computed with the value of two nodes (with value $\left(\left\langle c_{a}\right\rangle , \left\langle \boldsymbol{y_{a}}\right\rangle ^{B,UINT}\right)$  and $\left(\left\langle c_{b}\right\rangle , \left\langle \boldsymbol{y_{b}}\right\rangle ^{B,UINT}\right) $) in the $j-1$-th layer as follows:
+$\Uppi^{ObliviousSelection}$ is inspired by the works~\cite{jarvinen2019pilot,mohassel2020practical}. $\Uppi^{ObliviousSelection}$ uses the inverted binary tree, i.e., the leaves represent input elements, and the root represents the output element. The tree has $\log_2{\ell}$-depth for input array of length $\ell$ and each node hold two shares: $\left\langle c\right\rangle^B $ and $\left\langle \boldsymbol{y}\right\rangle ^{B} $. \autoref{img:ObliviousSelection} shows an example of the inverted binary tree. For $i\in \left[0,\ell-1\right] $ and $j\in \left[\log_2 \ell\right] $, the values of node ($\left(\left\langle c_{a,b}\right\rangle , \left\langle \boldsymbol{y_{a,b}}\right\rangle ^{B}\right) $) in the $j$-th layer are computed with the value of two nodes (with value $\left(\left\langle c_{a}\right\rangle , \left\langle \boldsymbol{y_{a}}\right\rangle ^{B}\right)$  and $\left(\left\langle c_{b}\right\rangle , \left\langle \boldsymbol{y_{b}}\right\rangle ^{B}\right) $) in the $j-1$-th layer as follows:
 
-% \begin{equation}
-%     \left(\left\langle c_{a,b}\right\rangle , \left\langle \boldsymbol{y_{a,b}}\right\rangle ^{B,UINT}\right)=
-%     \begin{cases}
-%         \left(\left\langle c_{a}\right\rangle , \left\langle \boldsymbol{y_{a}}\right\rangle ^{B,UINT}\right) , & \operatorname{ if } \left\langle c_{a}\right\rangle ==1                                                  \\
-%         \left(\left\langle c_{b}\right\rangle , \left\langle \boldsymbol{y_{b}}\right\rangle ^{B,UINT}\right) , & \operatorname{ if } \left\langle c_{a}\right\rangle == 0 \land      \left\langle c_{b}\right\rangle ==1  \\
-%         \left(0,0\right)                                                                                      & \operatorname{ if } \left\langle c_{a}\right\rangle == 0 \land      \left\langle c_{b}\right\rangle ==0,
-%     \end{cases}
-% \end{equation}
+\begin{equation}
+    \left(\left\langle c_{a,b}\right\rangle , \left\langle \boldsymbol{y_{a,b}}\right\rangle ^{B}\right)=
+    \begin{cases}
+        \left(\left\langle c_{a}\right\rangle , \left\langle \boldsymbol{y_{a}}\right\rangle ^{B}\right) , & \operatorname{ if } \left\langle c_{a}\right\rangle ==1                                                  \\
+        \left(\left\langle c_{b}\right\rangle , \left\langle \boldsymbol{y_{b}}\right\rangle ^{B}\right) , & \operatorname{ if } \left\langle c_{a}\right\rangle == 0 \land      \left\langle c_{b}\right\rangle ==1  \\
+        \left(0,0\right)                                                                                   & \operatorname{ if } \left\langle c_{a}\right\rangle == 0 \land      \left\langle c_{b}\right\rangle ==0,
+    \end{cases}
+\end{equation}
 
-% which is equivalent to
-% \begin{equation}
-%     \begin{split}
-%         \left\langle c_{a,b}\right\rangle=\left\langle c_{a}\right\rangle\oplus \left\langle c_{b}\right\rangle \oplus \left(\left\langle c_{a}\right\rangle \land\left\langle c_{b}\right\rangle\right)
-%     \end{split}
-% \end{equation}
+which is equivalent to
+\begin{equation}
+    \begin{split}
+        \left\langle c_{a,b}\right\rangle=\left\langle c_{a}\right\rangle\oplus \left\langle c_{b}\right\rangle \oplus \left(\left\langle c_{a}\right\rangle \land\left\langle c_{b}\right\rangle\right)
+    \end{split}
+\end{equation}
 
-% \begin{equation}
-%     \begin{split}
-%         \left\langle \boldsymbol{y_{a,b}}\right\rangle=& \quad \left(\left\langle c_{a}\right\rangle\oplus \left\langle c_{b}\right\rangle\right) \cdot \left(\left\langle \boldsymbol{y_{a}}\right\rangle ^{B,UINT}\cdot \left\langle c_{a}\right\rangle \oplus  \left\langle \boldsymbol{y_{b}}\right\rangle ^{B,UINT} \cdot \left\langle c_{b}\right\rangle \right)  \\
-%         & \oplus \left(\left\langle c_{a}\right\rangle \land\left\langle c_{b}\right\rangle\right) \cdot \left\langle \boldsymbol{y_{a}}\right\rangle ^{B,UINT}
-%     \end{split}
-% \end{equation}
+\begin{equation}
+    \begin{split}
+        \left\langle \boldsymbol{y_{a,b}}\right\rangle=& \quad \left(\left\langle c_{a}\right\rangle\oplus \left\langle c_{b}\right\rangle\right) \cdot \left(\left\langle \boldsymbol{y_{a}}\right\rangle ^{B,UINT}\cdot \left\langle c_{a}\right\rangle \oplus  \left\langle \boldsymbol{y_{b}}\right\rangle ^{B,UINT} \cdot \left\langle c_{b}\right\rangle \right)  \\
+        & \oplus \left(\left\langle c_{a}\right\rangle \land\left\langle c_{b}\right\rangle\right) \cdot \left\langle \boldsymbol{y_{a}}\right\rangle ^{B,UINT}
+    \end{split}
+\end{equation}
 
-% The nodes is evaluated from the $1$th layer until the root.
+The nodes is evaluated from the $1$th layer until the root.
 
 
-% \begin{figure}[htbp]
-%     \includegraphics[width=10cm]{OAA_b.png}
-%     \centering
-%     \caption{Example inverted binary tree for $\Uppi^{OAA_b}$.}
-%     \label{img:OAA_b}
-% \end{figure}
-% \FloatBarrier
+\begin{figure}[htbp]
+    \includegraphics[width=10cm]{ObliviousSelection.png}
+    \centering
+    \caption{Example inverted binary tree for $\Uppi^{ObliviousSelection}$.}
+    \label{img:ObliviousSelection}
+\end{figure}
+\FloatBarrier
 
 
 % \subsection{Geometric Distribution}

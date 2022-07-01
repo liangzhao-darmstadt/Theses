@@ -10,6 +10,7 @@ Recall that the two challenges that we proposed in~\autoref{cha:MPCProtocolsforD
 To answer the above questions, we implement and measure the performance of all the protocols we have discussed in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms} in a semi-honest scenario.
 First, we benchmark the performance of integer, fixed-point and floating-point operations in different MPC protocols (BGMW, AGMW, and BMR).
 Next, we choose the most efficient MPC protocols for arithmetic operations and implement the differentially private mechanisms and corresponding sampling algorithms.
+The code can be found at~\cite{SecurelyRealizingOutputPrivacyinMPC2022};
 
 
 % The protocol that we implemented support $N \geq 3$ parties and is secure against up to $N-1$ passive corruption parties. 
@@ -361,19 +362,19 @@ The reason is that for failure probability $p<2^{-40}$, discrete random variable
 % \FloatBarrier
 
 
-We present the evaluation of the MPC protocols for differentially private mechanisms in~\autoref{tab:runtimes_aes_sha}.
+We present the performance evaluation of the MPC protocols for differentially private mechanisms in~\autoref{tab:runtimes_aes_sha}.
 
 \textbf{Laplace Mechanisms.}
-Recall that Integer-Scaling Laplace mechanism $M_{ISLap} $ achieves similar differential privacy protection effect as Laplace mechanism textit{securely} by re-scaling a discrete Laplace random variable.
-In our work, we generate the discrete Laplace random variable with sampling protocol $\Uppi^{DLap}$ (cf.~\autoref{prot:DiscreteLap}) and set the failure probability $p<2^{-40}$.
-We can see that the $M_{ISLap}$ with fixed-point implementation of $\Uppi^{DLap}$ is $1.09\time-1.29\times$ slower than that with floating-point implementation of $\Uppi^{DLap}$.
+Recall that Integer-Scaling Laplace mechanism $M_{ISLap} $ achieves differential privacy protection effect as Laplace mechanism textit{securely} by re-scaling a discrete Laplace random variable.
+In our work, we generate the discrete Laplace random variable with sampling protocol $\Uppi^{DLap}$ (cf.~\autoref{prot:DiscreteLap}) and set the failure probability as $p<2^{-40}$.
+We can see that the $M_{ISLap}$ with fixed-point implementation of $\Uppi^{DLap}$ is $1.09\times-1.29\times$ slower than that with floating-point implementation.
 The reason is that the division operation in fixed-point is more expensive than floating-point for BGMW protocols.
 
 For comparison, we implement the \textit{insecure} Laplace mechanisms $M_{Lap}$~\cite{eigner2014differentially}.
-Note that Mironov~\cite{mironov2014differentially} showed that $M_{Lap}$~\cite{eigner2014differentially} suffered from floating-point attacks and proposed the snapping mechanism $M_{SM}$ as a solution.
-The snapping mechanism $M_{SM}$ has the best online run-times performance and it is $5380\times-11940\times $ faster than $M_{ISLap}$ and $1.32\time- 1.62\times$ faster than $M_{Lap}$~\cite{eigner2014differentially}.
+Note that Mironov~\cite{mironov2012significance} showed that $M_{Lap}$~\cite{eigner2014differentially} suffered from floating-point attacks and proposed the snapping mechanism $M_{SM}$ as a solution.
+The snapping mechanism $M_{SM}$ has the best online run-times performance and it is $5380\times-11940\times $ faster than $M_{ISLap}$ and $1.32\times- 1.62\times$ faster than $M_{Lap}$~\cite{eigner2014differentially}.
 However, it is worth to mention that the snapping mechanism $M_{SM}$ introduces additional errors (beyond the necessary amount Laplace noise), that leads to a significant reduction in utility~\cite{Covington2019,googleDP2019}.
-In contract, the Integer-Scaling Laplace mechanism $M_{ISLap}$ introduces relative low errors by setting appropriate resolution parameter $r$ (cf.~\autoref{sec:integerScalingMechanism}).
+In contrast, we could reduce the errors introduced by the Integer-Scaling Laplace mechanism $M_{ISLap}$ by setting appropriate resolution parameter $r$ (cf.~\autoref{sec:integerScalingMechanism}).
 
 
 
@@ -384,21 +385,20 @@ In contract, the Integer-Scaling Laplace mechanism $M_{ISLap}$ introduces relati
 % However, Covington~\cite{Covington2019} proved that $M_{SM}$ introduces additional errors (beyond the necessary Laplace noise), and it leads to a significant reduction in utility.
 % In comparison to $M_{SM}$, $M_{ISLap}$ introduces relative low errors by setting appropriate resolution parameter $r$ (cf.~\autoref{sec:integerScalingMechanism}).
 
-\textbf{Gaussian Mechanisms}
+\textbf{Gaussian Mechanisms.}
 Recall that the Integer-Scaling Gaussian mechanism $M_{ISLap}$ deploys the sampling protocol $\Uppi^{SymmBinomial}$ under floating-point arithmetic to simulate the continuous Gaussian random variable.
 We implement $\Uppi^{SymmBinomial}$ with BGMW-based floating-point arithmetic.
-We can see that the Integer-Scaling Gaussian mechanism $M_{ISLap}$ is $2.08\times-3.06\times$ faster than the Integer-Scaling Laplace mechanism $M_{ISLap}$.
+We can see that the Integer-Scaling Gaussian mechanism $M_{ISGau}$ is $2.08\times-3.06\times$ faster than the Integer-Scaling Laplace mechanism $M_{ISLap}$.
 % Recall that $M_{ISGau}$ realize similar differential privacy protection effect as Gaussian mechanism (cf.~\autoref{def:gaussianMechanism}).
 % We implement the Integer-Scaling Gaussian mechanism $M_{ISGau}$ under BGMW-based floating-point that has an online run-times of $18$ seconds in the LAN setting of two computation parties.
 
-\textbf{Discrete Laplace Mechanisms}
+\textbf{Discrete Laplace Mechanisms.}
 The discrete Laplace mechanism $M_{DLap}$ deploys the same sampling protocol $\Uppi^{DLap}$ (cf.~\autoref{prot:DiscreteLap}) as $M_{ISLap}$.
 We also implement $M_{DLap}$~\cite{eigner2014differentially} for comparison.
 It can be seen, that $M_{DLap}$~\cite{eigner2014differentially} is at least $1068\times$ faster than our implementation of $M_{DLap}$ in BGMW-based fixed/floating-point arithmetic in the LAN setting. However, the security of $M_{DLap}$~\cite{eigner2014differentially} remains to prove as it applies similar noise generation procedure as $M_{Lap}$~\cite{eigner2014differentially}.
 
-\text{Discrete Gaussian Mechanisms}
-\TODO{We encounter memory overflow when implement BGMW-based $M_{DGau}$, implement in AGMW-based floating-point arithmetic}
-
+\textbf{Discrete Gaussian Mechanisms.}
+\TODO{We encounter memory overflow when implement BGMW-based $M_{DGau}$, try to implement it in AGMW-based floating-point arithmetic}
 
 \begin{table}
     \caption{
@@ -423,7 +423,7 @@ It can be seen, that $M_{DLap}$~\cite{eigner2014differentially} is at least $106
             $M_{ISLap} $ (\textbf{this work})                    & 1       & $\BOOL,FX$ & 72\,296.53              & 71\,352.89 & 160\,443.40             &  & 949\,907.44 & 994\,913.88 & 1\,091\,406.72 \\
             $M_{ISLap} $ (\textbf{this work})                    & 1       & $\BOOL,FL$ & 55\,858.07              & 47\,186.90 & 111\,232.66             &  & 846\,435.93 & 908\,322.81 & 1\,001\,687.22 \\
             \midrule
-            % $M_{Gau}$~\cite{DBLP:journals/corr/WuHWX16}                                      & 100     & $\BOOL,FL$ & 29.82                   & 36.71      & 48.36                   &  & 762.88      & 843.09      & 904.58         \\
+            % $M_{Gau}$~\cite{wu2016inherit}                                      & 100     & $\BOOL,FL$ & 29.82                   & 36.71      & 48.36                   &  & 762.88      & 843.09      & 904.58         \\
             $M_{ISGau}$ (\textbf{this work})                     & 1       & $\BOOL,FL$ & 18\,916.06              & 19\,413.08 & 26\,929.39              &  & 394\,248.57 & 435\,126.28 & 470\,813.95    \\
             \midrule
             $M_{DLap}$~\cite{eigner2014differentially}           & 1000    & $\BOOL,FX$ & 2.26                    & 3.26       & 134.97                  &  & 19.01       & 24.11       & 69.88          \\
@@ -434,6 +434,7 @@ It can be seen, that $M_{DLap}$~\cite{eigner2014differentially} is at least $106
             % $M_{Dau}$ \TODO{add other work for comparison}                                   & 1       &            &                         &            &                         &  &             &             &                \\
             % $M_{Dau}$ (\textbf{this work w/~\cite{eigner2014differentially} as subprotocol}) & 50      & $\BOOL,FX$ & 2.03                    & 2.68       & ---                     &  & 20.43       & 27.53       & ---            \\
             % $M_{Dau}$ (\textbf{this work w/~\cite{eigner2014differentially} as subprotocol}) & 50      & $\BOOL,FL$ & 6.51                    & 7.80       & 10.45                   &  & 174.76      & 198.04      & 211.05         \\
+            $M_{Dau}$ (\textbf{this work})                       & 1       & $\BOOL,Fx$ & ---                     & ---        & ---                     &  & ---         & ---         & ---            \\
             $M_{Dau}$ (\textbf{this work})                       & 1       & $\BOOL,FL$ & ---                     & ---        & ---                     &  & ---         & ---         & ---            \\
             \bottomrule
         \end{tabular}

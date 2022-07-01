@@ -7,7 +7,7 @@ Then, we construct the MPC protocols of the previously introduced differentially
 Generally, we face two technical challenges.
 The first is to identify the most efficient MPC protocols for arithmetic operations.
 The second is determining the most efficient sampling algorithms for differentially private mechanisms.
-For the first challenge, we implement MPC protocols that support (signed) integer arithmetic, fixed-point arithmetic, floating-point arithmetic, and data type conversions in the MOTION frameowrk~\cite{braun2020motion}.
+For the first challenge, we implement MPC protocols that support (signed) integer arithmetic, fixed-point arithmetic, floating-point arithmetic, and data type conversions in the MOTION frameowrk~\cite{braun2022motion}.
 For the second challenge, we construct the MPC protocols for all the introduced sampling algorithms and evaluate the performance in \autoref{cha:evaluation}.
 
 \textbf{Setting.} In our MPC-DP procedure, we consider $m$ users, $n$ computation parties and one reconstruction party. Each user $U_i$ has private data $D_i$ and wish to compute $f\left(D_1,\ldots, D_m\right) $ and perturb it with the help of computation parties. The reconstruction party is responsible for reconstructing the computation result in plaintext. We assume that the communication channels between users and computation parties are secure and authenticated, and the communication channels between computation parties are pair-wise secure and authenticated. The users can go offline after sending their secret shared private data to the computation parties. Then, the computation parties execute the interactive MPC protocols.
@@ -21,7 +21,7 @@ For the computation parties, we assume that the adversaries are semi-honest (i.e
 % \label{sec:ProcedureMPCDP}
 
 \begin{figure}[htbp]
-      \includegraphics[width=\textwidth]{MPC-DP procedure.PNG}
+      \includegraphics[width=\textwidth]{MPC-DP procedure}
       \centering
       \caption{MPC-DP Procedure}
       \label{img:MPCDPProcedure}
@@ -112,7 +112,7 @@ We construct MPC protocols based on the following building blocks (details can b
 
             % \item For signed ($INT$) and unsigned integer ($UINT$) operations (e.g., comparision, addition, substraction), we use depth-optimized circuits generated with HyCC (cf.~\autoref{subsection:MOTIONFramework}).
 
-            % \item For floating-point operations, we use the Boolean circuits of work~\cite{DSZ15}.
+            % \item For floating-point operations, we use the Boolean circuits of work~\cite{demmler2015aby}.
 
       \item $\left\langle \boldsymbol{y}\right\rangle ^{B}\gets \Uppi^{HW}\left(x_0,\ldots,x_{\ell}\right) $~\cite{boyar2008tight} computes the Hamming weight (i.e., the number of $1$ bits) in a $\ell$-bit string $x_0,\ldots,x_{\ell}$.
             % We first convert the input into Yao's sharing and finally convert the result back to the Boolean sharing.
@@ -134,11 +134,12 @@ We consider MPC protocols for arithmetic operations based on Boolean sharing GMW
 Further, our MPC protocols use integer, fixed-point and floating-point arithmetic interchangeably to achieve the best MPC performance (regarding the communication and computation cost).
 
 \textbf{Binary Circuit-Based Signed/Unsigned Integer.}
-The MOTION framework~\cite{braun2020motion} supports most unsigned integer arithmetic operations (e.g., $+$, $-$, $*$, $/$, and $<$). We extend it to support further arithmetic operations (e.g., modulo reduction and conversion operations with fixed-point and floating-point) by generating depth-optimized binary circuits for BGMW-based unsigned integer and size-optimized binary circuits for BMR-based unsigned integer with HyCC and CBMC-GC.
+The MOTION framework~\cite{braun2022motion} supports most unsigned integer arithmetic operations (e.g., $+$, $-$, $*$, $/$, and $<$). We extend it to support further arithmetic operations (e.g., modulo reduction and conversion operations with fixed-point and floating-point) by generating depth-optimized binary circuits for BGMW-based unsigned integer and size-optimized binary circuits for BMR-based unsigned integer with HyCC and CBMC-GC.
 Except for the arithmetic operations supported by the unsigned integer, we also implement signed integer arithmetic that supports operations such as absolute value and negation.
 
 \textbf{Binary Circuit-Based Floating-Point.}
-We consider 64-bit floating-point arithmetic~\cite{IEEE754_2019}. For operations such as $+,$ $-$, $*$, $/$, $<$, square, square root, exp2, and log2, we use the binary circuits from ABY~\cite{DSZ15}. For other operations such as conversion operations with fixed-point and integers, ceil, floor, absolute value, round to the nearest integer, we use CBMC-GC to generate depth-optimized and size-optimized binary circuits with the C code from Berkeley SoftFloat library~\cite{BerkelySoftFloat}.
+% We consider 64-bit floating-point arithmetic~\cite{IEEE754_2019}. For operations such as $+,$ $-$, $*$, $/$, $<$, square, square root, exp2, and log2, we use the binary circuits from ABY~\cite{demmler2015aby}. For other operations such as conversion operations with fixed-point and integers, ceil, floor, absolute value, round to the nearest integer, we use CBMC-GC to generate depth-optimized and size-optimized binary circuits with the C code from Berkeley SoftFloat library~\cite{BerkelySoftFloat}.
+We consider 64-bit floating-point arithmetic. For operations such as $+,$ $-$, $*$, $/$, $<$, square, square root, exp2, and log2, we use the binary circuits from ABY~\cite{demmler2015aby}. For other operations such as conversion operations with fixed-point and integers, ceil, floor, absolute value, round to the nearest integer, we use CBMC-GC to generate depth-optimized and size-optimized binary circuits with the C code from Berkeley SoftFloat library~\cite{BerkelySoftFloat}.
 
 \textbf{Binary Circuit-Based Fixed-Point.}
 The main issue with fixed-point arithmetic is the inherent precision loss during arithmetic operations. Therefore, we implement fixed-point arithmetic in two precision modes:
@@ -160,7 +161,7 @@ $s$ is the sign bit.
 The arithmetic operations in work~\cite{aliasgari2012secure} are performed over a prime field $\mathbb{F}_p$ (modulo $p$) , whereas the arithmetic operations in MOTION are performed in the ring field (modulo $\mathbb{Z} _{2^{n}}$). One significant difference between these two fields is that there is no inverse element (i.e., $a^{-1}$ in a prime field) in a ring field $\mathbb{Z} _{2^{n}}$. Therefore, we use the protocols (e.g., logical shifting, truncation, truncation by a secret value, eta.) from works~\cite{escudero2020improved,dalskov2020secure} to replace the inverse element operation in work~\cite{aliasgari2012secure}.
 
 \textbf{AGMW-based Fixed-point.}
-We implement the arithmetic sharing GMW based fixed-point protocols from Catrina and Saxena's work~\cite{catrina2010secure}, where a fixed-point number $x$ is represented as $x = \overline{x}\cdot  2^{-f}$, with $\overline{x}\in \mathbb{Z} _{\left\langle k\right\rangle }$, $ \mathbb{Z} _{\left\langle k\right\rangle }=\left\{x\in \mathbb{Z}  \,|\,-2^{k-1}+1\leq x \leq 2^{k-1}-1\right\} $. $f$ is the length of fraction bits. We choose $\left(k,f\right)=\left(41,20\right)  $ as~\cite{SCALEMAMBAv114} recommended.
+We implement the arithmetic sharing GMW based fixed-point protocols from Catrina and Saxena's work~\cite{catrina2010secure}, where a fixed-point number $x$ is represented as $x = \overline{x}\cdot  2^{-f}$, with $\overline{x}\in \mathbb{Z} _{\left\langle k\right\rangle }$, $ \mathbb{Z} _{\left\langle k\right\rangle }=\left\{x\in \mathbb{Z}  \,|\,-2^{k-1}+1\leq x \leq 2^{k-1}-1\right\} $. $f$ is the length of fraction bits. We choose $\left(k,f\right)=\left(41,20\right)  $ as~\cite{aly2021scale} recommended.
 
 
 \textbf{Random Number Generation}
@@ -215,7 +216,8 @@ To generate a uniform random fixed-point in the range $\left[0,1\right)$ with $f
                   We use $\Uppi^{RandFloat1}$ and $\Uppi^{RandBits}$ to generate random floating-point number $ U^{*}\in \left(0,1\right)  $ and random sign $ S\in \left\{0,1\right\}$.
                   Floating-point operations such as natural logarithm operation $LN\left(\cdot\right) $, addition $\oplus$ and multiplication $\otimes$ are available in MPC protocols.
                   Operation $\left\lfloor \left\langle x\right\rangle \right\rceil_{\Lambda} $ rounds input $x$ to the nearest multiple of $\Lambda$ (a publicly known value).
-                  The plaintext implementation of $\left\lfloor x\right\rceil_{\Lambda} $ can be found in Covington's work~\cite{Covington2019}, that relies on the bit manipulation of floating-point~\cite{IEEE754_2019}. Therefore, we choose BGMW floating-point arithmetic and generate depth-optimized circuits with CBMC-GC for operation $\left\lfloor \left\langle x\right\rangle \right\rceil_{\Lambda} $.
+                  % The plaintext implementation of $\left\lfloor x\right\rceil_{\Lambda} $ can be found in Covington's work~\cite{Covington2019}, that relies on the bit manipulation of floating-point~\cite{IEEE754_2019}. Therefore, we choose BGMW floating-point arithmetic and generate depth-optimized circuits with CBMC-GC for operation $\left\lfloor \left\langle x\right\rangle \right\rceil_{\Lambda} $.
+                  The plaintext implementation of $\left\lfloor x\right\rceil_{\Lambda} $ can be found in Covington's work~\cite{Covington2019}, that relies on the bit manipulation of floating-point. Therefore, we choose BGMW floating-point arithmetic and generate depth-optimized circuits with CBMC-GC for operation $\left\lfloor \left\langle x\right\rangle \right\rceil_{\Lambda} $.
                   The MPC protocol of $\left\lfloor \left\langle x\right\rangle \right\rceil_{\Lambda} $ is denoted by $\Uppi^{RoundToLambda}$.
                   The MPC protocol of operation $\text{clamp}_{B}$ can be directly realized with the floating-point arithmetic operation, and it is denoted by $\Uppi^{ClampB}$.
 
