@@ -6,8 +6,28 @@
 % In this thesis, we design, implement and evaluate different techniques that combine MPC and DP to guarantee privacy. The most important is considering the security issues under practical implementation, which is not present in all prior works. Specifically, implementing textbook noise generation methods under floating-point arithmetic breaks the theoretical assumptions of differential privacy. This thesis is mainly composed of three parts. The first part introduces the design and theoretical proof of differentially private mechanisms under floating-point arithmetics. In the second part, we transfer those differentially private mechanisms into MPC protocols. In the third part, we implement our MPC protocols and evaluate the performance of different optimization techniques. In summary, we contribute to combining MPC and DP by providing secure and efficient implementations. 
 
 
-Nowadays, the world has turned into an information-driven society \CHANGED{where the distribution and processing of information is one important economic activity}. Nonetheless, this global trend also brings a severe privacy risk because the increased amount of interconnected devices and services may reveal users' sensitive information to untrusted third-party service providers. Secure multi-party computation (MPC) was introduced in the 1980s and enabled secure computations between two or more parties, such that nothing beyond what can be inferred from the output is revealed. However, it can be possible that an adversary is able to determine if a particular data record was used in the computation of a concrete computation result. Such a so-called membership inference attack raises privacy concerns. In 2006, the concept of differential privacy (DP) was introduced, which guarantees the \CHANGED{result of a group to be similar independent of whether an individual is in the queried database or not}. \CHANGED{One research direction for privacy protection is to combine both MPC and DP}. 
+% Nowadays, the world has turned into an information-driven society \CHANGED{where the distribution and processing of information is one important economic activity}. Nonetheless, this global trend also brings a severe privacy risk because the increased amount of interconnected devices and services may reveal users' sensitive information to untrusted third-party service providers. Secure multi-party computation (MPC) was introduced in the 1980s and enabled secure computations between two or more parties, such that nothing beyond what can be inferred from the output is revealed. However, it can be possible that an adversary is able to determine if a particular data record was used in the computation of a concrete computation result. Such a so-called membership inference attack raises privacy concerns. In 2006, the concept of differential privacy (DP) was introduced, which guarantees the \CHANGED{result of a group to be similar independent of whether an individual is in the queried database or not}. \CHANGED{One research direction for privacy protection is to combine both MPC and DP}. 
 
-\CHANGED{Although works that combine MPC and DP exist, they ignore the theoretical assumption of DP in the practical implementation. Specifically, DP assumes precise noise sampling and computation under real numbers. The major obstacle is guaranteeing DP and sample noise efficiently under MPC with finite precision.}
+% \CHANGED{Although works that combine MPC and DP exist, they ignore the theoretical assumption of DP in the practical implementation. Specifically, DP assumes precise noise sampling and computation under real numbers. The major obstacle is guaranteeing DP and sample noise efficiently under MPC with finite precision.}
 
-The main goal of this thesis is to design efficient and secure protocols that combine MPC and DP to guarantee privacy under fixed/floating-point arithmetic. \CHANGED{We convert existing secure differentially private mechanisms that require floating-point and integer sampling methods into MPC protocols}. 
+% The main goal of this thesis is to design efficient and secure protocols that combine MPC and DP to guarantee privacy under fixed/floating-point arithmetic. \CHANGED{We convert existing secure differentially private mechanisms that require floating-point and integer sampling methods into MPC protocols}. 
+
+
+Nowadays, the world has become an information-driven society where the distribution and processing of information is one important economic activity.
+However, the centralized database may contain sensitive data that would lead to privacy violations if the data or its aggregate statistics are disclosed.
+\smpc enables multiple parties to compute an arbitrary function on their privacy input, revealing no information beyond the computation result.
+\differentialprivacy is a technique that can preserve the individual's privacy by perturbing the aggregate statistics with random noise.
+A hybrid approach that combines \smpc and \differentialprivacy provides a robust privacy guarantee and maintains the utility of the aggregate statistics by introducing minimal noise.
+The theoretical definition of \differentialprivacy assumes precise noise sampling and arithmetic operations under real numbers. However, in the practical implementation of perturbation mechanisms, we use fixed-point or floating-point numbers to represent real numbers that lead to the violation of \differentialprivacy, as Mironov~\cite{mironov2012significance} showed.
+This thesis explores the possibilities of \textit{securely} generating random noise in a \smpc setting and builds a variety of perturbation mechanisms. Specifically, we evaluate the performance of fixed-point and floating-point arithmetic in Boolean sharing and Arithmetic sharing protocols, and choose the most efficient \smpc protocols to generate random noise for perturbation mechanisms. 
+
+
+
+
+
+
+
+
+
+
+

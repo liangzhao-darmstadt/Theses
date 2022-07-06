@@ -2,15 +2,16 @@
 \label{cha:prelim}
 
 % \TODO{change after revision}
-In this chapter, we first discuss the notations in~\autoref{sec:notations}. Then, we recap the basic knowledge of secure multi-party computation in~\autoref{sec:secureMultipartyComputation}. Next, we introduce the background knowledge and theory of differential privacy in~\autoref{sec:differentialPrivacy}.
+In this chapter, we start with the notations used in this thesis~\autoref{sec:notations}. Afterwards, we describe the basic knowledge of secure multi-party computation in~\autoref{sec:secureMultipartyComputation}. Finally, we introduce the background knowledge and theory of differential privacy in~\autoref{sec:differentialPrivacy}.
 
 \section{Notations}
 \label{sec:notations}
 
-\CHANGED{revised based on feedback}
+% \CHANGED{revised based on feedback}
 
-For $a,b,c \in \mathbb{N} $, let $\left[a\right] $ denote $\left\{x\in \mathbb{Z} \,|\, 1 \leq x \leq a\right\} $, $\left(a,b\right) $ is $\left\{x\in \mathbb{R} \, | \, a<x< b\right\} $, and $\left[a,b\right] $ is $\left\{x\in \mathbb{R} \, | \,a\leq x\leq b\right\} $. $\left\{a,b,c\right\} $ is a set containing the three numbers, and $\left(a_i\right)_{i \in \left[ n\right]}=\left(a_1,\ldots,a_n\right) $ is a sequence of $n$ numbers.
-Let $\mathbb{D}$ denote the set of floating-point numbers, and $\mathbb{D} \cap \left(a,b\right) $ contains floating-point numbers in the interval $\left(a,b\right)$. The notation $\overline{b}_{\left(l\right) }$ indicates that bit $b\in \left\{0,1\right\} $ is repeated $l$ times in bit-string $\overline{b}_{\left(l\right) }$. $\left(\cdot\right)_2 $ is the binary representation of an integer.
+% For $a,b,c \in \mathbb{N} $, let $\left[a\right] $ denote $\left\{x\in \mathbb{Z} \,|\, 1 \leq x \leq a\right\} $, $\left(a,b\right) $ is $\left\{x\in \mathbb{R} \, | \, a<x< b\right\} $, and $\left[a,b\right] $ is $\left\{x\in \mathbb{R} \, | \,a\leq x\leq b\right\} $. $\left\{a,b,c\right\} $ is a set containing the three numbers, and $\left(a_i\right)_{i \in \left[ n\right]}=\left(a_1,\ldots,a_n\right) $ is a sequence of $n$ numbers.
+For $a,b,c \in \mathbb{N} $, $\left(a,b\right) $ denotes $\left\{x\in \mathbb{R} \, | \, a<x< b\right\} $, and $\left[a,b\right] $ denotes $\left\{x\in \mathbb{R} \, | \,a\leq x\leq b\right\} $. $\left\{a,b,c\right\} $ is a set containing the three numbers.
+$\mathbb{D}$ denotes the set of floating-point numbers, and $\mathbb{D} \cap \left(a,b\right) $ contains floating-point numbers in the interval $\left(a,b\right)$.
 
 Let $P_1, \ldots P_{N} $ denote $N$ computation parties. The value $x$ that is secret shared among $N$ parties are denoted by $\left\langle x\right\rangle ^S=\left(\left\langle x\right\rangle_1^S ,\ldots, \left\langle x\right\rangle_N^S\right) $, where
 $\left\langle x\right\rangle _i^S$ is hold by party $P_i$.
@@ -30,48 +31,109 @@ Let $\left\langle a\right\rangle ^B \cdot \left\langle \boldsymbol{b}\right\rang
 
 \section{Secure Multi-Party Computation}
 \label{sec:secureMultipartyComputation}
-Yao~\cite{yao1986generate} first introduced the secure two-party computation with Yao's Millionaires' problem (i.e., two millionaires wish to know who is richer without revealing their actual wealth) and proposed the garbled circuit protocol as a solution.
+Secure Multi-Party Computation enables multiply parties to jointly evaluate a function on their private inputs while revealing only the computation result. Yao~\cite{yao1982protocols} introduced the concept of secure two-party computation with Yao's Millionaires' problem (i.e., two millionaires wish to know who is richer without revealing their actual wealth) and proposed the garbled circuit protocol~\cite{yao1986generate} as a solution.
+In the garbled circuit protocol, the target function is represented as a Boolean circuit consisting of connected gates and wires. One party called gabler is responsible for garbling the circuit, and one party called evaluator is responsible for evaluating the garbled circuit.
+% The gabler generates the garbled circuit by replacing the logical values ($0$ and $1$) of each wire with two random keys. Then, the gabler encrypted and shuffle the truth table of each gate with these keys. 
+
 % In Yao's Millionaires' problem, two millionaires wish to know who is richer without revealing their actual wealth.
-Afterwards, Beaver, Micali and Rogaway (BMR)~\cite{beaver1990round} generalized Yao's garbled circuit protocol to multi-party settings. Goldreich, Micali and Wigderson (GMW)~\cite{goldreich2019play} use Boolean sharing to realize multi-party computation.
-Generally, the execution of MPC protocols is divided into the offline phase (no private inputs are involved) and the online phase (private inputs are involved).
+Afterwards, Beaver, Micali and Rogaway (\bmr)~\cite{beaver1990round} generalized Yao's garbled circuit protocol to multi-party settings. Goldreich, Micali and Wigderson (\gmw)~\cite{goldreich1987play} proposed a general solution to multi-party computation based on secret sharing, where each party splits his data into several shares and sends to each of the parties.
+Secret sharing guarantees that any secret shares hold by partial parties leak no information about the partites' private input.
 
-\textbf{Adversary Model}
-We consider the semi-honest (passively corrupted)~\cite[Chapter~2]{evans2017pragmatic} adversaries that follow the protocol specifications but try to infer additional information of other parties from the messages during the protocol execution. In contrast to the malicious (active) adversaries that can deviate from the protocol, the semi-honest model is less restricted but more efficient regarding communication and computation complexity. We focus on designing and implementing efficient MPC protocols in the semi-honest adversary model.
+Generally, the execution of MPC protocols is separated in two phases: an offline (or preprocessing) phase and an online phase.
+In the offline phase, the parties compute everything that does not depend on the private input. In the online phase, the parties compute the input-dependent part.
 
-\subsection{Useful Tools for Multi-Party Computation}
-\label{subsec:UsefulToolsforMulti-PartyComputation}
+
+\subsection{Security Model}
+\label{subsec:SecurityModel}
+The standard approach to prove the security of cryptographic protocols is to consider adversaries with different capabilities.
+We describe two types of adversaries: the \textit{semi-honest} adversary and the \textit{malicious} adversary. We refer to~\cite[Chapter~2]{evans2017pragmatic} for a formal and detailed description of the security model.
+
+\textbf{Semi-honest adversaries} (also known as passive adversaries) try to infer additional information of other parties from the messages during the protocol execution without attempting to break the protocol. Therefore, it is a weak security model and only prevent the unintentional disclosure of information between partites. The semi-honest protocols are usually very efficient and a first step to design protocols with stronger security guarantees.
+
+\textbf{Malicious adversaries} (also known as active adversaries) may cause corrupted parties to arbitrarily deviate from the protocol specification and attempt to learn information about the other parties' inputs. Protocol again malicious adversaries usually deploys cryptographic mechanisms to ensure that the parties cannot deviate from the protocol specification. Thherefore, the protocol is often expensive than the semi-honest protocol.
+
+\subsection{Cryptographic Primitives for Secure Multi-Party Computation}
+\label{subsec:CryptographicPrimitivesforSecureMulti-PartyComputation}
+
 \subsubsection{Oblivious Transfer}
 \label{subsubsec:OT}
-Oblivious transfer (OT) was first defined by Rabin~\cite{rabin2005exchange} as a mode of transferring information, where the receiver $P_R$ received the message from the sender $P_S$ successfully with probability $p=0.5$, and the sender was oblivious of whether the message was received.
-Later, Even et al.~\cite{even1985randomized} redefined OT as the $1$-out-of-$2$ OT ($\binom{2}{1}$-OT). $\binom{2}{1}$-OT has the functionality that accepts inputs ($x_0$, $x_1$) from the sender and a choice bit $c$ from the receiver. After computation, it outputs $\bot $ to the sender and $x_c$ to the receiver. $\binom{2}{1}$-OT guarantees that the sender does not learn anything about $c$ and the receiver does not learn about $x_{1-c}$.
-Impagliazzo and Rudich~\cite{impagliazzo1989limits} showed that a \textit{black-box} reduction from OT to a one-way function~\cite[Chapter~2]{oded2006foundations} is as hard as proving $P\neq NP$, which implies that OT requires relatively expensive (than symmetric cryptography) public-key cryptography~\cite{rivest1978method}.
+% \ot was first defined by Rabin~\cite{rabin2005exchange} as a mode of transferring information, where the receiver $P_R$ received the message from the sender $P_S$ successfully with probability $p=0.5$, and the sender was oblivious of whether the message was received.
+% Later, Even et al.~\cite{even1985randomized} redefined OT as the $1$-out-of-$2$ OT ($\binom{2}{1}$-OT). $\binom{2}{1}$-OT has the functionality that accepts inputs ($x_0$, $x_1$) from the sender and a choice bit $c$ from the receiver. After computation, it outputs $\bot $ to the sender and $x_c$ to the receiver. $\binom{2}{1}$-OT guarantees that the sender does not learn anything about $c$ and the receiver does not learn about $x_{1-c}$.
+% Impagliazzo and Rudich~\cite{impagliazzo1989limits} showed that a \textit{black-box} reduction from OT to a one-way function~\cite[Chapter~2]{oded2006foundations} is as hard as proving $P\neq NP$, which implies that OT requires relatively expensive (than symmetric cryptography) public-key cryptography~\cite{rivest1978method}.
 
-Nevertheless, Ishai et al.~\cite{ishai2003extending} proposed OT \textit{extension} technique that extends a small number of OTs based on public-key cryptography to a large number of OTs with efficient symmetric cryptography.
-Asharov et al.~\cite{asharov2017more} proposed specific OT functionalities for the optimization of MPC protocols such as correlated OT (C-OT) and random OT (R-OT). In C-OT, the sender inputs a correlation function $f_{\Delta }$ (e.g., $f_{\Delta }\left(x\right)=x\oplus \Delta $, where $\Delta$ is only known by the sender) and receives random values $x_0$ and $x_1=f_{\Delta }\left(x_0\right)$, the receiver inputs a choice bit $c$ and receives $x_{c}$. In R-OT, the sender has no inputs and receives random values ($x_0$, $x_1$), the receiver inputs a choice bit $c$ and receives $x_c$.
+\ot is a cryptographic primitive that enables two parties to obliviouly transfer one value out of two values. Specifically, one party (the sender) has inputs ($x_0$, $x_1$) and the other party (the receiver) has a choice bit $c$. Oblivious transfer protocol receives the inputs from the sender and receiver, and outputs $\bot $ to the sender and $x_c$ to the receiver. It guarantees that the sender does not learn anything about $c$ and the receiver does not learn about $x_{1-c}$.
+Impagliazzo and Rudich~\cite{impagliazzo1989limits} showed that a \textit{black-box} reduction from \ot to a one-way function~\cite[Chapter~2]{oded2006foundations} is as hard as proving $P\neq NP$, which implies that \ot requires relatively expensive (than symmetric cryptography) public-key cryptography~\cite{rivest1978method}.
+
+Nevertheless, Ishai et al.~\cite{ishai2003extending} proposed \ot \textit{extension} technique that extends a small number of OTs based on public-key cryptography to a large number of OTs with efficient symmetric cryptography.
+Asharov et al.~\cite{asharov2017more} proposed specific \ot functionalities for the optimization of \smpc protocols such as \correlatedot and \randomot. In \correlatedot, the sender inputs a correlation function $f_{\Delta }$ (e.g., $f_{\Delta }\left(x\right)=x\oplus \Delta $, where $\Delta$ is only known by the sender) and receives random values $x_0$ and $x_1=f_{\Delta }\left(x_0\right)$. The receiver inputs a choice bit $c$ and receives $x_{c}$. In \randomot, the sender has no inputs and receives random values ($x_0$, $x_1$), and the receiver inputs a choice bit $c$ and receives $x_c$.
 
 \subsubsection{Multiplication Triples}
 \label{subsubsec:MTs}
-Multiplication triples (MTs) are proposed by Beaver~\cite{beaver1991efficient} that can be precomputed to reduce the time cost in the online phase of MPC protocols.
+\mts are proposed by Beaver~\cite{beaver1991efficient} that can be precomputed to reduce the online complexity of \smpc protocols by converting expensive operations (e.g., arithmetic multiplication and logical $\operatorname{AND}$) to linear operations (e.g., arithmetic addition and logical $\operatorname{XOR}$).
+
 A multiplication triple has the form $\left(\left\langle a\right\rangle^S , \left\langle b\right\rangle^S,\left\langle c\right\rangle^S\right) $ with $S\in \left\{B,A\right\} $.
-In Boolean sharing with GMW (cf.~\autoref{para:BooleanSharing}), we have $c=a\land b$ is for Boolean sharing  and $c=a \times  b$ in arithmetic sharing (cf.~\autoref{para:arithmeticSharing}).
-Multiplication triples can be generated using C-OT (cf.~\autoref{subsubsec:OT}) as Braun et al.~\cite{braun2022motion} showed.
-The advantage of MTs is that it can reduce the MPC protocols' online complexity by converting expensive operations (e.g., arithmetic multiplication and logical $\operatorname{AND}$) to linear operations (e.g., arithmetic addition and logical $\operatorname{XOR}$).
+In Boolean sharing with GMW (cf.~\autoref{para:BooleanSharing}), we have $c=a\land b$ for Boolean sharing and $c=a \times  b$ for arithmetic sharing (cf.~\autoref{subsubsec:arithmeticSharing}).
+Multiplication triples can be generated using \correlatedot (cf.~\autoref{subsubsec:OT}) in two-party setting~\cite{demmler2015aby} and multi-party setting~\cite{braun2022motion}.
+% The advantage of \mts is that it can reduce the MPC protocols' online complexity by converting expensive operations (e.g., arithmetic multiplication and logical $\operatorname{AND}$) to linear operations (e.g., arithmetic addition and logical $\operatorname{XOR}$).
 
 
 % \subsection{Yao's Garbled Circuit Protocol}
 % \label{subsec:YaoGarbledCircuitProtocol}
 
+\subsection{MPC Protocols}
+\label{subsec:MPCProtocols}
+We describe the \smpc protocols that is secure against $N-1$ semi-honest corruptions: Arithmetic sharing (cf.~\autoref{subsubsec:ArithmeticSharing}), Boolean sharing with \gmw (cf.~\autoref{subsubsec:BooleanSharingwithGMW}), and Yao sharing with \bmr (cf.~\autoref{subsubsec:YaoSharingwithBMR}).
+We refer to~\cite{demmler2015aby, braun2022motion} for a formal and detailed description.
 
-\subsection{Beaver-Micali-Rogaway (BMR)}
-\label{subsec:BMR}
+\subsubsection{Arithmetic Sharing (\ARITH)}
+\label{subsubsec:ArithmeticSharing}
+Arithmetic sharing protocol enables parties to evaluate arithmetic circuits consisting of addition and multiplication gates.
+For arithmetic sharing, an $\ell$-bit value $x$ is shared additively among $N$ parties as $\left(\left\langle x\right\rangle ^A_1, \ldots,\left\langle x\right\rangle ^A_N \right) \in \mathbb{Z} ^N_{2^{\ell}}$, where $x=\sum_{i=1}^{N} \left\langle x\right\rangle^A_i \mod{2^{\ell}} $ and party $P_i$ holds $\left\langle x\right\rangle^A_i $. Value $x$ can be reconstructed by letting each party $P_i$ sends $\left\langle x\right\rangle^A_i $ to one specific party who computes $x=\sum_{i=1}^{N} \left\langle x\right\rangle^A_i \mod{2^{\ell}}$.
+The addition of arithmetic shares can be calculated locally without communication. Suppose the parties holds shares $\left\langle x\right\rangle^A_i $, $\left\langle y\right\rangle^A_i $, and wish to compute $z=a \cdot x+y+b$ with public value $a$, $b\in \mathbb{Z} _{2^{\ell}}$. Then, one specific party $P_1$ compute $\left\langle z\right\rangle ^A_i=a \cdot \left\langle x\right\rangle^A_i +\left\langle y\right\rangle^A_i +b$, and the rest parties compute $ \left\langle z\right\rangle ^A_i=a \cdot \left\langle x\right\rangle^A_i +\left\langle y\right\rangle^A_i $ locally.
 
-We first present Yao's Garbled Circuit protocol, and then, extend it to multiparty setting with BMR~\cite{beaver1990round} protocols.
-Yao~\cite{yao1986generate} introduced the garbled circuit protocol that enables two parties (garbler $P_G$ and evaluator $P_E$) to securely evaluate any functionality represented as a Boolean circuit.
+The multiplication of arithmetic shares can be performed using \mts (cf.~\autoref{subsubsec:MTs}). Suppose $\left(\left\langle a\right\rangle^A ,\left\langle b\right\rangle^A,\left\langle c\right\rangle^A\right) $ is an \mts in $\mathbb{Z} _{2^{\ell}}$, where $\left\langle c\right\rangle ^A = \left\langle a\right\rangle^A \cdot \left\langle b\right\rangle^A $. To compute $\left\langle z\right\rangle ^A_i = \left\langle x\right\rangle ^A_i \cdot \left\langle y\right\rangle ^A_i$, the parties first compute $\left\langle d\right\rangle ^A_i=\left\langle x\right\rangle ^A_i-\left\langle a\right\rangle^A_i $ and $\left\langle e\right\rangle ^A_i=\left\langle y\right\rangle ^A_i-\left\langle b\right\rangle ^A_i$, and reconstruct them to get $d$ and $e$. Finally, the parties compute the addition $\left\langle z\right\rangle ^A_i = \left\langle c\right\rangle ^A_i+e \cdot \left\langle x\right\rangle_i ^A+d \cdot \left\langle y\right\rangle_i ^A- d \cdot e$.
+
+\subsubsection{Boolean Sharing with GMW}
+\label{subsubsec:BooleanSharingwithGMW}
+Boolean \gmw protocol~\cite{goldreich1987play} enables multiple parties to evaluate a function represented as a Boolean circuit and uses $\operatorname{XOR}$-based secret sharing. A bit $x\in\left\{0,1\right\} $ is shared among $N$ parties as $\left(\left\langle x\right\rangle ^B_1, \ldots,\left\langle x\right\rangle ^B_N \right) \in \left\{0,1\right\}^N$, where $x=\bigoplus _{i=1}^N \left\langle x\right\rangle ^B_i$. Boolean Sharing with \gmw can be seen as a special case of arithmetic sharing. Operation $\left\langle x\right\rangle^B_i \oplus  \left\langle y\right\rangle^B_i $ and $\left\langle x\right\rangle^B_i \land\left\langle y\right\rangle^B_i$ are computed similaryly as in arithmetic sharing.
+% \paragraph{Boolean Sharing with GMW (B)}
+% \label{para:BooleanSharing}
+
+\subsubsection{Yao Sharing with BMR}
+\label{subsubsec:YaoSharingwithBMR}
+
+% We describe a generic case of GMW protocol where two parties $P_0$ and $P_1$ wish to securely evaluate a Boolean circuit $C$.
+% Each party first secret shares its input bits with other parties using an $\operatorname{XOR}$-based secret sharing scheme. For example, $P_{0}$ has input bit $x$ and sends its share $x_{1} $ to $P_1$, where $x=x_0 \oplus x_1$. $P_1$ with input bit $y$ follows the same secret sharing steps.
+% The $\operatorname{XOR}$ gate $z=x\oplus y$ can be evaluated by each party $P_i$ locally with $z_i= x_i \oplus y_i$ since $z= x\oplus y = \left(x_0 \oplus x_1\right) \oplus \left(y_0 \oplus y_1\right) =\left(x_0 \oplus y_0\right) \oplus \left(x_1 \oplus y_1\right)$.
+
+% We describe the steps to evaluate an $\operatorname{AND}$ gate $z=x \land y$ using OT (cf.~\autoref{subsubsec:OT}).
+% Other techniques such as Multiplication Triple~\cite{beaver1991efficient} can also be applied for the evaluation.
+
+% \subsubsection{Evaluation of AND Gate with OT~\cite{choi2012secure, zohner2017faster}}
+% $P_0$ acts as the sender of a $\binom{4}{1} $-OT with inputs $\left(s_0,s_1,s_2,s_3\right) $ that is calculated with his shared bits $x_0$, received bits $y_0$, and a random bit $z_0$ as follows:
+
+% \begin{equation}
+%     \begin{split}
+%         s_0=& z_{0} \oplus\left(\left(x_{0}\oplus 0 \right) \land \left(y_{0}\oplus 0\right) \right) \\
+%         s_{1}= & z_{0} \oplus\left(\left(x_{0}\oplus 0\right)  \land\left(y_{0} \oplus 1\right)\right) \\
+%         s_{2}= & z_{0} \oplus\left(\left(x_{0} \oplus 1\right) \land \left(y_{0}\oplus 0\right) \right) \\
+%         s_{3}=&z_{0} \oplus\left(\left(x_{0} \oplus 1\right) \land\left(y_{0} \oplus 1\right)\right) .
+%     \end{split}
+% \end{equation}
+% $P_1$ acts as the receiver with choice $\left(x_1y_1\right)_2 $ and receives $z_1=s_{\left(x_1y_1\right)_2 }=z_0\oplus \left(\left(x_0\oplus x_1\right)  \land \left(y_0\oplus  y_1\right)  \right)$. It is easy to verify that $z=z_0 \oplus z_1 $.
+
+
+
+% \subsection{Beaver-Micali-Rogaway (\bmr)}
+% \label{subsec:BMR}
+
+We first present Yao's Garbled Circuit protocol~\cite{yao1986generate} following the steps described in work~\cite{lindell2009proof}, and then, extend it to multi-party setting with \bmr~\cite{beaver1990round} protocol.
+Yao's Garbled Circuit protocol~\cite{yao1986generate} enables two parties called garbler and the evaluator to securely evaluate any functionality represented as a Boolean circuit.
 % \subsubsection{Execution of Garbled Circuit Protocol}
-We follow the steps of Yao's garbled circuit protocol described in~\cite{lindell2009proof}: circuit garbling, input encoding, and circuit evaluation.
+% We : circuit garbling, input encoding, and circuit evaluation.
 
-\paragraph{Circuit Garbling}
-The garbler $P_G$ converts the jointly decided function $f$ into a Boolean circuit $C$, and selects a pair of random $\kappa$-bit keys $\left(k_0^i,k_1^i\right)\in \left\{0,1\right\}^{2\kappa}$ to represent logical $0$ and $1$ for each wire $i$ in $C$. For each gate $g$ in the Boolean circuit $C$ (with input wire: $a$ and $b$, and output wire: $c$), $P_G$ uses the generated random keys $\left(k_0^a,k_1^a\right)$, $\left(k_0^b,k_1^b\right)$, $\left(k_0^c,k_1^c\right)$ to create a garbled gate $\tilde{g}$ based on the function table of $g$. For example, suppose gate $g$ is an $\operatorname{AND}$ gate and has function table~\autoref{tabular:andGate}, $P_G$ encrypts the keys of wire $c$ and permutes the entries in~\autoref{tabular:andGate} to generate the garbled table~\autoref{tabular:garbledAndGate}. Note that the symmetric encryption function $\operatorname{Enc}_k$ uses a secret-key $k$ to encrypt the plaintext, and its corresponding decryption function $\operatorname{Dec}_k$ decrypts the ciphertext successfully only when the identical secret-key is given (otherwise it outputs an error). When all the gates in circuit $C$ are garbled, $P_G$ sends the garbled circuit $\widetilde{C}$ that consists of garbled tables to $P_E$ for evaluation.
+\textbf{1. Circuit Garbling.}
+The garbler converts the jointly decided function $f$ into a Boolean circuit $C$, and selects a pair of random $\kappa$-bit keys $\left(k_0^i,k_1^i\right)\in \left\{0,1\right\}^{2\kappa}$ to represent logical value $0$ and $1$ for each wire. For each gate $g$ in the Boolean circuit $C$ with input wire $a$ and $b$, and output wire $c$, the gabler uses the generated random keys $\left(k_0^a,k_1^a\right)$, $\left(k_0^b,k_1^b\right)$, $\left(k_0^c,k_1^c\right)$ to create a garbled gate table $\tilde{g}$ based on the function table of $g$. For example, suppose gate $g$ is an $\operatorname{AND}$ gate and has function table~\autoref{tabular:andGate}, the gabler encrypts the keys of wire $c$ and permutes the entries to generate the garbled table~\autoref{tabular:garbledAndGate}. Note that the symmetric encryption function $\operatorname{Enc}_k$ uses a secret-key $k$ to encrypt the plaintext, and its decryption function $\operatorname{Dec}_k$ decrypts the ciphertext successfully only when the identical secret-key $k$ is given. When all the gates in Boolean circuit $C$ are garbled, the gabler sends the garbled circuit $\widetilde{C}$ that consists of garbled tables of all the gates to the evaluator for evaluation.
 
 \begin{table}[htbp]
     \centering
@@ -101,73 +163,45 @@ The garbler $P_G$ converts the jointly decided function $f$ into a Boolean circu
     \label{tabular:garbledAndGate}
 \end{table}
 
-\paragraph{Input Encoding}
-$P_G$ sends the wire keys corresponding to its input directly to $P_E$. To evaluate the garbled circuit $\widetilde{C}$, $P_E$ also needs the wire keys corresponding to its input. For each of $P_G$'s input wire $i$ with corresponding input $c$, $P_E$ and $P_G$ run a $\binom{2}{1}$-OT, where $P_G$ acts as a sender with inputs $\left(k_0^i,k_1^i\right)$, and $P_E$ acts as a receiver with input $c$ and receives $k_c^i$. Recall that $\binom{2}{1}$-OT (cf.~\autoref{subsubsec:OT}) guarantees that $P_G$ learns nothing about $c$ and $P_E$ learns nothing about $k_{1-c}^i$.
+\textbf{2. Input Encoding.}
+The gabler sends the wire keys corresponding to its input directly to the evaluator. To evaluate the garbled circuit $\widetilde{C}$, the evaluator needs the wire keys corresponding to its input. For each of the evaluator's input wire $i$ with corresponding input bit $c$, the evaluator and the gabler run a $1-out-of-2$-OT, where the gabler acts as a sender with inputs $\left(k_0^i,k_1^i\right)$, and the evaluator acts as a receiver with input $c$ and receives $k_c^i$. Recall that $1-out-of-2$-OT (cf.~\autoref{subsubsec:OT}) guarantees that the gabler learns nothing about $c$ and the evaluator learns only $k_{c}^i$.
 
-\paragraph{Circuit Evaluation}
-After receiving $\widetilde{C}$ and keys of input wires, $P_E$ can evaluate the garbled circuit $\widetilde{C}$. For each gate $g$ (with input wire:$a$ and $b$, output wire: $c$), $P_E$ uses the input wire keys $\left(k^a,k^b\right)$ to decrypt the output key $k^c$. Until all the gates in $\widetilde{C}$ are evaluated, $P_E$ obtains the keys for the output wires of $\widetilde{C}$. To reconstruct the output, either $P_G$ sends the mapping from output wire keys to plaintext bits to $P_E$, or $P_E$ sends the decrypted output wire keys to $P_G$.
+\textbf{3. Circuit Evaluation.}
+After receiving $\widetilde{C}$ and the keys of input wires, the evaluator can evaluate the garbled circuit $\widetilde{C}$. For each gate $g$ with input wire $a$ and $b$, output wire $c$, the evaluator uses the input wire keys $\left(k^a,k^b\right)$ to decrypt the output key $k^c$. When all the gates in the garbled circuit $\widetilde{C}$ are evaluated, the evaluator obtains the keys for the output wires. To reconstruct the output, either the gabler sends the mapping from output wire keys to plaintext bits to the evaluator, or the evaluator sends the decrypted output wire keys to the gabler.
 
 
-\subsubsection{Optimizations for Yao's Garbled Circuits}
-In this part, we present several prominent optimizations for Yao's garbled circuit protocol.
-Note that in the evaluation of Yao's garbled circuit $\widetilde{C}$, $P_E$ needs to decrypt at most four entries to obtain the correct key of the output wire. Point and permute~\cite{beaver1990round} technique helps $P_E$ to identify the entry that should be decrypted (instead of decrypting four entries) in garbled tables by adding a permutation bit to each wire key.
+\textbf{Optimizations for Yao's Garbled Circuits.}
+In this part, we present several prominent optimizations for Yao's garbled circuit protocol~\cite{yao1986generate}.
+Note that in the evaluation of Yao's garbled circuit $\widetilde{C}$, the evaluator needs to decrypt at most four entries to obtain the correct key of the output wire. Point and permute~\cite{beaver1990round} technique helps the evaluator to identify the entry that should be decrypted (instead of decrypting four entries) in garbled tables by adding a permutation bit to each wire key.
 Garbled row reduction~\cite{naor1999privacy} reduces the number of entries in the garble table from four to three by fixing the first entry to a constant value.
-Free-XOR~\cite{kolesnikov2008improved} allows the evaluation of $\operatorname{XOR}$ gates free of interactions (between $P_E$ and $P_G$) by choosing the key pairs $\left(k_0^i,k_1^i\right)$ with fixed distance $R$ ($R$ is kept secret to $P_E$) for all wires, e.g., $k_0^i$ is chosen at random and $ k_1^i=R\oplus k_0^i $.
-Fixed-Key AES garbling~\cite{bellare2013efficient} reduces the encryption and decryption workload of Yao's garbled circuit by using a block cipher with a fixed key such that the AES key schedule is executed only once.
-Two-halves garbling~\cite{zahur2015two} reduces the entry number of each $\operatorname{AND}$ gate from three to two by splitting each $\operatorname{AND}$ gate into two half-gates at the cost of one more decryption operation of $P_E$.
-Three-halves garbling~\cite{rosulek2021three} requires less $25\%$ communication bits than two-halves garbling at the cost of more computation.
+Free-XOR~\cite{kolesnikov2008improved} allows the parties to evaluate $\operatorname{XOR}$ gates without interactions by choosing all the wire key pairs $\left(k_0^i,k_1^i\right)$ with the same fixed distance $R$ ($R$ is kept secret to the evaluator), e.g., $k_0^i$ is chosen at random and $ k_1^i $ is set to $R\oplus k_0^i $.
+Fixed-Key AES garbling~\cite{bellare2013efficient} reduces the encryption and decryption workload of Yao's garbled circuit using a block cipher with a fixed key such that the AES key schedule is executed only once.
+Two-halves garbling~\cite{zahur2015two} reduces the entry number of each $\operatorname{AND}$ gate from three to two by splitting each $\operatorname{AND}$ gate into two half-gates at the cost of one more decryption operation of the evaluator.
+Three-halves garbling~\cite{rosulek2021three} requires less $25\%$ communication bits than the two-halves garbling at the cost of more computation.
 
-BMR protocol~\cite{beaver1990round} extends Yao's garbled circuit protocol~\cite{yao1986generate} to the multi-party setting. Recall that in Yao's garbled circuit protocol, the circuit is first garbled by one party and evaluated by another party. BMR protocol enables the multi-party computation by jointly garbling the circuit by all parties, and then, each party evaluates the garbled circuit locally. Ben-Efraim et al.~\cite{ben2016optimizing} proposed several optimization techniques for BMR protocol, e.g., OT-based garbling and BGW-based garbling~\cite{ben2019completeness}F.
-
-
-\subsection{Goldreich-Micali-Wigderson (GMW)}
-\label{subsec:GMW}
-GMW protocol~\cite{goldreich2019play} enables multiple parties to evaluate a function represented as a Boolean circuit (or arithmetic circuit).
-We describe a generic case of GMW protocol where two parties $P_0$ and $P_1$ wish to securely evaluate a Boolean circuit $C$.
-Each party first secret shares its input bits with other parties using an $\operatorname{XOR}$-based secret sharing scheme. For example, $P_{0}$ has input bit $x$ and sends its share $x_{1} $ to $P_1$, where $x=x_0 \oplus x_1$. $P_1$ with input bit $y$ follows the same secret sharing steps.
-The $\operatorname{XOR}$ gate $z=x\oplus y$ can be evaluated by each party $P_i$ locally with $z_i= x_i \oplus y_i$ since $z= x\oplus y = \left(x_0 \oplus x_1\right) \oplus \left(y_0 \oplus y_1\right) =\left(x_0 \oplus y_0\right) \oplus \left(x_1 \oplus y_1\right)$.
-
-We describe the steps to evaluate an $\operatorname{AND}$ gate $z=x \land y$ using OT (cf.~\autoref{subsubsec:OT}).
-Other techniques such as Multiplication Triple~\cite{beaver1991efficient} can also be applied for the evaluation.
-
-\subsubsection{Evaluation of AND Gate with OT~\cite{choi2012secure, zohner2017faster}}
-$P_0$ acts as the sender of a $\binom{4}{1} $-OT with inputs $\left(s_0,s_1,s_2,s_3\right) $ that is calculated with his shared bits $x_0$, received bits $y_0$, and a random bit $z_0$ as follows:
-
-\begin{equation}
-    \begin{split}
-        s_0=& z_{0} \oplus\left(\left(x_{0}\oplus 0 \right) \land \left(y_{0}\oplus 0\right) \right) \\
-        s_{1}= & z_{0} \oplus\left(\left(x_{0}\oplus 0\right)  \land\left(y_{0} \oplus 1\right)\right) \\
-        s_{2}= & z_{0} \oplus\left(\left(x_{0} \oplus 1\right) \land \left(y_{0}\oplus 0\right) \right) \\
-        s_{3}=&z_{0} \oplus\left(\left(x_{0} \oplus 1\right) \land\left(y_{0} \oplus 1\right)\right) .
-    \end{split}
-\end{equation}
-$P_1$ acts as the receiver with choice $\left(x_1y_1\right)_2 $ and receives $z_1=s_{\left(x_1y_1\right)_2 }=z_0\oplus \left(\left(x_0\oplus x_1\right)  \land \left(y_0\oplus  y_1\right)  \right)$. It is easy to verify that $z=z_0 \oplus z_1 $.
+\textbf{BMR protocol}~\cite{beaver1990round} extends Yao's garbled circuit protocol~\cite{yao1986generate} to the multi-party setting. Recall that in Yao's garbled circuit protocol, the circuit is first garbled by one party and evaluated by another party. At a high level, the \bmr protocol enables the multi-party computation by having all parties jointly garbling the circuit in the offline phase, and then, each party send the garbled labels that are associated with their private inputs to other parties. Next, each party plays the role of the evaluator and evaluates the garbled circuit locally. Finally, the parties use the received garbled label and the the result of local evaluation to compute the output.
 
 
-\subsection{Secret Sharing and Sharing Conversions}
-\label{subsec:secretSharingAndSharingConversions}
-We introduce the secret sharing types and sharing conversions used based on work~\cite{demmler2015aby}.
+% \subsection{Secret Sharing and Sharing Conversions}
+% \label{subsec:secretSharingAndSharingConversions}
+% We introduce the secret sharing types and sharing conversions used based on work~\cite{demmler2015aby}.
 
-% \subsubsection{Secret Sharing}
+% % \subsubsection{Secret Sharing}
 
-\paragraph{Arithmetic Sharing (A)}
-\label{para:arithmeticSharing}
-A $\ell$-bit value $x$ is shared additively among $N$ parties as $\left(\left\langle x\right\rangle ^A_1, \ldots,\left\langle x\right\rangle ^A_N \right) \in \mathbb{Z} ^N_{2^{\ell}}$, where $x=\sum_{i=1}^{N} \left\langle x\right\rangle^A_i \mod{2^{\ell}} $ and party $P_i$ holds $\left\langle x\right\rangle^A_i $. $x$ can be reconstructed by letting each party $P_i$ sends $\left\langle x\right\rangle^A_i $ to one party who calculates $x=\sum_{i=1}^{N} \left\langle x\right\rangle^A_i \mod{2^{\ell}}$. The addition of arithmetic shares can be calculated locally and multiplication of arithmetic shares can be performed with arithmetic multiplication triple (cf.~\autoref{subsubsec:MTs}).
 
-\paragraph{Boolean Sharing with GMW (B)}
-\label{para:BooleanSharing}
-A bit $x$ is shared among $N$ parties as $\left(\left\langle x\right\rangle ^B_1, \ldots,\left\langle x\right\rangle ^B_N \right) \in \left\{0,1\right\}^N$, where $x=\bigoplus _{i=1}^N \left\langle x\right\rangle ^B_i$. Boolean sharing can be seen as a special case of arithmetic sharing where $\operatorname{XOR}$ and $\operatorname{AND}$ are used instead of arithmetic addition and multiplication.
 
-\paragraph{Yao Sharing with BMR (Y)}
-\label{para:YaoSharing}
-Recall that in Yao's garbled circuit protocol (cf.~\autoref{subsec:BMR}), we introduce the optimization techniques such as point and permute~\cite{beaver1990round} and Free-XOR~\cite{kolesnikov2008improved}. Specifically, the garbler generates a random $\kappa$-bit string $R$ with $R\left[0\right] =1$ (as permutation bit) and a random key $k_0^i$, and set $k_1^i=k_0^i\oplus R$ for each wire $i$.
-Based on the above techniques, the evaluator can share a bit $x$ with the garbler by running a C-OT (cf.~\autoref{subsubsec:OT}). The garbler inputs a correlation function $f_{R }$, obtains $\left(k_0,k_1 \right) $ with $k_1=k_0\oplus R$, and set $\left\langle x\right\rangle^Y_0 =k_0$. The evaluator inputs a choice bit $x$, and receives $\left\langle x\right\rangle^Y_1 =k_x=k_0\oplus x R$. To reconstruct $x$, the evaluator sends $\left\langle x\right\rangle^Y_1\left[0\right] $ to the garbler who computes $x=\left\langle x\right\rangle^Y_0\left[0\right]\oplus \left\langle x\right\rangle^Y_1\left[0\right]$.
-For the evaluation of $\operatorname{XOR}$ gate, each party can locally calculate $\left\langle z\right\rangle ^Y=\left\langle x\right\rangle^Y\oplus \left\langle y\right\rangle ^Y $ based on Free-XOR~\cite{kolesnikov2008improved}. The $\operatorname{AND}$ gate $\left\langle z\right\rangle ^Y=\left\langle x\right\rangle^Y \land\left\langle y\right\rangle ^Y $ can be evaluated using the method from~\cite{bellare2013efficient}, where one party garbles the circuit with its share and another party evalutes the garbled circuit with its share.
-Yao's sharing can also be extended to multi-party case as the work~\cite{braun2022motion} showed.
 
-\subsubsection{Sharing Conversions}
-\label{subsubsec:SharingConversions}
-Different sharing types and corresponding MPC protocols have advantages in specific operations, e.g., arithmetic GMW (cf.~\autoref{subsec:GMW}) allows parties to execute linear operations locally, and BMR (cf.~\autoref{subsec:BMR}) is often more efficient for comparison. Therefore, we consider the sharing conversion methods introduced in works~\cite{demmler2015aby,braun2022motion}.
+
+% \paragraph{Yao Sharing with BMR (Y)}
+% \label{para:YaoSharing}
+% Recall that in Yao's garbled circuit protocol (cf.~\autoref{subsec:BMR}), we introduce the optimization techniques such as point and permute~\cite{beaver1990round} and Free-XOR~\cite{kolesnikov2008improved}. Specifically, the garbler generates a random $\kappa$-bit string $R$ with $R\left[0\right] =1$ (as permutation bit) and a random key $k_0^i$, and set $k_1^i=k_0^i\oplus R$ for each wire $i$.
+% Based on the above techniques, the evaluator can share a bit $x$ with the garbler by running a C-OT (cf.~\autoref{subsubsec:OT}). The garbler inputs a correlation function $f_{R }$, obtains $\left(k_0,k_1 \right) $ with $k_1=k_0\oplus R$, and set $\left\langle x\right\rangle^Y_0 =k_0$. The evaluator inputs a choice bit $x$, and receives $\left\langle x\right\rangle^Y_1 =k_x=k_0\oplus x R$. To reconstruct $x$, the evaluator sends $\left\langle x\right\rangle^Y_1\left[0\right] $ to the garbler who computes $x=\left\langle x\right\rangle^Y_0\left[0\right]\oplus \left\langle x\right\rangle^Y_1\left[0\right]$.
+% For the evaluation of $\operatorname{XOR}$ gate, each party can locally calculate $\left\langle z\right\rangle ^Y=\left\langle x\right\rangle^Y\oplus \left\langle y\right\rangle ^Y $ based on Free-XOR~\cite{kolesnikov2008improved}. The $\operatorname{AND}$ gate $\left\langle z\right\rangle ^Y=\left\langle x\right\rangle^Y \land\left\langle y\right\rangle ^Y $ can be evaluated using the method from~\cite{bellare2013efficient}, where one party garbles the circuit with its share and another party evalutes the garbled circuit with its share.
+% Yao's sharing can also be extended to multi-party case as the work~\cite{braun2022motion} showed.
+
+% \subsubsection{Sharing Conversions}
+% \label{subsubsec:SharingConversions}
+% Different sharing types and corresponding MPC protocols have advantages in specific operations, e.g., arithmetic GMW (cf.~\autoref{subsec:GMW}) allows parties to execute linear operations locally, and BMR (cf.~\autoref{subsec:BMR}) is often more efficient for comparison. Therefore, we consider the sharing conversion methods introduced in works~\cite{demmler2015aby,braun2022motion}.
 
 \subsection{MPC Framework - MOTION}
 \label{subsection:MOTIONFramework}
@@ -634,7 +668,7 @@ Take \autoref{tabular:databaseexample} as an example. The database contains the 
 \FloatBarrier
 
 
-\emph{Data Curator}. A data curator is trusted to manage and organize the database, and its primary goal is to ensure that the database can be reused reliably. In terms of differential privacy, the data curator is responsible for preserving the privacy of individuals represented in the database. The curator can also be replaced by cryptographic protocols such as secure multiparty protocols~\cite{goldreich2019play}.
+\emph{Data Curator}. A data curator is trusted to manage and organize the database, and its primary goal is to ensure that the database can be reused reliably. In terms of differential privacy, the data curator is responsible for preserving the privacy of individuals represented in the database. The curator can also be replaced by cryptographic protocols such as secure multiparty protocols~\cite{goldreich1987play}.
 
 \emph{Adversary}. The adversary plays the role of a data analyst interested in learning sensitive information about the individuals in the database. In differential privacy, any legitimate data analyst of the database can be an adversary.
 
