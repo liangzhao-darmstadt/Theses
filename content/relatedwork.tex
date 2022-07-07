@@ -6,7 +6,7 @@
 % To achieve differential privacy (DP) in a federated learning scenario, either a central trusted server (centralized model) is assumed to perform perturbation to the aggregated result, or each client perturbs its data (local model) before sending it to the central server. However, in the centralized model, the trusted server is responsible for security and privacy and becomes the single point of failure for the entire system. In the decentralized model, when each client perturbs its data to guarantee privacy, the noise in the aggregated result is superﬂuous and may decrease the utility.
 % Several solutions that combine differential privacy and secure multiparty computation (MPC) have been proposed to guarantee privacy and utility. The first key point to solve the problem is deploying MPC instead of the strong assumption of a trusted server. The second point is to reduce redundant noise by ensuring all clients perturbs the data collaboratively rather than independently.
 
-The fundemental idea of differential privacy~\cite{dwork2006differential} is to perturb the query on a database such that influence of each individual record in the database is bounded. The original definition of \differentialprivacy assumes the existence of a centralized and trusted server that manages the database and process the queries. Subsequent works~\cite{dwork2006our} extends \differentialprivacy to a distributed setting, where the central server is replaced by several mutually distrustful and potentially malicious computation parties. To the best of our knowledge, Dwork et al.~\cite{dwork2006our} was the first to consider deploying malicious \smpc to aggregate and perturb data with the shares of random noise. Generally, the works that attemepes to realizied \ddp can be categorized into two groups: central \differentialprivacy model and local \differentialprivacy model. In the central \differentialprivacy model, a trusted, central server responsible for computing the aggregate statistics and perturbation, is simulated by several semi-honest (or malicious) computation parties with \smpc. It is typically assumed that the majority of computation parties are not colluding. However, \smpc incurs high computation and communication overhead that reduces the efficiency and scalability. In the local \differentialprivacy model, the server is not trusted anymore. The users applies randomness to privatized their data before sending to the server. Therefore, the accuracy of the aggregate statistics is limited as the randomization is applied multiple times. Both models face series of open challenges and we discuss the details of them below.
+The fundamental idea of differential privacy~\cite{dwork2006differential} is to perturb the query on a database such that influence of each individual record in the database is bounded. The original definition of \differentialprivacy assumes the existence of a centralized and trusted server that manages the database and process the queries. Subsequent works~\cite{dwork2006our} extends \differentialprivacy to a distributed setting, where the central server is replaced by several mutually distrustful and potentially malicious computation parties. To the best of our knowledge, Dwork et al.~\cite{dwork2006our} was the first to consider deploying malicious \smpc to aggregate and perturb data with the shares of random noise. Generally, the works that attemepes to realizied \ddp can be categorized into two groups: central \differentialprivacy model and local \differentialprivacy model. In the central \differentialprivacy model, a trusted, central server responsible for computing the aggregate statistics and perturbation, is simulated by several semi-honest (or malicious) computation parties with \smpc. It is typically assumed that the majority of computation parties are not colluding. However, \smpc incurs high computation and communication overhead that reduces the efficiency and scalability. In the local \differentialprivacy model, the server is not trusted anymore. The users applies randomness to privatized their data before sending to the server. Therefore, the accuracy of the aggregate statistics is limited as the randomization is applied multiple times. Both models face series of open challenges and we discuss the details of them below.
 
 \subsection{Local DP Model}
 \label{subsec:LocallDPModel}
@@ -56,42 +56,54 @@ The subsequent works~\cite{krips2014hybrid,kamm2015secure,rathee2022secfloat} ap
 
 Truex et al.~\cite{truex2019hybrid} proposed a hybrid method combing fixed-point and floating-point arithmetic, i.e., representing the mantissa of a floating-point number as fixed-point number, and used \lsss-based fixed-point arithmetic when the mantissa is involved in the floating-point arithmetic. However, the fixed-point arithmetic is prone to overflow or underflow that requires additionial \smpc protocols to fixed the computation result that decrease the overall protocol performance.
 
-Kamm and Willemson et al.~\cite{kamm2015secure} provided \smcp protocols for square root, natural exponentiation, and error function approximated with Taylor series expansion or Chebyshev polynomials.
+Kamm and Willemson et al.~\cite{kamm2015secure} provided \smpc protocols for square root, natural exponentiation, and error function approximated with Taylor series expansion or Chebyshev polynomials.
 % (ref. Optimizing MPC for Robust and Scalable Integer and Floating-Point Arithmetic) provide optimization for (hybrid model of ....) by parallelizing the polynomial approximation, eliminate branching by representing negative integer using two's complementation, etw.
 
 Rathee et al.~\cite{rathee2022secfloat} built a precise and efficient 32-bit floating-point operation library (SecFloat) for secure two-party computation. One highlight is the use of the mixed-bitwidth computation technique, i.e., use low bitwidth to represent numbers as much as possible. The conversion operations between different bitwidth are performed with specialized zero-extension and truncation \twopc protocols.
 The second highlight is the use of low-degree polynomials to improve accuracy and efficiency.
 One common method to compute function like $log_{2}x$ is polynomial approximation, where high-degree polynomials yields more accurate result but incur more computation effort. Rathee et al.~\cite{rathee2022secfloat} replaced the high-degree polynomials with low-degree piecewise polynomials without decrease accuracy. In specifically, for input $x\in \left(a,b\right) $, they approximated $log_2 x$ using different low-degree polynomials for $k$ subintervals ($\left(a, a_1\right) $, $\left(a_1, a_2\right)  $,$\ldots$, $\left(a_{k-1}, b\right) $). To determine the active interval of $x$, they deployed the \lut protocol~\cite{dessouky2017pushing} to compute the correct polynomial coefficients.
-To explore if efficiency of SecFloat still preserves in multi-party setting, we implement certain building blocks (conversion operations between low-bitwidth and high-bitwidth, multi-party lookup table protocol~\cite{keller2017faster}) in the MITION~\cite{braun2022motion} framework. After benchmarking, we found the benefit brought by mixed-bitwidth becomes negligible when extending it to a multi-party setting. The reason is as follows:
+To explore if efficiency of SecFloat~\cite{rathee2022secfloat} still preserves in multi-party setting, we implement its building blocks (conversion operations between low-bitwidth and high-bitwidth, multi-party lookup table protocol~\cite{keller2017faster}, MSNZB~\cite{rathee2021sirnn}) in the MITION~\cite{braun2022motion} framework. After benchmarking (cf.~\autoref{runtimes_secfloat}), we found the benefit brought by mixed-bitwidth becomes negligible when extending it to a multi-party setting. The reason is as follows:
 \begin{enumerate}
     \item The conversion operations between low-bitwidth and high-bitwidth in SecFloat rely on \twopc comparison protocol based on \ot, and it can not be directly extended to multi-party setting.
     \item In the two-party setting, when we take the value of two $\ell$-bit arithmetic shares $\left\langle a\right\rangle^A_0 $, $\left\langle a\right\rangle^A_1$ as plaintext value and compute the addition result, we need an $\ell+1$-bit integer $a =\left\langle a\right\rangle^A_0 +\left\langle a\right\rangle^A_1 $ to hold the addition result without overflow. The most significant bit of $a$ is used during the conversion operation. For $N\geq 3$ parties, the addition result of $N$ $\ell$-bit arithmetic value needs a $\left\lceil \log_2{N}\right\rceil +l$-bit integer to hold. The $\left\lceil \log_2{N}\right\rceil$ most significant bits are used for the conversion. As the number of parties grows, the complexity of conversion operations also increases.
 \end{enumerate}
 
+Protocol $MSNZB\left(\left\langle x\right\rangle^A\right) $~\cite{aliasgari2012secure,rathee2021sirnn} computes the most significant non-zero bit index of the input $\left\langle x\right\rangle^A \in \mathbb{Z} _{2^{\ell}}$ in arithmetic share.
+We implement two types of $MSNZB$~\cite{aliasgari2012secure,rathee2021sirnn} protocols in MOTION~\cite{braun2022motion} and evaluate the performance.
+
+$MSNZB$~\cite{aliasgari2012secure} used operations such as bit-decomposition, Boolean sharing to arithmetic sharing conversion and arithemtic sharing addition.
+By contrast, $MSNZB$~\cite{rathee2021sirnn} first decomposed the input $\left\langle x\right\rangle^A \in \mathbb{Z} _{2^{\ell}}$ into $\frac{\ell}{8}$ low-bitwidth arithmetic shares $\left\langle x_1\right\rangle^A$, $\left\langle x_2\right\rangle^A$, $\ldots$,  $\left\langle x_{\ell/8}\right\rangle^A\in \mathbb{Z} _{2^{{8}}} $. Then, each low-bitwidth arithmetic share is used as a input to the lookup table protocol to compute $MSNZB\left(\left\langle x_1\right\rangle^A\right) $, $\ldots$, $MSNZB\left(\left\langle x_{\ell/8}\right\rangle^A\right) $. Finally, $MSNZB\left(\left\langle x_1\right\rangle^A\right) $, $\ldots$, $MSNZB\left(\left\langle x_{\ell/8}\right\rangle^A\right) $ were combined together to compute $MSNZB\left(\left\langle x\right\rangle^A\right) $. We can see in \autoref{tab:runtimes_secfloat} that the use of mixed-bitwidth and lookup table does not bring efficiency improvement in the LAN (10Gbit/s Bandwidth, 1ms RTT) and WAN (100Mbit/s Bandwidth, 100ms RTT) networks. Details of benchmark environment are in~\autoref{cha:evaluation}.
+
 \begin{table}[H]
     \caption{
-        Online run-times in milliseconds (ms) for operation \msnzb for the GMW (A). We take the average over 10 protocol runs in the LAN and WAN environments.
+        Online run-times in milliseconds (ms) for operation MSNZB for the GMW (A). We take the average over 10 protocol runs in the LAN and WAN environments.
     }
-    \label{tab:runtimes_aes_sha}
+    \label{tab:runtimes_secfloat}
     % \small
     \centering
     \nprounddigits{1} % remove fractional digits in this table
     \rowcolors{1}{gray!25}{white}
-    \resizebox{\columnwidth}{!}{
-        \begin{tabular}{ l r c r r r r r r r r r}
-            \toprule
-            \hiderowcolors                                & \multicolumn{3}{c}{LAN} &         & \multicolumn{3}{c}{WAN}                                         \\
-            \cmidrule{2-4} \cmidrule{6-8} Operation       &
-            $N{=}2$                                       & $N{=}3$                 & $N{=}5$ &                         &
-            $N{=}2$                                       & $N{=}3$                 & $N{=}5$                                                                   \\ \showrowcolors
-            \midrule
-            $MSNZB$~\cite{aliasgari2012secure} ($\ARITH$) & 46.06                   & 18.41   & 80.12                   &   & 983.22    & 886.06    & 1\,036.23 \\
-            $MSNZB$~\cite{rathee2022secfloat} ($\ARITH$)  & 113.28                  & 359.76  & 567.14                  &   & 5\,086.60 & 5\,436.82 & 6\,355.90 \\
-            \bottomrule
-        \end{tabular}
-    }
+    % \resizebox{\columnwidth}{!}{
+    \begin{tabular}{ l r r r r r r r r r r r}
+        \toprule
+        \hiderowcolors                          & \multicolumn{2}{c}{LAN} &        & \multicolumn{2}{c}{WAN}                         \\
+        \cmidrule{2-3} \cmidrule{5-6} Operation &
+        $N{=}3$                                 & $N{=}5$                 &        &
+        $N{=}3$                                 & $N{=}5$                                                                            \\ \showrowcolors
+        \midrule
+        $MSNZB$~\cite{aliasgari2012secure}      & 18.41                   & 80.12  &                         & 886.06    & 1\,036.23 \\
+        $MSNZB$~\cite{rathee2022secfloat}       & 359.76                  & 567.14 &                         & 5\,436.82 & 6\,355.90 \\
+        \bottomrule
+    \end{tabular}
+    % }
 \end{table}
 \FloatBarrier
+
+
+\subsection{Binary Circuit Based SMPC}
+\label{subsec:BinaryCircuitBasedSMPC}
+
+The binary circuits are typically composed of $\operatorname{XOR}$, $\operatorname{NOT}$ and $\operatorname{AND}$ gates, where the $\operatorname{AND}$ gates cause the major cost. Therefore, the binary circuits should be optimized based on the cost metric of \smpc protocols. A common method to generate low $\operatorname{AND}$-depth and low $\operatorname{AND}$-size binary circuit is to use CBMC-GC~\cite{buscher2016compiling} circuit compiler that derives circuit design with C program. Pullonen and Siim~\cite{pullonen2015combining} used CBMC-GC~\cite{buscher2016compiling} circuit compiler to generate size-optimized circuit for IEEE 754 floating-point operations with C library~\cite{BerkelySoftFloat,musllibc}. Archer et al.~\cite{archer2021cost} deployed use CBMC-GC~\cite{buscher2016compiling} to generate depth-optimized circuit for IEEE 754 floating-point operations. In this works, we also use CBMC-GC~\cite{archer2021cost} to generate depth-optimized circuit and size-optimized circuits for arithemtic operations with different C librarys~\cite{BerkelySoftFloat,musllibc} or available optimized circuits from work~\cite{demmler2015aby}.
 
 
 % However, we find that SecFloat can't be extended to $N$-party computations ($N\geq 3$) while preserving its efficiency. First, SecFloat relies heavily on the Oblivious Transfer techniques (ref. crytpflow) for mix-bitwidth and $LUT$ operationsm which is not available in multi-party computations. To verify this, we implement the $MSNZB$ (most significant non-zero bit index) protocol deployed in SecFloat using the idea of mix-bitwidth and $LUT$ (ref. fast LUT) in MOTION framework, and compare it with a another implementation of $MSNZB$ that use Boolean GMW operation and share conversion.

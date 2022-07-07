@@ -13,33 +13,31 @@ In this chapter, we start with the notations used in this thesis~\autoref{sec:no
 For $a,b,c \in \mathbb{N} $, $\left(a,b\right) $ denotes $\left\{x\in \mathbb{R} \, | \, a<x< b\right\} $, and $\left[a,b\right] $ denotes $\left\{x\in \mathbb{R} \, | \,a\leq x\leq b\right\} $. $\left\{a,b,c\right\} $ is a set containing the three numbers.
 $\mathbb{D}$ denotes the set of floating-point numbers, and $\mathbb{D} \cap \left(a,b\right) $ contains floating-point numbers in the interval $\left(a,b\right)$.
 
-Let $P_1, \ldots P_{N} $ denote $N$ computation parties. The value $x$ that is secret shared among $N$ parties are denoted by $\left\langle x\right\rangle ^S=\left(\left\langle x\right\rangle_1^S ,\ldots, \left\langle x\right\rangle_N^S\right) $, where
-$\left\langle x\right\rangle _i^S$ is hold by party $P_i$.
-$S \in \left\{\ARITH,\BOOL,\YAO\right\} $ denotes the sharing type (cf.~\autoref{subsec:secretSharingAndSharingConversions}): $\ARITH$ for arithmetic sharing, $\BOOL$ for Boolean sharing with GMW, $\YAO$ for Yao sharing with BMR. $\operatorname{B2A}$ denotes the share conversion from $\BOOL$ to $\ARITH$, and other share conversions are defined similarly as discussed in~\cite{demmler2015aby}.
-$\left\langle \boldsymbol{x}\right\rangle $ denotes a vector of $\ell$ shared bits.
-$D \in \left\{UINT,INT,FX,FL\right\} $ indicates the data type: $UINT$ for unsigned integer, $INT$ for signed integer, $FX$ for fixed-point number, and $FL$ for floating-point number. We omit subscript and subscript when it is clear from the context.
+Let $P_1, \ldots P_{N} $ denote $N$ computation parties. The value $x$ that is secret shared among $N$ parties are denoted by $\left\langle x\right\rangle ^{S,D}=\left(\left\langle x\right\rangle_1^{S,D} ,\ldots, \left\langle x\right\rangle_N^{S,D}\right) $, where
+$\left\langle x\right\rangle _i^{S,D}$ is hold by party $P_i$.
+Superscript $S \in \left\{\ARITH,\BOOL,\YAO\right\} $ denotes the sharing type (cf.~\autoref{subsec:MPCProtocols}): \ARITH for arithmetic sharing, \BOOL for Boolean sharing with GMW, \YAO for Yao sharing with BMR.
+% $\operatorname{B2A}$ denotes the share conversion from $\BOOL$ to $\ARITH$, and other share conversions are defined similarly as discussed in~\cite{demmler2015aby}.
+Superscript $D \in \left\{\uint,\sint,\fx,\fl \right\} $ indicates the data type: \uint for unsigned integer, \sint for signed integer, \fx for fixed-point number, and \fl for floating-point number. We omit subscript and subscript when it is clear from the context.
 
-For the logical operations, we use $\operatorname{XOR}$ ($\oplus $), $\operatorname{AND}$ ($\land $), and $\operatorname{NOT}$ ($\neg$).
-Let $\left\langle {a}\right\rangle^{D} \odot \left\langle {b}\right\rangle^{D}$ be the arithmetic operations on two shared numbers of type $D$, where $\odot\in\left\{+, -, \cdot, \div, >, ==\right\} $ and $D\in \left\{UINT, INT, FX, FL\right\} $.
-
-Similarly, $\ln\left(\left\langle {a}\right\rangle \right) $, $2^{\left\langle {a}\right\rangle } $, $e^{\left\langle {a}\right\rangle^{D} }$, $\left\lvert \left\langle {a}\right\rangle^{D} \right\rvert $, $\left\lfloor \left\langle {a}\right\rangle^{D} \right\rfloor $ , $\left\lceil \left\langle {a}\right\rangle^{D} \right\rceil $, $\left\langle {a}\right\rangle^{D} \mod \left\langle {b}\right\rangle^{D} $ denote the arithmetic operations of shared numbers $\left\langle {a}\right\rangle^{D} $ and $\left\langle {b}\right\rangle^{D} $ of type $D$.
-Let $\left\langle {a}\right\rangle ^{FL}=\Uppi^{UINT2FL}\left(\left\langle {a}\right\rangle ^{UINT}\right) $ denotes the conversion from an shared unsigned integer $\left\langle {a}\right\rangle ^{UINT}$ to a shared floating-point number $\left\langle {a}\right\rangle ^{FL}$. Other data type conversion operations are defined in a similar manner.
-
-Let $\left\langle a\right\rangle ^B \cdot \left\langle \boldsymbol{b}\right\rangle ^{B}$ represent the bitwise $\land$ operations between $\left\langle a\right\rangle ^B$ and every Boolean sharing bit $\left\langle b\right\rangle^B \in\left\langle \boldsymbol{b}\right\rangle ^{B}$.
-
+Bold symbol $\left\langle \boldsymbol{x}\right\rangle $ denotes a vector of $\ell$ shared bits.
+We use $\operatorname{XOR}$ ($\oplus $), $\operatorname{AND}$ ($\land $), and $\operatorname{NOT}$ ($\neg$) in the logical opeartions.
+Let $\left\langle {a}\right\rangle^{S,D} \odot \left\langle {b}\right\rangle^{S,D}$ be the arithmetic operations on two shared numbers, where $\odot\in\left\{+, -, \cdot, \div, >, ==\right\} $. $\left\langle a\right\rangle ^{\BOOL} \cdot \left\langle \boldsymbol{b}\right\rangle ^{\BOOL}$ represents the bitwise $\operatorname{AND}$ operations between $\left\langle a\right\rangle ^{\BOOL}$ and every Boolean sharing bit $\left\langle b\right\rangle^{\BOOL} \in\left\langle \boldsymbol{b}\right\rangle ^{\BOOL}$.
+% Other arithmetic operations are defined similarily.
+% Similarly, $\ln\left(\left\langle {a}\right\rangle \right) $, $2^{\left\langle {a}\right\rangle } $, $e^{\left\langle {a}\right\rangle^{D} }$, $\left\lvert \left\langle {a}\right\rangle^{D} \right\rvert $, $\left\lfloor \left\langle {a}\right\rangle^{D} \right\rfloor $ , $\left\lceil \left\langle {a}\right\rangle^{D} \right\rceil $, $\left\langle {a}\right\rangle^{D} \mod \left\langle {b}\right\rangle^{D} $ denote the arithmetic operations of shared numbers $\left\langle {a}\right\rangle^{D} $ and $\left\langle {b}\right\rangle^{D} $ of type $D$.
+Let $\left\langle {a}\right\rangle ^{\fl}=\Uppi^{UINT2FL}\left(\left\langle {a}\right\rangle ^{\uint}\right) $ be the conversion from an shared unsigned integer $\left\langle {a}\right\rangle ^{\uint}$ to a shared floating-point number $\left\langle {a}\right\rangle ^{\fl}$. Other data type conversion operations are defined in a similar manner.
 
 
 \section{Secure Multi-Party Computation}
 \label{sec:secureMultipartyComputation}
 Secure Multi-Party Computation enables multiply parties to jointly evaluate a function on their private inputs while revealing only the computation result. Yao~\cite{yao1982protocols} introduced the concept of secure two-party computation with Yao's Millionaires' problem (i.e., two millionaires wish to know who is richer without revealing their actual wealth) and proposed the garbled circuit protocol~\cite{yao1986generate} as a solution.
-In the garbled circuit protocol, the target function is represented as a Boolean circuit consisting of connected gates and wires. One party called gabler is responsible for garbling the circuit, and one party called evaluator is responsible for evaluating the garbled circuit.
+In the garbled circuit protocol, the target function is represented as a Boolean circuit consisting of connected gates and wires. One party called gabler is responsible for garbling the circuit, and the other party called evaluator evaluates the garbled circuit and outputs the result. 
 % The gabler generates the garbled circuit by replacing the logical values ($0$ and $1$) of each wire with two random keys. Then, the gabler encrypted and shuffle the truth table of each gate with these keys. 
 
 % In Yao's Millionaires' problem, two millionaires wish to know who is richer without revealing their actual wealth.
-Afterwards, Beaver, Micali and Rogaway (\bmr)~\cite{beaver1990round} generalized Yao's garbled circuit protocol to multi-party settings. Goldreich, Micali and Wigderson (\gmw)~\cite{goldreich1987play} proposed a general solution to multi-party computation based on secret sharing, where each party splits his data into several shares and sends to each of the parties.
-Secret sharing guarantees that any secret shares hold by partial parties leak no information about the partites' private input.
+Afterwards, \bmr~\cite{beaver1990round} generalized Yao's garbled circuit protocol to multi-party settings. \gmw~\cite{goldreich1987play} proposed a general solution to \smpc based on secret sharing, where each party splits his data into several shares and sends it to each of the parties.
+Secret sharing guarantees that any secret shares held by single party leak no information about the parties' private input.
 
-Generally, the execution of MPC protocols is separated in two phases: an offline (or preprocessing) phase and an online phase.
+Generally, the execution of MPC protocols is separated into two phases: an offline (or preprocessing) phase and an online phase.
 In the offline phase, the parties compute everything that does not depend on the private input. In the online phase, the parties compute the input-dependent part.
 
 
@@ -48,9 +46,9 @@ In the offline phase, the parties compute everything that does not depend on the
 The standard approach to prove the security of cryptographic protocols is to consider adversaries with different capabilities.
 We describe two types of adversaries: the \textit{semi-honest} adversary and the \textit{malicious} adversary. We refer to~\cite[Chapter~2]{evans2017pragmatic} for a formal and detailed description of the security model.
 
-\textbf{Semi-honest adversaries} (also known as passive adversaries) try to infer additional information of other parties from the messages during the protocol execution without attempting to break the protocol. Therefore, it is a weak security model and only prevent the unintentional disclosure of information between partites. The semi-honest protocols are usually very efficient and a first step to design protocols with stronger security guarantees.
+\textbf{Semi-honest adversaries} (also known as passive adversaries) try to infer additional information of other parties from the messages during the protocol execution without attempting to break the protocol. Therefore, it is a weak security model and only prevents the unintentional disclosure of information between parties. The semi-honest protocols are usually very efficient and the first step to design protocols with stronger security guarantees.
 
-\textbf{Malicious adversaries} (also known as active adversaries) may cause corrupted parties to arbitrarily deviate from the protocol specification and attempt to learn information about the other parties' inputs. Protocol again malicious adversaries usually deploys cryptographic mechanisms to ensure that the parties cannot deviate from the protocol specification. Thherefore, the protocol is often expensive than the semi-honest protocol.
+\textbf{Malicious adversaries} (also known as active adversaries) may cause corrupted parties to arbitrarily deviate from the protocol specification and attempt to learn information about the other parties' inputs. Protocols against malicious adversaries usually deploy cryptographic mechanisms to ensure that the parties cannot deviate from the protocol specification. Therefore, the protocol is often more expensive than the protocol against semi-honest adversaries.
 
 \subsection{Cryptographic Primitives for Secure Multi-Party Computation}
 \label{subsec:CryptographicPrimitivesforSecureMulti-PartyComputation}
@@ -61,19 +59,19 @@ We describe two types of adversaries: the \textit{semi-honest} adversary and the
 % Later, Even et al.~\cite{even1985randomized} redefined OT as the $1$-out-of-$2$ OT ($\binom{2}{1}$-OT). $\binom{2}{1}$-OT has the functionality that accepts inputs ($x_0$, $x_1$) from the sender and a choice bit $c$ from the receiver. After computation, it outputs $\bot $ to the sender and $x_c$ to the receiver. $\binom{2}{1}$-OT guarantees that the sender does not learn anything about $c$ and the receiver does not learn about $x_{1-c}$.
 % Impagliazzo and Rudich~\cite{impagliazzo1989limits} showed that a \textit{black-box} reduction from OT to a one-way function~\cite[Chapter~2]{oded2006foundations} is as hard as proving $P\neq NP$, which implies that OT requires relatively expensive (than symmetric cryptography) public-key cryptography~\cite{rivest1978method}.
 
-\ot is a cryptographic primitive that enables two parties to obliviouly transfer one value out of two values. Specifically, one party (the sender) has inputs ($x_0$, $x_1$) and the other party (the receiver) has a choice bit $c$. Oblivious transfer protocol receives the inputs from the sender and receiver, and outputs $\bot $ to the sender and $x_c$ to the receiver. It guarantees that the sender does not learn anything about $c$ and the receiver does not learn about $x_{1-c}$.
+\ot is a cryptographic primitive that enables two parties to obliviously transfer one value out of two values. Specifically, the sender has inputs ($x_0$, $x_1$), and the receiver has a choice bit $c$. Oblivious transfer protocol receives the inputs from the sender and receiver, and outputs $x_c$ to the receiver. It guarantees that the sender does not learn anything about $c$ and the receiver does not learn about $x_{1-c}$.
 Impagliazzo and Rudich~\cite{impagliazzo1989limits} showed that a \textit{black-box} reduction from \ot to a one-way function~\cite[Chapter~2]{oded2006foundations} is as hard as proving $P\neq NP$, which implies that \ot requires relatively expensive (than symmetric cryptography) public-key cryptography~\cite{rivest1978method}.
 
-Nevertheless, Ishai et al.~\cite{ishai2003extending} proposed \ot \textit{extension} technique that extends a small number of OTs based on public-key cryptography to a large number of OTs with efficient symmetric cryptography.
-Asharov et al.~\cite{asharov2017more} proposed specific \ot functionalities for the optimization of \smpc protocols such as \correlatedot and \randomot. In \correlatedot, the sender inputs a correlation function $f_{\Delta }$ (e.g., $f_{\Delta }\left(x\right)=x\oplus \Delta $, where $\Delta$ is only known by the sender) and receives random values $x_0$ and $x_1=f_{\Delta }\left(x_0\right)$. The receiver inputs a choice bit $c$ and receives $x_{c}$. In \randomot, the sender has no inputs and receives random values ($x_0$, $x_1$), and the receiver inputs a choice bit $c$ and receives $x_c$.
+Nevertheless, Ishai et al.~\cite{ishai2003extending} proposed \ot \textit{extension} techniques that extend a small number of OTs based on public-key cryptography to a large number of OTs with efficient symmetric cryptography.
+Asharov et al.~\cite{asharov2017more} proposed specific \ot functionalities for the optimization of \smpc protocols, such as \correlatedot and \randomot. In \correlatedot, the sender inputs a correlation function $f_{\Delta }$ (e.g., $f_{\Delta }\left(x\right)=x\oplus \Delta $, where $\Delta$ is only known by the sender) and receives random values $x_0$ and $x_1=f_{\Delta }\left(x_0\right)$. The receiver inputs a choice bit $c$ and receives $x_{c}$. In \randomot, the sender has no inputs and receives random values ($x_0$, $x_1$), and the receiver inputs a choice bit $c$ and receives $x_c$.
 
 \subsubsection{Multiplication Triples}
 \label{subsubsec:MTs}
-\mts are proposed by Beaver~\cite{beaver1991efficient} that can be precomputed to reduce the online complexity of \smpc protocols by converting expensive operations (e.g., arithmetic multiplication and logical $\operatorname{AND}$) to linear operations (e.g., arithmetic addition and logical $\operatorname{XOR}$).
+\mts were proposed by Beaver~\cite{beaver1991efficient} that can be precomputed to reduce the online complexity of \smpc protocols by converting expensive operations (e.g., arithmetic multiplication and logical $\operatorname{AND}$) to linear operations (e.g., arithmetic addition and logical $\operatorname{XOR}$).
 
 A multiplication triple has the form $\left(\left\langle a\right\rangle^S , \left\langle b\right\rangle^S,\left\langle c\right\rangle^S\right) $ with $S\in \left\{B,A\right\} $.
-In Boolean sharing with GMW (cf.~\autoref{para:BooleanSharing}), we have $c=a\land b$ for Boolean sharing and $c=a \times  b$ for arithmetic sharing (cf.~\autoref{subsubsec:arithmeticSharing}).
-Multiplication triples can be generated using \correlatedot (cf.~\autoref{subsubsec:OT}) in two-party setting~\cite{demmler2015aby} and multi-party setting~\cite{braun2022motion}.
+In Boolean sharing with GMW (cf.~\autoref{subsubsec:BooleanSharingwithGMW}), we have $c=a\land b$ for Boolean sharing and $c=a \cdot  b$ for arithmetic sharing (cf.~\autoref{subsubsec:ArithmeticSharing}).
+Multiplication triples can be generated using \correlatedot (cf.~\autoref{subsubsec:OT}) in the two-party setting~\cite{demmler2015aby} or the multi-party setting~\cite{braun2022motion}.
 % The advantage of \mts is that it can reduce the MPC protocols' online complexity by converting expensive operations (e.g., arithmetic multiplication and logical $\operatorname{AND}$) to linear operations (e.g., arithmetic addition and logical $\operatorname{XOR}$).
 
 
@@ -82,14 +80,14 @@ Multiplication triples can be generated using \correlatedot (cf.~\autoref{subsub
 
 \subsection{MPC Protocols}
 \label{subsec:MPCProtocols}
-We describe the \smpc protocols that is secure against $N-1$ semi-honest corruptions: Arithmetic sharing (cf.~\autoref{subsubsec:ArithmeticSharing}), Boolean sharing with \gmw (cf.~\autoref{subsubsec:BooleanSharingwithGMW}), and Yao sharing with \bmr (cf.~\autoref{subsubsec:YaoSharingwithBMR}).
+We describe the \smpc protocols that are secure against $N-1$ semi-honest corruptions: Arithmetic sharing (cf.~\autoref{subsubsec:ArithmeticSharing}), Boolean sharing with \gmw (cf.~\autoref{subsubsec:BooleanSharingwithGMW}), and Yao sharing with \bmr (cf.~\autoref{subsubsec:YaoSharingwithBMR}).
 We refer to~\cite{demmler2015aby, braun2022motion} for a formal and detailed description.
 
 \subsubsection{Arithmetic Sharing (\ARITH)}
 \label{subsubsec:ArithmeticSharing}
-Arithmetic sharing protocol enables parties to evaluate arithmetic circuits consisting of addition and multiplication gates.
+The arithmetic sharing protocol enables parties to evaluate arithmetic circuits consisting of addition and multiplication gates.
 For arithmetic sharing, an $\ell$-bit value $x$ is shared additively among $N$ parties as $\left(\left\langle x\right\rangle ^A_1, \ldots,\left\langle x\right\rangle ^A_N \right) \in \mathbb{Z} ^N_{2^{\ell}}$, where $x=\sum_{i=1}^{N} \left\langle x\right\rangle^A_i \mod{2^{\ell}} $ and party $P_i$ holds $\left\langle x\right\rangle^A_i $. Value $x$ can be reconstructed by letting each party $P_i$ sends $\left\langle x\right\rangle^A_i $ to one specific party who computes $x=\sum_{i=1}^{N} \left\langle x\right\rangle^A_i \mod{2^{\ell}}$.
-The addition of arithmetic shares can be calculated locally without communication. Suppose the parties holds shares $\left\langle x\right\rangle^A_i $, $\left\langle y\right\rangle^A_i $, and wish to compute $z=a \cdot x+y+b$ with public value $a$, $b\in \mathbb{Z} _{2^{\ell}}$. Then, one specific party $P_1$ compute $\left\langle z\right\rangle ^A_i=a \cdot \left\langle x\right\rangle^A_i +\left\langle y\right\rangle^A_i +b$, and the rest parties compute $ \left\langle z\right\rangle ^A_i=a \cdot \left\langle x\right\rangle^A_i +\left\langle y\right\rangle^A_i $ locally.
+The addition of arithmetic shares can be calculated locally without communication. Suppose the parties hold shares $\left\langle x\right\rangle^A_i $, $\left\langle y\right\rangle^A_i $, and wish to compute $z=a \cdot x+y+b$ with public value $a$, $b\in \mathbb{Z} _{2^{\ell}}$. Then, one specific party $P_1$ computes $\left\langle z\right\rangle ^A_1=a \cdot \left\langle x\right\rangle^A_1 +\left\langle y\right\rangle^A_1 +b$, and the other parties compute $ \left\langle z\right\rangle ^A_i=a \cdot \left\langle x\right\rangle^A_i +\left\langle y\right\rangle^A_i $ locally.
 
 The multiplication of arithmetic shares can be performed using \mts (cf.~\autoref{subsubsec:MTs}). Suppose $\left(\left\langle a\right\rangle^A ,\left\langle b\right\rangle^A,\left\langle c\right\rangle^A\right) $ is an \mts in $\mathbb{Z} _{2^{\ell}}$, where $\left\langle c\right\rangle ^A = \left\langle a\right\rangle^A \cdot \left\langle b\right\rangle^A $. To compute $\left\langle z\right\rangle ^A_i = \left\langle x\right\rangle ^A_i \cdot \left\langle y\right\rangle ^A_i$, the parties first compute $\left\langle d\right\rangle ^A_i=\left\langle x\right\rangle ^A_i-\left\langle a\right\rangle^A_i $ and $\left\langle e\right\rangle ^A_i=\left\langle y\right\rangle ^A_i-\left\langle b\right\rangle ^A_i$, and reconstruct them to get $d$ and $e$. Finally, the parties compute the addition $\left\langle z\right\rangle ^A_i = \left\langle c\right\rangle ^A_i+e \cdot \left\langle x\right\rangle_i ^A+d \cdot \left\langle y\right\rangle_i ^A- d \cdot e$.
 
