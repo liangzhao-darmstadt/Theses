@@ -497,7 +497,7 @@ Specifically, $M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\delta\ri
 
 % \TODO{how to modify exactly, origin algorithms, prove}\\
 \paragraph{Symmetrical Binomial Sampling Algorithm}
-\label{para:BinarySearchBasedGeometricSamplingAlgorithm}
+\label{para:SymmetricalBinomialSamplingAlgorithm}
 
 $Algo^{SymmetricBinomial}$ is a modification of the symmetrical binomial sampling algorithm~\cite{googleDP2019}, that samples $i\sim SymmBino\left(n,p=0.5\right) $ with input $\sqrt{n}\approx 2^{56}$. We modify the original sampling algorithm by replacing the $WHILE$ loop with a $FOR$ loop (line 2), such that it has fixed round of iterations. We also found that when $-\frac{\sqrt{n\ln n}}{2} \leq x \leq \frac{\sqrt{n\ln n}}{2}$, $\tilde{p}\left(x\right)>0$ for $x \in [2^{56},2^{57}]$. Therefore, we replace the $IF$ condition from $\tilde{p}\left(x\right)>0$ (in orignal work) to $\left(-\frac{\sqrt{n\ln n}}{2} \leq x \leq \frac{\sqrt{n\ln n}}{2} \land c==1\right) $ (line 14) that simplifies the construction of MPC protocols.
 
