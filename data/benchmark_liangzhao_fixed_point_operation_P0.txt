@@ -1,5 +1,5 @@
 BooleanGMW===========================================================================
-Protocol BooleanGMW operation Fx_Add_circuit bit size 64 SIMD 1
+Protocol BooleanGMW operation Fx_circuit bit size 64 SIMD 1
 ===========================================================================
 MOTION version: d465d60-dirty @ master
 invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
@@ -659,7 +659,7 @@ Received: 0.575 MiB in 5831 messages
 
 
 BooleanGMW===========================================================================
-Protocol BooleanGMW operation Fx_Add_circuit bit size 64 SIMD 1000
+Protocol BooleanGMW operation Fx_circuit bit size 64 SIMD 1000
 ===========================================================================
 MOTION version: d465d60-dirty @ master
 invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001
@@ -1319,7 +1319,7 @@ Received: 43.372 MiB in 5831 messages
 
 
 ArithmeticGMW===========================================================================
-Protocol ArithmeticGMW operation Fx_Add_agmw bit size 128 SIMD 1
+Protocol ArithmeticGMW operation Fx_agmw bit size 128 SIMD 1
 ===========================================================================
 MOTION version: d465d60-dirty @ master
 invocation: ./benchmark_liangzhao_fixed_point_operation --my-id 0 --parties 0,127.0.0.1,23000 1,127.0.0.1,23001

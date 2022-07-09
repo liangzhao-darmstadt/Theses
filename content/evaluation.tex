@@ -10,7 +10,7 @@ Recall that the two challenges that we proposed in~\autoref{cha:MPCProtocolsforD
 To answer the above questions, we implement and measure the performance of all the protocols we have discussed in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms} in a semi-honest scenario.
 First, we benchmark the performance of integer, fixed-point and floating-point operations in different MPC protocols (BGMW, AGMW, and BMR).
 Next, we choose the most efficient MPC protocols for arithmetic operations and implement the differentially private mechanisms and corresponding sampling algorithms.
-The code can be found at~\cite{SecurelyRealizingOutputPrivacyinMPC2022};
+The code can be found at GitHub~\footnote{https://github.com/liangzhao-darmstadt/MOTION};
 
 
 % The protocol that we implemented support $N \geq 3$ parties and is secure against up to $N-1$ passive corruption parties. 
@@ -25,285 +25,354 @@ The experiments are performed in five connected servers (Intel Core i9-7960X pro
 
 \section{Arithmetic Operations Performance Evaluation}
 \label{sec:ArithmeticOperationsPerformanceEvaluation}
-In this section, we provide extensive benchmarks for arithmetic protocols (cf.~\autoref{sec:NumberRepresentationsandArithmeticOperations}).
-We choose the most efficient MPC protocols for arithmetic operations based on the benchmark result.
+In this section, we compare the performance of arithmetic operations in different data types (\booleanGMW fixed/floating-point, \arithmeticGMW fixed/floating-point).
+All the arithmetic operations and underlying protocols were tested for correctness with Google Test~\footnote{https://github.com/google/googletest}.
+Specifically, the following arithmetic operations were benchmarked: addition, subtraction, multiplication, division, exp2, log2, square root, comparison ($<$), and data type conversions.
+We measure the total runtime (offline + online) in microseconds (ms) and average the runtime results over $10$ iterations.
+
+\paragraph{Fixed-Point Benchmarks.}
+\label{para:Fixed-PointBenchmarking}
+% \TODO{add benchmark result of BMR protocols, BMR protocol is only 1x-1.5x faster than BGMW in division and slower in all other operations. Therefore, we choose BGMW as main protocols}
+In the experiments, we use the \booleanGMW fixed-point numbers (total bit-length: k=$64$, fraction bit-length: f=$16$).
+The \arithmeticGMW fixed-point numbers are represented with $128$-bit signed integers and have fraction bit-length f=$16$.
+In \autoref{fig:fixedpointBenchmarks}, we compare the \booleanGMW and \arithmeticGMW fixed-point arithmetic operations. As the plot suggest, addition and subtraction are very fast for \arithmeticGMW fixed-point because they could be computed locally with precomputed \mts (cf.~\autoref{subsubsec:MTs}). For the multiplication operation, the \booleanGMW and \arithmeticGMW fixed-point have very close performance, while the arithemtic truncation operation (cf.~??) is the major overhead of \arithmeticGMW fixed-point. The division operation is a expensive operation for both \booleanGMW and \arithmeticGMW fixed-point, where the \arithmeticGMW fixed-point is $1.21\times-2.67\times$ faster than the \booleanGMW fixed-point. The base-2 exponential function (exp2) and the binary logarithm (log2) are substantially faster for the \booleanGMW than the \arithmeticGMW fixed-point (exp2: $7.64\times-11.98\times$, log2: $75.84\times-7.43\times$). For square root operation, the \booleanGMW fixed-point and \arithmeticGMW fixed-point have close performance in the \twopc and \threepc settings, whereas \booleanGMW fixed-point is $2.06\times$ faster than the \arithmeticGMW fixed-point in the five-party settings. The comparision operation between \booleanGMW and \arithmeticGMW fixed-point are very close to each other, while the \booleanGMW fixed-point is more efficient as the number of computation parties increases. The conversion operation from fixed-point to integer is up to $22.93\times$ faster for the \booleanGMW than the \arithmeticGMW fixed-point. In \booleanGMW fixed-point, the conversion to integer is can be realized with the arithmetic bit-shifting operation (cf.??) and integer comparison. However, the \arithmeticGMW fixed-point requires to apply expensive arithmetic right-shifting operations multiple times to truncate the fraction part and round it to the closest integer. The remaining conversion operation (fx2fl)  is up to $2.10\times$ faster for the \arithmeticGMW than the \booleanGMW fixed-point.
+Finally, we choose \booleanGMW fixed-point as the primary data type for fixed-point operations.
 
 
-\paragraph{Fixed-Point Benchmarks}
-\label{para:Fixed-PointArithmeticBenchmarking}
-\TODO{add benchmark result of BMR protocols, BMR protocol is only 1x-1.5x faster than BGMW in division and slower in all other operations. Therefore, we choose BGMW as main protocols}
-
-\autoref{tab:runtimes_fixed_point_circuit} shows that division is the slowest operation for BGMW fixed-point arithmetic. The reason is that the circuit we generated using HyCC~\cite{buscher2018hycc} have a deeper depth of $6\,432$. In the LAN setting, the $5$-party division is $2.2\times $ slower than the $3$-party division, whereas, in the WAN setting, the factor was $1.1$.
-
-In \autoref{tab:runtimes_fixed_point_agmw}, natural exponentiation has the longest online run-times. In the LAN setting, as the number of parties increases from $3$ to $5$, the online run-times of operation subtraction and square root increase at most by a factor $15\times$ and $3.8\times$.
-
-Comparing the online run-times of fixed-point arithmetic from \autoref{tab:runtimes_fixed_point_circuit} and \autoref{tab:runtimes_fixed_point_agmw}, we can see that the BGMW-based fixed-point arithmetic (with $SIMD=1$) is more efficient than the AGMW-based fixed-point arithmetic only in operations such as exp2, exp and conversion operation with integer, but slower in all other operations.
-However, when we apply the SIMD technique, BGMW-based fixed-point arithmetic (with $SIMD=1000$) is $4\times-4000\times$ faster than the AGMW-based fixed-point arithmetic for all the operations in the LAN setting. In the WAN setting, the BGMW-based fixed-point arithmetic is $35\times-2800\times$ faster than the AGMW-based fixed-point arithmetic except for addition and multiplication operations.
-That means if the functionalities (e.g., $FOR$ loop in $\Uppi^{prot:TwoSideGeometric}$) can be parallelized into independent and identical operations, the BGMW-based fixed-point arithmetic is a better option than AGMW-based fixed-point arithmetic in the LAN setting.
-Therefore, we choose BGMW-based fixed-point arithmetic to implement the MPC protocols.
-
-
-\begin{table}
-    \caption{
-        Online run-times in milliseconds (ms) of fixed-point (k=64, f=16) operations for the GMW (B) and \TODO{add BMR protocol (Y)}.
-        For the entries with $SIMD=1\,000$, we specify the run-time of a single operation amortized over $ 1\,000 $ SIMD values.
-        We take the average over 10 protocol runs in the LAN and WAN environments.
-    }
-    \label{tab:runtimes_fixed_point_circuit}
-    % \small
-    \centering
-    \nprounddigits{1} % remove fractional digits in this table
-    \rowcolors{1}{gray!25}{white}
-    \resizebox{\columnwidth}{!}{
-        \begin{tabular}{ l c c r r r r r r r r r r}
-            \toprule
-            \hiderowcolors                             &         & \multicolumn{3}{c}{LAN} &            & \multicolumn{3}{c}{WAN}                                              \\
-            \cmidrule{3-5} \cmidrule{7-8}  Parties $N$ & SIMD    &
-            $N{=}2$                                    & $N{=}3$ & $N{=}5$                 &            &
-            $N{=}2$                                    & $N{=}3$ & $N{=}5$                                                                                                     \\ \showrowcolors
-            \midrule
-            $FX\_Add^{\BOOL}$                          & 1       & 27.49                   & 29.22      & 39.75                   &  & 507.80      & 516.25      & 556.10      \\
-            $FX\_Sub^{\BOOL}$                          & 1       & 23.74                   & 60.90      & 39.36                   &  & 527.04      & 565.47      & 562.13      \\
-            $FX\_Mul^{\BOOL}$                          & 1       & 197.14                  & 199.17     & 219.78                  &  & 1\,487.11   & 1\,772.54   & 1\,829.94   \\
-            $FX\_Div^{\BOOL}$                          & 1       & 25\,690.22              & 26\,924.64 & 59\,848.43              &  & 336\,749.59 & 354\,113.67 & 391\,287.07 \\
-            $FX\_Lt^{\BOOL}$                           & 1       & 28.63                   & 96.86      & 183.17                  &  & 885.07      & 867.33      & 995.09      \\
-            $FX\_Exp2^{\BOOL}$                         & 1       & 239.48                  & 259.27     & 255.51                  &  & 4\,924.61   & 5\,330.73   & 5\,566.90   \\
-            $FX\_Log2^{\BOOL}$                         & 1       & 2\,880.34               & 2\,898.00  & 2\,887.24               &  & 17\,599.92  & 19\,747.61  & 22\,030.32  \\
-            $FX\_Exp^{\BOOL}$                          & 1       & 297.63                  & 283.95     & 256.11                  &  & 5\,482.55   & 5\,971.34   & 6\,326.46   \\
-            $FX\_Ln^{\BOOL}$                           & 1       & 2\,910.26               & 2\,995.85  & 2\,985.79               &  & 18\,903.29  & 19\,957.76  & 22\,555.63  \\
-            $FX\_Sqrt^{\BOOL}$                         & 1       & 1\,277.98               & 1\,749.13  & 2\,022.90               &  & 19\,957.41  & 20\,955.41  & 23\,665.47  \\
-            $Fx2Int^{\BOOL}$                           & 1       & 14.35                   & 15.53      & 17.53                   &  & 675.69      & 795.63      & 948.14      \\
-            $Fx2FL^{\BOOL}$                            & 1       & 683.13                  & 722.25     & 1\,271.52               &  & 10\,781.96  & 11\,794.16  & 12\,818.66  \\
-            \midrule
-            $FX\_Add^{\BOOL}$                          & 1\,000  & 0.03                    & 0.04       & 0.04                    &  & 0.54        & 0.48        & 0.79        \\
-            $FX\_Sub^{\BOOL}$                          & 1\,000  & 0.01                    & 0.01       & 0.04                    &  & 0.51        & 0.56        & 0.52        \\
-            $FX\_Mul^{\BOOL}$                          & 1\,000  & 0.10                    & 0.13       & 0.17                    &  & 1.12        & 2.47        & 2.24        \\
-            $FX\_Div^{\BOOL}$                          & 1\,000  & 24.71                   & 25.25      & 58.90                   &  & 337.73      & 357.79      & 391.94      \\
-            $FX\_Lt^{\BOOL}$                           & 1\,000  & 0.05                    & 0.15       & 0.14                    &  & 0.79        & 0.80        & 1.00        \\
-            $FX\_Exp2^{\BOOL}$                         & 1\,000  & 0.21                    & 0.41       & 0.47                    &  & 4.75        & 5.68        & 6.14        \\
-            $FX\_Log2^{\BOOL}$                         & 1\,000  & 2.61                    & 1.80       & 1.57                    &  & 16.35       & 20.13       & 26.91       \\
-            $FX\_Exp^{\BOOL}$                          & 1\,000  & 0.24                    & 0.45       & 0.55                    &  & 5.66        & 6.37        & 6.65        \\
-            $FX\_Ln^{\BOOL}$                           & 1\,000  & 4.35                    & 3.93       & 1.70                    &  & 17.50       & 20.41       & 33.14       \\
-            $FX\_Sqrt^{\BOOL}$                         & 1\,000  & 4.62                    & 4.33       & 5.11                    &  & 19.44       & 21.60       & 32.91       \\
-            $Fx2Int^{\BOOL}$                           & 1\,000  & 0.01                    & 0.02       & 0.05                    &  & 0.62        & 0.56        & 0.80        \\
-            $Fx2FL^{\BOOL}$                            & 1\,000  & 0.25                    & 0.40       & 0.55                    &  & 7.36        & 9.64        & 10.38       \\
-            \bottomrule
-        \end{tabular}
-    }
-\end{table}
-\FloatBarrier
-
-
-\begin{table}
-    \caption{
-        Online run-times in milliseconds (ms) of fixed-point (k=41, f=20) operations for the GMW (A). We take the average over 10 protocol runs in the LAN and WAN environments.
-    }
-    \label{tab:runtimes_fixed_point_agmw}
-    % \small
-    \centering
-    \nprounddigits{1} % remove fractional digits in this table
-    \rowcolors{1}{gray!25}{white}
-    \resizebox{\columnwidth}{!}{
-        \begin{tabular}{ l c r r r r r r r r r r}
-            \toprule
-            \hiderowcolors                             & \multicolumn{3}{c}{LAN} &           & \multicolumn{3}{c}{WAN}                                            \\
-            \cmidrule{2-4} \cmidrule{6-8}  Parties $N$ &
-            $N{=}2$                                    & $N{=}3$                 & $N{=}5$   &                         &
-            $N{=}2$                                    & $N{=}3$                 & $N{=}5$                                                                        \\ \showrowcolors
-            \midrule
-            $FX\_Add^{\ARITH}$                         & 0.10                    & 0.23      & 0.24                    &   & 0.19       & 0.25       & 0.28       \\
-            $FX\_Sub^{\ARITH}$                         & 0.14                    & 0.22      & 3.45                    &   & 0.27       & 0.24       & 0.46       \\
-            $FX\_Mul^{\ARITH}$                         & 16.05                   & 38.24     & 25.20                   &   & 531.76     & 437.77     & 448.93     \\
-            $FX\_Div^{\ARITH}$                         & 219.16                  & 755.79    & 1\,650.56               &   & 8\,968.31  & 10\,198.43 & 11\,210.29 \\
-            $FX\_Lt^{\ARITH}$                          & 19.32                   & 13.00     & 18.26                   &   & 350.21     & 334.68     & 372.35     \\
-            $FX\_Exp2^{\ARITH}$                        & 387.46                  & 752.12    & 1\,891.61               &   & 13\,458.62 & 14\,164.27 & 16\,461.11 \\
-            $FX\_Log2^{\ARITH}$                        & 181.10                  & 215.64    & 292.53                  &   & 4\,371.94  & 4\,716.72  & 5\,565.20  \\
-            $FX\_Exp^{\ARITH}$                         & 444.02                  & 1\,043.37 & 1\,924.93               &   & 13\,931.69 & 14\,527.76 & 16\,205.35 \\
-            $FX\_Ln^{\ARITH}$                          & 223.29                  & 280.02    & 308.78                  &   & 4\,864.74  & 5\,049.57  & 5\,652.10  \\
-            $FX\_Sqrt^{\ARITH}$                        & 343.14                  & 438.70    & 1\,682.41               &   & 10\,792.22 & 11\,573.25 & 13\,250.91 \\
-            $FX\_Fx2FL^{\ARITH}$                       & 40.91                   & 50.22     & 187.62                  &   & 1\,653.18  & 1\,733.67  & 1\,866.73  \\
-            $FX\_Fx2Int^{\ARITH}$                      & 13.81                   & 17.26     & 26.25                   &   & 336.89     & 338.50     & 341.04     \\
-            \bottomrule
-        \end{tabular}
-    }
-\end{table}
-\FloatBarrier
-
-\paragraph{Floating-Point Benchmarks}
+\paragraph{Floating-Point Benchmarks.}
 \label{para:Floating-PointBenchmarking}
+We use the \booleanGMW floating point numbers that have $64$ Boolean share bits. In contrast, the \arithmeticGMW floating-point numbers are represented by a quadruple $\left(v, p, z, s\right) $ (cf.??), where $v$, $p$, $z$, and $s$ are $128$-bit arithmetic shares. As \autoref{fig:floatingpointBenchmarks} shows, the \booleanGMW floating-point is faster than the \arithmeticGMW floating-point in almost all the arithmetic operations except for the division operation in \twopc settings. For addtion, subtraction and multiplication, the \booleanGMW floating-point is $1.59\times-4.22\times$ faster than the \arithmeticGMW floating-point. The primary overhead of \arithmeticGMW is the truncation and bit-decomposion operations~\cite{aliasgari2012secure}. The division operation is slightly faster for the \booleanGMW than the \arithmeticGMW floating-point only in the five-party setting. For operation base-2 exponential function (exp2), binary logarithm (log2) and square root, the \booleanGMW floating-point is substantially faster than the \arithmeticGMW floating-point by a factor up to $13.94\times$. The reason for the low efficient performance of the \arithmeticGMW floating-point is the mulitply invocations of floating-point multiplication, where the floating-point multiplication operation consists of the expensive arithmetic right shifting operation and arithmetic share multiplication. The comparison operation is of \arithmeticGMW floating-point is more expensive than the \booleanGMW because of the arithmetic share comparision and arithmetic right shifting operations. For the remaining conversion operations (fl2int and fl2fx), the \booleanGMW floating-point is more efficient as the conversion to integer or fixed-point can be realized bit manipulation at low cost. Based on the above analysis, we choose \booleanGMW floating-point for floating-point arithemtic operations.
 
 
-In \autoref{tab:runtimes_floating_point_circuit}, natural logarithm takes the longest online run-times in both LAN and WAN settings. As the number of parties grows from $3$ to $5$, the run-times of conversion operations to integer and fixed-point increase at most by a factor $3.08\times$ and $3.66\times$ ($SIMD=1$), factor $2.2\times$ and $1.9\times$ ($SIMD=1000$).
-Comparing the online run-times of floating-point arithmetic from \autoref{tab:runtimes_floating_point_circuit} and \autoref{tab:runtimes_floating_point_agmw}, we can see that without applying SIMD, the BGMW-based floating-point arithmetic is faster ($1.3\times-3\times$) than AGMW-based floating-point arithmetic in operations such as addition, subtraction, <, log2 and square root, but slower in all other operations. After applying the SIMD technique, the BGMW-based floating-point arithmetic is $50\times-10911\times$ faster than AGMW-based floating-point arithmetic for all the operations in the LAN setting.
-Therefore, we choose BGMW-based floating-point arithmetic to implement MPC protocols for sampling algorithms.
 
-\begin{table}
-    \caption{
-        Online run-times in milliseconds (ms) of floating-point operations for the GMW (B) \TODO{and BMR protocol (Y)}. For the entries with $SIMD=1\,000$, we specify the run-time of a single operation amortized over $ 1\,000 $ SIMD values. We take the average over 10 protocol runs in the LAN and WAN environments.
-    }
-    \label{tab:runtimes_floating_point_circuit}
-    % \small
+\begin{figure}[ht]
     \centering
-    \nprounddigits{1} % remove fractional digits in this table
-    \rowcolors{1}{gray!25}{white}
-    \resizebox{\columnwidth}{!}{
-        \begin{tabular}{ l c r r r r r r r r r r}
-            \toprule
-            \hiderowcolors                             &         & \multicolumn{3}{c}{LAN} &           & \multicolumn{3}{c}{WAN}                                              \\
-            \cmidrule{3-5} \cmidrule{7-9}  Parties $N$ & SIMD    &
-            $N{=}2$                                    & $N{=}3$ & $N{=}5$                 &           &
-            $N{=}2$                                    & $N{=}3$ & $N{=}5$                                                                                                    \\ \showrowcolors
-            \midrule
-            $FL\_Add^{\BOOL}$                          & 1       & 158.90                  & 175.47    & 266.47                  &  & 4\,976.43   & 5\,665.71   & 5\,780.94   \\
-            $FL\_Sub^{\BOOL}$                          & 1       & 151.38                  & 167.19    & 252.31                  &  & 5\,053.17   & 5\,599.27   & 5\,970.80   \\
-            $FL\_Mul^{\BOOL}$                          & 1       & 166.46                  & 178.80    & 222.60                  &  & 6\,759.47   & 7\,278.22   & 7\,671.80   \\
-            $FL\_Div^{\BOOL}$                          & 1       & 1\,418.62               & 1\,659.29 & 1\,882.86               &  & 74\,821.42  & 89\,112.86  & 100\,660.43 \\
-            $FL\_Lt^{\BOOL}$                           & 1       & 47.08                   & 52.42     & 132.53                  &  & 1\,638.13   & 1\,751.99   & 1\,840.56   \\
-            $FL\_Exp2^{\BOOL}$                         & 1       & 1\,958.28               & 2\,391.79 & 3\,392.22               &  & 112\,465.43 & 129\,661.24 & 140\,737.75 \\
-            $FL\_Log2^{\BOOL}$                         & 1       & 1\,271.88               & 1\,599.22 & 2\,581.09               &  & 49\,886.75  & 58\,236.84  & 64\,266.20  \\
-            $FL\_Exp^{\BOOL}$                          & 1       & 2\,122.94               & 2\,564.97 & 3\,461.87               &  & 118\,774.84 & 137\,115.63 & 150\,439.77 \\
-            $FL\_Ln^{\BOOL}$                           & 1       & 3\,725.02               & 4\,765.81 & 8\,773.41               &  & 151\,622.29 & 177\,746.42 & 200\,747.65 \\
-            $FL\_Sqrt^{\BOOL}$                         & 1       & 887.72                  & 1\,081.30 & 1\,514.39               &  & 44\,584.20  & 51\,846.96  & 57\,450.22  \\
-            $FL2Int^{\BOOL}$                           & 1       & 327.69                  & 451.41    & 1\,390.65               &  & 12\,943.05  & 14\,093.49  & 16\,199.04  \\
-            $FL2Fx^{\BOOL}$                            & 1       & 453.89                  & 481.33    & 1\,763.47               &  & 19\,657.52  & 21\,243.10  & 24\,070.59  \\
-            \midrule
-            $FL\_Add^{\BOOL}$                          & 1000    & 0.23                    & 0.34      & 0.61                    &  & 4.73        & 5.18        & 5.81        \\
-            $FL\_Sub^{\BOOL}$                          & 1000    & 0.23                    & 0.31      & 0.55                    &  & 4.85        & 5.37        & 5.47        \\
-            $FL\_Mul^{\BOOL}$                          & 1000    & 0.23                    & 0.29      & 0.27                    &  & 6.67        & 7.30        & 7.85        \\
-            $FL\_Div^{\BOOL}$                          & 1000    & 2.45                    & 2.94      & 3.82                    &  & 63.26       & 70.05       & 74.88       \\
-            $FL\_Lt^{\BOOL}$                           & 1000    & 0.05                    & 0.06      & 0.17                    &  & 1.42        & 1.53        & 1.53        \\
-            $FL\_Exp2^{\BOOL}$                         & 1000    & 1.78                    & 2.05      & 2.66                    &  & 84.15       & 96.90       & 105.37      \\
-            $FL\_Log2^{\BOOL}$                         & 1000    & 1.19                    & 1.59      & 2.23                    &  & 42.75       & 48.91       & 52.82       \\
-            $FL\_Exp^{\BOOL}$                          & 1000    & 1.94                    & 2.28      & 2.57                    &  & 90.90       & 104.04      & 113.61      \\
-            $FL\_Ln^{\BOOL}$                           & 1000    & 4.12                    & 5.57      & 7.54                    &  & 128.44      & 146.59      & 163.34      \\
-            $FL\_Sqrt^{\BOOL}$                         & 1000    & 0.14                    & 0.30      & 0.59                    &  & 2.48        & 2.89        & 3.30        \\
-            $FL2Int^{\BOOL}$                           & 1000    & 0.21                    & 0.32      & 0.74                    &  & 10.26       & 11.36       & 12.31       \\
-            $FL2Fx^{\BOOL}$                            & 1000    & 0.33                    & 0.53      & 1.03                    &  & 16.64       & 18.06       & 19.56       \\
-            \bottomrule
-        \end{tabular}
-    }
-\end{table}
+    % scatter plot of member decompose-types-bdd-graph-weak member types
+    \begin{tikzpicture}[scale=1,transform shape]
+        \begin{groupplot}[
+                group style={
+                        group name=my plots,
+                        group size=2 by 5,
+                        xlabels at=edge bottom,
+                        ylabels at=edge left,
+                        horizontal sep=2cm,
+                        vertical sep=1.5cm,
+                    },
+                width=0.5\linewidth
+            ]
+            %% label = 
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 200,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(a) addition},
+                anchor=north,
+                %legend pos = outer north east,
+                % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=Fx_circuit] {data/fixed_point_add.dat};
+            \addplot+ table[x=parties, y=Fx_agmw] {data/fixed_point_add.dat};
+
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 200,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(b) subtraction},
+                %legend pos = outer north east,
+                % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=Fx_circuit] {data/fixed_point_sub.dat};
+            \addplot+ table[x=parties, y=Fx_agmw] {data/fixed_point_sub.dat};
+
+
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 450,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(c) mulitplication},
+                %legend pos = outer north east,
+                % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=Fx_circuit] {data/fixed_point_mul.dat};
+            \addplot+ table[x=parties, y=Fx_agmw] {data/fixed_point_mul.dat};
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 4000,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(d) division},
+                %legend pos = outer north east,
+                % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=Fx_circuit] {data/fixed_point_div.dat};
+            \addplot+ table[x=parties, y=Fx_agmw] {data/fixed_point_div.dat};
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax =6000,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(e) exp2},
+                %legend pos = outer north east,
+                % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=Fx_circuit] {data/fixed_point_exp2.dat};
+            \addplot+ table[x=parties, y=Fx_agmw] {data/fixed_point_exp2.dat};
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 6000,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(f) log2},
+                %legend pos = outer north east,
+                % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=Fx_circuit] {data/fixed_point_log2.dat};
+            \addplot+ table[x=parties, y=Fx_agmw] {data/fixed_point_log2.dat};
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 3500,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(g) square root},
+                %legend pos = outer north east,
+                % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=Fx_circuit] {data/fixed_point_sqrt.dat};
+            \addplot+ table[x=parties, y=Fx_agmw] {data/fixed_point_sqrt.dat};
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 400,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(h) comparison},
+                %legend pos = outer north east,
+                % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=Fx_circuit] {data/fixed_point_lt.dat};
+            \addplot+ table[x=parties, y=Fx_agmw] {data/fixed_point_lt.dat};
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 3500,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(i) fx2int},
+                %legend pos = outer north east,
+                % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=Fx_circuit] {data/fixed_point_fx2int.dat};
+            \addplot+ table[x=parties, y=Fx_agmw] {data/fixed_point_fx2int.dat};
+
+            \nextgroupplot[
+                % label style={font=\tiny}, %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 1500,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(j) fx2fl},
+                %legend pos = outer north east,
+                % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
+                % legend cell align = left,
+                legend style={at={(0.5,-0.2)},anchor=north},
+                % label style={font=\tiny},
+                legend to name=UniversalLegend
+            ]
+
+            \addplot+ table[x=parties, y=Fx_circuit] {data/fixed_point_fx2fl.dat};
+            \addplot+ table[x=parties, y=Fx_agmw] {data/fixed_point_fx2fl.dat};
+
+            \legend{Fixed-Point \booleanGMW w/o \simd, Fixed-Point \arithmeticGMW}
+        \end{groupplot}
+    \end{tikzpicture}\\
+    \ref{UniversalLegend}
+    \caption[Total runtime in microseconds for fixed-point arithmetic operations for the \booleanGMW (\BOOL)~\cite{goldreich1987play} and \arithmeticGMW protocol.]{Total runtime in microseconds (y-axis) for fixed-point arithmetic operations for the \booleanGMW (\BOOL)~\cite{goldreich1987play} and \arithmeticGMW protocol in WAN test encironments (cf.~\autoref{cha:evaluation}) with $2,3,5$ parties (x-axis). We take the average results over $10$ protocol runs. }
+    \label{fig:fixedpointBenchmarks}
+\end{figure}
 \FloatBarrier
 
-\begin{table}
-    \caption{
-        Online run-times in milliseconds (ms) of floating-point operations for the GMW (A). We take the average over 10 protocol runs in the LAN and WAN environments. \TODO{implement FL-FL2Fx and FL-FL2Int}
-    }
-    \label{tab:runtimes_floating_point_agmw}
-    % \small
-    \centering
-    \nprounddigits{1} % remove fractional digits in this table
-    \rowcolors{1}{gray!25}{white}
-    \resizebox{\columnwidth}{!}{
-        \begin{tabular}{ l c r r r r r r r r r r}
-            \toprule
-            \hiderowcolors                             & \multicolumn{3}{c}{LAN} &           & \multicolumn{3}{c}{WAN}                                             \\
-            \cmidrule{2-4} \cmidrule{6-8}  Parties $N$ &
-            $N{=}2$                                    & $N{=}3$                 & $N{=}5$   &                         &
-            $N{=}2$                                    & $N{=}3$                 & $N{=}5$                                                                         \\ \showrowcolors
-            \midrule
-            $FL\_Add^{\ARITH}$                         & 216.99                  & 253.25    & 474.08                  &   & 4\,877.91  & 5\,440.09  & 6\,067.92   \\
-            $FL\_Sub^{\ARITH}$                         & 216.63                  & 314.82    & 491.58                  &   & 5\,000.17  & 5\,356.96  & 6\,113.30   \\
-            $FL\_Mul^{\ARITH}$                         & 53.35                   & 75.07     & 84.27                   &   & 1\,248.12  & 1\,263.70  & 1\,553.22   \\
-            $FL\_Div^{\ARITH}$                         & 123.93                  & 168.83    & 301.37                  &   & 3\,173.60  & 3\,344.13  & 3\,485.83   \\
-            $FL\_Lt^{\ARITH}$                          & 66.03                   & 84.35     & 197.75                  &   & 1\,361.24  & 1\,566.96  & 1\,779.53   \\
-            $FL\_Exp2^{\ARITH}$                        & 569.54                  & 953.94    & 1\,784.02               &   & 9\,105.86  & 10\,054.34 & 13\,147.79  \\
-            $FL\_Log2^{\ARITH}$                        & 3\,871.35               & 5\,395.07 & 8\,623.15               &   & 90\,173.12 & 99\,853.84 & 107\,905.28 \\
-            $FL\_Exp^{\ARITH}$                         & 620.11                  & 966.76    & 1\,684.20               &   & 9\,748.59  & 10\,695.65 & 11\,560.34  \\
-            $FL\_Ln^{\ARITH}$                          & 3\,903.48               & 5\,588.28 & 8\,516.19               &   & 90\,034.64 & 99\,444.66 & 108\,395.14 \\
-            $FL\_Sqrt^{\ARITH}$                        & 1\,575.21               & 2\,372.36 & 3\,603.36               &   & 31\,263.47 & 33\,778.76 & 36\,776.32  \\
-            $FL\_FL2Fx^{\ARITH}$                       &                         &           &                         &   &            &            &             \\
-            $FL\_FL2Int^{\ARITH}$                      &                         &           &                         &   &            &            &             \\
-            \bottomrule
-        \end{tabular}
-    }
-\end{table}
-\FloatBarrier
-
-% \section{Sampling Algorithms}
-
-\section{Evaluation of MPC Protocols for Differentially Private Mechanisms}
-\label{sec:EvaluationofMPCProtocolsforDifferentiallyPrivateMechanisms}
-
-\autoref{tab:OverviewofsamplingalgorithmsforgeneratingdiscreteLaplaceGaussianrandomvariable} presents the combinations of different sampling algorithms to generate discrete Laplace random variables and discrete Gaussian random variables as discussed in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}. We implement corresponding protocols in BGMW-based fixed/floating-point arithmetic.
-The benchmark results are listed in \autoref{tab:RuntimesDiscreteLaplaceGaussianProtocols}.
-We found that memory overflow ($>128$ GB) happends for $DLap_1^{\BOOL}$, $DGau_1^{\BOOL}$ and $DGau_2^{\BOOL}$ when we set the failure probability $p<2^{-40}$.
-The reason is that for failure probability $p<2^{-40}$, discrete random variables need a larger number of iterations.
-\TODO{Therefore, we need to reimplement the MPC protocols for $DLap_1$, $DGau_1$ and $DGau_2$ with AGMW-based fixed/floating protocols. }
-
-
-\begin{table}
-    \caption{
-        Overview of sampling algorithms for generating discrete Laplace/Gaussian random variables.
-    }
-    \label{tab:OverviewofsamplingalgorithmsforgeneratingdiscreteLaplaceGaussianrandomvariable}
-    % \small
-    \centering
-    \nprounddigits{1} % remove fractional digits in this table
-    \rowcolors{1}{gray!25}{white}
-    \resizebox{\columnwidth}{!}{
-        \begin{tabular}{ l c c c c c c c c c c c}
-            \toprule
-            \hiderowcolors                     & \multicolumn{3}{c}{Sampling Algorithms}       &                                                                                     \\
-            \cmidrule{2-4}     Random Variable & $Algo^{TwoSideGeo}$~\cite{googleDP2019GitHub} & $Algo^{DLap}$~\cite{canonne2020discrete} & $Algo^{DGau}$~\cite{canonne2020discrete}
-            \\ \showrowcolors
-            \midrule
-            $DLap_1$                           & $\bullet$                                     &                                          &                                          \\
-            $DLap_2$                           &                                               & $\bullet$                                &                                          \\
-            $DGau_1$                           & $\bullet$                                     &                                          & $\bullet$                                \\
-            $DGau_2$                           &                                               & $\bullet$                                & $\bullet$                                \\
-            \bottomrule
-        \end{tabular}
-    }
-\end{table}
-\FloatBarrier
-
-% \paragraph{Discrete Laplace/Gaussian Sampling Algorithms}
-% \label{para:DiscreteLaplaceSamplingAlgorithms}
-
-\begin{table}
-    \caption{
-        Online run-times in milliseconds (ms) of fixed/floating-point Laplace/Gaussian sampling protocols for the GMW (B). We take the average over 10 protocol runs in the LAN and WAN environments.
-    }
-    \label{tab:RuntimesDiscreteLaplaceGaussianProtocols}
-    % \small
-    \centering
-    \nprounddigits{1} % remove fractional digits in this table
-    \rowcolors{1}{gray!25}{white}
-    \resizebox{\columnwidth}{!}{
-        \begin{tabular}{ l c r r r r r r r r r r}
-            \toprule
-            \hiderowcolors                             & \multicolumn{3}{c}{LAN} &            & \multicolumn{3}{c}{WAN}                                                  \\
-            \cmidrule{2-4} \cmidrule{6-8}  Parties $N$ &
-            $N{=}2$                                    & $N{=}3$                 & $N{=}5$    &                         &
-            $N{=}2$                                    & $N{=}3$                 & $N{=}5$                                                                               \\ \showrowcolors
-            \midrule
-            $DLap_1^{\BOOL,FX}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
-            $DLap_1^{\BOOL,FL}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
-            $DLap_2^{\BOOL,FX}$                        & 60\,946.33              & 62\,613.41 & 144\,253.44             &   & 893\,460.44 & 947\,818.24 & 1\,040\,754.52 \\
-            $DLap_2^{\BOOL,FL}$                        & 48\,874.17              & 49\,236.48 & 105\,650.76             &   & 730\,002.77 & 782\,549.19 & 861\,691.71    \\
-            $DGau_1^{\BOOL,FX}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
-            $DGau_1^{\BOOL,FL}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
-            $DGau_2^{\BOOL,FX}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
-            $DGau_2^{\BOOL,FL}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
-            \bottomrule
-        \end{tabular}
-    }
-\end{table}
-\FloatBarrier
 
 
 
 
-% \paragraph{Discrete Gaussian Sampling Algorithms}
-% \label{para:DiscreteGaussianSamplingAlgorithms}
+
+
+
+% \autoref{tab:runtimes_fixed_point_circuit} shows that division is the slowest operation for BGMW fixed-point arithmetic. The reason is that the circuit we generated using HyCC~\cite{buscher2018hycc} have a deeper depth of $6\,432$. In the LAN setting, the $5$-party division is $2.2\times $ slower than the $3$-party division, whereas, in the WAN setting, the factor was $1.1$.
+
+% In \autoref{tab:runtimes_fixed_point_agmw}, natural exponentiation has the longest online run-times. In the LAN setting, as the number of parties increases from $3$ to $5$, the online run-times of operation subtraction and square root increase at most by a factor $15\times$ and $3.8\times$.
+
+% Comparing the online run-times of fixed-point arithmetic from \autoref{tab:runtimes_fixed_point_circuit} and \autoref{tab:runtimes_fixed_point_agmw}, we can see that the BGMW-based fixed-point arithmetic (with $SIMD=1$) is more efficient than the AGMW-based fixed-point arithmetic only in operations such as exp2, exp and conversion operation with integer, but slower in all other operations.
+% However, when we apply the SIMD technique, BGMW-based fixed-point arithmetic (with $SIMD=1000$) is $4\times-4000\times$ faster than the AGMW-based fixed-point arithmetic for all the operations in the LAN setting. In the WAN setting, the BGMW-based fixed-point arithmetic is $35\times-2800\times$ faster than the AGMW-based fixed-point arithmetic except for addition and multiplication operations.
+% That means if the functionalities (e.g., $FOR$ loop in $\Uppi^{prot:TwoSideGeometric}$) can be parallelized into independent and identical operations, the BGMW-based fixed-point arithmetic is a better option than AGMW-based fixed-point arithmetic in the LAN setting.
+% Therefore, we choose BGMW-based fixed-point arithmetic to implement the MPC protocols.
 
 
 % \begin{table}
 %     \caption{
-%         Online run-times in milliseconds (ms) of fixed/floating-point Laplace sampling protocols for the GMW (B). We take the average over 10 protocol runs in the LAN and WAN environments. \TODO{implement $DGau_1$, $DGau_2$ in AGMW-based fixed/floating-point, as BGMW version memory overflows(>128GB)}
+%         Online run-times in milliseconds (ms) of fixed-point (k=64, f=16) operations for the GMW (B) and \TODO{add BMR protocol (Y)}.
+%         For the entries with $SIMD=1\,000$, we specify the run-time of a single operation amortized over $ 1\,000 $ SIMD values.
+%         We take the average over 10 protocol runs in the LAN and WAN environments.
 %     }
-%     \label{tab:RuntimesDiscreteLaplaceProtocols}
+%     \label{tab:runtimes_fixed_point_circuit}
+%     % \small
+%     \centering
+%     \nprounddigits{1} % remove fractional digits in this table
+%     \rowcolors{1}{gray!25}{white}
+%     \resizebox{\columnwidth}{!}{
+%         \begin{tabular}{ l c c r r r r r r r r r r}
+%             \toprule
+%             \hiderowcolors                             &         & \multicolumn{3}{c}{LAN} &            & \multicolumn{3}{c}{WAN}                                              \\
+%             \cmidrule{3-5} \cmidrule{7-8}  Parties $N$ & SIMD    &
+%             $N{=}2$                                    & $N{=}3$ & $N{=}5$                 &            &
+%             $N{=}2$                                    & $N{=}3$ & $N{=}5$                                                                                                     \\ \showrowcolors
+%             \midrule
+%             $FX\_Add^{\BOOL}$                          & 1       & 27.49                   & 29.22      & 39.75                   &  & 507.80      & 516.25      & 556.10      \\
+%             $FX\_Sub^{\BOOL}$                          & 1       & 23.74                   & 60.90      & 39.36                   &  & 527.04      & 565.47      & 562.13      \\
+%             $FX\_Mul^{\BOOL}$                          & 1       & 197.14                  & 199.17     & 219.78                  &  & 1\,487.11   & 1\,772.54   & 1\,829.94   \\
+%             $FX\_Div^{\BOOL}$                          & 1       & 25\,690.22              & 26\,924.64 & 59\,848.43              &  & 336\,749.59 & 354\,113.67 & 391\,287.07 \\
+%             $FX\_Lt^{\BOOL}$                           & 1       & 28.63                   & 96.86      & 183.17                  &  & 885.07      & 867.33      & 995.09      \\
+%             $FX\_Exp2^{\BOOL}$                         & 1       & 239.48                  & 259.27     & 255.51                  &  & 4\,924.61   & 5\,330.73   & 5\,566.90   \\
+%             $FX\_Log2^{\BOOL}$                         & 1       & 2\,880.34               & 2\,898.00  & 2\,887.24               &  & 17\,599.92  & 19\,747.61  & 22\,030.32  \\
+%             $FX\_Exp^{\BOOL}$                          & 1       & 297.63                  & 283.95     & 256.11                  &  & 5\,482.55   & 5\,971.34   & 6\,326.46   \\
+%             $FX\_Ln^{\BOOL}$                           & 1       & 2\,910.26               & 2\,995.85  & 2\,985.79               &  & 18\,903.29  & 19\,957.76  & 22\,555.63  \\
+%             $FX\_Sqrt^{\BOOL}$                         & 1       & 1\,277.98               & 1\,749.13  & 2\,022.90               &  & 19\,957.41  & 20\,955.41  & 23\,665.47  \\
+%             $Fx2Int^{\BOOL}$                           & 1       & 14.35                   & 15.53      & 17.53                   &  & 675.69      & 795.63      & 948.14      \\
+%             $Fx2FL^{\BOOL}$                            & 1       & 683.13                  & 722.25     & 1\,271.52               &  & 10\,781.96  & 11\,794.16  & 12\,818.66  \\
+%             \midrule
+%             $FX\_Add^{\BOOL}$                          & 1\,000  & 0.03                    & 0.04       & 0.04                    &  & 0.54        & 0.48        & 0.79        \\
+%             $FX\_Sub^{\BOOL}$                          & 1\,000  & 0.01                    & 0.01       & 0.04                    &  & 0.51        & 0.56        & 0.52        \\
+%             $FX\_Mul^{\BOOL}$                          & 1\,000  & 0.10                    & 0.13       & 0.17                    &  & 1.12        & 2.47        & 2.24        \\
+%             $FX\_Div^{\BOOL}$                          & 1\,000  & 24.71                   & 25.25      & 58.90                   &  & 337.73      & 357.79      & 391.94      \\
+%             $FX\_Lt^{\BOOL}$                           & 1\,000  & 0.05                    & 0.15       & 0.14                    &  & 0.79        & 0.80        & 1.00        \\
+%             $FX\_Exp2^{\BOOL}$                         & 1\,000  & 0.21                    & 0.41       & 0.47                    &  & 4.75        & 5.68        & 6.14        \\
+%             $FX\_Log2^{\BOOL}$                         & 1\,000  & 2.61                    & 1.80       & 1.57                    &  & 16.35       & 20.13       & 26.91       \\
+%             $FX\_Exp^{\BOOL}$                          & 1\,000  & 0.24                    & 0.45       & 0.55                    &  & 5.66        & 6.37        & 6.65        \\
+%             $FX\_Ln^{\BOOL}$                           & 1\,000  & 4.35                    & 3.93       & 1.70                    &  & 17.50       & 20.41       & 33.14       \\
+%             $FX\_Sqrt^{\BOOL}$                         & 1\,000  & 4.62                    & 4.33       & 5.11                    &  & 19.44       & 21.60       & 32.91       \\
+%             $Fx2Int^{\BOOL}$                           & 1\,000  & 0.01                    & 0.02       & 0.05                    &  & 0.62        & 0.56        & 0.80        \\
+%             $Fx2FL^{\BOOL}$                            & 1\,000  & 0.25                    & 0.40       & 0.55                    &  & 7.36        & 9.64        & 10.38       \\
+%             \bottomrule
+%         \end{tabular}
+%     }
+% \end{table}
+% \FloatBarrier
+
+
+% \begin{table}
+%     \caption{
+%         Online run-times in milliseconds (ms) of fixed-point (k=41, f=20) operations for the GMW (A). We take the average over 10 protocol runs in the LAN and WAN environments.
+%     }
+%     \label{tab:runtimes_fixed_point_agmw}
 %     % \small
 %     \centering
 %     \nprounddigits{1} % remove fractional digits in this table
@@ -311,34 +380,299 @@ The reason is that for failure probability $p<2^{-40}$, discrete random variable
 %     \resizebox{\columnwidth}{!}{
 %         \begin{tabular}{ l c r r r r r r r r r r}
 %             \toprule
-%             \hiderowcolors                             & \multicolumn{3}{c}{LAN} &         & \multicolumn{3}{c}{WAN}                                   \\
+%             \hiderowcolors                             & \multicolumn{3}{c}{LAN} &           & \multicolumn{3}{c}{WAN}                                            \\
 %             \cmidrule{2-4} \cmidrule{6-8}  Parties $N$ &
-%             $N{=}2$                                    & $N{=}3$                 & $N{=}5$ &                         &
-%             $N{=}2$                                    & $N{=}3$                 & $N{=}5$                                                             \\ \showrowcolors
+%             $N{=}2$                                    & $N{=}3$                 & $N{=}5$   &                         &
+%             $N{=}2$                                    & $N{=}3$                 & $N{=}5$                                                                        \\ \showrowcolors
 %             \midrule
-%             $DGau_1^{\BOOL,FX}$                        & ---                     & ---     & ---                     &   & ---       & ---       & --- \\
-%             $DGau_1^{\BOOL,FL}$                        & ---                     & ---     & ---                     &   & ---       & ---       & --- \\
-%             $DGau_2^{\BOOL,FX}$                        & ---                     & ---     & ---                     &   & ---       & ---             \\
-%             $DGau_2^{\BOOL,FL}$                        & ---                     & ---     & ---                     &   & ---       & ---       & --- \\
-%             $DGau_3^{\BOOL,FX}$                        & 614.31                  & 701.92  & ---                     &   & 7\,388.63 & 8\,273.27 & --- \\
-%             $DGau_3^{\BOOL,FL}$                        & 305.42                  & 303.13  & ---                     &   & 6\,324.08 & 7\,329.42 & --- \\
+%             $FX\_Add^{\ARITH}$                         & 0.10                    & 0.23      & 0.24                    &   & 0.19       & 0.25       & 0.28       \\
+%             $FX\_Sub^{\ARITH}$                         & 0.14                    & 0.22      & 3.45                    &   & 0.27       & 0.24       & 0.46       \\
+%             $FX\_Mul^{\ARITH}$                         & 16.05                   & 38.24     & 25.20                   &   & 531.76     & 437.77     & 448.93     \\
+%             $FX\_Div^{\ARITH}$                         & 219.16                  & 755.79    & 1\,650.56               &   & 8\,968.31  & 10\,198.43 & 11\,210.29 \\
+%             $FX\_Lt^{\ARITH}$                          & 19.32                   & 13.00     & 18.26                   &   & 350.21     & 334.68     & 372.35     \\
+%             $FX\_Exp2^{\ARITH}$                        & 387.46                  & 752.12    & 1\,891.61               &   & 13\,458.62 & 14\,164.27 & 16\,461.11 \\
+%             $FX\_Log2^{\ARITH}$                        & 181.10                  & 215.64    & 292.53                  &   & 4\,371.94  & 4\,716.72  & 5\,565.20  \\
+%             $FX\_Exp^{\ARITH}$                         & 444.02                  & 1\,043.37 & 1\,924.93               &   & 13\,931.69 & 14\,527.76 & 16\,205.35 \\
+%             $FX\_Ln^{\ARITH}$                          & 223.29                  & 280.02    & 308.78                  &   & 4\,864.74  & 5\,049.57  & 5\,652.10  \\
+%             $FX\_Sqrt^{\ARITH}$                        & 343.14                  & 438.70    & 1\,682.41               &   & 10\,792.22 & 11\,573.25 & 13\,250.91 \\
+%             $FX\_Fx2FL^{\ARITH}$                       & 40.91                   & 50.22     & 187.62                  &   & 1\,653.18  & 1\,733.67  & 1\,866.73  \\
+%             $FX\_Fx2Int^{\ARITH}$                      & 13.81                   & 17.26     & 26.25                   &   & 336.89     & 338.50     & 341.04     \\
 %             \bottomrule
 %         \end{tabular}
 %     }
 % \end{table}
 % \FloatBarrier
 
+% \paragraph{Floating-Point Benchmarks}
+% \label{para:Floating-PointBenchmarking}
+
+
+\begin{figure}[ht]
+    \centering
+    % scatter plot of member decompose-types-bdd-graph-weak member types
+    \begin{tikzpicture}[scale=1,transform shape]
+        \begin{groupplot}[
+                group style={
+                        group name=my plots,
+                        group size=2 by 5,
+                        xlabels at=edge bottom,
+                        ylabels at=edge left,
+                        horizontal sep=2cm,
+                        vertical sep=1.5cm,
+                    },
+                width=0.5\linewidth
+            ]
+            %% label = 
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 2000,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(a) addition},
+                anchor=north,
+                %legend pos = outer north east,
+                % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=FL_circuit] {data/floating_point_add.dat};
+            \addplot+ table[x=parties, y=FL_agmw] {data/floating_point_add.dat};
+
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 2000,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(b) subtraction},
+                %legend pos = outer north east,
+                % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=FL_circuit] {data/floating_point_sub.dat};
+            \addplot+ table[x=parties, y=FL_agmw] {data/floating_point_sub.dat};
+
+
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 700,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(c) mulitplication},
+                %legend pos = outer north east,
+                % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=FL_circuit] {data/floating_point_mul.dat};
+            \addplot+ table[x=parties, y=FL_agmw] {data/floating_point_mul.dat};
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 2500,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(d) division},
+                %legend pos = outer north east,
+                % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=FL_circuit] {data/floating_point_div.dat};
+            \addplot+ table[x=parties, y=FL_agmw] {data/floating_point_div.dat};
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax =20000,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(e) exp2},
+                %legend pos = outer north east,
+                % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=FL_circuit] {data/floating_point_exp2.dat};
+            \addplot+ table[x=parties, y=FL_agmw] {data/floating_point_exp2.dat};
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 40000,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(f) log2},
+                %legend pos = outer north east,
+                % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=FL_circuit] {data/floating_point_log2.dat};
+            \addplot+ table[x=parties, y=FL_agmw] {data/floating_point_log2.dat};
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 14000,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(g) square root},
+                %legend pos = outer north east,
+                % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=FL_circuit] {data/floating_point_sqrt.dat};
+            \addplot+ table[x=parties, y=FL_agmw] {data/floating_point_sqrt.dat};
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 800,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(h) comparison},
+                %legend pos = outer north east,
+                % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=FL_circuit] {data/floating_point_lt.dat};
+            \addplot+ table[x=parties, y=FL_agmw] {data/floating_point_lt.dat};
+            \nextgroupplot[    %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 15000,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(i) fl2int},
+                %legend pos = outer north east,
+                % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
+                % legend cell align = left,
+            ]
+
+            \addplot+ table[x=parties, y=FL_circuit] {data/floating_point_fl2int.dat};
+            \addplot+ table[x=parties, y=FL_agmw] {data/floating_point_fl2int.dat};
+
+            \nextgroupplot[
+                % label style={font=\tiny}, %place legend outside of diagram. right side, centered vertically.
+                % xlabel={Number of Parties},
+                % ylabel={Online Runtime (ms)},
+                %axis y discontinuity = parallel,
+                axis y line = left,
+                axis x line = bottom,
+                ymin = 0,
+                ymax = 15000,
+                xmin = 1.5,
+                xmax = 5.5,
+                grid = both,
+                minor tick num = 1,
+                width = 7cm,
+                height = 4cm,
+                title=\textbf{(j) fl2fx},
+                %legend pos = outer north east,
+                % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
+                % legend cell align = left,
+                legend style={at={(0.5,-0.2)},anchor=north},
+                % label style={font=\tiny},
+                legend to name=UniversalLegend
+            ]
+
+            \addplot+ table[x=parties, y=FL_circuit] {data/floating_point_fl2fx.dat};
+            \addplot+ table[x=parties, y=FL_agmw] {data/floating_point_fl2fx.dat};
+
+            \legend{Floating-Point \booleanGMW w/o \simd, Floating-Point \arithmeticGMW}
+        \end{groupplot}
+    \end{tikzpicture}\\
+    \ref{UniversalLegend}
+    \caption[Total runtime in microseconds for floating-point arithmetic operations for the \booleanGMW (\BOOL)~\cite{goldreich1987play} and \arithmeticGMW protocol.]{Total runtime in microseconds (y-axis) for floating-point arithmetic operations for the \booleanGMW (\BOOL)~\cite{goldreich1987play} and \arithmeticGMW protocol in WAN test encironments (cf.~\autoref{cha:evaluation}) with $2,3,5$ parties (x-axis). We take the average results over $10$ protocol runs. }
+    \label{fig:floatingpointBenchmarks}
+\end{figure}
+\FloatBarrier
 
 
 
-
-
+% In \autoref{tab:runtimes_floating_point_circuit}, natural logarithm takes the longest online run-times in both LAN and WAN settings. As the number of parties grows from $3$ to $5$, the run-times of conversion operations to integer and fixed-point increase at most by a factor $3.08\times$ and $3.66\times$ ($SIMD=1$), factor $2.2\times$ and $1.9\times$ ($SIMD=1000$).
+% Comparing the online run-times of floating-point arithmetic from \autoref{tab:runtimes_floating_point_circuit} and \autoref{tab:runtimes_floating_point_agmw}, we can see that without applying SIMD, the BGMW-based floating-point arithmetic is faster ($1.3\times-3\times$) than AGMW-based floating-point arithmetic in operations such as addition, subtraction, <, log2 and square root, but slower in all other operations. After applying the SIMD technique, the BGMW-based floating-point arithmetic is $50\times-10911\times$ faster than AGMW-based floating-point arithmetic for all the operations in the LAN setting.
+% Therefore, we choose BGMW-based floating-point arithmetic to implement MPC protocols for sampling algorithms.
 
 % \begin{table}
 %     \caption{
-%         Online run-times in milliseconds (ms) for sampling algorithms for the GMW (B). For each entry, we specify the run-time of a single operation amortized over $ 1\,000 $ SIMD values. We take the average over 10 protocol runs in the LAN and WAN environments.
+%         Online run-times in milliseconds (ms) of floating-point operations for the GMW (B) \TODO{and BMR protocol (Y)}. For the entries with $SIMD=1\,000$, we specify the run-time of a single operation amortized over $ 1\,000 $ SIMD values. We take the average over 10 protocol runs in the LAN and WAN environments.
 %     }
-%     \label{tab:runtimes_aes_sha}
+%     \label{tab:runtimes_floating_point_circuit}
 %     % \small
 %     \centering
 %     \nprounddigits{1} % remove fractional digits in this table
@@ -346,15 +680,143 @@ The reason is that for failure probability $p<2^{-40}$, discrete random variable
 %     \resizebox{\columnwidth}{!}{
 %         \begin{tabular}{ l c r r r r r r r r r r}
 %             \toprule
-%             \hiderowcolors                                                       & \multicolumn{3}{c}{LAN} &            & \multicolumn{3}{c}{WAN}                                               \\
-%             \cmidrule{2-4} \cmidrule{6-8}  Parties $N$                           &
-%             $N{=}2$                                                              & $N{=}3$                 & $N{=}5$    &                         &
-%             $N{=}2$                                                              & $N{=}3$                 & $N{=}5$                                                                            \\ \showrowcolors
+%             \hiderowcolors                             &         & \multicolumn{3}{c}{LAN} &           & \multicolumn{3}{c}{WAN}                                              \\
+%             \cmidrule{3-5} \cmidrule{7-9}  Parties $N$ & SIMD    &
+%             $N{=}2$                                    & $N{=}3$ & $N{=}5$                 &           &
+%             $N{=}2$                                    & $N{=}3$ & $N{=}5$                                                                                                    \\ \showrowcolors
 %             \midrule
-%             $FLSymmBino\_Google^{\BOOL}$                                         & 18\,915.60              & 15\,412.45 & 26\,928.51              &   & 394\,237.17 & 435\,113.80 & 470\,800.29 \\
-%             $FxDiscreteGaussian\_noise\_CKS^{\BOOL}$                             & ---                     & ---        & ---                     &   & ---         & ---         & ---         \\
-%             $FxDiscreteGaussian\_noise\_CKS\_with\_DiscreteLaplaceEKMPP^{\BOOL}$ & 614.19                  & 701.75     & ---                     &   & 7\,386.97   & 8\,270.32   & ---         \\
-%             $FLDiscreteGaussian\_noise\_CKS\_with\_DiscreteLaplaceEKMPP^{\BOOL}$ & 304.96                  & 302.50     & ---                     &   & 6\,312.68   & 7\,316.95   & ---         \\
+%             $FL\_Add^{\BOOL}$                          & 1       & 158.90                  & 175.47    & 266.47                  &  & 4\,976.43   & 5\,665.71   & 5\,780.94   \\
+%             $FL\_Sub^{\BOOL}$                          & 1       & 151.38                  & 167.19    & 252.31                  &  & 5\,053.17   & 5\,599.27   & 5\,970.80   \\
+%             $FL\_Mul^{\BOOL}$                          & 1       & 166.46                  & 178.80    & 222.60                  &  & 6\,759.47   & 7\,278.22   & 7\,671.80   \\
+%             $FL\_Div^{\BOOL}$                          & 1       & 1\,418.62               & 1\,659.29 & 1\,882.86               &  & 74\,821.42  & 89\,112.86  & 100\,660.43 \\
+%             $FL\_Lt^{\BOOL}$                           & 1       & 47.08                   & 52.42     & 132.53                  &  & 1\,638.13   & 1\,751.99   & 1\,840.56   \\
+%             $FL\_Exp2^{\BOOL}$                         & 1       & 1\,958.28               & 2\,391.79 & 3\,392.22               &  & 112\,465.43 & 129\,661.24 & 140\,737.75 \\
+%             $FL\_Log2^{\BOOL}$                         & 1       & 1\,271.88               & 1\,599.22 & 2\,581.09               &  & 49\,886.75  & 58\,236.84  & 64\,266.20  \\
+%             $FL\_Exp^{\BOOL}$                          & 1       & 2\,122.94               & 2\,564.97 & 3\,461.87               &  & 118\,774.84 & 137\,115.63 & 150\,439.77 \\
+%             $FL\_Ln^{\BOOL}$                           & 1       & 3\,725.02               & 4\,765.81 & 8\,773.41               &  & 151\,622.29 & 177\,746.42 & 200\,747.65 \\
+%             $FL\_Sqrt^{\BOOL}$                         & 1       & 887.72                  & 1\,081.30 & 1\,514.39               &  & 44\,584.20  & 51\,846.96  & 57\,450.22  \\
+%             $FL2Int^{\BOOL}$                           & 1       & 327.69                  & 451.41    & 1\,390.65               &  & 12\,943.05  & 14\,093.49  & 16\,199.04  \\
+%             $FL2Fx^{\BOOL}$                            & 1       & 453.89                  & 481.33    & 1\,763.47               &  & 19\,657.52  & 21\,243.10  & 24\,070.59  \\
+%             \midrule
+%             $FL\_Add^{\BOOL}$                          & 1000    & 0.23                    & 0.34      & 0.61                    &  & 4.73        & 5.18        & 5.81        \\
+%             $FL\_Sub^{\BOOL}$                          & 1000    & 0.23                    & 0.31      & 0.55                    &  & 4.85        & 5.37        & 5.47        \\
+%             $FL\_Mul^{\BOOL}$                          & 1000    & 0.23                    & 0.29      & 0.27                    &  & 6.67        & 7.30        & 7.85        \\
+%             $FL\_Div^{\BOOL}$                          & 1000    & 2.45                    & 2.94      & 3.82                    &  & 63.26       & 70.05       & 74.88       \\
+%             $FL\_Lt^{\BOOL}$                           & 1000    & 0.05                    & 0.06      & 0.17                    &  & 1.42        & 1.53        & 1.53        \\
+%             $FL\_Exp2^{\BOOL}$                         & 1000    & 1.78                    & 2.05      & 2.66                    &  & 84.15       & 96.90       & 105.37      \\
+%             $FL\_Log2^{\BOOL}$                         & 1000    & 1.19                    & 1.59      & 2.23                    &  & 42.75       & 48.91       & 52.82       \\
+%             $FL\_Exp^{\BOOL}$                          & 1000    & 1.94                    & 2.28      & 2.57                    &  & 90.90       & 104.04      & 113.61      \\
+%             $FL\_Ln^{\BOOL}$                           & 1000    & 4.12                    & 5.57      & 7.54                    &  & 128.44      & 146.59      & 163.34      \\
+%             $FL\_Sqrt^{\BOOL}$                         & 1000    & 0.14                    & 0.30      & 0.59                    &  & 2.48        & 2.89        & 3.30        \\
+%             $FL2Int^{\BOOL}$                           & 1000    & 0.21                    & 0.32      & 0.74                    &  & 10.26       & 11.36       & 12.31       \\
+%             $FL2Fx^{\BOOL}$                            & 1000    & 0.33                    & 0.53      & 1.03                    &  & 16.64       & 18.06       & 19.56       \\
+%             \bottomrule
+%         \end{tabular}
+%     }
+% \end{table}
+% \FloatBarrier
+
+% \begin{table}
+%     \caption{
+%         Online run-times in milliseconds (ms) of floating-point operations for the GMW (A). We take the average over 10 protocol runs in the LAN and WAN environments. \TODO{implement FL-FL2Fx and FL-FL2Int}
+%     }
+%     \label{tab:runtimes_floating_point_agmw}
+%     % \small
+%     \centering
+%     \nprounddigits{1} % remove fractional digits in this table
+%     \rowcolors{1}{gray!25}{white}
+%     \resizebox{\columnwidth}{!}{
+%         \begin{tabular}{ l c r r r r r r r r r r}
+%             \toprule
+%             \hiderowcolors                             & \multicolumn{3}{c}{LAN} &           & \multicolumn{3}{c}{WAN}                                             \\
+%             \cmidrule{2-4} \cmidrule{6-8}  Parties $N$ &
+%             $N{=}2$                                    & $N{=}3$                 & $N{=}5$   &                         &
+%             $N{=}2$                                    & $N{=}3$                 & $N{=}5$                                                                         \\ \showrowcolors
+%             \midrule
+%             $FL\_Add^{\ARITH}$                         & 216.99                  & 253.25    & 474.08                  &   & 4\,877.91  & 5\,440.09  & 6\,067.92   \\
+%             $FL\_Sub^{\ARITH}$                         & 216.63                  & 314.82    & 491.58                  &   & 5\,000.17  & 5\,356.96  & 6\,113.30   \\
+%             $FL\_Mul^{\ARITH}$                         & 53.35                   & 75.07     & 84.27                   &   & 1\,248.12  & 1\,263.70  & 1\,553.22   \\
+%             $FL\_Div^{\ARITH}$                         & 123.93                  & 168.83    & 301.37                  &   & 3\,173.60  & 3\,344.13  & 3\,485.83   \\
+%             $FL\_Lt^{\ARITH}$                          & 66.03                   & 84.35     & 197.75                  &   & 1\,361.24  & 1\,566.96  & 1\,779.53   \\
+%             $FL\_Exp2^{\ARITH}$                        & 569.54                  & 953.94    & 1\,784.02               &   & 9\,105.86  & 10\,054.34 & 13\,147.79  \\
+%             $FL\_Log2^{\ARITH}$                        & 3\,871.35               & 5\,395.07 & 8\,623.15               &   & 90\,173.12 & 99\,853.84 & 107\,905.28 \\
+%             $FL\_Exp^{\ARITH}$                         & 620.11                  & 966.76    & 1\,684.20               &   & 9\,748.59  & 10\,695.65 & 11\,560.34  \\
+%             $FL\_Ln^{\ARITH}$                          & 3\,903.48               & 5\,588.28 & 8\,516.19               &   & 90\,034.64 & 99\,444.66 & 108\,395.14 \\
+%             $FL\_Sqrt^{\ARITH}$                        & 1\,575.21               & 2\,372.36 & 3\,603.36               &   & 31\,263.47 & 33\,778.76 & 36\,776.32  \\
+%             $FL\_FL2Fx^{\ARITH}$                       &                         &           &                         &   &            &            &             \\
+%             $FL\_FL2Int^{\ARITH}$                      &                         &           &                         &   &            &            &             \\
+%             \bottomrule
+%         \end{tabular}
+%     }
+% \end{table}
+% \FloatBarrier
+
+% % \section{Sampling Algorithms}
+
+% \section{Evaluation of MPC Protocols for Differentially Private Mechanisms}
+% \label{sec:EvaluationofMPCProtocolsforDifferentiallyPrivateMechanisms}
+
+% \autoref{tab:OverviewofsamplingalgorithmsforgeneratingdiscreteLaplaceGaussianrandomvariable} presents the combinations of different sampling algorithms to generate discrete Laplace random variables and discrete Gaussian random variables as discussed in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}. We implement corresponding protocols in BGMW-based fixed/floating-point arithmetic.
+% The benchmark results are listed in \autoref{tab:RuntimesDiscreteLaplaceGaussianProtocols}.
+% We found that memory overflow ($>128$ GB) happends for $DLap_1^{\BOOL}$, $DGau_1^{\BOOL}$ and $DGau_2^{\BOOL}$ when we set the failure probability $p<2^{-40}$.
+% The reason is that for failure probability $p<2^{-40}$, discrete random variables need a larger number of iterations.
+% \TODO{Therefore, we need to reimplement the MPC protocols for $DLap_1$, $DGau_1$ and $DGau_2$ with AGMW-based fixed/floating protocols. }
+
+
+% \begin{table}
+%     \caption{
+%         Overview of sampling algorithms for generating discrete Laplace/Gaussian random variables.
+%     }
+%     \label{tab:OverviewofsamplingalgorithmsforgeneratingdiscreteLaplaceGaussianrandomvariable}
+%     % \small
+%     \centering
+%     \nprounddigits{1} % remove fractional digits in this table
+%     \rowcolors{1}{gray!25}{white}
+%     \resizebox{\columnwidth}{!}{
+%         \begin{tabular}{ l c c c c c c c c c c c}
+%             \toprule
+%             \hiderowcolors                     & \multicolumn{3}{c}{Sampling Algorithms}       &                                                                                     \\
+%             \cmidrule{2-4}     Random Variable & $Algo^{TwoSideGeo}$~\cite{googleDP2019GitHub} & $Algo^{DLap}$~\cite{canonne2020discrete} & $Algo^{DGau}$~\cite{canonne2020discrete}
+%             \\ \showrowcolors
+%             \midrule
+%             $DLap_1$                           & $\bullet$                                     &                                          &                                          \\
+%             $DLap_2$                           &                                               & $\bullet$                                &                                          \\
+%             $DGau_1$                           & $\bullet$                                     &                                          & $\bullet$                                \\
+%             $DGau_2$                           &                                               & $\bullet$                                & $\bullet$                                \\
+%             \bottomrule
+%         \end{tabular}
+%     }
+% \end{table}
+% \FloatBarrier
+
+% % \paragraph{Discrete Laplace/Gaussian Sampling Algorithms}
+% % \label{para:DiscreteLaplaceSamplingAlgorithms}
+
+% \begin{table}
+%     \caption{
+%         Online run-times in milliseconds (ms) of fixed/floating-point Laplace/Gaussian sampling protocols for the GMW (B). We take the average over 10 protocol runs in the LAN and WAN environments.
+%     }
+%     \label{tab:RuntimesDiscreteLaplaceGaussianProtocols}
+%     % \small
+%     \centering
+%     \nprounddigits{1} % remove fractional digits in this table
+%     \rowcolors{1}{gray!25}{white}
+%     \resizebox{\columnwidth}{!}{
+%         \begin{tabular}{ l c r r r r r r r r r r}
+%             \toprule
+%             \hiderowcolors                             & \multicolumn{3}{c}{LAN} &            & \multicolumn{3}{c}{WAN}                                                  \\
+%             \cmidrule{2-4} \cmidrule{6-8}  Parties $N$ &
+%             $N{=}2$                                    & $N{=}3$                 & $N{=}5$    &                         &
+%             $N{=}2$                                    & $N{=}3$                 & $N{=}5$                                                                               \\ \showrowcolors
+%             \midrule
+%             $DLap_1^{\BOOL,FX}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
+%             $DLap_1^{\BOOL,FL}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
+%             $DLap_2^{\BOOL,FX}$                        & 60\,946.33              & 62\,613.41 & 144\,253.44             &   & 893\,460.44 & 947\,818.24 & 1\,040\,754.52 \\
+%             $DLap_2^{\BOOL,FL}$                        & 48\,874.17              & 49\,236.48 & 105\,650.76             &   & 730\,002.77 & 782\,549.19 & 861\,691.71    \\
+%             $DGau_1^{\BOOL,FX}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
+%             $DGau_1^{\BOOL,FL}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
+%             $DGau_2^{\BOOL,FX}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
+%             $DGau_2^{\BOOL,FL}$                        & ---                     & ---        & ---                     &   & ---         & ---         & ---            \\
 %             \bottomrule
 %         \end{tabular}
 %     }
@@ -362,9 +824,80 @@ The reason is that for failure probability $p<2^{-40}$, discrete random variable
 % \FloatBarrier
 
 
-We present the performance evaluation of the MPC protocols for differentially private mechanisms in~\autoref{tab:runtimes_aes_sha}.
 
-\textbf{Laplace Mechanisms.}
+
+% % \paragraph{Discrete Gaussian Sampling Algorithms}
+% % \label{para:DiscreteGaussianSamplingAlgorithms}
+
+
+% % \begin{table}
+% %     \caption{
+% %         Online run-times in milliseconds (ms) of fixed/floating-point Laplace sampling protocols for the GMW (B). We take the average over 10 protocol runs in the LAN and WAN environments. \TODO{implement $DGau_1$, $DGau_2$ in AGMW-based fixed/floating-point, as BGMW version memory overflows(>128GB)}
+% %     }
+% %     \label{tab:RuntimesDiscreteLaplaceProtocols}
+% %     % \small
+% %     \centering
+% %     \nprounddigits{1} % remove fractional digits in this table
+% %     \rowcolors{1}{gray!25}{white}
+% %     \resizebox{\columnwidth}{!}{
+% %         \begin{tabular}{ l c r r r r r r r r r r}
+% %             \toprule
+% %             \hiderowcolors                             & \multicolumn{3}{c}{LAN} &         & \multicolumn{3}{c}{WAN}                                   \\
+% %             \cmidrule{2-4} \cmidrule{6-8}  Parties $N$ &
+% %             $N{=}2$                                    & $N{=}3$                 & $N{=}5$ &                         &
+% %             $N{=}2$                                    & $N{=}3$                 & $N{=}5$                                                             \\ \showrowcolors
+% %             \midrule
+% %             $DGau_1^{\BOOL,FX}$                        & ---                     & ---     & ---                     &   & ---       & ---       & --- \\
+% %             $DGau_1^{\BOOL,FL}$                        & ---                     & ---     & ---                     &   & ---       & ---       & --- \\
+% %             $DGau_2^{\BOOL,FX}$                        & ---                     & ---     & ---                     &   & ---       & ---             \\
+% %             $DGau_2^{\BOOL,FL}$                        & ---                     & ---     & ---                     &   & ---       & ---       & --- \\
+% %             $DGau_3^{\BOOL,FX}$                        & 614.31                  & 701.92  & ---                     &   & 7\,388.63 & 8\,273.27 & --- \\
+% %             $DGau_3^{\BOOL,FL}$                        & 305.42                  & 303.13  & ---                     &   & 6\,324.08 & 7\,329.42 & --- \\
+% %             \bottomrule
+% %         \end{tabular}
+% %     }
+% % \end{table}
+% % \FloatBarrier
+
+
+
+
+
+
+
+% % \begin{table}
+% %     \caption{
+% %         Online run-times in milliseconds (ms) for sampling algorithms for the GMW (B). For each entry, we specify the run-time of a single operation amortized over $ 1\,000 $ SIMD values. We take the average over 10 protocol runs in the LAN and WAN environments.
+% %     }
+% %     \label{tab:runtimes_differentially_private_mechanism}
+% %     % \small
+% %     \centering
+% %     \nprounddigits{1} % remove fractional digits in this table
+% %     \rowcolors{1}{gray!25}{white}
+% %     \resizebox{\columnwidth}{!}{
+% %         \begin{tabular}{ l c r r r r r r r r r r}
+% %             \toprule
+% %             \hiderowcolors                                                       & \multicolumn{3}{c}{LAN} &            & \multicolumn{3}{c}{WAN}                                               \\
+% %             \cmidrule{2-4} \cmidrule{6-8}  Parties $N$                           &
+% %             $N{=}2$                                                              & $N{=}3$                 & $N{=}5$    &                         &
+% %             $N{=}2$                                                              & $N{=}3$                 & $N{=}5$                                                                            \\ \showrowcolors
+% %             \midrule
+% %             $FLSymmBino\_Google^{\BOOL}$                                         & 18\,915.60              & 15\,412.45 & 26\,928.51              &   & 394\,237.17 & 435\,113.80 & 470\,800.29 \\
+% %             $FxDiscreteGaussian\_noise\_CKS^{\BOOL}$                             & ---                     & ---        & ---                     &   & ---         & ---         & ---         \\
+% %             $FxDiscreteGaussian\_noise\_CKS\_with\_DiscreteLaplaceEKMPP^{\BOOL}$ & 614.19                  & 701.75     & ---                     &   & 7\,386.97   & 8\,270.32   & ---         \\
+% %             $FLDiscreteGaussian\_noise\_CKS\_with\_DiscreteLaplaceEKMPP^{\BOOL}$ & 304.96                  & 302.50     & ---                     &   & 6\,312.68   & 7\,316.95   & ---         \\
+% %             \bottomrule
+% %         \end{tabular}
+% %     }
+% % \end{table}
+% % \FloatBarrier
+
+\section{Differentially Pirvate Mechanism Benchmarks}
+\label{DifferentiallyPirvateMechanismBenchmarks}
+
+We present the performance evaluation of the MPC protocols for differentially private mechanisms in~\autoref{tab:runtimes_differentially_private_mechanism}.
+
+\paragraph{Laplace Mechanisms.}
 Recall that Integer-Scaling Laplace mechanism $M_{ISLap} $ achieves differential privacy protection effect as Laplace mechanism textit{securely} by re-scaling a discrete Laplace random variable.
 In our work, we generate the discrete Laplace random variable with sampling protocol $\Uppi^{DLap}$ (cf.~\autoref{prot:DiscreteLap}) and set the failure probability as $p<2^{-40}$.
 We can see that the $M_{ISLap}$ with fixed-point implementation of $\Uppi^{DLap}$ is $1.09\times-1.29\times$ slower than that with floating-point implementation.
@@ -385,26 +918,26 @@ In contrast, we could reduce the errors introduced by the Integer-Scaling Laplac
 % However, Covington~\cite{Covington2019} proved that $M_{SM}$ introduces additional errors (beyond the necessary Laplace noise), and it leads to a significant reduction in utility.
 % In comparison to $M_{SM}$, $M_{ISLap}$ introduces relative low errors by setting appropriate resolution parameter $r$ (cf.~\autoref{sec:integerScalingMechanism}).
 
-\textbf{Gaussian Mechanisms.}
+\paragraph{Gaussian Mechanisms.}
 Recall that the Integer-Scaling Gaussian mechanism $M_{ISLap}$ deploys the sampling protocol $\Uppi^{SymmBinomial}$ under floating-point arithmetic to simulate the continuous Gaussian random variable.
 We implement $\Uppi^{SymmBinomial}$ with BGMW-based floating-point arithmetic.
 We can see that the Integer-Scaling Gaussian mechanism $M_{ISGau}$ is $2.08\times-3.06\times$ faster than the Integer-Scaling Laplace mechanism $M_{ISLap}$.
 % Recall that $M_{ISGau}$ realize similar differential privacy protection effect as Gaussian mechanism (cf.~\autoref{def:gaussianMechanism}).
 % We implement the Integer-Scaling Gaussian mechanism $M_{ISGau}$ under BGMW-based floating-point that has an online run-times of $18$ seconds in the LAN setting of two computation parties.
 
-\textbf{Discrete Laplace Mechanisms.}
+\paragraph{Discrete Laplace Mechanisms.}
 The discrete Laplace mechanism $M_{DLap}$ deploys the same sampling protocol $\Uppi^{DLap}$ (cf.~\autoref{prot:DiscreteLap}) as $M_{ISLap}$.
 We also implement $M_{DLap}$~\cite{eigner2014differentially} for comparison.
 It can be seen, that $M_{DLap}$~\cite{eigner2014differentially} is at least $1068\times$ faster than our implementation of $M_{DLap}$ in BGMW-based fixed/floating-point arithmetic in the LAN setting. However, the security of $M_{DLap}$~\cite{eigner2014differentially} remains to prove as it applies similar noise generation procedure as $M_{Lap}$~\cite{eigner2014differentially}.
 
-\textbf{Discrete Gaussian Mechanisms.}
+\paragraph{Discrete Gaussian Mechanisms.}
 \TODO{We encounter memory overflow when implement BGMW-based $M_{DGau}$, try to implement it in AGMW-based floating-point arithmetic}
 
 \begin{table}
     \caption{
         Online run-times in milliseconds (ms) for differentially private mechanisms for the GMW (B). We specify the run-time of a single operation amortized over corresponding SIMD values. We take the average over 10 protocol runs in the LAN and WAN environments.
     }
-    \label{tab:runtimes_aes_sha}
+    \label{tab:runtimes_differentially_private_mechanism}
     % \small
     \centering
     \nprounddigits{1} % remove fractional digits in this table
