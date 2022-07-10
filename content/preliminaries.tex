@@ -50,7 +50,7 @@ We describe two types of adversaries: the \textit{semi-honest} adversary and the
 
 \textbf{Malicious adversaries} (also known as active adversaries) may cause corrupted parties to arbitrarily deviate from the protocol specification and attempt to learn information about the other parties' inputs. Protocols against malicious adversaries usually deploy cryptographic mechanisms to ensure that the parties cannot deviate from the protocol specification. Therefore, the protocol is often more expensive than the protocol against semi-honest adversaries.
 
-\subsection{Cryptographic Primitives for Secure Multi-Party Computation}
+\subsection{Cryptographic Primitives}
 \label{subsec:CryptographicPrimitivesforSecureMulti-PartyComputation}
 
 \subsubsection{Oblivious Transfer}
@@ -218,7 +218,7 @@ Three-halves garbling~\cite{rosulek2021three} requires $25\%$ less communication
 % \label{subsubsec:SharingConversions}
 % Different sharing types and corresponding MPC protocols have advantages in specific operations, e.g., arithmetic GMW (cf.~\autoref{subsec:GMW}) allows parties to execute linear operations locally, and BMR (cf.~\autoref{subsec:BMR}) is often more efficient for comparison. Therefore, we consider the sharing conversion methods introduced in works~\cite{demmler2015aby,braun2022motion}.
 
-\subsection{MPC Framework - MOTION}
+\subsection{SMPC Framework - MOTION}
 \label{subsection:MOTIONFramework}
 We build upon the \smpc framework MOTION~\cite{braun2022motion} that provides the following novel features:
 \begin{enumerate}
@@ -234,28 +234,29 @@ We build upon the \smpc framework MOTION~\cite{braun2022motion} that provides th
 \label{sec:differentialPrivacy}
 This section describes the concept of differential privacy in a formal mathematical view. We first introduce basic knowledge of probability distribution and random variable generation methods. Then, we describe traditional privacy preservation techniques and discuss their limitations. Next, we describe the motivation behind differential privacy and formalize its definition. Finally, we describe the differentially private mechanisms for realizing differential privacy.
 
-% \subsection{Probability Distribution and Random Variable Generation}
-% \label{subsec:probabilityDistribution}
-% In this section, we introduce essential probability theory and statistics as a preparation for differential privacy.
+\subsection{Probability Distribution and Random Variable Generation}
+\label{subsec:probabilityDistribution}
+In this section, we introduce essential probability theory and random variable sampling methods as a preparation for differential privacy.
 
 \subsubsection{Continuous Probability Distribution}
 \label{subsubsec:ContinuousProbabilityDistribution}
 
 \begin{definition}[Continuous Uniform Distribution]
     \label{def:UniformDistribution}
-    The continuous uniform distribution with parameters $a$ and $b$, has the following probability density function:
+    The continuous uniform distribution with two boundary parameters $a$ and $b$, has the following probability density function:
     \begin{equation}
         \begin{split}
             Uni\left(x \,|\,a,b\right)
             &=
             \begin{cases}
-                \frac{1}{b-a} & \text{ for } a\leq x\leq b \\
-                0             & \text{otherwise}
+                \frac{1}{b-a} & \textit{ for } a\leq x\leq b \\
+                0             & \textit{otherwise}
             \end{cases}
         \end{split}
     \end{equation}
 \end{definition}
-$Uni\left(a,b\right)$ denotes the continuous uniform distribution with parameters $a$ and $b$. We abuse notation and let $Uni\left( a,b\right)$ denote a random variable $x \sim Uni\left( a,b\right)$.
+
+We use the probability density function to denote the corresponding probability distribution $P$ or a random variable $x \sim P$. For example, $Uni\left(a,b\right)$ denotes the continuous uniform distribution with parameters $a$ and $b$. We sometimes abuse notation and let $Uni\left( a,b\right)$ denote a random variable $x \sim Uni\left( a,b\right)$.
 
 
 \begin{definition}[Exponential Distribution]
@@ -265,56 +266,58 @@ $Uni\left(a,b\right)$ denotes the continuous uniform distribution with parameter
         \begin{split}
             Exp\left(x \,|\,\lambda\right)            &=
             \begin{cases}
-                \lambda e^{\lambda x } & x\geq 0 \\
-                0                      & x <0
+                \lambda e^{-\lambda x } & \textit{ for }  x\geq 0 \\
+                0                       & \textit{ for }  x <0
             \end{cases}
         \end{split}
     \end{equation}
 \end{definition}
-$Exp\left(\lambda\right)$ denotes the exponential distribution with parameter $\lambda$.
-$x \sim Exp\left( b\right)$ is a exponential random variable. The cumulative distribution function of an exponential distribution is:
+% $Exp\left(\lambda\right)$ denotes the exponential distribution with parameter $\lambda$.
+The cumulative distribution function of an exponential distribution is defined as:
 \begin{equation}
-    \Pr\left( x\,|\,\lambda\right)=
-    \begin{cases}
-        1- e^{\lambda x} & \text{ for } x \geq 0 \\
-        0                & \text{ for } x < 0    \\
-    \end{cases}
+    \begin{split}
+        \Pr\left( x\,|\,\lambda\right)=
+        \begin{cases}
+            1- e^{-\lambda x} & \textit{ for } x \geq 0 \\
+            0                 & \textit{ for } x < 0    \\
+        \end{cases}
+    \end{split}
 \end{equation}
 
 
 \begin{definition}[Laplace Distribution{~\cite{dwork2014algorithmic}}]
     \label{def:LaplaceDistribution}
-    The Laplace distribution with scale parameter $b$, has the following probability density function:
+    The Laplace distribution (centered at $0$) with scale parameter $b$, has the following probability density function:
     \begin{equation}
         \begin{split}
             Lap\left(x \,|\,b\right)&= \frac{1}{2b}e^{\left( -\frac{\left| x\right| }{b}\right)}
         \end{split}
     \end{equation}
 \end{definition}
-The Laplace distribution is a symmetric version of the exponential distribution and is also called the double exponential distribution because it can be thought of as an exponential distribution assigned a randomly chosen sign.
-We write $Lap\left(b\right)$ to denote the Laplace distribution with scale parameter $b$ and $x \sim Lap\left( b\right)$ to denote a Laplace random variable.
+The Laplace distribution is a symmetric version of the exponential distribution. It is also called the double exponential distribution because it can be considered as an exponential distribution assigned with a randomly chosen sign.
+% We write $Lap\left(b\right)$ to denote the Laplace distribution with scale parameter $b$ and $x \sim Lap\left( b\right)$ to denote a Laplace random variable.
 
 The cumulative distribution function of the Laplace distribution is defined as:
 \begin{equation}
     \Pr\left( x\leq X\,|\,b\right)=
     \begin{cases}
-        \frac{1}{2} e^{\frac{X}{b}}     & \text{ for } X \leq 0 \\
-        1- \frac{1}{2} e^{-\frac{X}{b}} & \text{ for } X > 0    \\
+        \frac{1}{2} e^{\frac{X}{b}}     & \textit{ for } X \leq 0 \\
+        1- \frac{1}{2} e^{-\frac{X}{b}} & \textit{ for } X > 0    \\
     \end{cases}
 \end{equation}
 
 
 \begin{definition}[Gaussian Distribution]
     \label{def:GaussianDistribution}
-    The univariate Gaussian (or standard normal) distribution with mean $\mu$ and standard deviation $\sigma$, has the following probability density function:
+    The univariate Gaussian (also known as the standard normal) distribution with mean $\mu$ and standard deviation $\sigma$, has the following probability density function:
     \begin{equation}
         \begin{split}
             \mathcal{N} \left( x \,|\, \mu,\sigma\right)&=\frac{1}{\sigma\sqrt{2 \pi}}e^{-\frac{1}{2}\left( \frac{x-\mu}{\sigma}\right) ^{2}}
         \end{split}
     \end{equation}
 \end{definition}
-$\mathcal{N} \left( \mu,\sigma\right)$ denotes the Gaussian distribution with mean $\mu$ and standard deviation $\sigma$.
-$x \sim \mathcal{N}  \left(\mu,\sigma\right)$ is a Gaussian random variable.
+% $\mathcal{N} \left( \mu,\sigma\right)$ denotes the Gaussian distribution with mean $\mu$ and standard deviation $\sigma$.
+% $x \sim \mathcal{N}  \left(\mu,\sigma\right)$ is a Gaussian random variable.
 
 
 \subsubsection{Discrete Probability Distribution}
@@ -322,19 +325,19 @@ $x \sim \mathcal{N}  \left(\mu,\sigma\right)$ is a Gaussian random variable.
 
 \begin{definition}[Bernoulli distribution]
     \label{def:BernoulliDistribution}
-    The Bernoulli distribution with parameter $p \in \left[0,1\right] $ has the following probability mass function for $x\in \left\{0,1\right\}  $:
+    The Bernoulli distribution with parameter $p \in \left[0,1\right] $ has the following probability mass function:
     \begin{equation}
         \begin{split}
             Bern\left(x \,|\,p \right)&=
             \begin{cases}
-                p   & \text{ for } x =1 \\
-                1-p & \text{ for } x =0 \\
+                p   & \textit{ for } x =1 \\
+                1-p & \textit{ for } x =0 \\
             \end{cases}
         \end{split}
     \end{equation}
 \end{definition}
-$Bern\left(p \right)$ denotes the Bernoulli distribution with parameter $p  $.
-$x \sim Bern\left( p \right)$ is a Bernoulli random variable.
+% $Bern\left(p \right)$ denotes the Bernoulli distribution with parameter $p  $.
+% $x \sim Bern\left( p \right)$ is a Bernoulli random variable.
 
 
 \begin{definition}[Binomial Distribution]
@@ -346,8 +349,9 @@ $x \sim Bern\left( p \right)$ is a Bernoulli random variable.
         \end{split}
     \end{equation}
 \end{definition}
-$Bino\left(n,p \right)$ denotes the binomial distribution with parameters $n  $ and $p  $.
-$x \sim Bino\left( n,p \right)$ is a binomial random variable. Note that the distribution $Bino\left(n,p=0.5 \right)-\frac{n}{2}$ is symmetric about the $y$-axis, which we denote by $SymmBino\left(n,p=0.5 \right)$.
+% $Bino\left(n,p \right)$ denotes the binomial distribution with parameters $n  $ and $p  $.
+% $x \sim Bino\left( n,p \right)$ is a binomial random variable. 
+Note that the distribution $Bino\left(n,p=0.5 \right)-\frac{n}{2}$ is symmetric about the $y$-axis, which we denote by $SymmBino\left(n,p=0.5 \right)$.
 
 
 \begin{definition}[Geometric Distribution]
@@ -359,9 +363,9 @@ $x \sim Bino\left( n,p \right)$ is a binomial random variable. Note that the dis
         \end{split}
     \end{equation}
 \end{definition}
-$Geo \left(  p \right)$ denotes the geometric distribution with parameter $p$.
-$x \sim Geo \left(  p \right)$ is a geometric random variable.
-Note that the geometric distribution counts the number of failures until the first success (each trial with success probability $p$).
+% $Geo \left(  p \right)$ denotes the geometric distribution with parameter $p$.
+% $x \sim Geo \left(  p \right)$ is a geometric random variable.
+Note that the geometric distribution models the number of trials until the first success (each trial has a success probability $p$).
 The cumulative distribution function of the geometric distribution is $\Pr\left(x\leq X \,|\,p\right) =1-\left(1-p\right)^{X+1} $.
 
 
@@ -374,9 +378,9 @@ The cumulative distribution function of the geometric distribution is $\Pr\left(
         \end{split}
     \end{equation}
 \end{definition}
-$DLap \left(t\right)$ denotes the discrete Laplace distribution with parameter $t$.
-$x \sim DLap \left(  t \right)$ is a discrete Laplace random variable.
-$DLap\left(t\right)$ can be generated by reflecting the $Geo\left(p\right) $ across the $y$-axis and rescaling it such that its cumulative probability in the interval $\left(-\infty ,\infty\right) $ equals to one.
+% $DLap \left(t\right)$ denotes the discrete Laplace distribution with parameter $t$.
+% $x \sim DLap \left(  t \right)$ is a discrete Laplace random variable.
+The discrete Laplace distribution can be generated by reflecting a geometric distribution across the $y$-axis and rescaling it such that its cumulative probability in the interval $\left(-\infty ,\infty\right) $ equals to one.
 
 
 \begin{definition}[Discrete Gaussian Distribution{~\cite{canonne2020discrete}}]
@@ -388,40 +392,30 @@ $DLap\left(t\right)$ can be generated by reflecting the $Geo\left(p\right) $ acr
         \end{split}
     \end{equation}
 \end{definition}
-$DGau \left(\mu,\sigma\right)$ denotes the discrete Gaussian distribution with mean $\mu$ and standard deviation $\sigma$.
-$x \sim DGau \left(\mu,\sigma\right)$ is a discrete Gaussian random variable.
+% $DGau \left(\mu,\sigma\right)$ denotes the discrete Gaussian distribution with mean $\mu$ and standard deviation $\sigma$.
+% $x \sim DGau \left(\mu,\sigma\right)$ is a discrete Gaussian random variable.
 
 
 \subsubsection{Probability Sampling Methods}
 \label{subsec:ProbabilitySamplingMethods}
 
-\paragraph{Inverse Transform Sampling Method}
-Inverse transform sampling method is a common method to generate random variables from certain distribution $f$ using its inverted cumulative distribution $F^{-1}$.
+\paragraph{Inverse Transform Sampling Method.}
+The Inverse transform sampling method is a common method to generate random variables from a certain distribution $f$ using its inverted cumulative distribution function $F^{-1}$.
 \begin{theorem}[Inverse Transform Sampling Method{~\cite[Theorem 2.1]{steele1987non}}]
     \label{theorem:inversionSamplingMethod}
     Let $F$ be a continuous distribution function on $\mathbb{R}$ with inverse $F^{-1}$ defined as follows:
     \begin{equation}
         F^{-1}\left( u\right) =\inf \{ x:F\left( x\right) =u,0 <u < 1\}
     \end{equation}
-    If $U\sim Uni\left( 0,1\right)$ (cf.~\autoref{def:UniformDistribution}), then $F^{-1}\left( U\right)$ is a distribution with cumulative function $F$. Also, if $X$ has cumulative function $F$, then $F\left( X\right) $ is uniformly distributed in the interval $\left[0,1\right]  $.
+    If $U\sim Uni\left( 0,1\right)$ (cf.~\autoref{def:UniformDistribution}), then $F^{-1}\left( U\right)$ has cumulative distribution function $F$.
 \end{theorem}
 
 % \paragraph{Rejection Sampling Method}
 % ???
 
-
-\paragraph{Inverse Transform-Based Laplace Sampling Method}
-\label{algo:InverseTransform-BasedLaplaceSamplingMethod}
-For example, we can sample a Laplace random variable $Y\sim Lap\left(b\right) $ from an exponential distribuion with cumulative function: $F\left(x\,|\, b\right) =1-e^{-\frac{x}{b}}$ as follows~\cite[Chapter 3.4]{knuth2014art}:
-\begin{enumerate}
-    \item Sample $U\sim Uni\left(0,1\right)\setminus 1 $ and $Z \sim Bern\left(0.5\right) $
-    \item $  F^{-1}\left(U\right) =-b \cdot \ln\left(1-U\right)  $ is a geometric random variable.
-    \item  Transform $F^{-1}\left(U\right)$ to Laplace random variable $Y$ with $Y\gets \left(2Z-1\right)\cdot b \ln\left(1-U\right) $
-\end{enumerate}
-
-\paragraph{Sampling from a Bernoulli Distribution}
+\paragraph{Inverse Sampling from a Bernoulli Distribution.}
 \label{SamplingfromaBernoulliDistribution}
-$Algo^{Bern}\left(p\right)$~\cite{knott2021crypten} samples a random variable $x\sim Bern\left(p\right) $ based on the comparison result between the generated uniform random variable $u \in \left(0,1\right) $ and parameter $p$.
+\autoref{algo:Bernoulli} samples a random variable $x\sim Bern\left(p\right) $ based on the comparison result of the generated uniform random variable $u \in \left(0,1\right) $ and parameter $p$.
 
 \begin{algorithm}[tbh!]
     \centering
@@ -435,13 +429,24 @@ $Algo^{Bern}\left(p\right)$~\cite{knott2021crypten} samples a random variable $x
             \text{ELSE}\\
             \text{\t\t RETURN $x \gets 0$}
         }}
-    \caption{Algorithm for sampling from Bernoulli distribution.}
+    \caption{Inverse sampling from a Bernoulli distribution.}
     \label{algo:Bernoulli}
 \end{algorithm}
 \FloatBarrier
 
-\paragraph{Sampling from a Geometric Distribution}
-$Algo^{Geo}\left(0.5\right)$~\cite{walker1974fast, googleDP2019} generates a geometric random variable $x\sim Geo\left(0.5\right) $ by first generating a $\ell$-bit random string $r\in \left\{0,1\right\}^\ell $ (i.e., $\ell$ Bernoulli trials) and counting its leading zeros (i.e., number of trials before the first success). If there is no $1$ bit in $r$ (i.e., $ LeadingZeros(r)=\ell$), the sampling algorithm fails. However, we can decrease the failure probability ($0.5^{\ell}$) by increasing the length of the random string $r$.
+\paragraph{Inverse Sampling from a Laplace Distribution.}
+\label{algo:InverseTransform-BasedLaplaceSamplingMethod}
+A Laplace random variable $Y\sim Lap\left(b\right) $ can be sampled from an exponential distribuion with cumulative distribution function: $F\left(x\,|\, b\right) =1-e^{-\frac{x}{b}}$ as follows~\cite{mironov2012significance}:
+\begin{enumerate}
+    \item Sample random variables $U\sim Uni\left(0,1\right)\setminus 1 $ and $Z \sim Bern\left(0.5\right) $
+    \item Generate a geometric random variable with $  F^{-1}\left(U\right) =-b \cdot \ln\left(1-U\right)  $.
+    \item Transform the geometric random variable $F^{-1}\left(U\right)$ to a Laplace random variable $Y$ as: $Y= \left(2Z-1\right)\cdot b \ln\left(1-U\right) $
+\end{enumerate}
+
+
+
+\paragraph{Sampling from a Geometric Distribution.}
+\autoref{algo:Geometric}~\cite{walker1974fast, googleDP2019} generates a geometric random variable $x\sim Geo\left(0.5\right) $ by generating an $\ell$-bit random string $r\in \left\{0,1\right\}^\ell $ (i.e., $\ell$ Bernoulli trials) and counting its leading zeros (i.e., the number of trials before the first success trial). If there is no $1$ bit in the $\ell$-bit $r$, the algorithm fails. However, we can decrease the failure probability ($0.5^{\ell}$) by increasing the length of the random string $r$.
 
 \begin{algorithm}[tbh!]
     \centering
@@ -454,13 +459,13 @@ $Algo^{Geo}\left(0.5\right)$~\cite{walker1974fast, googleDP2019} generates a geo
             \text{$x\gets LeadingZeros(r)$} \\
             \text{RETURN $x$}
         }}
-    \caption{Algorithm for sampling from geometric distribution.}
+    \caption{Sampling from a geometric distribution.}
     \label{algo:Geometric}
 \end{algorithm}
 \FloatBarrier
 
-\paragraph{Sampling from a Discrete Laplace Distribution}
-$Algo^{DLap\_EKMPP}\left(t\right)$~\cite{eigner2014differentially} generates a discrete Laplace random variable $x\sim DLap\left(t\right) $ by transforming two independent uniform random variables $u1, u2 \in \left(0,1\right) $ as follows:
+\paragraph{Sampling from a Discrete Laplace Distribution.}
+\autoref{algo:DiscreteLaplaceEigner}~\cite{eigner2014differentially} generates a discrete Laplace random variable $x\sim DLap\left(t\right) $ by transforming two independent uniform random variables $u1, u2 \in \left(0,1\right) $ as follows:
 
 \begin{algorithm}[tbh!]
     \centering
@@ -472,44 +477,44 @@ $Algo^{DLap\_EKMPP}\left(t\right)$~\cite{eigner2014differentially} generates a d
             \text{$u_2 \gets Uni\left(0,1\right) $} \\
             \text{RETURN $x\gets \left\lfloor -t \cdot \ln\left(u_1\right) \right\rfloor-\left\lfloor -t \cdot \ln\left(u_2\right) \right\rfloor $}
         }}
-    \caption{Algorithm for sampling from discrete Laplace distribution.}
+    \caption{Sampling from a discrete Laplace distribution.}
     \label{algo:DiscreteLaplaceEigner}
 \end{algorithm}
 \FloatBarrier
 
 
-\subsubsection{Number Representation}
-\label{subsubsec:NumberRepresentation}
-In this work, we rely on fixed-point and floating-point to perform the arithmetic operations.
+% \subsubsection{Number Representation}
+% \label{subsubsec:NumberRepresentation}
+% In this work, we primarily rely on fixed-point and floating-point to perform the arithmetic operations.
 
-\textbf{Floating-Point Representation.}
-% Double-precision floating-point numbers~\cite{IEEE754_2019} occupy 64 bits (1 bit for sign, 11 bits for exponent, 52 bits for mantissa/significant) and are represented as follows:
-Double-precision floating-point numbers occupy 64 bits (1 bit for sign, 11 bits for exponent, 52 bits for mantissa/significant) and are represented as follows:
-\begin{equation}
-    \begin{split}
-        \left(-1\right)^S\left(1.d_{1}\ldots d_{52}\right)_2\times 2^{\left(e_{1}\ldots e_{11}\right)_2 -1023} ,
-    \end{split}
-\end{equation}
+% \paragraph{Floating-Point Representation.}
+% % Double-precision floating-point numbers~\cite{IEEE754_2019} occupy 64 bits (1 bit for sign, 11 bits for exponent, 52 bits for mantissa/significant) and are represented as follows:
+% Double-precision floating-point numbers occupy 64 bits (1 bit for sign, 11 bits for exponent, 52 bits for mantissa/significant) and are represented as follows:
+% \begin{equation}
+%     \begin{split}
+%         \left(-1\right)^S\left(1.d_{1}\ldots d_{52}\right)_2\times 2^{\left(e_{1}\ldots e_{11}\right)_2 -1023} ,
+%     \end{split}
+% \end{equation}
 
-where $S\in\left\{0,1\right\} $ denotes the sign, $d_{1}\ldots d_{52} \in \left\{0,1\right\}^{52} $ denotes the mantissa (with implicit value of $1$ at the first bit), $e_{1}\ldots e_{11} \in \left\{0,1\right\}^{11} $ denotes the binary representation of exponent (with $1023$ as an offset).
+% where $S\in\left\{0,1\right\} $ denotes the sign, $d_{1}\ldots d_{52} \in \left\{0,1\right\}^{52} $ denotes the mantissa (with implicit value of $1$ at the first bit), $e_{1}\ldots e_{11} \in \left\{0,1\right\}^{11} $ denotes the binary representation of exponent (with $1023$ as an offset).
 
-\textbf{Fixed-Point Representation.}
-Fixed-point numbers are rational numbers represented as $k$-bit digits with an $e$-bit integer part (including sign bit $s$) and a $f$-bit fraction part as follows:
-\begin{equation}
-    \begin{split}
-        s \cdot \left(d_{e-2}\ldots d_0. d_{-1}\ldots d_{-f}\right) ,
-    \end{split}
-\end{equation}
-where $s \in \left\{-1,1\right\} $ and $e=k-f$.
+% \paragraph{Fixed-Point Representation.}
+% Fixed-point numbers are rational numbers represented as $k$-bit digits with an $e$-bit integer part (including sign bit $s$) and a $f$-bit fraction part as follows:
+% \begin{equation}
+%     \begin{split}
+%         s \cdot \left(d_{e-2}\ldots d_0. d_{-1}\ldots d_{-f}\right) ,
+%     \end{split}
+% \end{equation}
+% where $s \in \left\{-1,1\right\} $ and $e=k-f$.
 
 
 \subsection{Traditional Techniques for Privacy Preservation}
 \label{subsec:TraditionalTechniquesforPrivacyPreservation}
-\CHANGED{revised based on feedback}
-Suppose a fictitious hospital has collected massive data from thousands of patients and wants to make the data available to academic researchers such as data analysts. However, the data contains sensitive information of the patients, e.g., $Zip Code$, $Age$, $Nationality$ and $Health Condition$. Because the hospital has an obligation, e.g., due to the EU General Data Protection Regulation (GDPR)~\cite{voigt2017eu}, to preserve the privacy of the patients, it must take specific privacy preservation measures before releasing the data to academic researchers.
+% \CHANGED{revised based on feedback}
+Before differential privacy~\cite{dwork2006differential, dwork2006calibrating} became the leading method for controlling information disclosure, researchers had proposed approaches for privacy preservation. We briefly introduced several techniques with an adapted example from work~\cite{li2007t}.
 
-Let us assume that the released data is already anonymized by removing the identifying features such as the name and social security number (SSN) of the patients.
-\autoref{tabular:inpatientmicrodata} shows the anonymized medical records from the fictitious hospital. The attributes are divided into two groups: the non-sensitive attributes and the sensitive attribute. The value of the sensitive attributes must be kept secret for each individual in the records. We want to guarantee that no attacker can identify the patient and discover his $Condition$ by combining the records with other publicly available information.
+Suppose a fictitious hospital has collected massive data from thousands of patients and wants to make the data available to academic researchers. However, the data contains sensitive information of the patients, such as Zip Code, Age, Nationality, and Health Condition. Because the hospital has an obligation, e.g., due to the EU General Data Protection Regulation (GDPR)~\cite{voigt2017eu}, to preserve the privacy of the patients, it must carry specific privacy preservation measures before releasing the data to academic researchers.
+Let us assume that the released data is already anonymized by removing the identifying features such as the name and social security number of the patients as \autoref{tabular:inpatientmicrodata} shows. The remaining attributes are divided into two groups: the non-sensitive attributes and the sensitive attribute. The value of the sensitive attributes must be kept secret for each individual in the records. However, the adversary can still identify the patient and discover his Condition by combining the records with other publicly available information.
 
 \begin{table}[htbp]
     \centering
@@ -535,9 +540,9 @@ Let us assume that the released data is already anonymized by removing the ident
 \end{table}
 \FloatBarrier
 
-A typical attack is the re-identification attack~\cite{sweeney1997weaving} that combines the released anonymized data with publicly available information to re-identify individuals. One traditional approach against the re-identification attacks is to deploy privacy preservation methods that satisfy the notion of $k-anonymity$~\cite{samarati1998protecting} to anonymize the data and prevent the data subjects from being re-identified. More specifically, the $k-anonymity$ requires that for all individuals whose information appears in the dataset, each individual's information cannot be distinguished from at least $k-1$ other individuals.
-
-Samarati et al.~\cite{samarati1998protecting} introduced two techniques to achieve $k-anonymity$: data generalization and suppression. The former method makes the data less informative by mapping specific attribute values to a broader value range, and the latter method removes specific attribute values. As~\autoref{tabular:4-anonymousinpatientmicrodata} shows, the values of attribute $Age$ in the first eight records are replaced by value ranges such as $<30$ and $\geq 40$ after generalization. The values of attribute $Nationality$ are suppressed by being replaced with $*$. Finally, the records in \autoref{tabular:4-anonymousinpatientmicrodata} satisfy the $4-anonymity$ requirement. For example, given one patient's non-sensitive attribute values (e.g., $Zip Code$: $130**$, $Age$: $<30$), there are at least three other patients with the same non-sensitive attribute values.
+\paragraph{k-anonymity.}
+A typical attack is the re-identification attack~\cite{sweeney1997weaving} that combines the released anonymized data with publicly available information to re-identify individuals. One approach against such re-identification attacks is to deploy privacy preservation methods that satisfy the notion of \textit{k-anonymity}~\cite{samarati1998protecting}. Specifically, the \textit{k-anonymity} requires that for all individuals whose information appears in the dataset, each individual's information cannot be distinguished from at least $k-1$ other individuals.
+Samarati et al.~\cite{samarati1998protecting} introduced two techniques to achieve \textit{k-anonymity}: data generalization and data suppression. The former makes the data less informative by mapping the attribute values to a broader value range, and the latter removes specific attribute values. As~\autoref{tabular:4-anonymousinpatientmicrodata} shows, the values of Age in the first eight records are replaced by the value ranges such as $<30$ and $\geq 40$ after generalization. The values of Nationality are suppressed by being replaced with $*$. Finally, the records in \autoref{tabular:4-anonymousinpatientmicrodata} satisfy the \textit{4-anonymity} requirement. For example, given one patient's non-sensitive attribute values (e.g., Zip Code: $130**$ and Age: $<30$), there are at least three other patients with the same non-sensitive attribute values.
 
 
 
@@ -565,7 +570,12 @@ Samarati et al.~\cite{samarati1998protecting} introduced two techniques to achie
 \end{table}
 \FloatBarrier
 
-$k-anonymity$ alleviates re-identification attacks but is still vulnerable to the so-called homogeneity attacks and background knowledge attacks~\cite{machanavajjhala2007diversity}. One example for the background knowledge attack is that, suppose we know one patient who is about thirty years old, has visited the hospital and his record is in~\autoref{tabular:4-anonymousinpatientmicrodata}, then we could conclude that he has cancer. Afterward, $l-Diversity$~\cite{machanavajjhala2007diversity} was proposed to overcome the shortcoming of $k-anonymity$ by preventing the homogeneity of sensitive attributes in the equivalent classes. Specifically, $l-Diversity$ requires that there exist at least $l$ different values for the sensitive attribute in every equivalent class as \autoref{tabular:3-diverseinpatientmicrodata} shows. However, the definition of $l-Diversity$ is proved to suffer from other attacks~\cite{li2007t}. Then, in 2007, Li et al.~\cite{li2007t} introduced the concept of $t-closeness$ as an enhancement of $l-diversity$. $t-closeness$ that requires the distance (e.g., Kullback-Leibler distance~\cite{kullback1951information} or Earth Mover's distance~\cite{rubner2000earth}) between the distribution of the sensitive attributes in each equivalent class differs from the distribution of the sensitive attributes in the whole table to be less than the given threshold $t$. However, $t-closeness$ was later showed to significantly affect the quantity of valuable information the released data contains by Li et al.~\cite{li2009closeness}.
+
+\paragraph{l-Diversity.}
+Although \textit{k-anonymity} alleviates re-identification attacks, it is still vulnerable to the so-called homogeneity attacks and background knowledge attacks~\cite{machanavajjhala2007diversity}. Suppose we know one patient about thirty years old has visited the hospital, and his record appears in~\autoref{tabular:4-anonymousinpatientmicrodata}, then we could conclude that he has cancer. Afterward, the notion \textit{l-Diversity}~\cite{machanavajjhala2007diversity} was proposed to overcome the shortcoming of \textit{k-anonymity} by preventing the homogeneity of sensitive attributes in the \textit{equivalent} classes. Specifically, \textit{l-Diversity} requires that there exist at least $l$ different values for the sensitive attribute in each equivalent class. As \autoref{tabular:3-diverseinpatientmicrodata} shows, an adversary cannot infer if a man (with Zip Code: $1305*$ and Age $31$) has cancer or viral infection, even though it is very unlikely for a man who is less than forty years old to have heart disease.
+
+\paragraph{t-closeness.}
+However, the definition of \textit{l-Diversity} was later proved to suffer from attacks by Li et al.~\cite{li2007t}, who introduced the concept of \textit{t-closeness} as an enhancement of \textit{l-Diversity}. \textit{t-closeness} requires that the distance between the distribution of the sensitive attributes in each equivalent class and the distribution of the sensitive attributes in the whole table to be less than a given threshold. The distance can be measured by the Kullback-Leibler distance~\cite{kullback1951information} or Earth Mover's distance~\cite{rubner2000earth}. However, Li et al.~\cite{li2009closeness} showed that \textit{t-closeness} significantly affects the quantity of the valuable information in the released data.
 
 \begin{table}[htbp]
     \centering
@@ -591,38 +601,38 @@ $k-anonymity$ alleviates re-identification attacks but is still vulnerable to th
 \end{table}
 \FloatBarrier
 
-Instead of releasing anonymized data, a more promising method is to limit the data analyst's access by deploying a curator who manages all the individual's data in a database. The curator answers the data analysts' queries, protects each individual's privacy, and ensures that the database can provide statistically useful information. However, protecting privacy in such a system is nontrivial. For instance, the curator must prohibit queries targeting a specific individual, such as "Does Bob suffers from heart disease?". In addition, a single query that seems not to target individuals may still leak sensitive information when several such queries are combined. Instead of releasing the actual query result, releasing approximate statistics could prevent the above attack. However, Dinur et al.~\cite{dinur2003revealing} showed that the adversary could reconstruct the entire database when sufficient queries were allowed and the approximate statistics error was bound to a certain level. Therefore, there are fundamental limits between what privacy protection can achieve and what useful statistical information the queries can provide.
-Finally, the problem turns into finding a theory that can interpret the relation between preserving privacy and providing valuable statistical information. Differential privacy~\cite{dwork2006differential} is a robust definition that can support quantitative analysis of how much useful statistical information should be released while preserving a desired level of privacy.
+Instead of releasing anonymized data, a more promising method is to limit the data analyst's access by deploying a curator who manages all the individual's data in a database. The curator answers the data analysts' queries, protects each individual's privacy, and ensures that the database can provide statistically useful information. However, it is non-trivial to build such a privacy-preserving system. For instance, the curator must prohibit queries targeting a specific individual, such as "Does Bob suffers from heart disease?". In addition, a single query that seems not to target individuals may still leak sensitive information when several such queries are combined. Instead of releasing the actual query result, releasing approximate statistics may protect privacy to some extend. However, Dinur and Nissim~\cite{dinur2003revealing} demonstrated that the adversary could still reconstruct the entire database when sufficient queries were allowed, and the approximate statistics error was bound to a certain level. Therefore, there are fundamental limits between what privacy protection can achieve and what useful statistical information the queries can provide.
+% The problem turns into building a theory that can interpret the relation between privacy preserving and providing valuable statistical information. 
+Differential privacy~\cite{dwork2006differential, dwork2006calibrating} is a robust definition that supports quantitative analysis of the amount of useful statistical information to be released while preserving a desired level of privacy.
 
 
 \subsection{Differential Privacy Formalization}
 
 \subsubsection{Randomized Response}
 \label{subsubsection:randomizedresponse}
-In this part, we introduce differential privacy and start with a very early differentially private algorithm, the Randomized Response~\cite{dinur2003revealing}.
-
-We adapt an example from~\cite{KamathLec3AlgorithmsrivateDataAnalysis} to illustrate the basic idea of Randomized Response.
-Suppose a psychologist wishes to study the psychological impact of cheating on high school students. The psychologist first needs to find out the number of students who have cheated. Undoubtedly, most students would not admit honestly if they had cheated in exams. More precisely, suppose there are $n$ students, and each student has a sensitive information bit $X_{i}\in \left\{ 0,1\right\} $, where $0$ denotes $never cheated$ and $1$ denotes $have cheated$. Every student want to keep their sensitive information $X_{i}$ secret, but they need to answer whether they have cheated. Then, each student sends the psychologist an answer $Y_{i}$ which may be equal to $X_{i}$ or a random bit. Finally, the psychologist collects all the answers and tries to get an accurate estimation of the fraction of cheating students $CheatFraction=\frac{1}{n}\sum ^{n}_{i=1}X_{i}$. \\
-The strategy of students can be expressed with following formulas:
+In this part, we introduce differential privacy with a very early differentially private algorithm, the Randomized Response~\cite{warner1965randomized} using an example adapted from~\cite{KamathLec3AlgorithmsrivateDataAnalysis}.
+Suppose a psychologist wishes to study the psychological impact of cheating on high school students. The psychologist needs to find out the number of students who have cheated. Undoubtedly, most students would not admit if they had cheated in exams. Suppose there are $n$ students, and each student has a sensitive information bit $X_{i}\in \left\{ 0,1\right\} $, where $0$ denotes \textit{never cheated} and $1$ denotes \textit{cheated}. Every student want to keep their sensitive information $X_{i}$ secret, but they still need to answer whether they have cheated. Then, each student sends the psychologist an answer $Y_{i}$ that equals to $X_{i}$ or a random bit. Finally, the psychologist collects all the answers and estimates the fraction of cheating students $\overline{C}=\frac{1}{n}\sum ^{n}_{i=1}X_{i}$. \\
+The students can apply following strategy:
 
 \begin{equation}
     Y_{i}=
-    \begin{cases}X_{i}   & \text { with probability } p   \\
-             1-X_{i} & \text { with probability } 1-p
+    \begin{cases}X_{i}   & \textit { with probability } p   \\
+             1-X_{i} & \textit { with probability } 1-p
     \end{cases}
 \end{equation}
 
-Where $p$ is the probability that student $i$ honestly answers the question.
+where $p$ is the probability that a student honestly answers the question.
 
-Suppose all students take the same strategy to answer the question either honestly ($p=1$) or dishonestly ($p=0$). Then, the psychologist could infer their sensitive information bit exactly since he knows if they are all lying or not. To protect the sensitive information bit $X_{i}$, the students have to take another strategy by setting $p=\frac{1}{2}$, i.e., each student either answers honestly or lies but with equal probability. In this way, the answer $Y_{i}$ does not depend on $X_{i}$ any more and the psychologist could not infer anything about $X_{i}$ through $Y_{i}$. Therefore, $\frac{1}{n}\sum ^{n}_{i=1}Y_{i}$  is distributed as a binomial random variable $bino \sim \frac{1}{n} Binomial\left(n,\frac{1}{2}\right)$ and completely independent of $CheatFraction$.
+Suppose all students use the same strategy and answer either honestly ($p=1$) or dishonestly ($p=0$). Then, the psychologist could infer their sensitive information bit exactly since he knows if they are all lying or not. Hence, students have to take another strategy by setting $p=\frac{1}{2}$, i.e., each student answers honestly or lies with the same probability. Note that the answer $Y_{i}$ does not depend on $X_{i}$ any more and the psychologist could not infer anything about $X_{i}$. Further, $\frac{1}{n}\sum ^{n}_{i=1}Y_{i}$  is a binomial random variable $\frac{1}{n}\sum ^{n}_{i=1}Y_{i} \sim \frac{1}{n} \cdot Binomial\left(n,\frac{1}{2}\right)$ and completely independent of $\overline{C}$.
 
-So far, we have explored two strategies: the first strategy ($p=0$, $1$) leads to a completely accurate answer but is not privacy preserving, and the second strategy ($p=\frac{1}{2}$) is perfectly private but not accurate. A more practical strategy is to find the trade-off between two strategies by setting $p=\frac{1}{2}+\gamma$, where $\gamma \in \left[ 0 ,\frac{1}{2}\right] $. $\gamma=\frac{1}{2}$ corresponds to the first strategy where all students are honest, and $\gamma=0$ corresponds to the second strategy where everyone answers randomly. Therefore, the students can increase their privacy protection level by setting $\gamma \to 0$ or provide more accurate result by setting $\gamma \to \frac{1}{2}$.
-To measure the accuracy of this strategy, we start with the $Y_{i}$’s expectation $\mathbb{E}\left[ Y_{i}\right] =2\gamma X_{i}+\frac{1}{2}-\gamma$, thus $\mathbb{E} \left[ \frac{1}{2\gamma } \left(Y_{i}-\frac{1}{2}+\gamma \right) \right] =X_{i}$. For sample mean $\tilde{C}=\frac{1}{n}\sum ^{n}_{i=1}\left[ \frac{1}{2\gamma}\left( Y_{i}-\frac{1}{2}+\gamma \right) \right] $, we have $\mathbb{E}\left[ \tilde{C}\right] =CheatFraction$. The variance of $\tilde{C}$ is
+So far, we have explored two strategies: the first strategy ($p=\left\{0,1\right\} $) leads to an accurate answer but is not privacy-preserving, while the second strategy ($p=\frac{1}{2}$) is perfectly private but delivers useless information. A more practical strategy is to find the trade-off between two strategies by setting $p=\frac{1}{2}+\gamma$, where $\gamma \in \left[ 0 ,\frac{1}{2}\right] $. $\gamma=\frac{1}{2}$ corresponds to the first strategy where all students are honest, and $\gamma=0$ corresponds to the second strategy where everyone answers randomly. The students can increase their privacy protection level by setting $\gamma \to 0$ or provide more accurate result by increasing $\gamma \to \frac{1}{2}$.
+
+To measure the accuracy of the strategy, we start with the $Y_{i}$’s expectation $\mathbb{E}\left[ Y_{i}\right] =2\gamma X_{i}+\frac{1}{2}-\gamma$, then we obtain $\mathbb{E} \left[ \frac{1}{2\gamma } \left(Y_{i}-\frac{1}{2}+\gamma \right) \right] =X_{i}$. Next, we compute the sample mean $\tilde{C}=\frac{1}{n}\sum ^{n}_{i=1}\left[ \frac{1}{2\gamma}\left( Y_{i}-\frac{1}{2}+\gamma \right) \right] $, where $\mathbb{E}\left[ \tilde{C}\right] =\overline{C}$. The variance of $\tilde{C}$ is computed as follows:
 
 \begin{equation}
     Var\left[ \tilde{C}\right] =Var\left[\frac{1}{n}\sum ^{n}_{i= 1}\left[ \frac{1}{2\gamma }\left( Y_{i}-\frac{1}{2}+\gamma \right) \right]\right] =\frac{1}{4\gamma^{2}n^{2}}\sum ^{n}_{i=1}Var\left[ Y_{i}\right].
 \end{equation}
-Since $Y_{i}$ is a Bernoulli random variable, we have $Var\left[Y_i\right] =p\left(1-p\right)\leq\frac{1}{4} $ and
+As $Y_{i}\sim Bern\left(p\right) $, we have $Var\left[Y_i\right] =p\left(1-p\right)\leq\frac{1}{4} $ and
 
 \begin{equation}
     \begin{split}
@@ -641,28 +651,25 @@ For $t=O\left(\frac{1}{\gamma\sqrt{n}}\right) $, we have
 
 \begin{equation}
     \begin{split}
-        \Pr \left(\left| \tilde{C}-CheatFraction\right| \geq O\left( \frac{1}{\gamma\sqrt{n}}\right)\right) \leq O\left(1\right) \\
-        \Pr \left(\left| \tilde{C}-CheatFraction\right| \leq O\left( \frac{1}{\gamma\sqrt{n}}\right)\right) \geq O\left(1\right) ,
+        \Pr \left(\left| \tilde{C}-\overline{C}\right| \geq O\left( \frac{1}{\gamma\sqrt{n}}\right)\right) \leq O\left(1\right), \\
+        \Pr \left(\left| \tilde{C}-\overline{C}\right| \leq O\left( \frac{1}{\gamma\sqrt{n}}\right)\right) \geq O\left(1\right) ,
     \end{split}
 \end{equation}
 
-and $\left| \tilde{C}-CheatFraction\right| \leq O\left( \frac{1}{\gamma\sqrt{n}}\right)$ with high probability.
-The error term $\left| \tilde{C}-CheatFraction\right| \to 0$ as $n \to \infty$ with high probability.
-The conclusion is that the error increases as the privacy protection level increases $\gamma \to 0$. To maintain accuracy, more data $n \to \infty$ is needed. To further quantify the privacy and accuracy, we need to define differential privacy.
+and $\left| \tilde{C}-\overline{C}\right| \leq O\left( \frac{1}{\gamma\sqrt{n}}\right)$ with high probability.
+Note that the error $\left| \tilde{C}-\overline{C}\right| \to 0$ as $n \to \infty$ with high probability. Therefore, to reduce the error, we need to either decrease the privacy protection level $\gamma \to 0.5$ or increase the number of students $n$.
+% To further quantify the relation between privacy and accuracy, we need to define differential privacy.
 
-
-
-For the formalization of differential privacy, we adapted the terms and definitions from~\cite{dwork2014algorithmic}.
 
 \subsubsection{Terms and Definitions}
+We adapted the terms and definitions from~\cite{dwork2014algorithmic} to formalize the definition of differential privacy.
 
-\emph{Database}. The database $D$ consists of $n$ entries of data from a data universe $\mathcal{X}$ and is denoted by $D\in \mathcal{X}^{n}$. In the following, we will use the words database and dataset interchangeably.
-
-Take \autoref{tabular:databaseexample} as an example. The database contains the names and exam scores of five students. The database is represented by its rows. The data universe $\mathcal{X}$ contains all the combinations of student names and exam scores.
+\textbf{Database.} The database $D$ consists of $n$ entries of data from a data universe $\mathcal{X}$ and is denoted by $D\in \mathcal{X}^{n}$. In the following, we will use the words database and dataset interchangeably.
+The database in \autoref{tabular:databaseexample} contains five students' names and exam scores. The database is represented by its rows, and the data universe $\mathcal{X}$ contains all the combinations of student names and exam scores.
 
 \begin{table}[tbh!]
     \centering
-    \begin{tabular}{|l|l|}
+    \begin{tabular}{|l|r|}
         \hline
         Name    & Score \\
         \hline
@@ -677,74 +684,75 @@ Take \autoref{tabular:databaseexample} as an example. The database contains the 
         Evy     & 70    \\
         \hline
     \end{tabular}
-    \caption{Database example.}
+    \caption{Database of five students.}
     \label{tabular:databaseexample}
 \end{table}
 \FloatBarrier
 
 
-\emph{Data Curator}. A data curator is trusted to manage and organize the database, and its primary goal is to ensure that the database can be reused reliably. In terms of differential privacy, the data curator is responsible for preserving the privacy of individuals represented in the database. The curator can also be replaced by cryptographic protocols such as secure multiparty protocols~\cite{goldreich1987play}.
+\textbf{Data Curator.} A data curator is trusted to manage and organize the database. Its primary goal is to ensure that the database can provide useful information and preserve privacy after multiply queries. The curator can be simulated with cryptographic protocols such as \smpc~\cite{goldreich1987play}.
 
-\emph{Adversary}. The adversary plays the role of a data analyst interested in learning sensitive information about the individuals in the database. In differential privacy, any legitimate data analyst of the database can be an adversary.
+\textbf{Adversary.} The adversary plays the role of a data analyst interested in learning sensitive information about the individuals in the database. In differential privacy, any legitimate data analyst of the database can be an adversary.
 
-\begin{definition}[Privacy Mechanism~\cite{dwork2014algorithmic}]
-    A privacy mechanism $M:\mathcal{X}^{n}\times \mathcal{Q}\rightarrow \mathcal{Y}$ is an algorithm that takes databases, queries as input and produces an output string,
+\begin{definition}[Mechanism~\cite{dwork2014algorithmic}]
+    A mechanism $M:\mathcal{X}^{n}\times \mathcal{Q}\rightarrow \mathcal{Y}$ is an algorithm that takes databases, queries as input and produces an output string,
     where $\mathcal{Q}$ is the query space and $\mathcal{Y}$ is the output space of $M$.
 \end{definition}
-
-The query process is as \autoref{img:DPsetting} shows, a data curator manages the database and provides an interface that deploys a privacy mechanism for a data analyst/adversary to query. After the querying, the data analyst/adversary receives an output.
+The query process is as \autoref{img:DPsetting} shows, a data curator manages the database and provides an interface that deploys a mechanism for the data analyst/adversary to query. After the querying, the data analyst/adversary receives an output.
 
 \begin{figure}[htbp]
     \includegraphics[width=\textwidth]{DP_setting}
     \centering
-    \caption{DP setting.}
+    \caption{Query process of a database.}
     \label{img:DPsetting}
 \end{figure}
 \FloatBarrier
 % --------------------------------------------------------------------------
 
 \begin{definition}[Neighboring Databases~\cite{dwork2014algorithmic}]
-    Two databases $D_{0}$, $D_{1}\in \mathcal{X}^{n}$  are called neighboring if they differ in exact one entry. This is expressed as $D_{0}\sim D_{1}$.
+    Two databases $D_{0}$, $D_{1}\in \mathcal{X}^{n}$  are called neighboring databases if they differ in exact one entry, which is expressed as $D_{0}\sim D_{1}$.
+    \label{def:NeighboringDatabases}
 \end{definition}
 
 \begin{definition}[Differential Privacy~\cite{dwork2014algorithmic}]
-    A privacy mechanism $M:\mathcal{X}^{n}\times \mathcal{Q}\rightarrow \mathcal{Y}$ is $\left( \varepsilon ,\delta \right)$-differential privacy if for any two neighboring databases $D_{1}$, $D_{1}\in \mathcal{X}^{n}$, and for all $T\subseteq \mathcal{Y}$, we have $\Pr \left[ M\left( D_{0}\right) \in T\right] \leq e^{\varepsilon}\cdot \Pr \left[ M\left( D_{1}\right) \in T\right] +\delta$ ,
+    A mechanism $M:\mathcal{X}^{n}\times \mathcal{Q}\rightarrow \mathcal{Y}$ is said to satisfy $\left( \varepsilon ,\delta \right)$-differential privacy if for any two neighboring databases $D_{1}$, $D_{1}\in \mathcal{X}^{n}$, and for all $T\subseteq \mathcal{Y}$,
+    \[\Pr \left[ M\left( D_{0}\right) \in T\right] \leq e^{\varepsilon}\cdot \Pr \left[ M\left( D_{1}\right) \in T\right] +\delta,\]
     where the randomness is over the choices made by $M$.
     \label{def:DP}
 \end{definition}
+Intuitively, differential privacy implies that the output distribution of mechanism $M$ is similar for all neighboring databases. $M$ is called $\varepsilon$-\differentialprivacy (or pure \differentialprivacy) for $\delta = 0$, and $\left(\varepsilon,\delta\right)$-\differentialprivacy (or approximate \differentialprivacy) for $\delta \neq 0$.
 
-Roughly, the differential privacy implies that the distribution of $M$'s output for all neighboring databases is similar. $M$ is called $\varepsilon$-DP (or pure DP) when $\delta = 0$, and $\left(\varepsilon,\delta\right)$-DP (or approximate DP) when $\delta \neq 0$.
-
-\begin{definition}[$L_{1}$ norm]
+\begin{definition}[$L_{1}$ Norm]
     The $L_{1}$ norm of a vector $\vec{X}=\left(x_1, x_2, \ldots,x_n \right)^{T}$ measures the sum of the magnitudes of the vectors $\vec{X}$ and is denoted by $\left\|\vec{X}\right\|_{1}=\sum ^{n}_{i=1}\left| x_{i}\right| $.
 \end{definition}
 
-\begin{definition}[$L_{2}$ norm]
+\begin{definition}[$L_{2}$ Norm]
     The $L_{2}$ norm of a vector $\vec{X}=\left(x_1, x_2, \ldots,x_n \right)^{T}$ measures the shortest distance of $\vec{X}$ to origin point and is denoted by $\left\|\vec{X}\right\|_{2}=\sqrt{\sum ^{n}_{i=1}x_{i}^{2}}$.
 \end{definition}
 
 \begin{definition}[$\ell_{t}$-sensitivity~\cite{dwork2014algorithmic}]
-    The $\ell_{t}$-sensitivity of a query $f : \mathcal{X}^{n} \rightarrow \mathbb{R}^{k}$ is deﬁned as $\Delta ^{\left(f\right)}_{t}=\max _{D_{0},D_{1}} \left\| f\left( D_{0}\right) -f\left( D_{1}\right) \right\| _{t}$, where $D_{0},D_{1}$ are neighboring databases and $t \in \left\{1,2\right\}$.
+    The $\ell_{t}$-sensitivity of a query function $f : \mathcal{X}^{n} \rightarrow \mathbb{R}^{k}$ is defined as $\Delta ^{\left(f\right)}_{t}=\max _{D_{0},D_{1}} \left\| f\left( D_{0}\right) -f\left( D_{1}\right) \right\| _{t}$ for $t \in \left\{1,2\right\}$, where $D_{0},D_{1}$ are neighboring databases.
     \label{def:sensitivity}
 \end{definition}
-Recall the Differential Privacy Definition \autoref{def:DP} attempts to \textit{blur} the contribution of any individual in the database using the notion of neighboring databases. Therefore, the sensitivity is a natural quantity when considering differential privacy since it calculates the upper bound of how much $f$ can change when modifying a single entry.
+Generally, the sensitivity calculates the upper bound of how much a query function $f$ can change when modifying a single entry using the notion of neighboring databases.
+
+
 
 
 \subsubsection{Motivating Example of Differential Privacy}
 \label{subsubsec:motivatingexampleDP}
-The previous example about randomized response \autoref{subsubsection:randomizedresponse} indicates that we need DP to solve the trade-off problem between learning useful statistics and preserving the individuals' privacy. In other words, the psychologist wants to find the fraction of students who have cheated in the exam while guaranteeing that no students suffer from privacy leakage by participating in the questionnaire.
-To illustrate how DP solves such problems, we adapt the example from~\cite{simpleexplanDP}.
-Consider a game as \autoref{prot:motivationexampleDP} shows,
+The previous example about randomized response \autoref{subsubsection:randomizedresponse} indicates that we can use \differentialprivacy to solve the trade-off problem between learning useful statistics and preserving the individuals' privacy.
+% To illustrate how \differentialprivacy solves such problems, we adapt an example from~\cite{simpleexplanDP} shown in \autoref{prot:motivationexampleDP}:
+To illustrate how \differentialprivacy solves such problems, we adapt an example~\footnote{https://win-vector.com/2015/10/02/a-simpler-explanation-of-differential-privacy/} shown in \autoref{prot:motivationexampleDP}:
 \begin{itemize}
-    \item A challenger implements a function $M$ that can calculate useful statistical information. An adversary proposes two data sets $D_{0}$ and $D_{1}$ that differ by only one entry and a test set $Q$.
-    \item Given $M\left( D_{0}\right) $, $M\left( D_{1}\right) $ in a random order, the adversary aims to differentiate $D_{0}$ and $D_{1}$. If the adversary succeeds, privacy is violated.
-    \item The challenger's goal is to choose $M$ such that $M\left( D_{0}\right) $ and $M\left( D_{1}\right) $ \textit{look} \textit{similar} to prevent them from being distinguished by the adversary.
-    \item $M$ is called $\varepsilon$-differentially private iff: $\left| \frac{\Pr \left[ M\left( D_{0}\right) \in Q\right] }{\Pr \left[ M\left( D_{1}\right) \in Q \right] }\right|\leq e^{\varepsilon}$.
+    \item An adversary proposes two datasets $D_{0}$ and $D_{1}$ that differ by exactly one entry and a test set $Q$. A challenger implements a mechanism $M$ that can compute useful statistical information with databases $D_{0}$ and $D_{1}$.
+    \item The challenger outputs $M\left( D_{0}\right) $, $M\left( D_{1}\right) $ to the adversary in a random order. The adversary aims to differentiate $D_{0}$ and $D_{1}$. The challenger's goal is to build a mechanism $M$ to prevent $M\left( D_{0}\right) $ and $M\left( D_{1}\right) $ from being distinguished by the adversary.
+    \item Mechanism $M$ is called $\varepsilon$-\differentialprivacy iff: $\left| \frac{\Pr \left[ M\left( D_{0}\right) \in Q\right] }{\Pr \left[ M\left( D_{1}\right) \in Q \right] }\right|\leq e^{\varepsilon}$.
 \end{itemize}
 
 \begin{protocol}[tbh!]
     \centering
-    \fbox{\pseudocode[space=none, syntaxhighlight=auto, addkeywords={input, output}]{%
+    \fbox{\pseudocode[space=none, syntaxhighlight=auto, addkeywords={input, output, otherwise, wins}]{%
     \textbf{Challenger $C$} \< \< \textbf{Adversary $A$} \\[0.1\baselineskip][\hline]
     \<\< \\[-0.5\baselineskip]
     \text{input: $M$} \< \< \text{input: $D_0$, $D_1$, $Q$ }\\
@@ -752,25 +760,25 @@ Consider a game as \autoref{prot:motivationexampleDP} shows,
     \text{$b \sample \bin$} \< \< \\
     \text{$M\left(D_{b}\right)$, $M\left(D_{1-b}\right)$} \< \< \\
     \< \sendmessageright{top={$M\left(D_{b}\right)$, $M\left(D_{1-b}\right)$}} \< \<  \\
-    \< \< \text{$b^{\prime}=0$, if $M\left(D_{1-b}\right) \in Q $} \\
-    \< \< \text{$b^{\prime}=1$, otherwise} \\
+    \< \< \text{$b^{\prime} \gets 0$, if $M\left(D_{1-b}\right) \in Q $} \\
+    \< \< \text{$b^{\prime}\gets 1$, otherwise} \\
     \< \< \text{if $b==b^{\prime}$, $A$ wins.}
     }}
-    \caption{A motivating example of differential privacy.}
+    \caption{A example of differentially privace mechanism.}
     \label{prot:motivationexampleDP}
 \end{protocol}
 \FloatBarrier
 
-Suppose the adversary $A$ has chosen two data sets:
+Suppose the adversary $A$ has chosen the following databases:
 \begin{itemize}
     \item $D_{0}=\left\{ 0, 0, 0,\ldots ,0\right\} $ ($100$ zeros)
     \item $D_{1}=\left\{ 1, 0, 0,\ldots ,0\right\} $ ($0$ one and $99$ zeroes).
 \end{itemize}
 
-The testing set $Q$ is an interval $\left[ T,1\right] $, where the threshold $T$ is chosen by the adversary. The threshold $T$ is chosen such that when the adversary has $T<M\left( D\right) < 1$, he knows $M$ has input $D=D_{1}$ (or $D=D_{0}$, when $0<M\left( S\right) \leq T$) .
+The test set $Q$ is an interval $\left[ T,1\right] $ with a threshold $T$. After choosing the threshold $T$, the adversary output $b^{\prime} \gets 0$ when $T<M\left( D_{1-b}\right) < 1$, or $b^{\prime} \gets 1$ when $0<M\left( D_{1-b}\right) \leq T$. The adversary's goal is to find a \textit{good} threshold $T$ that helps him output a $b^{\prime}$ that equals $b$ with high probability and win the game.
 
 \textbf{The Deterministic Case.}
-Suppose the challenger wants to calculate the mean value of data sets and chooses $M\left( D\right) =mean\left( D \right) $. Since $M\left( D_{0}\right) =0$ and $M\left( D_{1}\right) =0.01$, the adversary can set $Q =\left[ 0.005,1\right] $ and identify precisely the database $D$ used in $M\left( D\right) $ every time they play the game. In \autoref{img:DPexamplenoisefree}, the blue line represents the distribution of $M\left( D_{0}\right)$, whereas the orange line represents the distribution of $M\left( D_{1}\right)$ (plotted upside down for clarity). The vertical dotted line represents the threshold $T=0.005$ which separates $D_{0}$ and $D_{1}$ perfectly.
+Suppose mechanism $M$ compute the mean value of the given databases $D_0$ and $D_1$, where $M\left( D_{0}\right) =0$ and $M\left( D_{1}\right) =0.01$. The adversary can set the test set $Q =\left[ 0.005,1\right] $ win every game. In \autoref{img:DPexamplenoisefree}, the blue line represents the value of $M\left( D_{0}\right)$, whereas the orange line represents the value of $M\left( D_{1}\right)$ (plotted upside down for clarity). The vertical dotted line is the threshold $T=0.005$ that separates $D_{0}$ and $D_{1}$ correctly.
 
 \begin{figure}[htbp]
     \includegraphics[width=10cm]{DPexamplenoisefree}
@@ -781,8 +789,7 @@ Suppose the challenger wants to calculate the mean value of data sets and choose
 \FloatBarrier
 
 \textbf{The Indeterministic Case.}
-The challenger needs to take some measures to \textit{blur} the difference between $M\left( D_{0}\right)$ and $M\left( D_{1}\right)$. Suppose the challenger decides to add Laplace noise $lap\sim Laplace\left(b=0.05\right)$ to the result of $M\left(D\right)$ as \autoref{img:DPexamplesmallnoise} shows. The shaded blue region is the chance that $M\left( D_{0}\right)$ would return a value greater than the adversary's threshold $T$. In other words, the probability that the adversary would mistake $D_{0}$ for $D_{1}$. In contrast, the shaded orange area is the probability that the adversary identify $D$ as $D_{1}$. The challenger can decrease the adversary's probability of winning by adding more noise as \autoref{img:DPexamplelargenoise} shows, where the shaded blue and orange areas are almost of the same size. Comparing $M\left( D\right)$ with $T$ is no longer reliable to distinguish $D_{0}$ and $D_{1}$. In fact, we have
-$\varepsilon=\log \left( \frac{\text{blue area}}{\text{orange area}}\right) $, where $\varepsilon$ expresses the degree of differential privacy and a smaller $\varepsilon$ guarantees a stronger privacy protection. Although the challenger can add more noise to decrease the adversary's success probability, the mean estimation accuracy is also decreased.
+The challenger takes some measures to \textit{blur} the outputs of $M\left( D_{0}\right)$ and $M\left( D_{1}\right)$ and make them hard to differentiate. Suppose the challenger decides to add the Laplace noise $lap\sim Laplace\left(b=0.05\right)$ to the result of $M\left(D\right)$ as \autoref{img:DPexamplesmallnoise} shows. The shaded blue region is the probability that $M\left( D_{0}\right)$ returns a value greater than the threshold $T$, and the adversary mistakes $D_{0}$ for $D_{1}$. In contrast, the shaded orange area is the probability that the adversary identify $D_{1}$ successfully. The challenger can decrease the adversary's success probability by adding stronger noise as \autoref{img:DPexamplelargenoise} shows, where the shaded blue and orange areas are almost of the same size. In fact, we have $\varepsilon=\left\lvert \ln \left( \frac{\textit{blue area}}{\textit{orange area}}\right)\right\rvert  $, where $\varepsilon$ describes the degree of differential privacy. A smaller $\varepsilon$ indicates a stronger privacy protection. Note that the challenger can add more noise to decrease the adversary's success probability, but the accuracy of the mean estimation decreases.
 
 
 \TODO{need reproduce following figures}
@@ -802,43 +809,55 @@ $\varepsilon=\log \left( \frac{\text{blue area}}{\text{orange area}}\right) $, w
 \end{figure}
 \FloatBarrier
 
-\subsubsection{Properties of Differential Privacy}
-% One reason for the success of differential privacy is its convenient properties which make it possible to deploy differentially private mechanisms in a modular fashion.
-
-\paragraph{Post-Processing}
-\begin{theorem} Let $M:\mathcal{X}^{n} \rightarrow \mathcal{Y}$ be $\left( \varepsilon ,\delta \right)$-DP mechanism, and let $F:\mathcal{Y}\rightarrow \mathcal{Z}$  be an arbitrary randomized mapping. Then $F\circ M$ is $\left( \varepsilon ,\delta=0 \right)$-DP~\cite{dwork2014algorithmic}.
-\end{theorem}
-The Post-Porcessing properties implies the fact that once a database is privatized, it is still differentially private after further processing.
-
-\paragraph{Group Privacy}
-\begin{theorem} Let $M:\mathcal{X}^{n} \rightarrow \mathcal{Y}$ be $\left( \varepsilon ,\delta \right)$-DP mechanism. For all $T\subseteq \mathcal{Y}$, we have $\Pr \left[ M\left(D_{0}\right) +T\right] \leq e^{k \varepsilon}\cdot \Pr \left[ M\left( D_{1}\right) \in T\right] +\delta$, where $D_{0}$, $D_{1}\in \mathcal{X}^{n}$ are two databases that differ in exactly $k$ entries~\cite{dwork2014algorithmic}.
-\end{theorem}
-
-Differential privacy can also be defined when considering two databases with more than one entry differences. The larger privacy decay rate $e^{k\varepsilon}$ implies a smaller $\varepsilon$, where \textit{more} noise are necessary to guarantee the same level of privacy.
-
-\paragraph{Basic Composition}
-\begin{theorem}
-    Suppose $M=\left( M_{1}\ldots M_{k}\right)$  is a sequence of $\left( \varepsilon_{i} ,\delta_{i} \right)$-differentially private mechanisms, where $M_{i}$ is chosen sequentially and adaptively. Then $M$ is $\left(\sum_{i=1}^n\varepsilon_{i} ,\sum_{i=1}^n\delta_{i} \right)$-DP~\cite{dwork2014algorithmic}.
-\end{theorem}
-
-Basic Composition provides a way to evaluate the overall privacy when $k$ privacy mechanisms are applied on the same dataset and the results are released.
-
-% \subsection{Comparison between Differential Private Mechanisms}
 \subsubsection{Differentially Private Mechanisms}
 \label{subsubsec:DPMechanisms}
 
 Differential privacy is a formal framework to quantify the trade-off between privacy and the accuracy of query results. In this part, we introduce two common differentially private mechanisms.
 
-\paragraph{$\varepsilon$-Differential Privacy}
+% \paragraph{$\varepsilon$-Differential Privacy}
 \begin{definition}[Laplace Mechanism~\cite{dwork2014algorithmic}]\
     \label{def:laplaceMechanism}
     Let $f : \mathcal{X}^{n} \rightarrow \mathbb{R}^{k}$. The Laplace mechanism is defined as $M_{Lap}\left( X\right) =f\left( X\right) +\left( Y_{1},\ldots ,Y_{k}\right) $, where the $Y_{i}$ are independent Laplace random variables drawn from a Laplace distribution $Lap \left(  Y_{i}\,|\, b\right) =\frac{1}{2b}e^{\left( -\frac{\left  | Y_{i}\right|}{b}\right)} $ with $b=\frac{\Delta _{1}^{\left(f\right)}}{\varepsilon }$.
 \end{definition}
 
 \begin{theorem}
-    Laplace Mechanism preservers $\varepsilon$-DP~\cite{dwork2014algorithmic}.
+    The Laplace Mechanism satisfies $\varepsilon$-\differentialprivacy~\cite{dwork2014algorithmic}.
 \end{theorem}
 
+\begin{definition}[Gaussian Mechanism~\cite{dwork2014algorithmic}]
+    Let $f : \mathcal{X}^{n} \rightarrow \mathbb{R}^{k}$. The Gaussian mechanism is defined as $M\left( X\right) =f\left( X\right) +\left( Y_{1},\ldots ,Y_{k}\right) $, where the $Y_{i}$ are independent Gaussian random variables drawn from a Gaussian distribution $\mathcal{N}  \left(  Y_{i}\,|\, \mu ,\sigma ^{2}\right) =\frac{1}{\sigma \sqrt{2\pi }}e^{-\frac{1}{2}\left( \frac{Y_{i}-\mu}{\sigma }\right) ^{2}}$ with  $\mu=0$, $\sigma ^{2}=2\cdot \ln \left( \frac{1.25}{\delta }\cdot \left( \frac{ \Delta _{2}^{\left(f\right)}) ^{2}}{\varepsilon ^{2}}\right) \right)$ .
+    \label{def:gaussianMechanism}
+\end{definition}
+
+\begin{theorem}
+    The Gaussian mechanism satisfies $\left(\varepsilon,\delta\right)$-\differentialprivacy~\cite{dwork2014algorithmic}.
+\end{theorem}
+
+\subsubsection{Properties of Differential Privacy}
+We introduce three fundamental properties of \differentialprivacy~\cite{dwork2006differential, dwork2006calibrating} based on work~\cite{dwork2014algorithmic}.
+
+% \paragraph{Post-Processing}
+\begin{prop}[\textbf{Post-Processing}] Let $M:\mathcal{X}^{n} \rightarrow \mathcal{Y}$ be a $\left(\varepsilon,\delta \right)  $-\differentialprivacy mechanism, and let $F:\mathcal{Y}\rightarrow \mathcal{Z}$ be an arbitrary randomized mapping. Then $F\circ M$ is $\left(\varepsilon,\delta\right)  $-DP.
+    \label{prop:Post-Processing}
+\end{prop}
+The post-processing property implies that once a database is privatized, it is also differentially private after further processing.
+
+% \paragraph{Group Privacy}
+\begin{prop}[\textbf{Group Privacy}] Let $M:\mathcal{X}^{n} \rightarrow \mathcal{Y}$ be a $\left( \varepsilon ,\delta \right)$-\differentialprivacy mechanism. For all $T\subseteq \mathcal{Y}$,
+    \[\Pr \left[ M\left(D_{0}\right) +T\right] \leq e^{k \varepsilon}\cdot \Pr \left[ M\left( D_{1}\right) \in T\right] +\delta, \]
+    where $D_{0}$, $D_{1}\in \mathcal{X}^{n}$ are databases that differ in exactly $k$ entries.
+\end{prop}
+
+The group privacy property indicates that \differentialprivacy can also be extended to the case when two databases have more than one entry difference. However, as $k$ increases, the privacy decay rate $e^{k\varepsilon}$ also increases, which implies a weaker level of privacy protection.
+
+% \paragraph{Basic Composition}
+\begin{prop}[\textbf{Basic Composition}]
+    Suppose $M=\left( M_{1}\ldots M_{k}\right)$  is a sequence of $\left( \varepsilon_{i} ,\delta_{i} \right)$-\differentialprivacy mechanisms, where $M_{i}$ is chosen sequentially and adaptively. Then, $M$ is $\left(\sum_{i=1}^n\varepsilon_{i} ,\sum_{i=1}^n\delta_{i} \right)$-\differentialprivacy.
+\end{prop}
+
+The basic composition property provides a way to evaluate the overall privacy guarantee of the released result when $k$ \differentialprivacy mechanisms are applied to the same dataset.
+
+% \subsection{Comparison between Differential Private Mechanisms}
 
 
 % \begin{proof}
@@ -862,55 +881,60 @@ Differential privacy is a formal framework to quantify the trade-off between pri
 
 % From the definition of $\varepsilon$-DP, it is not difficult to see that $\varepsilon$-DP corresponds to $\left|\mathcal{L}_{D_{0}||D_{1}}\right|$ being bounded by $\varepsilon$ for all neighboring databases $D_{0}$, $D_{1}$. In other words, $\varepsilon$-DP says that the absolute value of the privacy loss random variable is bounded by $\varepsilon$ with probability 1.
 
-\paragraph{$\left(\varepsilon,\delta\right)$-Differential Privacy}
-$\varepsilon$-DP has strong privacy requirement which leads to adding too much noise and affecting the accuracy of the queries. We introduce an relaxation of $\varepsilon$-DP, $\left(\varepsilon,\delta\right)$-DP.
-
-\begin{definition}[Gaussian Mechanism~\cite{dwork2014algorithmic}]
-    Let $f : \mathcal{X}^{n} \rightarrow \mathbb{R}^{k}$. The Gaussian mechanism is defined as $M\left( X\right) =f\left( X\right) +\left( Y_{1},\ldots ,Y_{k}\right) $, where the $Y_{i}$ are independent Gaussian random variables drawn from distribution $\mathcal{N}  \left(  Y_{i}| \mu ,\sigma ^{2}\right) =\frac{1}{\sigma \sqrt{2\pi }}e^{-\frac{1}{2}\left( \frac{Y_{i}-\mu}{\sigma }\right) ^{2}}$ with  $\mu=0$, $\sigma ^{2}=2\ln \left( \frac{1.25}{\delta }\cdot \left( \frac{ \Delta _{2}^{\left(f\right)}) ^{2}}{\varepsilon ^{2}}\right) \right)$ .
-    \label{def:gaussianMechanism}
-\end{definition}
-
-Gaussian mechanism is proved to satisfy $\left(\varepsilon,\delta\right)$-DP~\cite{dwork2014algorithmic}.
+% \paragraph{$\left(\varepsilon,\delta\right)$-Differential Privacy}
+% $\varepsilon$-DP has strong privacy requirement which leads to adding too much noise and affecting the accuracy of the queries. We introduce an relaxation of $\varepsilon$-DP, $\left(\varepsilon,\delta\right)$-DP.
 
 
 
-\subsubsection{Discussion about Differential Privacy}
 
-\paragraph{Local and Central Differential Privacy}
-Differential privacy is a definition that can be realized in many ways. Two common modes of DP are centralized differential privacy~\cite{dwork2014algorithmic} and local differential privacy~\cite{dinur2003revealing}.
+% \subsubsection{Discussion about Differential Privacy}
 
-In centralized DP, all data is stored centrally and managed by a trusted curator before the differentially private mechanism is applied. As \autoref{img:DPcentral} shows, the raw data from clients is first collected in a centralized database, then, the curator applies the privacy mechanism and answers the queries $f\left(x\right)$ with $f^{\prime}\left(x\right)$.
-The local DP mode is, as \autoref{img:DPlocal} shows, where the clients first apply a privacy mechanism on their data, and send the perturbed data to the curator.
-An advantage of local DP mode is that no trusted central curator is needed since the data is perturbed independently before sending to the curator. However, the disadvantage is that the collected data contains redundant noise and may decrease the utility.
+% \paragraph{Local and Central Differential Privacy.}
+% Differential privacy is a definition that can be realized in many ways. Two common modes of DP are centralized differential privacy~\cite{dwork2014algorithmic} and local differential privacy~\cite{dinur2003revealing}.
 
-\TODO{reproduce following figures}
-\begin{figure}[htbp]
-    \includegraphics[width=10cm]{DPcentral}
-    \centering
-    \caption{Centralized DP mode.}
-    \label{img:DPcentral}
-\end{figure}
-\FloatBarrier
+% In centralized DP, all data is stored centrally and managed by a trusted curator before the differentially private mechanism is applied. As \autoref{img:DPcentral} shows, the raw data from clients is first collected in a centralized database, then, the curator applies the privacy mechanism and answers the queries $f\left(x\right)$ with $f^{\prime}\left(x\right)$.
+% The local DP mode is, as \autoref{img:DPlocal} shows, where the clients first apply a privacy mechanism on their data, and send the perturbed data to the curator.
+% An advantage of local DP mode is that no trusted central curator is needed since the data is perturbed independently before sending to the curator. However, the disadvantage is that the collected data contains redundant noise and may decrease the utility.
 
-\begin{figure}[htbp]
-    \includegraphics[width=10cm]{DPlocal}
-    \centering
-    \caption{Local DP mode.}
-    \label{img:DPlocal}
-\end{figure}
-\FloatBarrier
+% \TODO{reproduce following figures}
+% \begin{figure}[htbp]
+%     \includegraphics[width=10cm]{DPcentral}
+%     \centering
+%     \caption{Centralized DP mode.}
+%     \label{img:DPcentral}
+% \end{figure}
+% \FloatBarrier
+
+% \begin{figure}[htbp]
+%     \includegraphics[width=10cm]{DPlocal}
+%     \centering
+%     \caption{Local DP mode.}
+%     \label{img:DPlocal}
+% \end{figure}
+% \FloatBarrier
 
 
-\paragraph{Advantages of Differential Privacy}
-From the example \autoref{subsubsec:motivatingexampleDP}, we found that DP can still protect privacy even if the adversary has the knowledge of the database. Generally speaking, DP ensures privacy protection by making no assumption about the adversary's auxiliary information (even when the adversary is the data provider) or computational strategy (regarding the complexity of modern cryptography)~\cite{vadhan2017complexity}. In addition, DP provides a quantitive theory about safely releasing data and maintaining certain level of accuracy.
+% \paragraph{Advantages of Differential Privacy}
+% From the example \autoref{subsubsec:motivatingexampleDP}, we found that DP can still protect privacy even if the adversary has the knowledge of the database. Generally speaking, DP ensures privacy protection by making no assumption about the adversary's auxiliary information (even when the adversary is the data provider) or computational strategy (regarding the complexity of modern cryptography)~\cite{vadhan2017complexity}. In addition, DP provides a quantitive theory about safely releasing data and maintaining certain level of accuracy.
 
-\paragraph{Challenges of Differential Privacy}
+\subsubsection{Challenges of Differential Privacy}
 \label{subsubsec:challengesOfDP}
-DP provides a method to guarantee and quantify individual privacy at the theoretical level. However, it faces a series of practical challenges.
+Differential privacy provides a method to guarantee and quantify individual privacy at the theoretical level. However, it faces a series of challenges in practical application scenarios.
 
-\textbf{Sensitivity Calculation}. For certain types of data, the sensitivity is not difficult to calculate. Take a database with human ages as an example, the ages should be bounded between $0$ and $150$ (longest human lifespan is $122$ years and $164$ days according to~\cite{whitney_1997}). However, the data with an unbounded value range brings great challenges. A common solution is to roughly estimate the value range and limit the data within that range. For example, if the value range estimation is $\left[ a,b\right] $, then all values smaller than $a$ are replaced by $a$ and all values bigger than $b$ are replaced by $b$. Finally, the sensitivity of query function that outputs ages is ${b- a}$. If value range $\left[ a,b\right] $ is chosen too wide, the utility is potentially destroyed because of the large magnitude of the noise. If the value range $\left[ a,b\right] $ is chosen too narrow, the utility is also potentially decreased because too many values beyond $\left[ a,b\right] $ are truncated.
+\paragraph{Sensitivity Calculation.}
+As discussed in~\cite{subsubsec:DPMechanisms}, we first need to compute or estimate the sensitivity of the query function before applying \differentialprivacy mechanism. Take a database with human ages as an example, the ages should be bounded in the interval $\left[0,150\right] $ (the longest human lifespan is $122$ years and $164$ days according to~\cite{whitney_1997}). However, the data with an unbounded value range brings great challenges. A common solution is to roughly estimate a \textit{reasonable} value range and limit the data within that range. If the value range is chosen too wide (i.e., a larger sensitivity estimation), the \differentialprivacy mechanism applies a too strong noise to perturb the data, and the utility of the result might be destroyed. Nevertheless, a narrow value range estimation may also decrease the utility as too much data beyond the value range is discarded.
 
-\textbf{Implementation of DP Mechanisms}. The theory of DP is built upon the real number arithmetic. The practical implementation of differentially private mechanisms relies on floating-point or fixed-point arithmetic only provides an approximation of the mathematical abstractions. Mironov~\cite{mironov2012significance} showed that the irregularities of floating-point implementations and porouse distribution of the Laplace mechanism with textbook sampling algorithm lead to the breach of differential privacy. Further, Gazeau et al.~\cite{gazeau2016preserving} proved that any differentially private mechanism that perturbs data by adding noise with a finite precision can resulting secret disclosure regardless of the actual implementation.
+\paragraph{Security Issue in the Practical Implementation.}
+\label{para:SecurityIssueinthePracticalImplementation}
+Generally, the security analysis of differentially private mechanisms is based on two implicit assumptions: (i) Computations are performed on real numbers and require machines to have infinite precision, (ii) The noise is sampled from a probability distribution that is very close to the theoretically correct probability distribution.
+However, the practical implementation of differentially private mechanisms is typically based on floating-point or fixed-point arithmetic that only provides finite order of accuracy.
+Mironov~\cite{mironov2012significance} demonstrated that the Laplace random noise sampled with textbook algorithm~\autoref{algo:InverseTransform-BasedLaplaceSamplingMethod} under floating-point implementation could lead to violation of differential privacy.
+Specifically, for database $D$ and a Laplace Mechanism $M$ that samples the Laplace noise with~\autoref{algo:InverseTransform-BasedLaplaceSamplingMethod}, $M\left(D\right) $ fails to output certain floating-point numbers that can be related to database $D$. By comparing the missed out floating-point numbers, an adversary can differentiate between database $D$ and its neighboring database $D^{\prime}$ even extract the entire content of database $D$.
+Based on the similar vulnerability of floating-point numbers, Jin et al.~\cite{jin2022we} presented a series of floating-point attacks against the Gaussian noise sampling algorithms. In addition, they also constructed a timing attack against the discrete noise sampling algorithms, i.e., the magnitude of the discrete noise can be predicted by measuring the sampling time.
+Gazeau et al.~\cite{gazeau2016preserving} proved that any differentially private mechanisms perturb data by adding noise with a finite precision could lead to secret disclosure regardless of the actual implementation.
+This work aims to realize \differentialprivacy mechanisms with secure noise generation methods in \smpc that are free of the above attacks.
+
+% The theory of \differentialprivacy is built upon the real number arithmetic. The practical implementation of differentially private mechanisms relies on floating-point or fixed-point arithmetic only provides an approximation of the mathematical abstractions. Mironov~\cite{mironov2012significance} showed that the irregularities of floating-point implementations and porous distribution of the Laplace mechanism with textbook sampling algorithm lead to the breach of differential privacy. Further, 
 
 % -------------------------------------------------------------
 

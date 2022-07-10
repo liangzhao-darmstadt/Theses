@@ -895,10 +895,10 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
 \section{Differentially Pirvate Mechanism Benchmarks}
 \label{DifferentiallyPirvateMechanismBenchmarks}
 
-We present the performance evaluation of the MPC protocols for differentially private mechanisms in~\autoref{tab:runtimes_differentially_private_mechanism}.
+We present the performance evaluation of the \smpc protocols for differentially private mechanisms in~\autoref{tab:runtimes_differentially_private_mechanism}.
 
 \paragraph{Laplace Mechanisms.}
-Recall that Integer-Scaling Laplace mechanism $M_{ISLap} $ achieves differential privacy protection effect as Laplace mechanism textit{securely} by re-scaling a discrete Laplace random variable.
+Recall that Integer-Scaling Laplace mechanism $M_{ISLap} $ achieves differential privacy protection effect as Laplace mechanism \textit{securely} by re-scaling a discrete Laplace random variable.
 In our work, we generate the discrete Laplace random variable with sampling protocol $\Uppi^{DLap}$ (cf.~\autoref{prot:DiscreteLap}) and set the failure probability as $p<2^{-40}$.
 We can see that the $M_{ISLap}$ with fixed-point implementation of $\Uppi^{DLap}$ is $1.09\times-1.29\times$ slower than that with floating-point implementation.
 The reason is that the division operation in fixed-point is more expensive than floating-point for BGMW protocols.

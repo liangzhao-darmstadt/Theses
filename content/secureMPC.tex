@@ -1,42 +1,43 @@
-\chapter{MPC Protocols for Differentially Private Mechanisms}
+\chapter{SMPC Protocols for Differentially Private Mechanisms}
 \label{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}
 
-In this chapter, we present our MPC-DP procedure that combines MPC protocols and differentially private mechanisms.
-We first give a general overview of the settings and a description of our MPC-DP procedure.
-Then, we construct the MPC protocols of the previously introduced differentially private mechanisms and sampling algorithms (cf.~\autoref{cha:secureDPMechanisms}).
-Generally, we face two technical challenges.
-The first is to identify the most efficient MPC protocols for arithmetic operations.
-The second is determining the most efficient sampling algorithms for differentially private mechanisms.
-For the first challenge, we implement MPC protocols that support (signed) integer arithmetic, fixed-point arithmetic, floating-point arithmetic, and data type conversions in the MOTION frameowrk~\cite{braun2022motion}.
-For the second challenge, we construct the MPC protocols for all the introduced sampling algorithms and evaluate the performance in \autoref{cha:evaluation}.
+In this chapter, we first present a \smpc-DP procedure that combines \smpc protocols and differentially private mechanisms.
+% We first give a general overview of the settings and description of our \smpc-DP procedure.
+Then, we construct the \smpc protocols of the previously introduced secure differentially private mechanisms and noise sampling algorithms (cf.~\autoref{cha:secureDPMechanisms}).
 
-\textbf{Setting.} In our MPC-DP procedure, we consider $m$ users, $n$ computation parties and one reconstruction party. Each user $U_i$ has private data $D_i$ and wish to compute $f\left(D_1,\ldots, D_m\right) $ and perturb it with the help of computation parties. The reconstruction party is responsible for reconstructing the computation result in plaintext. We assume that the communication channels between users and computation parties are secure and authenticated, and the communication channels between computation parties are pair-wise secure and authenticated. The users can go offline after sending their secret shared private data to the computation parties. Then, the computation parties execute the interactive MPC protocols.
+Generally, we face two technical challenges when transforming the differentially private mechanisms into \smpc protocols.
+The first is to identify the most efficient \smpc protocols for arithmetic operations.
+The second is determining the most efficient sampling algorithms for differentially private mechanisms.
+For the first challenge, we implement \smpc protocols that support (signed) integer arithmetic, fixed-point arithmetic, floating-point arithmetic, and data type conversions in MOTION~\cite{braun2022motion}.
+For the second challenge, we construct the \smpc protocols for all the introduced sampling algorithms and compare the performance in \autoref{cha:evaluation}.
+
+\textbf{Setting.} In our \smpc-DP procedure, we consider $m$ users, $n$ computation parties and one reconstruction party. Each user $U_i$ has private data $D_i$ and wish to compute $f\left(D_1,\ldots, D_m\right) $ and perturb it with the help of computation parties. The reconstruction party is responsible for reconstructing the computation result in plaintext. We assume that the communication channels between users and computation parties are secure and authenticated, and the communication channels between computation parties are pair-wise secure and authenticated. The users can go offline after sending their secret shared private data to the computation parties. Then, the computation parties execute the interactive \smpc protocols.
 
 \textbf{Privacy Goals.} For users, computation parties, and the reconstruction party, the reconstructed perturbed result should satisfy differential privacy, and the whole computation process should leak no information about the individual users' private data.
 
 \textbf{Attacker Model.} The users, computation parties, and the reconstruction party may be corrupted and collude with each other.
 For the computation parties, we assume that the adversaries are semi-honest (i.e., they follow the protocol specifications but try to infer information), and there is at least one computation party that is not corrupted (i.e., full-threshold security).
-% Other MPC protocols (e.g., secure again malicious adversaries (ref.???)) could also be applied in our MPC-DP procedure but may be less efficient.
-% \section{General Procedure for Combining MPC and DP}
+% Other \smpc protocols (e.g., secure again malicious adversaries (ref.???)) could also be applied in our \smpc-DP procedure but may be less efficient.
+% \section{General Procedure for Combining \smpc and DP}
 % \label{sec:ProcedureMPCDP}
 
 \begin{figure}[htbp]
-      \includegraphics[width=\textwidth]{MPC-DP procedure}
+      \includegraphics[width=\textwidth]{SMPC-DP procedure}
       \centering
-      \caption{MPC-DP Procedure}
+      \caption{\smpc-DP Procedure}
       \label{img:MPCDPProcedure}
 \end{figure}
 \FloatBarrier
 
-\textbf{MPC-DP Procedure Overview.}
-MPC-DP procedure consists of three steps as \autoref{img:MPCDPProcedure} shows:
+\textbf{SMPC-DP Procedure Overview.}
+\smpc-DP procedure consists of three steps as \autoref{img:MPCDPProcedure} shows:
 (i) The users send the secret shared data $\left\langle D_i\right\rangle $ to the computation parties.
-(ii) The computation parties execute the MPC protocols to compute $\left\langle f\left(D_1,\ldots, D_n\right) \right\rangle $ (we assume this step is finished), generate secret shared noise $\left\langle Y\right\rangle $, perturb the result with differentially privacy mechanisms.
+(ii) The computation parties execute the \smpc protocols to compute $\left\langle f\left(D_1,\ldots, D_n\right) \right\rangle $ (we assume this step is finished), generate secret shared noise $\left\langle Y\right\rangle $, perturb the result with differentially privacy mechanisms.
 (iii) The computation parties send their share of the perturbed result to the reconstruction party, that reconstructs the perturbed result.
 
 % The users first secret share their private data $\left\langle D_i\right\rangle $ to the computation parties, and then, the computation parties compute $\left\langle f\left(D_1,\ldots, D_n\right) \right\rangle $, perturb the result, and send it to the reconstruction party.
 
-% In the following parts, we first describe the MPC building block, arithmetic operations, and the five MPC protocols of the previous introduced differentially private mechanisms (cf.~\autoref{cha:secureDPMechanisms}).
+% In the following parts, we first describe the \smpc building block, arithmetic operations, and the five \smpc protocols of the previous introduced differentially private mechanisms (cf.~\autoref{cha:secureDPMechanisms}).
 
 
 % % Let dataset $D=\left( D_{1},\ldots, D_{n}\right) $ be distributed among $n$ parties $\left( P_{i}\right) _{i\in \left[ n\right] }$ who do not trust each other and party $P_{i}$ owns data $D_{i}$. The parties $\left(P_{i}\right)_{i \in \left[ n\right]} $ wish to jointly compute a public function $f$ on their private inputs $\left(pre\left(D_i\right)\right)_{i \in \left[ n\right]} $. After the computation, \CHANGED{either all parties or designated parties receive the result of $f\left(pre\left(D_1\right),\ldots,pre\left(D_n\right)\right)$ as output}, where $pre$ is a pre-processing function executed on their local data $\left(D_i\right)_{i \in \left[ n\right]} $. The parties want to achieve (1) computational privacy (i.e., each party's input is kept secret), \CHANGED{(2) output privacy (i.e., the output satisfies the DP),} and (3) obtain a result with reasonable accuracy.
@@ -47,39 +48,39 @@ MPC-DP procedure consists of three steps as \autoref{img:MPCDPProcedure} shows:
 % % 	\item The noisy result can still provide statistically useful information.
 % % \end{enumerate}
 
-% % To achieve computational privacy, the parties deploy a MPC protocol $\Uppi^{f}$ which takes $\left(pre\left(D_i\right)\right)_{i \in \left[ n\right]} $ as input and reveals only the computation result. For requirements (2) and (3), we design a MPC-DP procedure (cf.~\autoref{prot:MPC-DP}) which combines $\Uppi^{f}$ with a secure differentially private mechanism. Note that in following, we omit the data pre-processing procedure $pre\left(\cdot\right) $ for simplicity and use $f\left( D\right)$ to represent $f\left(D_1,\ldots,D_n\right)$.
+% % To achieve computational privacy, the parties deploy a \smpc protocol $\Uppi^{f}$ which takes $\left(pre\left(D_i\right)\right)_{i \in \left[ n\right]} $ as input and reveals only the computation result. For requirements (2) and (3), we design a \smpc-DP procedure (cf.~\autoref{prot:\smpc-DP}) which combines $\Uppi^{f}$ with a secure differentially private mechanism. Note that in following, we omit the data pre-processing procedure $pre\left(\cdot\right) $ for simplicity and use $f\left( D\right)$ to represent $f\left(D_1,\ldots,D_n\right)$.
 
-% % Let's consider a trival example that combines MPC protocols with a differentially private mechanism. Suppose the parties $\left(P_{i}\right)_{i \in \left[ n\right]} $ wish to calculate the sum of their local data $\left(D_{i}\right)_{i \in \left[ n\right]} $ with a publicly known function $f\left(D_1,\ldots,D_n\right)=\sum_{j=1}^{n} D_j$, and $f$ has $\ell_2$-\textit{sensitivity} $\Delta^{\left(f\right) } _2=1$ (cf.~\autoref{def:sensitivity}). Meanwhile, the parties require that only the computation result of $f$ should be revealed and differential privacy must be satisfied. To achieve this, each party first adds noise $r_i$ to its local data $D_i$ and determines $ y_{i}=D_{i} +r_{i}$. Recall that in \autoref{def:gaussianMechanism}, we have showed that $ y_{i}=$ satisfies $\left(\varepsilon ,\delta \right) $-DP for $r_i \sim \mathcal{N}\left( 0,\sigma ^{2}\right) $, where $\sigma ^{2}=\frac{2}{\varepsilon ^2}\cdot\ln\left(\frac{1.25}{\delta }\right)$ and $i\in \left[n\right] $. Then, the parties jointly run the MPC protocol $\Uppi^{f}$ with their private inputs $y_i$ to compute function $f$. After reconstruction they get $y=\sum_{j=1}^{n} y_j=\sum_{j=1}^{n}\left( D_j+ r_j\right)$. Because of the infinite divisibility of the normal distribution~\cite{patel1996handbook}, we have $\sum_{j=1}^{n} r_j \sim \mathcal{N}\left( 0,\sigma_{sum} ^{2}\right) $ for $\sigma_{sum} ^{2}=\sum ^{n}_{j=1}\sigma ^{2}$. Therefore, the computation result $y$ satisfies $\left(\frac{\varepsilon}{\sqrt{n}},\delta \right) $-DP.
+% % Let's consider a trival example that combines \smpc protocols with a differentially private mechanism. Suppose the parties $\left(P_{i}\right)_{i \in \left[ n\right]} $ wish to calculate the sum of their local data $\left(D_{i}\right)_{i \in \left[ n\right]} $ with a publicly known function $f\left(D_1,\ldots,D_n\right)=\sum_{j=1}^{n} D_j$, and $f$ has $\ell_2$-\textit{sensitivity} $\Delta^{\left(f\right) } _2=1$ (cf.~\autoref{def:sensitivity}). Meanwhile, the parties require that only the computation result of $f$ should be revealed and differential privacy must be satisfied. To achieve this, each party first adds noise $r_i$ to its local data $D_i$ and determines $ y_{i}=D_{i} +r_{i}$. Recall that in \autoref{def:gaussianMechanism}, we have showed that $ y_{i}=$ satisfies $\left(\varepsilon ,\delta \right) $-DP for $r_i \sim \mathcal{N}\left( 0,\sigma ^{2}\right) $, where $\sigma ^{2}=\frac{2}{\varepsilon ^2}\cdot\ln\left(\frac{1.25}{\delta }\right)$ and $i\in \left[n\right] $. Then, the parties jointly run the \smpc protocol $\Uppi^{f}$ with their private inputs $y_i$ to compute function $f$. After reconstruction they get $y=\sum_{j=1}^{n} y_j=\sum_{j=1}^{n}\left( D_j+ r_j\right)$. Because of the infinite divisibility of the normal distribution~\cite{patel1996handbook}, we have $\sum_{j=1}^{n} r_j \sim \mathcal{N}\left( 0,\sigma_{sum} ^{2}\right) $ for $\sigma_{sum} ^{2}=\sum ^{n}_{j=1}\sigma ^{2}$. Therefore, the computation result $y$ satisfies $\left(\frac{\varepsilon}{\sqrt{n}},\delta \right) $-DP.
 
 % % In general, the parties in above example can achieve $\left(\frac{\varepsilon}{\sqrt{n}},\delta \right) $-DP assuming no corrupted parties. However, in realistic scenarios, corrupted parties may try to extract information of certain parties by weaking the achieved differential privacy protection level.
 % % After executing aforementioned steps honestly and obtaining the computation result $y$, the corrupted parties subtract the noise they have added from $y$. In the worst case, i.e., $n-1$ parties are corrupted, the differential privacy guarantee reduces from $\left(\frac{\varepsilon}{\sqrt{n}},\delta \right) $-DP to $\left(\varepsilon,\delta \right) $-DP. If, however, having $\left(\frac{\varepsilon}{\sqrt{n}},\delta \right) $-DP is required, a potential naive solution is that each party adds \textit{more} noise, .e.g, $r_i^{\prime} \sim \mathcal{N}\left( 0,n\cdot \sigma ^{2}\right) $, locally before running $\Uppi^{f}$. However, \CHANGED{this can lead to a severely accuracy reduction}.
 
-% % To summarize, a well-designed MPC-DP procedure requires a more careful integration of MPC protocols and differentially private mechanisms. \CHANGED{To guarantee the both the accuracy and privacy, we define several requirements, that is based on the "ideal scenario" with a centralized data server, i.e., a trusted server that has access to all the parties' data $D$ locally computes $f\left( D\right) $ before adding an essential amount of noise to guarantee DP}:
+% % To summarize, a well-designed \smpc-DP procedure requires a more careful integration of \smpc protocols and differentially private mechanisms. \CHANGED{To guarantee the both the accuracy and privacy, we define several requirements, that is based on the "ideal scenario" with a centralized data server, i.e., a trusted server that has access to all the parties' data $D$ locally computes $f\left( D\right) $ before adding an essential amount of noise to guarantee DP}:
 
 % % \begin{enumerate}
-% % 	\item The MPC-DP procedure should achieve the same privacy protection level as in the centralized data server scenario, and the amount of noise $r$ (in above example: $r=\sum_{j=1}^{n} r_j$) should \CHANGED{exactly match that of the centralized data server scenario}.
-% % 	\item The DP guarantee of the MPC-DP procedure should not degenerate in the presence of corrupted parties.
+% % 	\item The \smpc-DP procedure should achieve the same privacy protection level as in the centralized data server scenario, and the amount of noise $r$ (in above example: $r=\sum_{j=1}^{n} r_j$) should \CHANGED{exactly match that of the centralized data server scenario}.
+% % 	\item The DP guarantee of the \smpc-DP procedure should not degenerate in the presence of corrupted parties.
 % % \end{enumerate}
 
-% % \textbf{MPC-DP Procedure} It can be used among $n$ parties, or in an outsourcing scenario, i.e., an arbitrary amount of parties secret share their private inputs to $N$ ($N\ll n$) non-colluding computing parties. Then, the computing parties execute the $N$-party MPC-DP protocol, where they compute $f$ and add noise shares to get the noisy secret-shared results. Finally, the noisy secret-shared results are sent back to the parties for reconstruction. We assume semi-honest adversaries that follow the protocol specifications but wish to infer additional information\cite[Chapter 2]{evans2017pragmatic}.
+% % \textbf{\smpc-DP Procedure} It can be used among $n$ parties, or in an outsourcing scenario, i.e., an arbitrary amount of parties secret share their private inputs to $N$ ($N\ll n$) non-colluding computing parties. Then, the computing parties execute the $N$-party \smpc-DP protocol, where they compute $f$ and add noise shares to get the noisy secret-shared results. Finally, the noisy secret-shared results are sent back to the parties for reconstruction. We assume semi-honest adversaries that follow the protocol specifications but wish to infer additional information\cite[Chapter 2]{evans2017pragmatic}.
 
-% % Specifically, for $i\in \left[ n\right]$, party $P_{i} $ secret shares his inputs $D_i$ to $N$ computing parties $P_{0},\ldots,P_{N}$. For $j\in \left[ N\right]$, computing party $P_j$ runs MPC protocols for function $f$ with other computing parties using his secret-shared value $\left\langle D_1 \right\rangle _{j},\ldots,\left\langle D_n \right\rangle _{j} $ (received from $n$ parties) and get $\left\langle f\left(D\right) \right\rangle _j$. Then, computing party $P_j$ runs the MPC protocols for distributed noise generation (DNG) with other computing parties and get a secret-shared noise $\left\langle r\right\rangle_j $. Finally, computing party $P_j$ perturbs $\left\langle f\left(D\right) \right\rangle _j$ by computing $\left\langle M\left(D\right)\right\rangle_j=\Uppi^{Perturbation}\left(\left\langle f\left(D\right) \right\rangle_j+\left\langle r\right\rangle_j\right) $ and sends it to the parties responsible for the reconstruction. Note that during the distributed noise generation, each computing party only gets a secret-shared noise $\left\langle r\right\rangle $ and even $N-1$ colluding computing parties cannot reconstruct the noise $r$. After the reconstruction, only the perturbed (noisy) result $M\left(D\right)=\text{Perturb}\left(f\left(D\right)+r\right)  $ is revealed which computes function $f$ and guarantees differential privacy. More important is that we prevent excessive noise and ensure utility since the noise $r$ is generated by all the parties instead of by each party independently (as in the above example).
+% % Specifically, for $i\in \left[ n\right]$, party $P_{i} $ secret shares his inputs $D_i$ to $N$ computing parties $P_{0},\ldots,P_{N}$. For $j\in \left[ N\right]$, computing party $P_j$ runs \smpc protocols for function $f$ with other computing parties using his secret-shared value $\left\langle D_1 \right\rangle _{j},\ldots,\left\langle D_n \right\rangle _{j} $ (received from $n$ parties) and get $\left\langle f\left(D\right) \right\rangle _j$. Then, computing party $P_j$ runs the \smpc protocols for distributed noise generation (DNG) with other computing parties and get a secret-shared noise $\left\langle r\right\rangle_j $. Finally, computing party $P_j$ perturbs $\left\langle f\left(D\right) \right\rangle _j$ by computing $\left\langle M\left(D\right)\right\rangle_j=\Uppi^{Perturbation}\left(\left\langle f\left(D\right) \right\rangle_j+\left\langle r\right\rangle_j\right) $ and sends it to the parties responsible for the reconstruction. Note that during the distributed noise generation, each computing party only gets a secret-shared noise $\left\langle r\right\rangle $ and even $N-1$ colluding computing parties cannot reconstruct the noise $r$. After the reconstruction, only the perturbed (noisy) result $M\left(D\right)=\text{Perturb}\left(f\left(D\right)+r\right)  $ is revealed which computes function $f$ and guarantees differential privacy. More important is that we prevent excessive noise and ensure utility since the noise $r$ is generated by all the parties instead of by each party independently (as in the above example).
 
 
-% % ~\autoref{prot:MPC-DP} describes outsourcing scenario of the MPC-DP procedure. Note that the parties calculate $\left\langle f\left(D\right)\right\rangle =\Uppi^{f }\left(\left\langle D_1 \right\rangle ,\ldots,\left\langle D_n \right\rangle\right) $ and add the securely generated noise $\left\langle r\right\rangle$ (output perturbation) to guarantee DP. In this work, we assume that each party has computed $\left\langle f\left(D\right) \right\rangle$ and focus on the process of $\Uppi^{Noise }$, i.e., distributed noise generation (DNG).
+% % ~\autoref{prot:\smpc-DP} describes outsourcing scenario of the \smpc-DP procedure. Note that the parties calculate $\left\langle f\left(D\right)\right\rangle =\Uppi^{f }\left(\left\langle D_1 \right\rangle ,\ldots,\left\langle D_n \right\rangle\right) $ and add the securely generated noise $\left\langle r\right\rangle$ (output perturbation) to guarantee DP. In this work, we assume that each party has computed $\left\langle f\left(D\right) \right\rangle$ and focus on the process of $\Uppi^{Noise }$, i.e., distributed noise generation (DNG).
 
 % % \begin{protocol}[tbh!]
 % % 	\centering
 % % 	\fbox{
-% % 		\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{MPC-DP}\left(\left\langle D_1 \right\rangle ,\ldots,\left\langle D_n \right\rangle\right) $}]{
+% % 		\pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{\smpc-DP}\left(\left\langle D_1 \right\rangle ,\ldots,\left\langle D_n \right\rangle\right) $}]{
 % % 			\textbf{Input: $\left\langle D_1 \right\rangle ,\ldots,\left\langle D_n \right\rangle$ } \pcskipln \\
 % % 			\textbf{Output: $\left\langle M\left(D\right)\right\rangle=\left\langle f\left(D\right) \right\rangle +\left\langle r\right\rangle$} \\
 % % 			\text{$\left\langle f\left(D\right)\right\rangle \gets \Uppi^{f }\left(\left\langle D_1 \right\rangle ,\ldots,\left\langle D_n \right\rangle\right) $.}\\
 % % 			\text{$\left\langle r\right\rangle \gets \Uppi^{Noise } $}\\
 % % 			\text{$\left\langle M\left(D\right)\right\rangle\gets \Uppi^{Perturb}\left(\left\langle f\left(D\right) \right\rangle,\left\langle r\right\rangle\right) $}
 % % 		}}
-% % 	\caption{MPC-DP procedure.}
-% % 	\label{prot:MPC-DP}
+% % 	\caption{\smpc-DP procedure.}
+% % 	\label{prot:\smpc-DP}
 % % \end{protocol}
 % % \FloatBarrier
 
@@ -87,7 +88,7 @@ MPC-DP procedure consists of three steps as \autoref{img:MPCDPProcedure} shows:
 
 \section{Building Blocks}
 \label{sec:MPCBuildingBlocks}
-We construct MPC protocols based on the following building blocks (details can be found in \autoref{app:MPCBuildingBlocks}):
+We construct \smpc protocols based on the following building blocks (details can be found in \autoref{app:MPCBuildingBlocks}):
 
 \begin{enumerate}
 
@@ -104,7 +105,7 @@ We construct MPC protocols based on the following building blocks (details can b
             %               &=\left\langle \boldsymbol{x}\right\rangle ^B_0 \cdot \left\langle b\right\rangle ^B_0 \oplus  \left\langle \boldsymbol{x}\right\rangle ^B_0 \cdot \left\langle b\right\rangle ^B_1  \oplus \left\langle \boldsymbol{x}\right\rangle ^B_1 \cdot \left\langle b\right\rangle ^B_0 \oplus  \left\langle \boldsymbol{x}\right\rangle ^B_1 \cdot \left\langle b\right\rangle ^B_1 ,
             %           \end{split}
             %       \end{equation}
-            %       where $\left\langle \boldsymbol{x}\right\rangle ^B_0 \cdot \left\langle b\right\rangle ^B_0$ and $\left\langle \boldsymbol{x}\right\rangle ^B_1 \cdot \left\langle b\right\rangle ^B_1$ can be calculated by each party locally. For the remaining two mulitplications, we utilize two C-OTs (cf.~\autoref{subsubsec:OT}). For $i \in \left\{0,1\right\} $, $P_i$ inputs $\left\langle b\right\rangle ^B_i$, and $P_{1-i}$ inputs $\left(r_i, r_i\oplus \left\langle \boldsymbol{x}\right\rangle ^B_{1-i} \right) $ and receives $r_i\oplus \left(\left\langle b\right\rangle ^B_i \cdot \left\langle \boldsymbol{x}\right\rangle ^B_{1-i}\right) $, where $r_i$ is a random bit string. Finally, $P_i$ set $r_i \oplus  r_{1-i}\oplus \left(\left\langle b\right\rangle ^B_{1-i} \cdot \left\langle \boldsymbol{x}\right\rangle ^B_{i}\right)$ as its share of $\left\langle \boldsymbol{x}\right\rangle ^B_0 \cdot \left\langle b\right\rangle ^B_1  \oplus \left\langle \boldsymbol{x}\right\rangle ^B_1 \cdot \left\langle b\right\rangle ^B_0 $. We also extend $\Uppi^{OTMult}$ to multiple parties using similar C-OT based approach. We set $\Uppi^{OTMult}$ as default MPC protocol to compute bit-vector multiplication.
+            %       where $\left\langle \boldsymbol{x}\right\rangle ^B_0 \cdot \left\langle b\right\rangle ^B_0$ and $\left\langle \boldsymbol{x}\right\rangle ^B_1 \cdot \left\langle b\right\rangle ^B_1$ can be calculated by each party locally. For the remaining two mulitplications, we utilize two C-OTs (cf.~\autoref{subsubsec:OT}). For $i \in \left\{0,1\right\} $, $P_i$ inputs $\left\langle b\right\rangle ^B_i$, and $P_{1-i}$ inputs $\left(r_i, r_i\oplus \left\langle \boldsymbol{x}\right\rangle ^B_{1-i} \right) $ and receives $r_i\oplus \left(\left\langle b\right\rangle ^B_i \cdot \left\langle \boldsymbol{x}\right\rangle ^B_{1-i}\right) $, where $r_i$ is a random bit string. Finally, $P_i$ set $r_i \oplus  r_{1-i}\oplus \left(\left\langle b\right\rangle ^B_{1-i} \cdot \left\langle \boldsymbol{x}\right\rangle ^B_{i}\right)$ as its share of $\left\langle \boldsymbol{x}\right\rangle ^B_0 \cdot \left\langle b\right\rangle ^B_1  \oplus \left\langle \boldsymbol{x}\right\rangle ^B_1 \cdot \left\langle b\right\rangle ^B_0 $. We also extend $\Uppi^{OTMult}$ to multiple parties using similar C-OT based approach. We set $\Uppi^{OTMult}$ as default \smpc protocol to compute bit-vector multiplication.
             %       \TODO{check if MOTION has implemented bit-vector multiplication}
 
       \item $\left(\left\langle y_1\right\rangle^B,\ldots,\left\langle y_{\ell}\right\rangle^B \right)\gets\Uppi^{Binary2Unary}\left(\left\langle \boldsymbol{x}\right\rangle ^{B},\ell\right) $~\cite{aliasgari2012secure} converts an unsigned integer $x$ from binary to unary bitwise representation and outputs a $\ell$-bit string $\boldsymbol{y}=\left( y_{0} ,\ldots , y_{\ell-1} \right) $, where the $x$ least significant bits $ y_{0} ,\ldots , y_{x-1} $ are set to $1$ and the rest bits $ y_{x} ,\ldots , y_{\ell-1} $ are set to $0$.
@@ -130,8 +131,8 @@ We construct MPC protocols based on the following building blocks (details can b
 
 \section{Number Representations and Arithmetic Operations}
 \label{sec:NumberRepresentationsandArithmeticOperations}
-We consider MPC protocols for arithmetic operations based on Boolean sharing GMW (BGMW), Yao sharing with BMR (Y), and arithmetic sharing GMW (AGMW).
-Further, our MPC protocols use integer, fixed-point and floating-point arithmetic interchangeably to achieve the best MPC performance (regarding the communication and computation cost).
+We consider \smpc protocols for arithmetic operations based on Boolean sharing GMW (BGMW), Yao sharing with BMR (Y), and arithmetic sharing GMW (AGMW).
+Further, our \smpc protocols use integer, fixed-point and floating-point arithmetic interchangeably to achieve the best \smpc performance (regarding the communication and computation cost).
 
 \textbf{Binary Circuit-Based Signed/Unsigned Integer.}
 The MOTION framework~\cite{braun2022motion} supports most unsigned integer arithmetic operations (e.g., $+$, $-$, $*$, $/$, and $<$). We extend it to support further arithmetic operations (e.g., modulo reduction and conversion operations with fixed-point and floating-point) by generating depth-optimized binary circuits for BGMW-based unsigned integer and size-optimized binary circuits for BMR-based unsigned integer with HyCC and CBMC-GC.
@@ -167,14 +168,14 @@ We implement the arithmetic sharing GMW based fixed-point protocols from Catrina
 \textbf{Random Number Generation}
 As discussed in (cf.~\autoref{cha:secureDPMechanisms}), the differentially private mechanisms rely heavily on generating of random numbers.
 Generally, four types of random numbers are used in our protocols: (i) random BGMW bits, random unsigned integers in a specific range, random fixed/floating-point numbers in the range $\left(0,1\right) $.
-To generate a random Boolean bit-string of length $\ell$, each computation party $P_i$ locally generate a random $\ell$-bit string $\boldsymbol{r_i}^B$ and set $\boldsymbol{r_i}^B$ as a Boolean sharing with GMW protocol of a publicly unknown random bit string $\boldsymbol{r_0}^B \oplus \ldots \oplus \boldsymbol{r_{N-1}}^B $. Let $\Uppi^{RandBits}\left(\ell\right) $ denote the MPC protocol for generating random bits of length $\ell$.
+To generate a random Boolean bit-string of length $\ell$, each computation party $P_i$ locally generate a random $\ell$-bit string $\boldsymbol{r_i}^B$ and set $\boldsymbol{r_i}^B$ as a Boolean sharing with GMW protocol of a publicly unknown random bit string $\boldsymbol{r_0}^B \oplus \ldots \oplus \boldsymbol{r_{N-1}}^B $. Let $\Uppi^{RandBits}\left(\ell\right) $ denote the \smpc protocol for generating random bits of length $\ell$.
 
 The last three types of random numbers are generated based on random Boolean bits with additional conversion.
 
 To generate a random unsigned integer in range $\left(0,m\right) $, we use the Simple Modular Method~\cite{NISTRandomNumber2015} that first generate a random bit string $\left\langle \boldsymbol{r}\right\rangle^B $ of length $\ell$ ($\ell=128$ or $\ell=256$), and compute $ \left\langle \boldsymbol{r}\right\rangle^B \mod m$ by taking $\left\langle \boldsymbol{r}\right\rangle^B $ as a $\ell$-bit unsigned integer. We keep the security parameter $s=\ell-\log_2 m$ greater than 64 by limiting $m<2^{64}$.
 To generate a uniform random fixed-point in the range $\left[0,1\right)$ with $f$ fractional bits and $k-f$ integer bits, we first generate $f$ random bits as the fractional part of the random fixed-point and set the $\left(k-f\right) $-bit integer part with zero bits.
 
-                  To generate a uniform random floating point in range $\left(0,1\right) $, we follow the methods discussed in \autoref{algo:RandFloat1} and construct corresponding MPC protocol $\Uppi^{RandFloat1}$.
+                  To generate a uniform random floating point in range $\left(0,1\right) $, we follow the methods discussed in \autoref{algo:RandFloat1} and construct corresponding \smpc protocol $\Uppi^{RandFloat1}$.
 
                   As $\Uppi^{RandFloat1}$ shows, we first generate shares of the mantissa bits $\left\langle d_{1}\right\rangle^{B}, \ldots ,\left\langle d_{52}\right\rangle ^{B} $ with $\Uppi^{RandBits}\left(52\right) $, and generate a share of geometric random variable $\left\langle {x}\right\rangle^{B,UINT} $ with $\Uppi^{Geometric}\left(0.5\right) $ to build the biased exponent $\left\langle {e}\right\rangle^{B,UINT}$, where $e=1023-\left(x+1\right) $. Finally, the parties use the mantissa and exponent bits to build the floating-point number $U^{*}=\left(1.d_{1} \ldots d_{52}\right)_{2} \times 2^{e -1023} $.
 
@@ -189,13 +190,13 @@ To generate a uniform random fixed-point in the range $\left[0,1\right)$ with $f
                                     \text{$\left\langle {e} \right\rangle^{B,UINT}\gets 1023-\left(\left\langle {x}\right\rangle^{B,UINT}+1\right)  $} \\
                                     \text{$U^{*}\gets\left(1.d_{1} \ldots d_{52}\right)_{2} \times 2^{e -1023} $}
                               }}
-                        \caption{MPC protocol for sampling uniform random floating-point $U^{*}\in \mathbb{D} \cap \left(0,1\right) $.}
+                        \caption{\smpc protocol for sampling uniform random floating-point $U^{*}\in \mathbb{D} \cap \left(0,1\right) $.}
                         \label{prot:RandFloat1}
                   \end{protocol}
                   \FloatBarrier
 
 
-                  \section{MPC Protocols for Snapping Mechanism}
+                  \section{\smpc Protocols for Snapping Mechanism}
                   \label{sec:MPCProtocolsforSnappingMechanism}
 
                   % \textbf{General Overview.}
@@ -206,7 +207,7 @@ To generate a uniform random fixed-point in the range $\left[0,1\right)$ with $f
                         \end{split}
                   \end{equation}
 
-                  The MPC protocol for the snapping mechanism is to unfold the mathematical operations and replaces them with the corresponding MPC protocols. We reformulate $M_{S}\left(f\left(D\right),\lambda,B\right)$ in secret sharing form as follows:
+                  The \smpc protocol for the snapping mechanism is to unfold the mathematical operations and replaces them with the corresponding \smpc protocols. We reformulate $M_{S}\left(f\left(D\right),\lambda,B\right)$ in secret sharing form as follows:
                   \begin{equation}
                         \label{eq:snappingMPC}
                         \left\langle M_{S}\left(f\left(D\right) ,\lambda,B\right)\right\rangle =\text{clamp}_{B}\left(\left\lfloor\text {clamp }_{B}\left(\left\langle f\left(D\right)\right\rangle \right) \oplus \left\langle S\right\rangle \otimes \lambda\otimes \text{LN}\left(\left\langle U^{*}\right\rangle \right) \right\rceil_{\Lambda}\right).
@@ -214,12 +215,12 @@ To generate a uniform random fixed-point in the range $\left[0,1\right)$ with $f
 
                   We assume that the computation parties has already computed $\left\langle f\left(D\right)\right\rangle$. $\left\langle S\right\rangle \otimes \lambda\otimes \text{LN}\left(\left\langle U^{*}\right\rangle \right)$ is the share of noise.
                   We use $\Uppi^{RandFloat1}$ and $\Uppi^{RandBits}$ to generate random floating-point number $ U^{*}\in \left(0,1\right)  $ and random sign $ S\in \left\{0,1\right\}$.
-                  Floating-point operations such as natural logarithm operation $LN\left(\cdot\right) $, addition $\oplus$ and multiplication $\otimes$ are available in MPC protocols.
+                  Floating-point operations such as natural logarithm operation $LN\left(\cdot\right) $, addition $\oplus$ and multiplication $\otimes$ are available in \smpc protocols.
                   Operation $\left\lfloor \left\langle x\right\rangle \right\rceil_{\Lambda} $ rounds input $x$ to the nearest multiple of $\Lambda$ (a publicly known value).
                   % The plaintext implementation of $\left\lfloor x\right\rceil_{\Lambda} $ can be found in Covington's work~\cite{Covington2019}, that relies on the bit manipulation of floating-point~\cite{IEEE754_2019}. Therefore, we choose BGMW floating-point arithmetic and generate depth-optimized circuits with CBMC-GC for operation $\left\lfloor \left\langle x\right\rangle \right\rceil_{\Lambda} $.
                   The plaintext implementation of $\left\lfloor x\right\rceil_{\Lambda} $ can be found in Covington's work~\cite{Covington2019}, that relies on the bit manipulation of floating-point. Therefore, we choose BGMW floating-point arithmetic and generate depth-optimized circuits with CBMC-GC for operation $\left\lfloor \left\langle x\right\rangle \right\rceil_{\Lambda} $.
-                  The MPC protocol of $\left\lfloor \left\langle x\right\rangle \right\rceil_{\Lambda} $ is denoted by $\Uppi^{RoundToLambda}$.
-                  The MPC protocol of operation $\text{clamp}_{B}$ can be directly realized with the floating-point arithmetic operation, and it is denoted by $\Uppi^{ClampB}$.
+                  The \smpc protocol of $\left\lfloor \left\langle x\right\rangle \right\rceil_{\Lambda} $ is denoted by $\Uppi^{RoundToLambda}$.
+                  The \smpc protocol of operation $\text{clamp}_{B}$ can be directly realized with the floating-point arithmetic operation, and it is denoted by $\Uppi^{ClampB}$.
 
                   \begin{protocol}[tbh!]
                         \centering
@@ -231,13 +232,13 @@ To generate a uniform random fixed-point in the range $\left[0,1\right)$ with $f
                                     \text{ $\left\langle {x_{clampB}}\right\rangle^{B,FL}\gets \Uppi^{Mux}\left(\left\langle cond_{\left\lvert x\right\rvert <B}\right\rangle^B, \left\langle {x_0}\right\rangle^{B,FL} ,B  \right)$}\\
                                     \text{Extract the sign bit of $\left\langle {x}\right\rangle^{B,FL} $ and set it as the sign bit of $\left\langle {x_{clampB}}\right\rangle^{B,FL}$}
                               }}
-                        \caption{MPC protocol for $\text{clamp}_B\left(x\right) $.}
+                        \caption{\smpc protocol for $\text{clamp}_B\left(x\right) $.}
                         \label{prot:ClampB}
                   \end{protocol}
                   \FloatBarrier
 
-                  \textbf{MPC Protocols for Snapping Mechanism.}
-                  We integrate the protocols and present the complete MPC protocol for the snapping mechanism.
+                  \textbf{\smpc Protocols for Snapping Mechanism.}
+                  We integrate the protocols and present the complete \smpc protocol for the snapping mechanism.
 
                   \begin{protocol}[tbh!]
                         \centering
@@ -255,7 +256,7 @@ To generate a uniform random fixed-point in the range $\left[0,1\right)$ with $f
                         \text{$\left\langle {\left\lfloor x\right\rceil_\Lambda  }\right\rangle ^{B,FL} \gets \Uppi^{RoundToLambda}\left(\left\langle {x}\right\rangle^{B,FL},\Lambda\right) $.}\\
                         \text{$\left\langle {x_{SM}}\right\rangle ^{B,FL}\gets \Uppi^{ClampB}\left(\left\langle {\left\lfloor x\right\rceil_\Lambda  }\right\rangle ^{B,FL},B\right)$}
                         }}
-                        \caption{MPC protocol for snapping mechanism.}
+                        \caption{\smpc protocol for snapping mechanism.}
                         \label{prot:SnappingMechanism}
                   \end{protocol}
                   \FloatBarrier
@@ -263,10 +264,10 @@ To generate a uniform random fixed-point in the range $\left[0,1\right)$ with $f
 
                   % The parties generate the noise starting from the generation of random variable $S\in \left\{-1,1\right\} $ and $U^{*} \in \mathbb{D} \cap \left(0,1\right)$. Finally, the parties compute $\left\lfloor \cdot \right\rceil_{\Lambda}$ and $\text{clamp}_{B}\left(\cdot\right) $.
 
-                  % According to our MPC-DP procedure (cf.~\autoref{cha:ProcedureMPCDP}), the parties generate a noise share $\left\langle r\right\rangle$ and add it to $\left\langle f\left(D\right)\right\rangle$ to achieve differential privacy (cf.~\autoref{sec:differentialPrivacy}). 
+                  % According to our \smpc-DP procedure (cf.~\autoref{cha:ProcedureMPCDP}), the parties generate a noise share $\left\langle r\right\rangle$ and add it to $\left\langle f\left(D\right)\right\rangle$ to achieve differential privacy (cf.~\autoref{sec:differentialPrivacy}). 
 
 
-                  % In our MPC protocols, we mainly operate on IEEE 754 floating-point (cf.~\autoref{subsubsec:floatingPoint}): $\left\langle \boldsymbol{x}\right\rangle^{B,FL} =\left(\left\langle S\right\rangle ,\left\langle d_1\right\rangle,\ldots,\left\langle d_{52}\right\rangle, \left\langle e_1\right\rangle,\ldots,\left\langle e_{11}\right\rangle\right) $, where $x = \left(-1\right)^S \left(1.d_{1} \hdots d_{52}\right)_2 \times 2^{\left(e_1 \hdots e_{11}\right)_2-1023} $.
+                  % In our \smpc protocols, we mainly operate on IEEE 754 floating-point (cf.~\autoref{subsubsec:floatingPoint}): $\left\langle \boldsymbol{x}\right\rangle^{B,FL} =\left(\left\langle S\right\rangle ,\left\langle d_1\right\rangle,\ldots,\left\langle d_{52}\right\rangle, \left\langle e_1\right\rangle,\ldots,\left\langle e_{11}\right\rangle\right) $, where $x = \left(-1\right)^S \left(1.d_{1} \hdots d_{52}\right)_2 \times 2^{\left(e_1 \hdots e_{11}\right)_2-1023} $.
 
                   % \subsection{Generation of $U^{*}$ and $S$}
 
@@ -381,39 +382,39 @@ To generate a uniform random fixed-point in the range $\left[0,1\right)$ with $f
                   %             \text{$\left\langle cond_{ x^{\prime\prime}\neq \pm 0}\right\rangle ^B\gets \left(\lor_{j=1}^{52}\left\langle t_j\right\rangle^B\right)  \lor \left(\lor_{j=1}^{11}\left\langle m_j\right\rangle^B\right)  $\t\t // check if $x^{\prime\prime}=\pm0$}\\
                   %             \text{$\left\langle \boldsymbol{m }\right\rangle^{B,UINT} \gets\left\langle cond_{ \neq \pm 0}\right\rangle ^B \land \left(\left\langle \boldsymbol{m}\right\rangle^{B,UINT}+n\right)   $\t\t// $\lfloor x \rceil_{\Lambda} = \Lambda \cdot  x^{\prime\prime}$}
                   %         }}
-                  %     \caption{MPC Protocol for $\left\lfloor x\right\rceil _\Lambda $}
+                  %     \caption{\smpc Protocol for $\left\lfloor x\right\rceil _\Lambda $}
                   %     \label{prot:Round2Delta}
                   % \end{protocol}
                   % \FloatBarrier
 
 
-                  % \subsection{MPC-DP Protocol for Snapping Mechanism}
-                  % \autoref{prot:SnappingMechanism} integrates our MPC protocols for snapping mechanism in~\autoref{sec:snappingMPC} into MPC-DP procedure (cf.~\autoref{cha:ProcedureMPCDP}).
+                  % \subsection{\smpc-DP Protocol for Snapping Mechanism}
+                  % \autoref{prot:SnappingMechanism} integrates our \smpc protocols for snapping mechanism in~\autoref{sec:snappingMPC} into \smpc-DP procedure (cf.~\autoref{cha:ProcedureMPCDP}).
                   % Recall (cf.~\autoref{eq:snappingMPC})
                   % \[\left\langle M_{S}\left( f\left(D\right) ,\lambda,B\right)\right\rangle =\text{clamp}_{B}\left(\left\lfloor\text {clamp }_{B}\left(\left\langle f\left(D\right)\right\rangle \right) \oplus \left\langle S\right\rangle \otimes \lambda\otimes \text{LN}\left(\left\langle U^{*}\right\rangle \right) \right\rceil_{\Lambda}\right).\]
                   % \end{equation}
 
-                  % $\Lambda=2^n$ and can be calculated from the publicly known $\lambda$ (cf.~\autoref{subsubsec:calLambda}) without MPC.
+                  % $\Lambda=2^n$ and can be calculated from the publicly known $\lambda$ (cf.~\autoref{subsubsec:calLambda}) without \smpc.
                   % In line $5$, we directly manipulate sign bit of $\left\langle \boldsymbol{Y_{LapNoise}}\right\rangle ^{B,FL} $.
 
 
 
 
-                  % \section{MPC Protocols for Integer-scaling Mechanism}
-                  % In this section, we construct MPC protocols for Integer-Scaling Laplace mechanism (cf.~\autoref{sec:IntegerScalingLaplaceMechanism}) and Integer-Scaling Gaussian mechanism (cf.~\autoref{subsec:ISGauss}).
+                  % \section{\smpc Protocols for Integer-scaling Mechanism}
+                  % In this section, we construct \smpc protocols for Integer-Scaling Laplace mechanism (cf.~\autoref{sec:IntegerScalingLaplaceMechanism}) and Integer-Scaling Gaussian mechanism (cf.~\autoref{subsec:ISGauss}).
 
-                  \section{MPC Protocols for Integer-Scaling Laplace Mechanism}
+                  \section{SMPC Protocols for Integer-Scaling Laplace Mechanism}
                   \label{sec:MPCProtocolsforInteger-ScalingLaplaceMechanism}
                   Recall that the Integer-Scaling Laplace mechanism $M_{ISLap}\left(f\left(D\right),r,\varepsilon,\Delta _r\right)=f_r\left(D\right) +ir$ (cf.~\autoref{sec:integerScalingMechanism}) use a discrete Laplace random variable $i \sim DLap\left(t=\frac{\Delta_r}{r\varepsilon}\right) $ to simulate a continuous Laplace random variable.
 
                   As discussed in \autoref{subsec:ISLap}, one way to generate discrete Laplace random variable $i$ is to use $Algo^{GeoExpBinarySearch}$ and $Algo^{TwoSideGeo}$.
-                  We provide the MPC protocols for both algorithms and the MPC protocols for the Integer-Scaling Laplace mechanism.
+                  We provide the \smpc protocols for both algorithms and the \smpc protocols for the Integer-Scaling Laplace mechanism.
 
-                  \paragraph{MPC Protocols for Binary Search Based Geometric Sampling Algorithm}
+                  \paragraph{SMPC Protocols for Binary Search Based Geometric Sampling Algorithm}
                   \label{para::MPCProtocolsforBinarySearchBasedGeometricSamplingAlgorithm}
             $\Uppi^{GeoExpBinarySearch}\left(\lambda\right) $ samples a geometric random variable $x\sim Geo\left(p=1-e^{-\lambda}\right) $ based on $Algo^{GeoExpBinarySearch}$ (cf.~\autoref{algo:GeometricExpBinarySearch}).
 
-                  In line $1-7$, each party locally calculates $L_0$, $R_0$, $M_0$ and $Q_0$ in plaintext to save MPC computations.
+                  In line $1-7$, each party locally calculates $L_0$, $R_0$, $M_0$ and $Q_0$ in plaintext to save \smpc computations.
                   In line $8-12$, the parties generate a floating-point random variable $U_0$ and use the comparison result of $U_0$ and $Q_0$ to choose one subinterval (either $\left(L_0\ldots M_0\right] $ or $\left(M_0\ldots R_0\right] $) and compute a flag $fg_0$ that indicates whether the termination condition of \textbf{WHILE} (cf.~\autoref{algo:GeometricExpBinarySearch}) is satisfied.
       In line $16-26$, the parties execute the binary search for $ITER-1$ times.
       In line $19$, the parties choose the correct split-point $M_j$ using $ \Uppi^{COTMult}$ as follows:
@@ -427,7 +428,7 @@ To generate a uniform random fixed-point in the range $\left[0,1\right)$ with $f
       \end{equation}
 
       In line $27$, the parties extract the correct result from $\left(\left\langle {R_0}\right\rangle ^{B,UINT} ,\ldots ,\left\langle {R_{iter-1}}\right\rangle ^{B,UINT}\right) $ based on flags $\left\langle fg_0\right\rangle ^{B},\ldots,\left\langle fg_{iter-1}\right\rangle ^{B}$.
-      Note that in line $15,20$, we use operator such as $+$, $-$, $*$, $/$ and $e^{x}$ instead of MPC protocols of arithmetic operations for simplicity.
+      Note that in line $15,20$, we use operator such as $+$, $-$, $*$, $/$ and $e^{x}$ instead of \smpc protocols of arithmetic operations for simplicity.
 
       \begin{protocol}[tbh!]
             \centering
@@ -463,12 +464,12 @@ To generate a uniform random fixed-point in the range $\left[0,1\right)$ with $f
             \text{\t\t$\left\langle fg_j \right\rangle ^B\gets\Uppi^{UINT\_GEQ}\left(\Uppi^{UINT\_Add}\left(\left\langle {L_j}\right\rangle^{B,UINT},1\right) ,\left\langle {R_j}\right\rangle^{B,UINT}\right) $}\\
             \text{$\left\langle x\right\rangle ^{B,UINT}\gets \Uppi^{ObliviousSelection}\left(\left\langle {R_0}\right\rangle ^{B,UINT},\ldots, \left\langle {R_{ITER-1}}\right\rangle ^{B,UINT},\left\langle fg_0\right\rangle ^{B},\ldots,\left\langle fg_{ITER-1}\right\rangle ^{B}\right) $}
             }}
-            \caption{MPC protocol for sampling geometric random variable $x \sim Geo\left(p=1-e^{-\lambda}\right) $.}
+            \caption{\smpc protocol for sampling geometric random variable $x \sim Geo\left(p=1-e^{-\lambda}\right) $.}
             \label{prot:GeometricExpBinarySearch}
       \end{protocol}
       \FloatBarrier
 
-      \paragraph{MPC Protocols for Two-Side Geometric Sampling Algorithm}
+      \paragraph{SMPC Protocols for Two-Side Geometric Sampling Algorithm}
       \label{para:MPCProtocolsforTwo-SideGeometricSamplingAlgorithm}
 
       Next, we construct $\Uppi^{TwoSideGeometric}$ that converts a geometric random variable $x\sim Geo\left(p=1-e^{-\lambda}\right)$ to a discrete Laplace random variable $i\sim DLap\left(\frac{1}{\lambda}\right) $ based on $Algo^{TwoSideGeo}$ (cf.~\autoref{algo:TwoSideGeometric}).
@@ -496,19 +497,19 @@ To generate a uniform random fixed-point in the range $\left[0,1\right)$ with $f
                         \text{Set $\left\langle s \right\rangle^{B}$ as the sign bit of $\left\langle {g} \right\rangle^{B,UINT}$ }\\
                         \text{$\left\langle i\right\rangle^{B,UINT} \gets \left\langle {g} \right\rangle^{B,UINT}$}
                   }}
-            \caption{MPC Protocol for sampling two-side geometric random variable $x\sim DLap\left(t\right) $.}
+            \caption{SMPC Protocol for sampling two-side geometric random variable $x\sim DLap\left(t\right) $.}
             \label{prot:TwoSideGeometric}
       \end{protocol}
       \FloatBarrier
 
       \textbf{Implementaion with SIMD.}
-      As discussed in \autoref{para:TwoSideGeometricSamplingAlgorithm}, $Algo^{TwoSideGeo}$ iterates for $ITER$ times to increase the success probability ($>1-2^{-40}$) of outputting the correct result. Since each iteration (line $2-4$) is independent, we uses SIMD to eliminate the $FOR$ loop and increase the efficiency of $\Uppi^{TwoSideGeometric}$. Specifically, we first generate $\left\langle s_{simd}\right\rangle^{B} =\left(\left\langle s_0\right\rangle ^B,\ldots, \left(\left\langle s_{ITER-1}\right\rangle ^B \right) \right) $ and $\left\langle g_{simd}\right\rangle^{B,UINT} =\left(\left\langle {g_0}\right\rangle ^{B,UINT} , \ldots, \left\langle {g_{ITER-1}}\right\rangle ^{B,UINT}\right) $ by running $\Uppi^{RandBits}$ and $\Uppi^{GeoExpBinarySearch}$ for single time but with $ITER$ bits in each wire. Note that $\left\langle s_{simd}\right\rangle^{B}$ and $\left\langle g_{simd}\right\rangle^{B,UINT} $ has the same number of Boolean GMW wires as $\left\langle s_{j}\right\rangle ^B$ and $\left\langle {g_j}\right\rangle ^{B,UINT} $ but $ITER$ number of bits in each wire. Then, we run the rest operations in the $FOR$ loop with $\left\langle s_{SIMD}\right\rangle^{B}$ and $\left\langle g_{SIMD}\right\rangle^{B,UINT} $. We also applid this $FOR$ loop elimination method in other MPC protocols that has independent operations in their $FOR$ loops.
+      As discussed in \autoref{para:TwoSideGeometricSamplingAlgorithm}, $Algo^{TwoSideGeo}$ iterates for $ITER$ times to increase the success probability ($>1-2^{-40}$) of outputting the correct result. Since each iteration (line $2-4$) is independent, we uses SIMD to eliminate the $FOR$ loop and increase the efficiency of $\Uppi^{TwoSideGeometric}$. Specifically, we first generate $\left\langle s_{simd}\right\rangle^{B} =\left(\left\langle s_0\right\rangle ^B,\ldots, \left(\left\langle s_{ITER-1}\right\rangle ^B \right) \right) $ and $\left\langle g_{simd}\right\rangle^{B,UINT} =\left(\left\langle {g_0}\right\rangle ^{B,UINT} , \ldots, \left\langle {g_{ITER-1}}\right\rangle ^{B,UINT}\right) $ by running $\Uppi^{RandBits}$ and $\Uppi^{GeoExpBinarySearch}$ for single time but with $ITER$ bits in each wire. Note that $\left\langle s_{simd}\right\rangle^{B}$ and $\left\langle g_{simd}\right\rangle^{B,UINT} $ has the same number of Boolean GMW wires as $\left\langle s_{j}\right\rangle ^B$ and $\left\langle {g_j}\right\rangle ^{B,UINT} $ but $ITER$ number of bits in each wire. Then, we run the rest operations in the $FOR$ loop with $\left\langle s_{SIMD}\right\rangle^{B}$ and $\left\langle g_{SIMD}\right\rangle^{B,UINT} $. We also applid this $FOR$ loop elimination method in other \smpc protocols that has independent operations in their $FOR$ loops.
 
 
-      \paragraph{MPC Protocol for Integer-Scaling Laplace Mechanism}
+      \paragraph{SMPC Protocol for Integer-Scaling Laplace Mechanism}
       \label{para:MPCProtocolforInteger-scalingLaplaceMechanism}
 
-      Next, we integrate the protocols to construct the complete MPC protocol for the Integer-Scaling Laplace mechanism.
+      Next, we integrate the protocols to construct the complete \smpc protocol for the Integer-Scaling Laplace mechanism.
       % Recall Integer-Scaling Laplace mechanism $M_{ISLap}\left(f_r\left(D\right),r,\varepsilon,\Delta_r\right)$ (cf.~\autoref{sec:IntegerScalingLaplaceMechanism}) that approximates the Laplace mechanism is defined as:
       % \begin{equation}
       %     \begin{split}
@@ -518,7 +519,7 @@ To generate a uniform random fixed-point in the range $\left[0,1\right)$ with $f
       % \end{equation}
       % where $i\sim DGeo\left(p=1-e^{-\lambda}\right) $ and $\lambda=\frac{r\epsilon }{\Delta _r}$.
 
-      % In our MPC-DP general framework (cf.~\autoref{prot:MPC-DP}), it can be reformulated as:
+      % In our \smpc-DP general framework (cf.~\autoref{prot:\smpc-DP}), it can be reformulated as:
       Integer-scaling Laplace mechanism can be reformulated in secret sharing as:
       \begin{equation}
             \begin{split}
@@ -550,7 +551,7 @@ To generate a uniform random fixed-point in the range $\left[0,1\right)$ with $f
                         \text{$\left\langle {Y_{LapNoise}}\right\rangle^{B,FL}\gets  \Uppi^{FL\_MUL}\left(\Uppi^{UINT2FL}\left(\left\langle {i}\right\rangle ^{B,UINT}\right) , r\right) $.}\\
                         \text{$\left\langle {M_{ISLap}}\right\rangle ^{B,FL}\gets  \Uppi^{FL\_Add}\left(\left\langle {f_r\left(D\right)}\right\rangle^{B,FL},\left\langle {Y_{LapNoise}}\right\rangle^{B,FL}\right) $.}
                   }}
-            \caption{MPC Protocol for Integer-Scaling Laplacian mechanism.}
+            \caption{\smpc Protocol for Integer-Scaling Laplacian mechanism.}
             \label{prot:ISLap}
       \end{protocol}
       \FloatBarrier
@@ -559,13 +560,13 @@ To generate a uniform random fixed-point in the range $\left[0,1\right)$ with $f
 
 
 
-      \section{MPC Protocol for Integer-Scaling Gaussian Mechanism}
+      \section{SMPC Protocol for Integer-Scaling Gaussian Mechanism}
       \label{sec:MPCProtocolforInteger-ScalingGaussianMechanism}
       Recall that the Integer-Scaling Gaussian Mechanism $M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\sigma\right)=f_r\left(D\right) +ir$ (cf.~\autoref{subsec:IntegerScalingGaussianMechanism}) use a symmetric binomial random variable $i\sim SymmBino\left(n,p=0.5\right)$ to simulate a Gaussian random variable.
 
-      We first provide the MPC protocols for $Algo^{SymmetricBinomial}$, and then, the MPC protocols for the Integer-Scaling Gaussian mechanism.
+      We first provide the \smpc protocols for $Algo^{SymmetricBinomial}$, and then, the \smpc protocols for the Integer-Scaling Gaussian mechanism.
 
-      \paragraph{MPC Protocol for Symmetrical Binomial Sampling Algorithm}
+      \paragraph{SMPC Protocol for Symmetrical Binomial Sampling Algorithm}
       \label{para:MPCProtocolforSymmetricalBinomialSamplingAlgorithm}
 
 $\Uppi^{SymmBino}\left(n,p=0.5\right) $ samples a symmetric binomial random variable $x\sim SymmBino\left(n,p=0.5\right) $ based on $Algo^{SymmetricBinomial}$ (cf.~\autoref{algo:SymmetricBinomialLargeN}).
@@ -610,15 +611,15 @@ $\Uppi^{SymmBino}\left(n,p=0.5\right) $ samples a symmetric binomial random vari
                         \text{\t\t$\left\langle fg_{j}\right\rangle ^B\gets \left\langle cond_{x_{min} \leq x_j \leq x_{max}}\right\rangle ^B\land \left\langle cond_{c_j==1}\right\rangle ^B$}\\
                         \text{$\left\langle {i}\right\rangle^{B,INT}\gets \Uppi^{ObliviousSelection}\left(\left\langle {x_0}\right\rangle^{B,INT},\ldots,\left\langle {x_{ITER-1}}\right\rangle^{B,INT},\left\langle fg_0\right\rangle^{B},\ldots, \left\langle fg_{ITER-1}\right\rangle^{B}\right)  $}
                   }}
-            \caption{MPC protocol for sampling symmetrical binomial random variable $i\sim SymmBino\left(n,p=0.5\right) $.}
+            \caption{\smpc protocol for sampling symmetrical binomial random variable $i\sim SymmBino\left(n,p=0.5\right) $.}
             \label{prot:SymmBinomialLargeN}
       \end{protocol}
       \FloatBarrier
 
 
-      \paragraph{MPC Protocol for Integer-Scaling Gaussian Mechanism}
+      \paragraph{SMPC Protocol for Integer-Scaling Gaussian Mechanism}
       \label{para:MPCProtocolforIntegerScalingGaussianMechanism}
-      We integrate the protocols to construct the complete MPC protocol for the Integer-Scaling Gaussian mechanism $\Uppi^{IsGauss}$.
+      We integrate the protocols to construct the complete \smpc protocol for the Integer-Scaling Gaussian mechanism $\Uppi^{IsGauss}$.
 
       % % Recall Integer-Scaling Gaussian mechanism $M_{ISGauss}\left(f_r\left(D\right),r,\varepsilon,\sigma,\Delta_r\right)$~\autoref{subsec:ISGauss} that approximates the Gaussian mechanism is defined as follows:
       % % \begin{equation}
@@ -631,7 +632,7 @@ $\Uppi^{SymmBino}\left(n,p=0.5\right) $ samples a symmetric binomial random vari
 
       % Recall Integer-Scaling Gaussian mechanism use a symmetrical random variable $i$ as the noise, and can be reformulated in secret shared form as:
 
-      % % In our MPC-DP general framework~\autoref{prot:MPC-DP}, it can be reformulated as:
+      % % In our \smpc-DP general framework~\autoref{prot:\smpc-DP}, it can be reformulated as:
       Integer-scaling Gaussian mechanism can be reformulated in secret sharing from as:
       \begin{equation}
             \begin{split}
@@ -662,25 +663,25 @@ $\Uppi^{SymmBino}\left(n,p=0.5\right) $ samples a symmetric binomial random vari
                         \text{$\left\langle {Y_{SymmBinoNoise}}\right\rangle^{B,FL} \gets \Uppi^{FL\_MUL}\left(\Uppi^{UINT2FL}\left(\left\langle {i}\right\rangle ^{B,UINT}\right) , r\right)  $.}\\
                         \text{$\left\langle {M_{ISGauss}}\right\rangle ^{B,FL}\gets \Uppi^{FL\_Add}\left(\left\langle {f_r\left(D\right)}\right\rangle^{B,FL},\left\langle {Y_{SymmBinoNoise}}\right\rangle^{B,FL}\right) $.}
                   }}
-            \caption{MPC protocol for Integer-Scaling Gaussian mechanism.}
+            \caption{\smpc protocol for Integer-Scaling Gaussian mechanism.}
             \label{prot:ISGauss}
       \end{protocol}
       \FloatBarrier
 
 
-      \section{MPC Protocols for Discrete Laplace Mechanism}
+      \section{SMPC Protocols for Discrete Laplace Mechanism}
       \label{sec:MPCProtocolsforDiscreteLaplaceMechanism}
 
       Recall that the discrete Laplace mechanism $M_{DLap}\left(f\left(D\right),r,\varepsilon\right)=f\left(D\right) +Y$ (cf.~\autoref{sec:discreteLaplacemechanism}) use discrete Laplace random variable $Y $ to perturb $f\left(D\right)$, where $Y$ can be generated with $Algo^{GeoExp}$.
       % $Y$ can be generated with $Algo^{GeoExp}$ and $Algo^{DLap}$.
 
 
-      We first provide the MPC protocols for the above sampling algorithms and then the MPC protocols for the discrete Laplace mechanism.
+      We first provide the \smpc protocols for the above sampling algorithms and then the \smpc protocols for the discrete Laplace mechanism.
 
 
-      % We present the MPC protocols for discrete Laplace and Gaussian mechanism (cf.~\autoref{sec:discreteGaussianMechanism}) in this section. 
+      % We present the \smpc protocols for discrete Laplace and Gaussian mechanism (cf.~\autoref{sec:discreteGaussianMechanism}) in this section. 
 
-      % We first present the MPC protocols for sampling geometric random variable based on \autoref{algo:GeometricExp}.
+      % We first present the \smpc protocols for sampling geometric random variable based on \autoref{algo:GeometricExp}.
       % \paragraph{Protocol for Rejection Sampling Based Geometric Sampling Algorithm}
       % \label{ProtocolforRejectionSamplingBasedGeometricSamplingAlgorithm}
       \begin{protocol}[tbh!]
@@ -702,7 +703,7 @@ $\Uppi^{SymmBino}\left(n,p=0.5\right) $ samples a symmetric binomial random vari
                         \text{$\left\langle k\right\rangle^{B, UINT}\gets \Uppi^{ObliviousSelection}\left(0 , \ldots, ITER_2-1 , \left\langle b^2_0\right\rangle ^B, \ldots,\left\langle b^2_{ITER_1-1}\right\rangle ^B \right)  $}\\
                         \text{$\left\langle x\right\rangle^{B, UINT} \gets \Uppi^{UINT_\_Div} \left(\Uppi^{UINT\_Add} \left(\left\langle u\right\rangle^{B, UINT},\Uppi^{UINT\_Mul}\left(\left\langle k\right\rangle^{B, UINT}, d\right) \right),n\right)  $}
                   }}
-            \caption{MPC Protocol for sampling geometric random variable $x \sim Geo\left(1-e^{-\frac{n}{d}}\right) $.}
+            \caption{SMPC Protocol for sampling geometric random variable $x \sim Geo\left(1-e^{-\frac{n}{d}}\right) $.}
             \label{prot:GeometricEXP}
       \end{protocol}
       \FloatBarrier
@@ -727,7 +728,7 @@ $\Uppi^{SymmBino}\left(n,p=0.5\right) $ samples a symmetric binomial random vari
                         \text{Set $\left\langle s\right\rangle^B$ as the sign bit of $\left\langle {m}\right\rangle^{B,UINT}$}\\
                         \text{$\left\langle Y\right\rangle^{B,INT} \gets \left\langle {m}\right\rangle^{B,UINT}$}
                   }}
-            \caption{MPC Protocol for sampling discrete Laplace random variable $x \sim DLap\left(t\right) $.}
+            \caption{SMPC Protocol for sampling discrete Laplace random variable $x \sim DLap\left(t\right) $.}
             \label{prot:DiscreteLap}
       \end{protocol}
       \FloatBarrier
@@ -741,17 +742,17 @@ $\Uppi^{SymmBino}\left(n,p=0.5\right) $ samples a symmetric binomial random vari
                         \text{$\left\langle {Y}\right\rangle ^{B,INT}\gets \Uppi^{DLap}\left(t\right) $}\\
                         \text{$\left\langle {M_{DLap}}\right\rangle ^{B,INT}\gets \Uppi^{INT\_Add}\left(\left\langle {f\left(D\right)}\right\rangle ^{B,INT},\left\langle {Y}\right\rangle ^{B,INT}\right) $}
                   }}
-            \caption{MPC protocols for discrete Laplace mechanism.}
+            \caption{SMPC protocols for discrete Laplace mechanism.}
             \label{prot:DLapMechanism}
       \end{protocol}
       \FloatBarrier
 
 
 
-      \section{MPC Protocol for Discrete Gaussian Mechanism}
+      \section{SMPC Protocol for Discrete Gaussian Mechanism}
       \label{MPCProtocolforDiscreteGaussianMechanism}
 
-      We provide the MPC protocols for sampling discrete Gaussian random variable and the discrete Gaussian mechanisms based on (cf.~\autoref{sec:DiscreteGaussianMechanism}).
+      We provide the \smpc protocols for sampling discrete Gaussian random variable and the discrete Gaussian mechanisms based on (cf.~\autoref{sec:DiscreteGaussianMechanism}).
 
 
 
@@ -759,7 +760,7 @@ $\Uppi^{SymmBino}\left(n,p=0.5\right) $ samples a symmetric binomial random vari
       % \[M_{DGauss}\left(D\right)=f\left(D\right)+Y,\]
       % where $f\left(D\right)\in \mathbb{Z} $ and $Y $ is sampled from discrete ???.
 
-      % % In our MPC-DP general framework~\autoref{prot:MPC-DP}, it can be reformulated as:
+      % % In our \smpc-DP general framework~\autoref{prot:\smpc-DP}, it can be reformulated as:
       % \[\left\langle M_{DGauss}\left( f\left(D\right),\sigma \right)\right\rangle =\left\langle f\left(D\right)\right\rangle +\left\langle Y\right\rangle. \]
       % In \autoref{prot:DGaussMechanism}, we assume that the parties have already computed $\left\langle f\left(D\right)\right\rangle$.
       % In line $2$, we convert unsigned integer $m$ to a signed integer with $s$ as its sign bit.
@@ -776,7 +777,7 @@ $\Uppi^{SymmBino}\left(n,p=0.5\right) $ samples a symmetric binomial random vari
                         \text{\t\t$\left\langle b_j\right\rangle ^B \gets \Uppi^{BernoulliEXP}\left(\frac{\left(\Uppi^{UI2FP}\left(\left\lvert \left\langle { Y_j}\right\rangle ^{B,INT}\right\rvert \right)  -\frac{\sigma ^{2}}{t}\right)^2 }{2\sigma^2}\right) $}\\
                         \text{$\left\langle {Y}\right\rangle ^{B,INT}\gets \Uppi^{ObliviousSelection}\left(\left\langle {Y_0}\right\rangle ^{B,INT},\ldots,\left\langle {Y_{ITER-1}} \right\rangle ^{B,INT},\left\langle b_0\right\rangle ^B,\ldots,\left\langle b_{ITER-1}\right\rangle ^B\right) $}
                   }}
-            \caption{MPC Protocol for sampling discrete Gaussian random variable $Y \sim DGauss\left(\mu=0,\sigma\right) $.}
+            \caption{SMPC Protocol for sampling discrete Gaussian random variable $Y \sim DGauss\left(\mu=0,\sigma\right) $.}
             \label{prot:DiscreteGauss}
       \end{protocol}
       \FloatBarrier
@@ -790,7 +791,7 @@ $\Uppi^{SymmBino}\left(n,p=0.5\right) $ samples a symmetric binomial random vari
                         \text{$\left\langle {Y}\right\rangle ^{B,INT}\gets \Uppi^{DGauss}\left(\sigma\right) $}\\
                         \text{$\left\langle {M_{DGauss}}\right\rangle ^{B,INT}\gets \Uppi^{INT\_Add}\left(\left\langle {f\left(D\right)}\right\rangle ^{B,INT},\left\langle {Y}\right\rangle ^{B,INT}\right) $}
                   }}
-            \caption{MPC protocol for discrete Gaussian mechanism.}
+            \caption{SMPC protocol for discrete Gaussian mechanism.}
             \label{prot:DGaussMechanism}
       \end{protocol}
       \FloatBarrier
@@ -799,7 +800,7 @@ $\Uppi^{SymmBino}\left(n,p=0.5\right) $ samples a symmetric binomial random vari
       \section{Security Discussion}
       \label{SecurityDiscussion}
 
-      In this section, we explain why our MPC protocols can guarantee computational privacy and differential privacy, i.e., a semi-honest adversary learns nothing beyond the protocol's output, and the reconstructed output satisfies differential privacy. Generally, the computational privacy guarantee of our MPC protocols follows directly from the Boolean GMW protocols. At the beginning of the MPC-DP procedure, each user secret shares their input to $ N$ non-colluding computation parties. For computation parties, these secret-shared values are indistinguishable random values and leak no information about the users' private input. Then, the computation parties collaboratively generate different types of noise that is based on generating random Boolean GMW bit strings $\left\langle \boldsymbol{r_1}\right\rangle^B, \ldots, \left\langle \boldsymbol{r_{N}}\right\rangle^B $. As $\left\langle \boldsymbol{r_1}\right\rangle^B, \ldots, \left\langle \boldsymbol{r_{N}}\right\rangle^B$ are generated by each computation party locally and $\left\langle \boldsymbol{r_1}\right\rangle^B \oplus \left\langle \boldsymbol{r_2}\right\rangle^B \oplus  \ldots \oplus  \left\langle \boldsymbol{r_{N}}\right\rangle^B$ is publicly unknown to all computing parties, the generated random noise satisfies the computational privacy and guarantees the differential privacy of the reconstructed result.
+      In this section, we explain why our \smpc protocols can guarantee computational privacy and differential privacy, i.e., a semi-honest adversary learns nothing beyond the protocol's output, and the reconstructed output satisfies differential privacy. Generally, the computational privacy guarantee of our \smpc protocols follows directly from the Boolean GMW protocols. At the beginning of the \smpc-DP procedure, each user secret shares their input to $ N$ non-colluding computation parties. For computation parties, these secret-shared values are indistinguishable random values and leak no information about the users' private input. Then, the computation parties collaboratively generate different types of noise that is based on generating random Boolean GMW bit strings $\left\langle \boldsymbol{r_1}\right\rangle^B, \ldots, \left\langle \boldsymbol{r_{N}}\right\rangle^B $. As $\left\langle \boldsymbol{r_1}\right\rangle^B, \ldots, \left\langle \boldsymbol{r_{N}}\right\rangle^B$ are generated by each computation party locally and $\left\langle \boldsymbol{r_1}\right\rangle^B \oplus \left\langle \boldsymbol{r_2}\right\rangle^B \oplus  \ldots \oplus  \left\langle \boldsymbol{r_{N}}\right\rangle^B$ is publicly unknown to all computing parties, the generated random noise satisfies the computational privacy and guarantees the differential privacy of the reconstructed result.
 
 
 
