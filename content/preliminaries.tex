@@ -27,7 +27,7 @@ Let $\left\langle {a}\right\rangle^{S,D} \odot \left\langle {b}\right\rangle^{S,
 Let $\left\langle {a}\right\rangle ^{\fl}=\Uppi^{UINT2FL}\left(\left\langle {a}\right\rangle ^{\uint}\right) $ be the conversion from an shared unsigned integer $\left\langle {a}\right\rangle ^{\uint}$ to a shared floating-point number $\left\langle {a}\right\rangle ^{\fl}$. Other data type conversion operations are defined in a similar manner.
 
 
-\section{Secure Multi-Party Computation}
+\section{Secure Multi-Party Computation (SMPC)}
 \label{sec:secureMultipartyComputation}
 Secure Multi-Party Computation enables multiply parties to jointly evaluate a function on their private inputs while revealing only the computation result. Yao~\cite{yao1982protocols} introduced the concept of secure two-party computation with Yao's Millionaires' problem (i.e., two millionaires wish to know who is richer without revealing their actual wealth) and proposed the garbled circuit protocol~\cite{yao1986generate} as a solution.
 In the garbled circuit protocol, the target function is represented as a Boolean circuit consisting of connected gates and wires. One party called gabler is responsible for garbling the circuit, and the other party called evaluator evaluates the garbled circuit and outputs the result.
@@ -792,7 +792,7 @@ Suppose mechanism $M$ compute the mean value of the given databases $D_0$ and $D
 The challenger takes some measures to \textit{blur} the outputs of $M\left( D_{0}\right)$ and $M\left( D_{1}\right)$ and make them hard to differentiate. Suppose the challenger decides to add the Laplace noise $lap\sim Laplace\left(b=0.05\right)$ to the result of $M\left(D\right)$ as \autoref{img:DPexamplesmallnoise} shows. The shaded blue region is the probability that $M\left( D_{0}\right)$ returns a value greater than the threshold $T$, and the adversary mistakes $D_{0}$ for $D_{1}$. In contrast, the shaded orange area is the probability that the adversary identify $D_{1}$ successfully. The challenger can decrease the adversary's success probability by adding stronger noise as \autoref{img:DPexamplelargenoise} shows, where the shaded blue and orange areas are almost of the same size. In fact, we have $\varepsilon=\left\lvert \ln \left( \frac{\textit{blue area}}{\textit{orange area}}\right)\right\rvert  $, where $\varepsilon$ describes the degree of differential privacy. A smaller $\varepsilon$ indicates a stronger privacy protection. Note that the challenger can add more noise to decrease the adversary's success probability, but the accuracy of the mean estimation decreases.
 
 
-\TODO{need reproduce following figures}
+% \TODO{need reproduce following figures}
 \begin{figure}[htbp]
     \includegraphics[width=10cm]{DPexamplesmallnoise}
     \centering

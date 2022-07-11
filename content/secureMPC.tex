@@ -36,7 +36,7 @@ Since MOTION~\cite{braun2022motion} is secure against $N-1$ semi-honest corrupti
 \begin{figure}[htbp]
       \includegraphics[width=\textwidth]{SMPC-DP procedure}
       \centering
-      \caption{SMPC-DP Procedure}
+      \caption{SMPC-DP procedure}
       \label{img:MPCDPProcedure}
 \end{figure}
 \FloatBarrier
@@ -157,7 +157,8 @@ We also extend MOTION~\cite{braun2022motion} to support \booleanGMW signed integ
 % We consider 64-bit floating-point arithmetic~\cite{IEEE754_2019}. For operations such as $+,$ $-$, $*$, $/$, $<$, square, square root, exp2, and log2, we use the binary circuits from ABY~\cite{demmler2015aby}. For other operations such as conversion operations with fixed-point and integers, ceil, floor, absolute value, round to the nearest integer, we use CBMC-GC to generate depth-optimized and size-optimized binary circuits with the C code from Berkeley SoftFloat library~\cite{BerkelySoftFloat}.
 We consider $64$-bit floating-point arithmetic. For operations such as $+,$ $-$, $*$, $/$, $<$, square, square root, exp2, and log2, we use the binary circuits from ABY~\cite{demmler2015aby}. For other operations such as conversion operations with \booleanGMW fixed-point and \booleanGMW integers, ceil, floor, absolute value, round to the nearest integer, we use CBMC-GC~\cite{buscher2016compiling} to generate depth-optimized binary circuits with the C code from Berkeley SoftFloat library~\cite{BerkelySoftFloat}.
 
-\paragraph{AGMW Floating-point.}
+\paragraph{AGMW Floating-Point.}
+\label{para:AGMWFloating-Point}
 We implement the \arithmeticGMW floating-point protocols primarily based on the work of Aliasgari et al.~\cite{aliasgari2012secure}.
 A floating-point number $u$ is represented as a quadruple $\left(v, p, z, s\right) $, where each term is defined as follows:
 \begin{enumerate}
@@ -187,6 +188,7 @@ For $1000$ random inputs in $\left[0,1\right]$, the absolute error between the f
 For log2 (with $1000$ samples in $\left[0.5,1\right] $), the absolute error is $10^{-4}\approx 2^{-13}$, and for the square root operation with polynomial or Goldschmidt approximation, the absolute error is $10^{-4}\approx 2^{-13}$.
 
 \paragraph{AGMW Fixed-Point.}
+\label{para:AGMWFixed-Point}
 We implement the \arithmeticGMW fixed-point protocols primarily based on the work of Catrina and Saxena~\cite{catrina2010secure}. A fixed-point number $x$ is represented as $x = \overline{x}\cdot  2^{-f}$, where $\overline{x}$ is an $k$-bit signed integer and $f$ is the length of the fractional part.
 % Specifically, $\overline{x}\in \mathbb{Z} _{\left\langle k\right\rangle }$ and $ \mathbb{Z} _{\left\langle k\right\rangle }=\left\{x\in \mathbb{Z}  \,|\,-2^{k-1}+1\leq x \leq 2^{k-1}-1\right\} $.  
 We choose $\left(k,f\right)=\left(41,20\right)  $ as~\cite{aly2021scale} recommended.
@@ -472,6 +474,7 @@ To generate such a uniform random fixed-point number in the range $\left[0,1\rig
                   Then, the parties generate a uniform random floating-point $U_0$ with \autoref{prot:RandFloat1} and use the comparison result of $U_0$ and $Q_0$ to choose one subinterval (either $\left(L_0\ldots M_0\right] $ or $\left(M_0\ldots R_0\right] $) for further computation (line $8-12$).
       In line $13$, the parties compute a flag $fg_0$ that indicates whether the termination condition of the \textbf{WHILE} loop (cf.~\autoref{algo:GeometricExpBinarySearch}, line 2) is satisfied.
       In Line $15-26$, the parties execute the binary search in \smpc completely for $ITER-1$ times.
+      For $L_0\gets 0 $ and $R_0 \gets 2^52$, we set $ITER\gets 52$ because the binary search takes at most $\log_2\left(2^{52}\right)=52 $ iteration to finish the search.
 
       The $\left\langle {M_j}\right\rangle^{B,UINT}$ in line $15$ is compute as follows:
       \begin{equation}
@@ -836,7 +839,7 @@ To generate such a uniform random fixed-point number in the range $\left[0,1\rig
 
       \section{SMPC Protocol for Discrete Gaussian Mechanism}
       \label{MPCProtocolforDiscreteGaussianMechanism}
-      Recall that the discrete Gaussian mechanism $M_{DGauss}\left(D\right)=f\left(D\right)+Y$ use \autoref{sec:DiscreteGaussianMechanism} to generate a discrete Gaussian random variable $Y$. 
+      Recall that the discrete Gaussian mechanism $M_{DGauss}\left(D\right)=f\left(D\right)+Y$ use \autoref{sec:DiscreteGaussianMechanism} to generate a discrete Gaussian random variable $Y$.
       We provide the \smpc protocols for \autoref{sec:DiscreteGaussianMechanism} and the discrete Gaussian mechanisms.
 
       % Recall discrete Gaussian mechanism (cf.~\autoref{sec:discreteGaussianmechanism}) is defined as follows:
@@ -883,10 +886,10 @@ To generate such a uniform random fixed-point number in the range $\left[0,1\rig
       \section{Security Discussion}
       \label{SecurityDiscussion}
 
-      In this section, we explain why our \smpc protocols can guarantee computational privacy and differential privacy. In other words, a semi-honest adversary learns nothing beyond the protocol's output, and the reconstructed output satisfies the differential privacy requirement. Generally, the computational privacy guarantee of our \smpc protocols follows directly from the \booleanGMW and \arithmeticGMW protocols. At the beginning of the SMPC-DP procedure, each user secret shares their input to $ N$ computation parties. For computation parties, these secret-shared values are indistinguishable random values and leak no information about the users' private input. 
-      Then, the computation parties collaboratively compute the query function $f$ and generate different types of noise that is fundamentally based on the shares of uniform random bits generated with \autoref{prot:RandBits}. As the shares of random bits $\left\langle \boldsymbol{b}\right\rangle$ are actually generated by each party independently, the \booleanGMW protocols guarantee that $\bigoplus _{i=1}^{N}\left\langle \boldsymbol{b}\right\rangle_i $ is publicly unknown to all computing parties if at least one computation party is non-collusive. Hence, the generated random noise is also publicly unknown to all the computation parties. If the noise is unknown to all the parties and sampled precisely from a proper probability distribution as discussed in \autoref{para:MainIdeaofInteger-ScalingMechanism}, the differential privacy requirement is satisfied. 
-      % For differentially private mechanisms such as 
-      % to generate shares of random \booleanGMW bit strings $\left\langle \boldsymbol{r_1}\right\rangle^B, \ldots, \left\langle \boldsymbol{r_{N}}\right\rangle^B $. As $\left\langle \boldsymbol{r_1}\right\rangle^B, \ldots, \left\langle \boldsymbol{r_{N}}\right\rangle^B$ are generated by each computation party locally and $\left\langle \boldsymbol{r_1}\right\rangle^B \oplus \left\langle \boldsymbol{r_2}\right\rangle^B \oplus  \ldots \oplus  \left\langle \boldsymbol{r_{N}}\right\rangle^B$ is publicly unknown to all computing parties, the generated random noise satisfies the computational privacy and guarantees the differential privacy of the reconstructed result.
+      In this section, we explain why our \smpc protocols can guarantee computational privacy and differential privacy. In other words, a semi-honest adversary learns nothing beyond the protocol's output, and the reconstructed output satisfies the differential privacy requirement. Generally, the computational privacy guarantee of our \smpc protocols follows directly from the \booleanGMW and \arithmeticGMW protocols. At the beginning of the SMPC-DP procedure, each user secret shares their input to $ N$ computation parties. For computation parties, these secret-shared values are indistinguishable random values and leak no information about the users' private input.
+      Then, the computation parties collaboratively compute the query function $f$ and generate different types of noise that is fundamentally based on the shares of uniform random bits generated with \autoref{prot:RandBits}. As the shares of random bits $\left\langle \boldsymbol{b}\right\rangle$ are actually generated by each party independently, the \booleanGMW protocols guarantee that $\bigoplus _{i=1}^{N}\left\langle \boldsymbol{b}\right\rangle_i $ is publicly unknown to all computing parties if at least one computation party is non-collusive. Hence, the generated random noise is also publicly unknown to all the computation parties. If the noise is unknown to all the parties and sampled precisely from a proper probability distribution as discussed in \autoref{para:MainIdeaofInteger-ScalingMechanism}, the differential privacy requirement is satisfied.
+% For differentially private mechanisms such as 
+% to generate shares of random \booleanGMW bit strings $\left\langle \boldsymbol{r_1}\right\rangle^B, \ldots, \left\langle \boldsymbol{r_{N}}\right\rangle^B $. As $\left\langle \boldsymbol{r_1}\right\rangle^B, \ldots, \left\langle \boldsymbol{r_{N}}\right\rangle^B$ are generated by each computation party locally and $\left\langle \boldsymbol{r_1}\right\rangle^B \oplus \left\langle \boldsymbol{r_2}\right\rangle^B \oplus  \ldots \oplus  \left\langle \boldsymbol{r_{N}}\right\rangle^B$ is publicly unknown to all computing parties, the generated random noise satisfies the computational privacy and guarantees the differential privacy of the reconstructed result.
 
 
 

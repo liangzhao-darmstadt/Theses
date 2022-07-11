@@ -1,23 +1,25 @@
 \chapter{Evaluation}
 \label{cha:evaluation}
 
-Recall that the two challenges that we proposed in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}:
-\begin{enumerate}
-    \item What are the most efficient MPC protocols for arithmetic operations?
-    \item What are the most efficient sampling algorithms for differentially private mechanisms in MPC?
-\end{enumerate}
+% Recall that the two challenges that we proposed in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}:
+% \begin{enumerate}
+%     \item What are the most efficient MPC protocols for arithmetic operations?
+%     \item What are the most efficient sampling algorithms for differentially private mechanisms in MPC?
+% \end{enumerate}
 
-To answer the above questions, we implement and measure the performance of all the protocols we have discussed in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms} in a semi-honest scenario.
-First, we benchmark the performance of integer, fixed-point and floating-point operations in different MPC protocols (BGMW, AGMW, and BMR).
-Next, we choose the most efficient MPC protocols for arithmetic operations and implement the differentially private mechanisms and corresponding sampling algorithms.
-The code can be found at GitHub~\footnote{https://github.com/liangzhao-darmstadt/MOTION};
+% To answer the above questions, 
+
+In this chapter, we implement and measure the performance of all the protocols discussed in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms} in a semi-honest scenario.
+First, we benchmark the performance of fixed-point and floating-point operations in different \smpc protocols (\booleanGMW and \arithmeticGMW) and choose the most efficient \smpc protocols to build the differentially private mechanisms. For comparison, we also implement the \textit{insecure} differentially private mechanisms~\cite{eigner2014differentially} in \smpc.
+% Then, we implement the differentially private mechanisms and corresponding sampling algorithms.
+Our code is public on GitHub~\footnote{https://github.com/liangzhao-darmstadt/MOTION};
 
 
 % The protocol that we implemented support $N \geq 3$ parties and is secure against up to $N-1$ passive corruption parties. 
 % We compare our MPC-DP protocols with other work (ref. ) by implementing their protocols in MOTION.
 
 \textbf{Experimental Setup.}
-The experiments are performed in five connected servers (Intel Core i9-7960X process, 128GB RAM, 10 Gbps network). We define two network settings to analyze the performance of our MPC-DP protocols.
+The experiments are performed in five connected servers (Intel Core i9-7960X process, 128GB RAM, 10 Gbps network). We define two network settings to analyze the performance of our \smpc protocols.
 \begin{enumerate}
     \item LAN10: 10Gbit/s Bandwidth, 1ms RTT.
     \item WAN: 100Mbit/s Bandwidth, 100ms RTT.
@@ -26,22 +28,22 @@ The experiments are performed in five connected servers (Intel Core i9-7960X pro
 \section{Arithmetic Operations Performance Evaluation}
 \label{sec:ArithmeticOperationsPerformanceEvaluation}
 In this section, we compare the performance of arithmetic operations in different data types (\booleanGMW fixed/floating-point, \arithmeticGMW fixed/floating-point).
-All the arithmetic operations and underlying protocols were tested for correctness with Google Test~\footnote{https://github.com/google/googletest}.
+All the arithmetic operations and underlying sub-protocols were tested for correctness with Google Test~\footnote{https://github.com/google/googletest}.
 Specifically, the following arithmetic operations were benchmarked: addition, subtraction, multiplication, division, exp2, log2, square root, comparison ($<$), and data type conversions.
 We measure the total runtime (offline + online) in microseconds (ms) and average the runtime results over $10$ iterations.
 
 \paragraph{Fixed-Point Benchmarks.}
 \label{para:Fixed-PointBenchmarking}
 % \TODO{add benchmark result of BMR protocols, BMR protocol is only 1x-1.5x faster than BGMW in division and slower in all other operations. Therefore, we choose BGMW as main protocols}
-In the experiments, we use the \booleanGMW fixed-point numbers (total bit-length: k=$64$, fraction bit-length: f=$16$).
-The \arithmeticGMW fixed-point numbers are represented with $128$-bit signed integers and have fraction bit-length f=$16$.
-In \autoref{fig:fixedpointBenchmarks}, we compare the \booleanGMW and \arithmeticGMW fixed-point arithmetic operations. As the plot suggest, addition and subtraction are very fast for \arithmeticGMW fixed-point because they could be computed locally with precomputed \mts (cf.~\autoref{subsubsec:MTs}). For the multiplication operation, the \booleanGMW and \arithmeticGMW fixed-point have very close performance, while the arithemtic truncation operation (cf.~??) is the major overhead of \arithmeticGMW fixed-point. The division operation is a expensive operation for both \booleanGMW and \arithmeticGMW fixed-point, where the \arithmeticGMW fixed-point is $1.21\times-2.67\times$ faster than the \booleanGMW fixed-point. The base-2 exponential function (exp2) and the binary logarithm (log2) are substantially faster for the \booleanGMW than the \arithmeticGMW fixed-point (exp2: $7.64\times-11.98\times$, log2: $75.84\times-7.43\times$). For square root operation, the \booleanGMW fixed-point and \arithmeticGMW fixed-point have close performance in the \twopc and \threepc settings, whereas \booleanGMW fixed-point is $2.06\times$ faster than the \arithmeticGMW fixed-point in the five-party settings. The comparision operation between \booleanGMW and \arithmeticGMW fixed-point are very close to each other, while the \booleanGMW fixed-point is more efficient as the number of computation parties increases. The conversion operation from fixed-point to integer is up to $22.93\times$ faster for the \booleanGMW than the \arithmeticGMW fixed-point. In \booleanGMW fixed-point, the conversion to integer is can be realized with the arithmetic bit-shifting operation (cf.??) and integer comparison. However, the \arithmeticGMW fixed-point requires to apply expensive arithmetic right-shifting operations multiple times to truncate the fraction part and round it to the closest integer. The remaining conversion operation (fx2fl)  is up to $2.10\times$ faster for the \arithmeticGMW than the \booleanGMW fixed-point.
-Finally, we choose \booleanGMW fixed-point as the primary data type for fixed-point operations.
+In the experiments, we use the \booleanGMW fixed-point numbers with total bit-length k=$64$ and bit-length f=$16$ for the fractional part.
+For the \arithmeticGMW fixed-point numbers, we use k=$41$ for the total bit-length and f=$20$ for the bit-length of the fractional part.
+We compare the \booleanGMW and \arithmeticGMW fixed-point arithmetic operations in \autoref{fig:fixedpointBenchmarks}. As \autoref{fig:fixedpointBenchmarks} suggests, addition and subtraction are very fast for \arithmeticGMW fixed-point because they could be computed locally with the precomputed \mts (cf.~\autoref{subsubsec:MTs}). For the multiplication operation, the \booleanGMW and \arithmeticGMW fixed-point have very close performance, while the arithemtic truncation operation~\cite{catrina2010secure} is the major overhead of \arithmeticGMW fixed-point. The division operation is an expensive operation for both \booleanGMW and \arithmeticGMW fixed-point, where the \arithmeticGMW fixed-point is $1.21\times-2.67\times$ faster than the \booleanGMW fixed-point. The base-2 exponential function (exp2) and the binary logarithm (log2) are substantially faster for the \booleanGMW than the \arithmeticGMW fixed-point (exp2: $7.64\times-11.98\times$, log2: $5.89\times-7.43\times$). For the square root operation, the \booleanGMW fixed-point and \arithmeticGMW fixed-point have close performance in the \twopc and \threepc settings, whereas \booleanGMW fixed-point is $2.06\times$ faster than the \arithmeticGMW fixed-point in the five-party settings. The comparision operation between \booleanGMW and \arithmeticGMW fixed-point are very close to each other, while the \booleanGMW fixed-point is more efficient when the number of computation parties is greater than three. The conversion operation from fixed-point to integer (fx2int) is up to $22.93\times$ faster for the \booleanGMW than the \arithmeticGMW fixed-point. The remaining conversion operation (fx2fl) is up to $2.10\times$ faster for the \arithmeticGMW than the \booleanGMW fixed-point.
+Finally, we choose \booleanGMW fixed-point as the primary data type for fixed-point operations because of the advantages in operations such as exp2 and fx2int.
 
 
 \paragraph{Floating-Point Benchmarks.}
 \label{para:Floating-PointBenchmarking}
-We use the \booleanGMW floating point numbers that have $64$ Boolean share bits. In contrast, the \arithmeticGMW floating-point numbers are represented by a quadruple $\left(v, p, z, s\right) $ (cf.??), where $v$, $p$, $z$, and $s$ are $128$-bit arithmetic shares. As \autoref{fig:floatingpointBenchmarks} shows, the \booleanGMW floating-point is faster than the \arithmeticGMW floating-point in almost all the arithmetic operations except for the division operation in \twopc settings. For addtion, subtraction and multiplication, the \booleanGMW floating-point is $1.59\times-4.22\times$ faster than the \arithmeticGMW floating-point. The primary overhead of \arithmeticGMW is the truncation and bit-decomposion operations~\cite{aliasgari2012secure}. The division operation is slightly faster for the \booleanGMW than the \arithmeticGMW floating-point only in the five-party setting. For operation base-2 exponential function (exp2), binary logarithm (log2) and square root, the \booleanGMW floating-point is substantially faster than the \arithmeticGMW floating-point by a factor up to $13.94\times$. The reason for the low efficient performance of the \arithmeticGMW floating-point is the mulitply invocations of floating-point multiplication, where the floating-point multiplication operation consists of the expensive arithmetic right shifting operation and arithmetic share multiplication. The comparison operation is of \arithmeticGMW floating-point is more expensive than the \booleanGMW because of the arithmetic share comparision and arithmetic right shifting operations. For the remaining conversion operations (fl2int and fl2fx), the \booleanGMW floating-point is more efficient as the conversion to integer or fixed-point can be realized bit manipulation at low cost. Based on the above analysis, we choose \booleanGMW floating-point for floating-point arithemtic operations.
+We use the \booleanGMW floating-point numbers that have a $53$-bit mantissa, an $11$-bit exponent, and an $1$-bit sign. In contrast, the \arithmeticGMW floating-point numbers are represented by a quadruple $\left(v, p, z, s\right) $ (cf.~\autoref{para:AGMWFloating-Point}), where $v$, $p$, $z$, and $s$ are represented by $128$-bit arithmetic shares. As \autoref{fig:floatingpointBenchmarks} shows, the \booleanGMW floating-point is faster than the \arithmeticGMW floating-point in almost all the arithmetic operations except for the division operation in \twopc settings. For addition, subtraction and multiplication operations, the \booleanGMW floating-point is $1.59\times-4.22\times$ faster than the \arithmeticGMW floating-point. The primary overhead of \arithmeticGMW is the truncation and bit-decomposition operations~\cite{aliasgari2012secure}. The division operation is slightly faster for the \arithmeticGMW than the \booleanGMW floating-point only in the five-party setting. For base-2 exponential function (exp2), binary logarithm (log2) and square root operations, the \booleanGMW floating-point is substantially faster than the \arithmeticGMW floating-point by a factor up to $13.94\times$. The reason for the low efficient performance of the \arithmeticGMW floating-point is the multiply invocations of the floating-point multiplication in these operations~\cite{aliasgari2012secure}. The comparison operation of \arithmeticGMW floating-point is more expensive than that in the \booleanGMW floating-point. For the remaining conversion operations (fl2int and fl2fx), the \booleanGMW floating-point is more efficient as the conversion operation to integer or fixed-point can be realized through bit manipulation at low cost. Based on the above analysis, we choose \booleanGMW floating-point for floating-point arithmetic operations.
 
 
 
@@ -74,7 +76,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(a) addition},
                 anchor=north,
                 %legend pos = outer north east,
@@ -98,7 +100,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(b) subtraction},
                 %legend pos = outer north east,
                 % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
@@ -122,7 +124,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(c) mulitplication},
                 %legend pos = outer north east,
                 % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
@@ -144,7 +146,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(d) division},
                 %legend pos = outer north east,
                 % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
@@ -166,7 +168,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(e) exp2},
                 %legend pos = outer north east,
                 % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
@@ -188,7 +190,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(f) log2},
                 %legend pos = outer north east,
                 % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
@@ -210,7 +212,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(g) square root},
                 %legend pos = outer north east,
                 % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
@@ -232,7 +234,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(h) comparison},
                 %legend pos = outer north east,
                 % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
@@ -254,7 +256,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(i) fx2int},
                 %legend pos = outer north east,
                 % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
@@ -278,7 +280,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(j) fx2fl},
                 %legend pos = outer north east,
                 % legend entries = {Fixed-Point BGMW, Fixed-Point AGMW},
@@ -291,11 +293,11 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
             \addplot+ table[x=parties, y=Fx_circuit] {data/fixed_point_fx2fl.dat};
             \addplot+ table[x=parties, y=Fx_agmw] {data/fixed_point_fx2fl.dat};
 
-            \legend{Fixed-Point \booleanGMW w/o \simd, Fixed-Point \arithmeticGMW}
+            \legend{\booleanGMW Fixed-Point  w/o \simd, \arithmeticGMW Fixed-Point }
         \end{groupplot}
     \end{tikzpicture}\\
     \ref{UniversalLegend}
-    \caption[Total runtime in microseconds for fixed-point arithmetic operations for the \booleanGMW (\BOOL)~\cite{goldreich1987play} and \arithmeticGMW protocol.]{Total runtime in microseconds (y-axis) for fixed-point arithmetic operations for the \booleanGMW (\BOOL)~\cite{goldreich1987play} and \arithmeticGMW protocol in WAN test encironments (cf.~\autoref{cha:evaluation}) with $2,3,5$ parties (x-axis). We take the average results over $10$ protocol runs. }
+    \caption[Total runtime in microseconds for the \booleanGMW and \arithmeticGMW fixed-point arithmetic operations.]{Total runtime in microseconds (y-axis) for the \booleanGMW and \arithmeticGMW fixed-point arithmetic operations in WAN test encironments with different parties (x-axis). We take the average results over $10$ protocol runs. }
     \label{fig:fixedpointBenchmarks}
 \end{figure}
 \FloatBarrier
@@ -436,7 +438,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(a) addition},
                 anchor=north,
                 %legend pos = outer north east,
@@ -460,7 +462,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(b) subtraction},
                 %legend pos = outer north east,
                 % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
@@ -484,7 +486,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(c) mulitplication},
                 %legend pos = outer north east,
                 % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
@@ -506,7 +508,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(d) division},
                 %legend pos = outer north east,
                 % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
@@ -528,7 +530,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(e) exp2},
                 %legend pos = outer north east,
                 % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
@@ -550,7 +552,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(f) log2},
                 %legend pos = outer north east,
                 % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
@@ -572,7 +574,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(g) square root},
                 %legend pos = outer north east,
                 % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
@@ -594,7 +596,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(h) comparison},
                 %legend pos = outer north east,
                 % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
@@ -616,7 +618,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(i) fl2int},
                 %legend pos = outer north east,
                 % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
@@ -640,7 +642,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
                 grid = both,
                 minor tick num = 1,
                 width = 7cm,
-                height = 4cm,
+                height = 3.8cm,
                 title=\textbf{(j) fl2fx},
                 %legend pos = outer north east,
                 % legend entries = {Floating-Point BGMW, Floating-Point AGMW},
@@ -653,11 +655,11 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
             \addplot+ table[x=parties, y=FL_circuit] {data/floating_point_fl2fx.dat};
             \addplot+ table[x=parties, y=FL_agmw] {data/floating_point_fl2fx.dat};
 
-            \legend{Floating-Point \booleanGMW w/o \simd, Floating-Point \arithmeticGMW}
+            \legend{\booleanGMW Floating-Point w/o \simd, \arithmeticGMW Floating-Point}
         \end{groupplot}
     \end{tikzpicture}\\
     \ref{UniversalLegend}
-    \caption[Total runtime in microseconds for floating-point arithmetic operations for the \booleanGMW (\BOOL)~\cite{goldreich1987play} and \arithmeticGMW protocol.]{Total runtime in microseconds (y-axis) for floating-point arithmetic operations for the \booleanGMW (\BOOL)~\cite{goldreich1987play} and \arithmeticGMW protocol in WAN test encironments (cf.~\autoref{cha:evaluation}) with $2,3,5$ parties (x-axis). We take the average results over $10$ protocol runs. }
+    \caption[Total runtime in microseconds for the \booleanGMW and \arithmeticGMW floating-point arithmetic operations.]{Total runtime in microseconds (y-axis) for the \booleanGMW and \arithmeticGMW floating-point arithmetic operations in WAN test encironments with different parties (x-axis). We take the average results over $10$ protocol runs. }
     \label{fig:floatingpointBenchmarks}
 \end{figure}
 \FloatBarrier
@@ -894,48 +896,52 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
 
 \section{Differentially Pirvate Mechanism Benchmarks}
 \label{sec:DifferentiallyPirvateMechanismBenchmarks}
-
-We present the performance evaluation of the \smpc protocols for differentially private mechanisms in~\autoref{tab:runtimes_differentially_private_mechanism}.
+In this seciton, we present the performance evaluation of the \smpc protocols for differentially private mechanisms.
 
 \paragraph{Laplace Mechanisms.}
-Recall that Integer-Scaling Laplace mechanism $M_{ISLap} $ achieves differential privacy protection effect as Laplace mechanism \textit{securely} by re-scaling a discrete Laplace random variable.
-In our work, we generate the discrete Laplace random variable with sampling protocol $\Uppi^{DLap}$ (cf.~\autoref{prot:DiscreteLap}) and set the failure probability as $p<2^{-40}$.
-We can see that the $M_{ISLap}$ with fixed-point implementation of $\Uppi^{DLap}$ is $1.09\times-1.29\times$ slower than that with floating-point implementation.
-The reason is that the division operation in fixed-point is more expensive than floating-point for BGMW protocols.
+Recall that Integer-Scaling Laplace mechanism $M_{ISLap} $ (cf.~\autoref{subsec:ISLap}) is a \textit{secure} implementation of the Laplace mechanism using a re-scaled discrete Laplace random variable to simulate the continuous Laplace random variable.
+% In \autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}, we construct two \smpc protocols (\autoref{prot:TwoSideGeometric} and \autoref{prot:DiscreteLap}) for sampling discrete Laplace random variables. However, \autoref{prot:TwoSideGeometric} incurs memory overflow ($>128$GB in \twopc) because its sub-protocol \autoref{prot:GeometricExpBinarySearch} use binary search (with $52$ successive iterations) to generate a geometric random variable. In contrast, the \textbf{FOR} loop in \autoref{prot:DiscreteLap} and its sub-protocol \autoref{prot:GeometricEXP} can be parallelized with \simd that improve the efficiency and decrease the memory overhead. Therefore, we use \autoref{prot:DiscreteLap} to implemented the Integer-Scaling Laplace mechanism $M_{ISLap}$.
+
+In \autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}, we construct two \smpc protocols (\autoref{prot:TwoSideGeometric} and \autoref{prot:DiscreteLap}) for sampling discrete Laplace random variables. However, \autoref{prot:TwoSideGeometric} incurs memory overflow ($>128$GB in \twopc) because its sub-protocol \autoref{prot:GeometricExpBinarySearch} use binary search (with $52$ successive iterations) to generate a geometric random variable. In contrast, the \textbf{FOR} loop in \autoref{prot:DiscreteLap} and its sub-protocol \autoref{prot:GeometricEXP} can be parallelized with \simd that improve the efficiency and decrease the memory overhead.
+Nevertheless, we can only generate ten discrete Laplace random variables with \autoref{prot:DiscreteLap} without memory overflow for a single run.
+We use \autoref{prot:DiscreteLap} to implemented the Integer-Scaling Laplace mechanism $M_{ISLap}$.
+
+
+We can see that the Integer-Scaling Laplace mechanism $M_{ISLap}$ with \autoref{prot:DiscreteLap} under \booleanGMW fixed-point is $1.07\times-1.32\times$ slower than that with \booleanGMW floating-point implementation.
+The major overhead of \booleanGMW fixed-point is the division operation.
 
 For comparison, we implement the \textit{insecure} Laplace mechanisms $M_{Lap}$~\cite{eigner2014differentially}.
 Note that Mironov~\cite{mironov2012significance} showed that $M_{Lap}$~\cite{eigner2014differentially} suffered from floating-point attacks and proposed the snapping mechanism $M_{SM}$ as a solution.
-The snapping mechanism $M_{SM}$ has the best online run-times performance and it is $5380\times-11940\times $ faster than $M_{ISLap}$ and $1.32\times- 1.62\times$ faster than $M_{Lap}$~\cite{eigner2014differentially}.
+
+The snapping mechanism $M_{SM}$ has the best total runtimes performance and it is $554\times-1373\times $ faster than $M_{ISLap}$ and $1.32\times- 1.62\times$ faster than $M_{Lap}$~\cite{eigner2014differentially}.
 However, it is worth to mention that the snapping mechanism $M_{SM}$ introduces additional errors (beyond the necessary amount Laplace noise), that leads to a significant reduction in utility~\cite{Covington2019,googleDP2019}.
-In contrast, we could reduce the errors introduced by the Integer-Scaling Laplace mechanism $M_{ISLap}$ by setting appropriate resolution parameter $r$ (cf.~\autoref{sec:integerScalingMechanism}).
-
-
+In contrast, we could reduce the unnecessary errors of the Integer-Scaling Laplace mechanism $M_{ISLap}$ by setting an appropriate resolution parameter $r$.
 
 % is $5500\times-9444\times$ slower than the \textit{insecure} floating-point implementation of $M_{Lap}$.
-
 
 
 % However, Covington~\cite{Covington2019} proved that $M_{SM}$ introduces additional errors (beyond the necessary Laplace noise), and it leads to a significant reduction in utility.
 % In comparison to $M_{SM}$, $M_{ISLap}$ introduces relative low errors by setting appropriate resolution parameter $r$ (cf.~\autoref{sec:integerScalingMechanism}).
 
 \paragraph{Gaussian Mechanisms.}
-Recall that the Integer-Scaling Gaussian mechanism $M_{ISLap}$ deploys the sampling protocol $\Uppi^{SymmBinomial}$ under floating-point arithmetic to simulate the continuous Gaussian random variable.
-We implement $\Uppi^{SymmBinomial}$ with BGMW-based floating-point arithmetic.
-We can see that the Integer-Scaling Gaussian mechanism $M_{ISGau}$ is $2.08\times-3.06\times$ faster than the Integer-Scaling Laplace mechanism $M_{ISLap}$.
+The Integer-Scaling Gaussian mechanism $M_{ISLap}$ (cf.~\autoref{subsec:IntegerScalingGaussianMechanism}) deploys the sampling protocol \autoref{prot:SymmBinomialLargeN} under \booleanGMW floating-point simulate the continuous Gaussian random variable.
+We can see that the Integer-Scaling Gaussian mechanism $M_{ISGau}$ is $3,27\times-4.11\times$ slower than the Integer-Scaling Laplace mechanism $M_{ISLap}$ under \booleanGMW floating-point.
 % Recall that $M_{ISGau}$ realize similar differential privacy protection effect as Gaussian mechanism (cf.~\autoref{def:gaussianMechanism}).
 % We implement the Integer-Scaling Gaussian mechanism $M_{ISGau}$ under BGMW-based floating-point that has an online run-times of $18$ seconds in the LAN setting of two computation parties.
 
 \paragraph{Discrete Laplace Mechanisms.}
-The discrete Laplace mechanism $M_{DLap}$ deploys the same sampling protocol $\Uppi^{DLap}$ (cf.~\autoref{prot:DiscreteLap}) as $M_{ISLap}$.
+The discrete Laplace mechanism $M_{DLap}$ deploys the same sampling protocol \autoref{prot:DiscreteLap} as $M_{ISLap}$.
 We also implement $M_{DLap}$~\cite{eigner2014differentially} for comparison.
-It can be seen, that $M_{DLap}$~\cite{eigner2014differentially} is at least $1068\times$ faster than our implementation of $M_{DLap}$ in BGMW-based fixed/floating-point arithmetic in the LAN setting. However, the security of $M_{DLap}$~\cite{eigner2014differentially} remains to prove as it applies similar noise generation procedure as $M_{Lap}$~\cite{eigner2014differentially}.
+It can be seen, that $M_{DLap}$~\cite{eigner2014differentially} is at least $1764\times$ faster than our implementation of $M_{DLap}$ in \booleanGMW floating-point in the LAN setting. However, the security of $M_{DLap}$~\cite{eigner2014differentially} remains to prove as it applies similar noise generation procedure as $M_{Lap}$~\cite{eigner2014differentially}.
 
 \paragraph{Discrete Gaussian Mechanisms.}
-\TODO{We encounter memory overflow when implement BGMW-based $M_{DGau}$, try to implement it in AGMW-based floating-point arithmetic}
+We encounter memory overflow when implement \booleanGMW $M_{DGau}$ with \autoref{prot:DGaussMechanism}. To get a rough estimation, we split \autoref{prot:DGaussMechanism} into several independent parts, save the intermediate result, and run MOTION~\cite{braun2022motion} for several times.
+As \autoref{tab:runtimes_differentially_private_mechanism} shows, the discrete Gaussian mechanism $M_{DGau}$ takes the longest runtime. To successfully generate a discrete Gaussian random variable, \autoref{prot:DGaussMechanism} needs about $23$ discrete Laplace random variables to be generated in its sub-protocol (cf.~\autoref{prot:DiscreteLap}).
+
 
 \begin{table}
     \caption{
-        Online run-times in milliseconds (ms) for differentially private mechanisms for the GMW (B). We specify the run-time of a single operation amortized over corresponding SIMD values. We take the average over 10 protocol runs in the LAN and WAN environments.
+        Online run-times in milliseconds (ms) for differentially private mechanisms for the GMW (B). We specify the run-time of a single operation amortized over corresponding Parallel Factor (PF) values. We take the average over 10 protocol runs in the LAN and WAN environments. \text{*}: insecure methods.  
     }
     \label{tab:runtimes_differentially_private_mechanism}
     % \small
@@ -945,30 +951,30 @@ It can be seen, that $M_{DLap}$~\cite{eigner2014differentially} is at least $106
     \resizebox{\columnwidth}{!}{
         \begin{tabular}{ l r c r r r r r r r r r}
             \toprule
-            \hiderowcolors                                       &         &            & \multicolumn{3}{c}{LAN} &            & \multicolumn{3}{c}{WAN}                                                 \\
-            \cmidrule{4-6} \cmidrule{8-10}  Parties $N$          & SIMD    & Protocol   &
+            \hiderowcolors                                       &         &            & \multicolumn{3}{c}{LAN} &            & \multicolumn{3}{c}{WAN}                                              \\
+            \cmidrule{4-6} \cmidrule{8-10}  Parties $N$          & PF      & Protocol   &
             $N{=}2$                                              & $N{=}3$ & $N{=}5$    &                         &
-            $N{=}2$                                              & $N{=}3$ & $N{=}5$                                                                                                                     \\ \showrowcolors
+            $N{=}2$                                              & $N{=}3$ & $N{=}5$                                                                                                                  \\ \showrowcolors
             \midrule
             % $M_{Lap}$~\cite{eigner2014differentially}                                        & 1000    & $\BOOL,FX$ & 26.09                   & 24.04      & 62.74                   &  & 1\,269.25   & 1\,335.42   & 1\,474.29      \\
-            $M_{Lap}$~\cite{eigner2014differentially} (insecure) & 1000    & $\BOOL,FL$ & 7.58                    & 8.36       & 11.08                   &  & 197.68      & 223.92      & 248.53         \\
-            $M_{SM}$ (\textbf{this work})                        & 1000    & $\BOOL,FL$ & 4.68                    & 5.77       &                         &  & 145.70      & 168.74      & 182.60         \\
-            $M_{ISLap} $ (\textbf{this work})                    & 1       & $\BOOL,FX$ & 72\,296.53              & 71\,352.89 & 160\,443.40             &  & 949\,907.44 & 994\,913.88 & 1\,091\,406.72 \\
-            $M_{ISLap} $ (\textbf{this work})                    & 1       & $\BOOL,FL$ & 55\,858.07              & 47\,186.90 & 111\,232.66             &  & 846\,435.93 & 908\,322.81 & 1\,001\,687.22 \\
+            $M_{Lap}$~\cite{eigner2014differentially} \textbf{*} & 1000    & $\BOOL,FL$ & 7.58                    & 8.36       & 11.08                   &  & 197.68      & 223.92      & 248.53      \\
+            $M_{SM}$ (\textbf{this work})                        & 1000    & $\BOOL,FL$ & 4.68                    & 5.77       & ---                     &  & 145.70      & 168.74      & 182.60      \\
+            $M_{ISLap} $ (\textbf{this work})                    & 10      & $\BOOL,FX$ & 7\,292.91               & 7\,925.98  & ---                     &  & 95\,448.89  & 110\,170.46 & ---         \\
+            $M_{ISLap} $ (\textbf{this work})                    & 10      & $\BOOL,FL$ & 5\,770.09               & 5\,981.37  & ---                     &  & 85\,892.69  & 93\,238.29  & ---         \\
             \midrule
             % $M_{Gau}$~\cite{wu2016inherit}                                      & 100     & $\BOOL,FL$ & 29.82                   & 36.71      & 48.36                   &  & 762.88      & 843.09      & 904.58         \\
-            $M_{ISGau}$ (\textbf{this work})                     & 1       & $\BOOL,FL$ & 18\,916.06              & 19\,413.08 & 26\,929.39              &  & 394\,248.57 & 435\,126.28 & 470\,813.95    \\
+            $M_{ISGau}$ (\textbf{this work})                     & 1       & $\BOOL,FL$ & 18\,916.06              & 19\,413.08 & 26\,929.39              &  & 394\,248.57 & 435\,126.28 & 470\,813.95 \\
             \midrule
-            $M_{DLap}$~\cite{eigner2014differentially}           & 1000    & $\BOOL,FX$ & 2.26                    & 3.26       & 134.97                  &  & 19.01       & 24.11       & 69.88          \\
-            $M_{DLap}$~\cite{eigner2014differentially}           & 1000    & $\BOOL,FL$ & 5.91                    & 6.60       & 9.06                    &  & 144.93      & 163.96      & 177.91         \\
-            $M_{DLap}$ (\textbf{this work})                      & 1       & $\BOOL,FX$ & 60\,946.33              & 62\,613.41 & 144\,253.44             &  & 893\,460.44 & 947\,818.24 & 1\,040\,754.52 \\
-            $M_{DLap}$ (\textbf{this work})                      & 1       & $\BOOL,FL$ & 48\,874.17              & 49\,236.48 & 105\,650.76             &  & 730\,002.77 & 782\,549.19 & 861\,691.71    \\
+            $M_{DLap}$~\cite{eigner2014differentially}           & 1000    & $\BOOL,FX$ & 2.26                    & 3.26       & ---                     &  & 19.01       & 24.11       & 69.88       \\
+            $M_{DLap}$~\cite{eigner2014differentially}           & 1000    & $\BOOL,FL$ & 5.91                    & 6.60       & 9.06                    &  & 144.93      & 163.96      & 177.91      \\
+            $M_{DLap}$ (\textbf{this work})                      & 10      & $\BOOL,FX$ & 6\,665.97               & 7\,107.66  & ---                     &  & 93\,155.60  & 101\,739.97 & ---         \\
+            $M_{DLap}$ (\textbf{this work})                      & 10      & $\BOOL,FL$ & 5\,394.89               & 5\,749.11  & ---                     &  & 85\,606.52  & 92\,518.90  & ---         \\
             \midrule
             % $M_{Dau}$ \TODO{add other work for comparison}                                   & 1       &            &                         &            &                         &  &             &             &                \\
             % $M_{Dau}$ (\textbf{this work w/~\cite{eigner2014differentially} as subprotocol}) & 50      & $\BOOL,FX$ & 2.03                    & 2.68       & ---                     &  & 20.43       & 27.53       & ---            \\
             % $M_{Dau}$ (\textbf{this work w/~\cite{eigner2014differentially} as subprotocol}) & 50      & $\BOOL,FL$ & 6.51                    & 7.80       & 10.45                   &  & 174.76      & 198.04      & 211.05         \\
-            $M_{Dau}$ (\textbf{this work})                       & 1       & $\BOOL,Fx$ & ---                     & ---        & ---                     &  & ---         & ---         & ---            \\
-            $M_{Dau}$ (\textbf{this work})                       & 1       & $\BOOL,FL$ & ---                     & ---        & ---                     &  & ---         & ---         & ---            \\
+            $M_{Dau}$ (\textbf{this work})                       & 1       & $\BOOL,Fx$ & 28\,159.07              & 29\,575.94 & ---                     &  & 562\,198.23 & 617\,524.26 & ---         \\
+            $M_{Dau}$ (\textbf{this work})                       & 1       & $\BOOL,FL$ & 24\,906.67              & 26\.350.66 & ---                     &  & 526\.837.85 & 588\,904.17 & ---         \\
             \bottomrule
         \end{tabular}
     }
