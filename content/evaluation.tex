@@ -313,7 +313,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
 
 % Comparing the online run-times of fixed-point arithmetic from \autoref{tab:runtimes_fixed_point_circuit} and \autoref{tab:runtimes_fixed_point_agmw}, we can see that the BGMW-based fixed-point arithmetic (with $SIMD=1$) is more efficient than the AGMW-based fixed-point arithmetic only in operations such as exp2, exp and conversion operation with integer, but slower in all other operations.
 % However, when we apply the SIMD technique, BGMW-based fixed-point arithmetic (with $SIMD=1000$) is $4\times-4000\times$ faster than the AGMW-based fixed-point arithmetic for all the operations in the LAN setting. In the WAN setting, the BGMW-based fixed-point arithmetic is $35\times-2800\times$ faster than the AGMW-based fixed-point arithmetic except for addition and multiplication operations.
-% That means if the functionalities (e.g., $FOR$ loop in $\Uppi^{prot:TwoSideGeometric}$) can be parallelized into independent and identical operations, the BGMW-based fixed-point arithmetic is a better option than AGMW-based fixed-point arithmetic in the LAN setting.
+% That means if the functionalities (e.g., \textbf{FOR} loop in $\Uppi^{prot:TwoSideGeometric}$) can be parallelized into independent and identical operations, the BGMW-based fixed-point arithmetic is a better option than AGMW-based fixed-point arithmetic in the LAN setting.
 % Therefore, we choose BGMW-based fixed-point arithmetic to implement the MPC protocols.
 
 
@@ -893,7 +893,7 @@ We use the \booleanGMW floating point numbers that have $64$ Boolean share bits.
 % % \FloatBarrier
 
 \section{Differentially Pirvate Mechanism Benchmarks}
-\label{DifferentiallyPirvateMechanismBenchmarks}
+\label{sec:DifferentiallyPirvateMechanismBenchmarks}
 
 We present the performance evaluation of the \smpc protocols for differentially private mechanisms in~\autoref{tab:runtimes_differentially_private_mechanism}.
 

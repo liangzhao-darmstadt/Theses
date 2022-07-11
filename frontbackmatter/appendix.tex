@@ -141,7 +141,7 @@
 % \FloatBarrier
 
 
-\section{MPC Protocols}
+\section{Building Blocks}
 \label{app:MPCBuildingBlocks}
 % \TODO{ABY, share conversion in preliminary part}\\
 % ${Pow2}\left(\left\langle \boldsymbol{x}\right\rangle\right) $ calculates $2^{x}$, and the share type of $x$ could be boolean or arthmetic sharings.\\
@@ -155,8 +155,7 @@
 % \label{prot:Bits}
 % Protocol $\Uppi^{Bits}\left(x,l\right) $ outputs the $l$ least significand bits $y_0,\ldots,y_{l-1}$ of the binary representation of $x$, where $y_0$ is the least siginificant bit.
 
-\paragraph{Oblivious Array Access}
-\label{para:ObliviousSelection}
+
 % Given an array of $\ell$ unsigned integers $y_0 ,\ldots,y_{\ell-1}$ and $\ell$-bit string $c_0,\ldots,c_{\ell-1}$. $\Uppi^{ObliviousSelection}$ outputs $y_i$ where $i$ is the first index such that $c_{i}==1$ for $i\in \left[0,\ell-1\right] $. We present $\Uppi^{OAA_a}$~\autoref{prot:OAA_a} and $\Uppi^{OAA_b}$ to realize this functionality.
 
 
@@ -178,7 +177,11 @@
 
 
 % Note that $\Uppi^{PreOr}$ in $\Uppi^{OAA_a}$ (cf.~\autoref{prot:OAA_a}) has at least $\ell$-depth for $\operatorname{AND}$ gate, that can be inefficient for large $\ell$ using GMW (cf.~\autoref{subsec:GMW}).
-$\Uppi^{ObliviousSelection}$ is inspired by the works~\cite{jarvinen2019pilot,mohassel2020practical}. $\Uppi^{ObliviousSelection}$ uses the inverted binary tree, i.e., the leaves represent input elements, and the root represents the output element. The tree has $\log_2{\ell}$-depth for input array of length $\ell$ and each node hold two shares: $\left\langle c\right\rangle^B $ and $\left\langle \boldsymbol{y}\right\rangle ^{B} $. \autoref{img:ObliviousSelection} shows an example of the inverted binary tree. For $i\in \left[0,\ell-1\right] $ and $j\in \left[\log_2 \ell\right] $, the values of node ($\left(\left\langle c_{a,b}\right\rangle , \left\langle \boldsymbol{y_{a,b}}\right\rangle ^{B}\right) $) in the $j$-th layer are computed with the value of two nodes (with value $\left(\left\langle c_{a}\right\rangle , \left\langle \boldsymbol{y_{a}}\right\rangle ^{B}\right)$  and $\left(\left\langle c_{b}\right\rangle , \left\langle \boldsymbol{y_{b}}\right\rangle ^{B}\right) $) in the $j-1$-th layer as follows:
+
+\paragraph{Oblivious Selection.}
+\label{para:ObliviousSelection}
+$\left\langle \boldsymbol{y_i}\right\rangle ^{B}\gets \Uppi^{ObliviousSelection}\left(\left\langle \boldsymbol{y_0}\right\rangle^{B} ,\ldots,\left\langle \boldsymbol{y_{\ell-1}}\right\rangle^{B},\left\langle c_0\right\rangle ^B,\ldots,\left\langle c_{\ell-1}\right\rangle ^B\right) $ outputs the bit-string $\left\langle \boldsymbol{y_i}\right\rangle ^B$, where $i$ is the index of the first non-zero bit $c_{i}$ for $i\in \left[0,\ell-1\right] $. If all the bits $c_0, \ldots, c_{\ell-1}$ are zeros, bit-string $\boldsymbol{y_i} $ is set to a bit-string consisting of all zeros.
+$\Uppi^{ObliviousSelection}$ is inspired by the works~\cite{jarvinen2019pilot,mohassel2020practical}. $\Uppi^{ObliviousSelection}$ uses a inverted binary tree, i.e., the leaves represent input elements, and the root represents the output element. The tree has $\log_2{\ell}$-depth for input array of length $\ell$ and each node hold two shares: $\left\langle c\right\rangle^B $ and $\left\langle \boldsymbol{y}\right\rangle ^{B} $. \autoref{img:ObliviousSelection} shows an example of the inverted binary tree. For $i\in \left[0,\ell-1\right] $ and $j\in \left[0,\log_2 \ell\right] $, the values of a node $\left(\left\langle c_{a,b}\right\rangle , \left\langle \boldsymbol{y_{a,b}}\right\rangle ^{B}\right) $ in the $j$-th layer are computed with the value of two upper nodes (with value $\left(\left\langle c_{a}\right\rangle , \left\langle \boldsymbol{y_{a}}\right\rangle ^{B}\right)$  and $\left(\left\langle c_{b}\right\rangle , \left\langle \boldsymbol{y_{b}}\right\rangle ^{B}\right) $) in the $j-1$-th layer as follows:
 
 \begin{equation}
     \left(\left\langle c_{a,b}\right\rangle , \left\langle \boldsymbol{y_{a,b}}\right\rangle ^{B}\right)=
@@ -198,16 +201,16 @@ which is equivalent to
 
 \begin{equation}
     \begin{split}
-        \left\langle \boldsymbol{y_{a,b}}\right\rangle=& \quad \left(\left\langle c_{a}\right\rangle\oplus \left\langle c_{b}\right\rangle\right) \cdot \left(\left\langle \boldsymbol{y_{a}}\right\rangle ^{B,UINT}\cdot \left\langle c_{a}\right\rangle \oplus  \left\langle \boldsymbol{y_{b}}\right\rangle ^{B,UINT} \cdot \left\langle c_{b}\right\rangle \right)  \\
-        & \oplus \left(\left\langle c_{a}\right\rangle \land\left\langle c_{b}\right\rangle\right) \cdot \left\langle \boldsymbol{y_{a}}\right\rangle ^{B,UINT}
+        \left\langle \boldsymbol{y_{a,b}}\right\rangle=& \quad \left(\left\langle c_{a}\right\rangle\oplus \left\langle c_{b}\right\rangle\right) \cdot \left(\left\langle \boldsymbol{y_{a}}\right\rangle ^{B}\cdot \left\langle c_{a}\right\rangle \oplus  \left\langle \boldsymbol{y_{b}}\right\rangle ^{B} \cdot \left\langle c_{b}\right\rangle \right)  \\
+        & \oplus \left(\left\langle c_{a}\right\rangle \land\left\langle c_{b}\right\rangle\right) \cdot \left\langle \boldsymbol{y_{a}}\right\rangle ^{B}
     \end{split}
 \end{equation}
 
-The nodes is evaluated from the $1$th layer until the root.
+$a \cdot \boldsymbol{b}$ denotes the $\land$ between a bit $a$ and a bit-string $\boldsymbol{b}$. The nodes are evaluated from the $0$th layer to the bottom root.
 
 
 \begin{figure}[htbp]
-    \includegraphics[width=10cm]{ObliviousSelection.png}
+    \includegraphics[width=8cm]{ObliviousSelection.png}
     \centering
     \caption{Example inverted binary tree for $\Uppi^{ObliviousSelection}$.}
     \label{img:ObliviousSelection}
@@ -215,29 +218,29 @@ The nodes is evaluated from the $1$th layer until the root.
 \FloatBarrier
 
 
-% \subsection{Geometric Distribution}
-% \label{prot:GeometricDistribution}
-% \autoref{prot:Geometric} is constructed based on $Algo^{Geo}$ (cf.~\autoref{algo:Geometric}). 
-% $ \left(u_0,\ldots,u_{iter} \right)\in \left\{0,1\right\}^{iter} $ is a bit string with uniform bits.
-% In line $2,3$, we set the bits in $ b_0,\ldots,b_{iter-1}$ to one when the corresponding bits in $u_0,\ldots,u_{iter} $ are the leading zero bits, and other bits in $ b_0,\ldots,b_{iter-1}$ to zero. 
-% Recall that the geometric distribution (cf.~\autoref{def:GeometricDistribution}) counts the number of Bernoulli trials up to and including the first success. Therefore, we append bit $1$ and compute the Hamming Weight of string $1, b_0,\ldots,b_{iter-1}$.
+\paragraph{SMPC Protocol for Geometric Sampling Algorithm.}
+\label{para:GeometricDistribution}
+We construct \autoref{prot:Geometric} than generates shares of a geometric random variable $y\sim Geo\left(0.5\right) $ based on \autoref{algo:Geometric}.
+% $ \left(u_0,\ldots,u_{\ell} \right)\in \left\{0,1\right\}^{\ell} $ is an uniform random $\ell$-bit string.
+% In line $2,3$, we set the bits in $ b_0,\ldots,b_{\ell-1}$ to one when the corresponding bits in $u_0,\ldots,u_{\ell} $ are the leading zero bits, and other bits in $ b_0,\ldots,b_{\ell-1}$ to zero.
+% Recall that the geometric distribution (cf.~\autoref{def:GeometricDistribution}) counts the number of Bernoulli trials up to and including the first success. Therefore, we append bit $1$ and compute the Hamming Weight of string $1, b_0,\ldots,b_{\ell-1}$.
 
-% \begin{protocol}[tbh!]
-%     \centering
-%     \fbox{
-%         \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output,FOR,},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{Geometric}$}]{
-%             \textbf{Input: None} \pcskipln \\
-%             \textbf{Output: $\left\langle \boldsymbol{y}\right\rangle^{B,UINT}$, where $y\sim Geo\left(p=0.5\right) $} \\
-%             \text{$\left(u_0,\ldots,u_{iter-1}\right)  \gets \Uppi^{RandBits}\left(iter\right) $} \\
-%             \text{$\left(\left\langle p_{0}\right\rangle^B,\ldots,\left\langle p_{iter-1}\right\rangle^B\right) =\Uppi^{PreOr}\left(\left\langle u_0\right\rangle^B,\ldots, \left\langle u_{iter-1}\right\rangle^B\right) $} \\
-%             \text{$\left(\left\langle b_{0}\right\rangle^B,\ldots,\left\langle b_{iter-1}\right\rangle^B\right)  = \left(\operatorname{NOT} \left(\left\langle p_{0} \right\rangle ^B\right),\ldots,\operatorname{NOT} \left(\left\langle p_{iter-1} \right\rangle ^B\right) \right) $} \\
-%             % \text{$\left(\left\langle z_0^{ind}\right\rangle^B,\dots,\left\langle z_{iter-1}^{ind}\right\rangle^B\right) =\left(1,\left\langle d_{0}\right\rangle ^B ,\ldots ,\left\langle d_{iter-2}\right\rangle ^B\right) $. }\\
-%             \text{$\left\langle \boldsymbol{y}\right\rangle^{B,UINT} =\Uppi^{HW}\left(1,\left\langle b_{0}\right\rangle^B,\ldots,\left\langle b_{iter-2}\right\rangle^B\right) $.}
-%         }}
-%     \caption{MPC Protocol for geometric distribution $y\sim Geo\left(p=0.5\right)$.}
-%     \label{prot:Geometric}
-% \end{protocol}
-% \FloatBarrier
+\begin{protocol}[tbh!]
+    \centering
+    \fbox{
+        \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output,FOR,},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{Geometric}$}]{
+            \textbf{Input: None} \pcskipln \\
+            \textbf{Output: $\left\langle {y}\right\rangle^{B,UINT}$, where $y\sim Geo\left(p=0.5\right) $} \\
+            \text{$\left(u_0,\ldots,u_{\ell-1}\right)  \gets \Uppi^{RandBits}\left(\ell\right) $} \\
+            \text{$\left(\left\langle p_{0}\right\rangle^B,\ldots,\left\langle p_{\ell-1}\right\rangle^B\right) =\Uppi^{PreOr}\left(\left\langle u_0\right\rangle^B,\ldots, \left\langle u_{\ell-1}\right\rangle^B\right) $} \\
+            \text{$\left(\left\langle b_{0}\right\rangle^B,\ldots,\left\langle b_{\ell-1}\right\rangle^B\right)  = \left(\lnot \left(\left\langle p_{0} \right\rangle ^B\right),\ldots,\lnot \left(\left\langle p_{\ell-1} \right\rangle ^B\right) \right) $} \\
+            % \text{$\left(\left\langle z_0^{ind}\right\rangle^B,\dots,\left\langle z_{\ell-1}^{ind}\right\rangle^B\right) =\left(1,\left\langle d_{0}\right\rangle ^B ,\ldots ,\left\langle d_{\ell-2}\right\rangle ^B\right) $. }\\
+            \text{$\left\langle {y}\right\rangle^{B,UINT} =\Uppi^{HW}\left(\left\langle b_{0}\right\rangle^B,\ldots,\left\langle b_{\ell-1}\right\rangle^B\right) $.}
+        }}
+    \caption{SMPC protocol for sampling from a geometric distribution $Geo\left(0.5\right) $.}
+    \label{prot:Geometric}
+\end{protocol}
+\FloatBarrier
 
 % % \TODO{explanation}
 % \TODO{anaylyse about differential privacy, $iter_2$ leak information of j in second while loop}\\
@@ -276,7 +279,7 @@ The nodes is evaluated from the $1$th layer until the root.
 
 
 
-% \subsection{Bernoulli Distribution}
+% \paragraph{SMCP Protocol for Bernoulli Sampling Algorithm}
 % \autoref{prot:Bernoulli} is based on~\autoref{algo:Bernoulli}.
 % \begin{protocol}[tbh!]
 %     \centering
@@ -289,7 +292,7 @@ The nodes is evaluated from the $1$th layer until the root.
 %             \text{$\left\langle \boldsymbol{U}\right\rangle ^{B,FX} \gets \operatorname{right-shift}\left(\left\langle \boldsymbol{U}\right\rangle ^{B,FX} ,11\right)  $}\\
 %             \text{$\left\langle x\right\rangle^{B} \gets \left(\left\langle p\right\rangle^{B,FX} >\left\langle \boldsymbol{U}\right\rangle ^{B,FX}\right) $}
 %         }}
-%     \caption{MPC Protocol for Bernoulli distribution $x\sim Bern\left(p\right) $.}
+%     \caption{SMCP Protocol for sampling from a Bernoulli distribution $ Bern\left(p\right) $.}
 %     \label{prot:Bernoulli}
 % \end{protocol}
 % \FloatBarrier

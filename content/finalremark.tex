@@ -1,9 +1,23 @@
 \chapter{Final Remarks}
 \label{cha:FinalRemarks}
 
+This chapter presents the conclusion of this work and propose some suggestions for further research.
+
+\section{Conclusions}
+\label{sec:Conclusions}
+
+This work aims to realize \differentialprivacy in \smpc in a secure manner so that the computation result can preserve the users' privacy and maintain an optimal utility. We investigate the potential of realizing different secure noise generation methods in \smpc and provide a variety of \smpc protocols for differentially private mechanisms. As the benchmark results in \autoref{sec:ArithmeticOperationsPerformanceEvaluation} indicates, \booleanGMW floating-point is the most efficient \smpc protocols for implementing the sampling algorithms. However, the benchmark result of the differentially private mechanisms (cf.~\autoref{sec:DifferentiallyPirvateMechanismBenchmarks}) implies that the generation of secure noise in \smpc incurs a significant amount of overhead than the \textit{insecure} methods. 
+
+
+\section{Future Research}
+\label{sec:Conclusions}
+In future works, we first intend to redesign the interfaces of MOTION~\cite{braun2022motion} to optimize the memory overhead.
+Another important research direction is to explore the possibilities of extending the \smpc protocols for differentially private mechanisms into malicious settings.
+Recall that the differentially private mechanisms we implemented satisfy the standard differential privacy definition~\cite{dwork2006differential, dwork2006calibrating}, i.e., they are secure against computationally unbounded adversary.
+However, a computationally bounded adversary might be more practical in specific scenarios where the computation result's efficiency and utility have a higher priority than the security.
+Therefore, it is worth to investigate if an relaxation of the standard differential privacy can improve the efficiency of the \smpc protocols.
 
 
 
-
-
+% investigate the usage of more efficient \smpc protocols that support arithmetic operations in specific value ranges. For example, \autoref{prot:DiscreteGauss} generates discrete Gaussian random variables by deploying sub-protocol \autoref{} the input of the natural exponentiation in \autoref{}
 
