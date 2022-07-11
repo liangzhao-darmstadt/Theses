@@ -19,25 +19,25 @@ Superscript $S \in \left\{\ARITH,\BOOL,\YAO\right\} $ denotes the sharing type (
 % $\operatorname{B2A}$ denotes the share conversion from $\BOOL$ to $\ARITH$, and other share conversions are defined similarly as discussed in~\cite{demmler2015aby}.
 Superscript $D \in \left\{\uint,\sint,\fx,\fl \right\} $ indicates the data type: \uint for unsigned integer, \sint for signed integer, \fx for fixed-point number, and \fl for floating-point number. We omit subscript and subscript when it is clear from the context.
 
-Bold symbol $\left\langle \boldsymbol{x}\right\rangle $ denotes a vector of $\ell$ shared bits.
-We use $\operatorname{XOR}$ ($\oplus $), $\operatorname{AND}$ ($\land $), and $\operatorname{NOT}$ ($\neg$) in the logical opeartions.
+The bold symbol $\left\langle \boldsymbol{x}\right\rangle $ denotes a vector of $\ell$ shared bits.
+We use $\operatorname{XOR}$ ($\oplus $), $\operatorname{AND}$ ($\land $), and $\operatorname{NOT}$ ($\neg$) in the logical operations.
 Let $\left\langle {a}\right\rangle^{S,D} \odot \left\langle {b}\right\rangle^{S,D}$ be the arithmetic operations on two shared numbers, where $\odot\in\left\{+, -, \cdot, \div, >, ==\right\} $. $\left\langle a\right\rangle ^{\BOOL} \cdot \left\langle \boldsymbol{b}\right\rangle ^{\BOOL}$ represents the bitwise $\operatorname{AND}$ operations between $\left\langle a\right\rangle ^{\BOOL}$ and every Boolean sharing bit $\left\langle b\right\rangle^{\BOOL} \in\left\langle \boldsymbol{b}\right\rangle ^{\BOOL}$.
 % Other arithmetic operations are defined similarily.
 % Similarly, $\ln\left(\left\langle {a}\right\rangle \right) $, $2^{\left\langle {a}\right\rangle } $, $e^{\left\langle {a}\right\rangle^{D} }$, $\left\lvert \left\langle {a}\right\rangle^{D} \right\rvert $, $\left\lfloor \left\langle {a}\right\rangle^{D} \right\rfloor $ , $\left\lceil \left\langle {a}\right\rangle^{D} \right\rceil $, $\left\langle {a}\right\rangle^{D} \mod \left\langle {b}\right\rangle^{D} $ denote the arithmetic operations of shared numbers $\left\langle {a}\right\rangle^{D} $ and $\left\langle {b}\right\rangle^{D} $ of type $D$.
-Let $\left\langle {a}\right\rangle ^{\fl}=\Uppi^{UINT2FL}\left(\left\langle {a}\right\rangle ^{\uint}\right) $ be the conversion from an shared unsigned integer $\left\langle {a}\right\rangle ^{\uint}$ to a shared floating-point number $\left\langle {a}\right\rangle ^{\fl}$. Other data type conversion operations are defined in a similar manner.
+Let $\left\langle {a}\right\rangle ^{\fl}=\Uppi^{UINT2FL}\left(\left\langle {a}\right\rangle ^{\uint}\right) $ be the conversion from a shared unsigned integer $\left\langle {a}\right\rangle ^{\uint}$ to a shared floating-point number $\left\langle {a}\right\rangle ^{\fl}$. Other data type conversion operations are defined in a similar manner.
 
 
 \section{Secure Multi-Party Computation (SMPC)}
 \label{sec:secureMultipartyComputation}
-Secure Multi-Party Computation enables multiply parties to jointly evaluate a function on their private inputs while revealing only the computation result. Yao~\cite{yao1982protocols} introduced the concept of secure two-party computation with Yao's Millionaires' problem (i.e., two millionaires wish to know who is richer without revealing their actual wealth) and proposed the garbled circuit protocol~\cite{yao1986generate} as a solution.
-In the garbled circuit protocol, the target function is represented as a Boolean circuit consisting of connected gates and wires. One party called gabler is responsible for garbling the circuit, and the other party called evaluator evaluates the garbled circuit and outputs the result.
+Secure Multi-Party Computation enables multiply parties to jointly evaluate a function on their private inputs while revealing only the computation result. Yao~\cite{yao1982protocols} introduced the concept of secure two-party computation with Yao's Millionaires' problem (i.e., two millionaires wish to know who is richer without revealing their actual wealth) and proposed the Yao's Grbled Circuit protocol~\cite{yao1986generate} as a solution.
+In the Yao's Grbled Circuit protocol, the target function is represented as a Boolean circuit consisting of connected gates and wires. One party called gabler is responsible for garbling the circuit, and the other party called evaluator evaluates the garbled circuit and outputs the result.
 % The gabler generates the garbled circuit by replacing the logical values ($0$ and $1$) of each wire with two random keys. Then, the gabler encrypted and shuffle the truth table of each gate with these keys. 
 
 % In Yao's Millionaires' problem, two millionaires wish to know who is richer without revealing their actual wealth.
 Afterwards, \bmr~\cite{beaver1990round} generalized Yao's Garbled Circuit protocol~\cite{yao1986generate} to multi-party settings. \gmw~\cite{goldreich1987play} proposed a general solution to \smpc based on secret sharing, where each party splits his data into several shares and sends it to each of the parties.
-Secret sharing guarantees that any secret shares held by single party leak no information about the parties' private input.
+Secret sharing guarantees that any secret shares held by a single party leak no information about the parties' private input.
 
-Generally, the execution of MPC protocols is separated into two phases: an offline (or preprocessing) phase and an online phase.
+Generally, the execution of \smpc protocols is separated into two phases: an offline (or preprocessing) phase and an online phase.
 In the offline phase, the parties compute everything that does not depend on the private input. In the online phase, the parties compute the input-dependent part.
 
 
@@ -46,9 +46,9 @@ In the offline phase, the parties compute everything that does not depend on the
 The standard approach to prove the security of cryptographic protocols is to consider adversaries with different capabilities.
 We describe two types of adversaries: the \textit{semi-honest} adversary and the \textit{malicious} adversary. We refer to~\cite[Chapter~2]{evans2017pragmatic} for a formal and detailed description of the security model.
 
-\textbf{Semi-honest adversaries} (also known as passive adversaries) try to infer additional information of other parties from the messages during the protocol execution without attempting to break the protocol. Therefore, it is a weak security model and only prevents the unintentional disclosure of information between parties. The semi-honest protocols are usually very efficient and the first step to design protocols with stronger security guarantees.
+\textbf{Semi-honest adversaries} (also known as passive adversaries) try to infer additional information about other parties from the messages during the protocol execution without attempting to break the protocol. Therefore, it is a weak security model and only prevents the unintentional disclosure of information between parties. The semi-honest protocols are usually very efficient and the first step to design protocols with stronger security guarantees.
 
-\textbf{Malicious adversaries} (also known as active adversaries) may cause corrupted parties to arbitrarily deviate from the protocol specification and attempt to learn information about the other parties' inputs. Protocols against malicious adversaries usually deploy cryptographic mechanisms to ensure that the parties cannot deviate from the protocol specification. Therefore, the protocol is often more expensive than the protocol against semi-honest adversaries.
+\textbf{Malicious adversaries} (also known as active adversaries) may cause corrupted parties to arbitrarily deviate from the protocol specification and attempt to learn information about the other parties' inputs. Protocols against malicious adversaries usually deploy cryptographic mechanisms to ensure that the parties cannot deviate from the protocol specification. Therefore, it is often more expensive than the protocol against semi-honest adversaries.
 
 \subsection{Cryptographic Primitives}
 \label{subsec:CryptographicPrimitivesforSecureMulti-PartyComputation}
@@ -70,7 +70,7 @@ Asharov et al.~\cite{asharov2017more} proposed specific \ot functionalities for 
 \mts were proposed by Beaver~\cite{beaver1991efficient} that can be precomputed to reduce the online complexity of \smpc protocols by converting expensive operations (e.g., arithmetic multiplication and logical $\operatorname{AND}$) to linear operations (e.g., arithmetic addition and logical $\operatorname{XOR}$).
 
 A multiplication triple has the form $\left(\left\langle a\right\rangle^S , \left\langle b\right\rangle^S,\left\langle c\right\rangle^S\right) $ with $S\in \left\{B,A\right\} $.
-In Boolean sharing with GMW (cf.~\autoref{subsubsec:BooleanSharingwithGMW}), we have $c=a\land b$ for Boolean sharing and $c=a \cdot  b$ for arithmetic sharing (cf.~\autoref{subsubsec:ArithmeticSharing}).
+We have $c=a\land b$ for Boolean sharing (cf.~\autoref{subsubsec:BooleanSharingwithGMW}) and $c=a \cdot  b$ for arithmetic sharing (cf.~\autoref{subsubsec:ArithmeticSharing}).
 Multiplication triples can be generated using \correlatedot (cf.~\autoref{subsubsec:OT}) in the two-party setting~\cite{demmler2015aby} or in the multi-party setting~\cite{braun2022motion}.
 % The advantage of \mts is that it can reduce the MPC protocols' online complexity by converting expensive operations (e.g., arithmetic multiplication and logical $\operatorname{AND}$) to linear operations (e.g., arithmetic addition and logical $\operatorname{XOR}$).
 
@@ -89,7 +89,7 @@ The arithmetic sharing protocol enables parties to evaluate arithmetic circuits 
 In arithmetic sharing, an $\ell$-bit value $x$ is shared additively among $N$ parties as $\left(\left\langle x\right\rangle ^A_1, \ldots,\left\langle x\right\rangle ^A_N \right) \in \mathbb{Z} ^N_{2^{\ell}}$, where $x=\sum_{i=1}^{N} \left\langle x\right\rangle^A_i \mod{2^{\ell}} $ and party $P_i$ holds $\left\langle x\right\rangle^A_i $. Value $x$ can be reconstructed by letting each party $P_i$ sends $\left\langle x\right\rangle^A_i $ to one specific party who computes $x=\sum_{i=1}^{N} \left\langle x\right\rangle^A_i \mod{2^{\ell}}$.
 The addition of arithmetic shares can be computed without parties' interaction. Suppose the parties hold shares $\left\langle x\right\rangle^A_i $, $\left\langle y\right\rangle^A_i $, and wish to compute $\left\langle z\right\rangle =a \cdot \left\langle x\right\rangle +\left\langle y\right\rangle +b$ with public value $a$, $b\in \mathbb{Z} _{2^{\ell}}$. Then, one specific party $P_1$ computes $\left\langle z\right\rangle ^A_1=a \cdot \left\langle x\right\rangle^A_1 +\left\langle y\right\rangle^A_1 +b$, and the other parties compute $ \left\langle z\right\rangle ^A_i=a \cdot \left\langle x\right\rangle^A_i +\left\langle y\right\rangle^A_i $ locally.
 
-The multiplication of arithmetic shares can be performed using \mts (cf.~\autoref{subsubsec:MTs}). Suppose $\left(\left\langle a\right\rangle^A ,\left\langle b\right\rangle^A,\left\langle c\right\rangle^A\right) $ is an \mts in $\mathbb{Z} _{2^{\ell}}$, where $c =a \cdot b $. To compute $\left\langle z\right\rangle ^A = \left\langle x\right\rangle ^A \cdot \left\langle y\right\rangle ^A$, the parties first locally compute $\left\langle d\right\rangle ^A_i=\left\langle x\right\rangle ^A_i-\left\langle a\right\rangle^A_i $ and $\left\langle e\right\rangle ^A_i=\left\langle y\right\rangle ^A_i-\left\langle b\right\rangle ^A_i$, and reconstruct them to get $d$ and $e$. Finally, each party $P_i$ compute $\left\langle z\right\rangle ^A_i = \left\langle c\right\rangle ^A_i+e \cdot \left\langle x\right\rangle_i ^A+d \cdot \left\langle y\right\rangle_i ^A- d \cdot e$ locally.
+The multiplication of arithmetic shares can be performed using \mts (cf.~\autoref{subsubsec:MTs}). Suppose $\left(\left\langle a\right\rangle^A ,\left\langle b\right\rangle^A,\left\langle c\right\rangle^A\right) $ is an \mts in $\mathbb{Z} _{2^{\ell}}$, where $c =a \cdot b $. To compute $\left\langle z\right\rangle ^A = \left\langle x\right\rangle ^A \cdot \left\langle y\right\rangle ^A$, the parties first locally compute $\left\langle d\right\rangle ^A_i=\left\langle x\right\rangle ^A_i-\left\langle a\right\rangle^A_i $ and $\left\langle e\right\rangle ^A_i=\left\langle y\right\rangle ^A_i-\left\langle b\right\rangle ^A_i$, and reconstruct them to get $d$ and $e$. Finally, the parties compute $\left\langle z\right\rangle ^A = \left\langle c\right\rangle ^A+e \cdot \left\langle x\right\rangle ^A+d \cdot \left\langle y\right\rangle ^A- d \cdot e$.
 
 \subsubsection{Boolean Sharing with GMW}
 \label{subsubsec:BooleanSharingwithGMW}
@@ -125,7 +125,7 @@ Boolean \gmw protocol~\cite{goldreich1987play} uses $\operatorname{XOR}$-based s
 % \subsection{Beaver-Micali-Rogaway (\bmr)}
 % \label{subsec:BMR}
 
-We first present Yao's Garbled Circuit protocol~\cite{yao1986generate} following the steps described in work~\cite{lindell2009proof} and then extend it to multi-party settings with \bmr~\cite{beaver1990round} protocol.
+We first present Yao's Garbled Circuit protocol~\cite{yao1986generate} following the steps described in work~\cite{lindell2009proof} and then extend it to multi-party settings with the \bmr~\cite{beaver1990round} protocol.
 Yao's Garbled Circuit protocol~\cite{yao1986generate} enables two parties, the garbler, and the evaluator, to securely evaluate any functionality represented as a Boolean circuit.
 % \subsubsection{Execution of Garbled Circuit Protocol}
 % We : circuit garbling, input encoding, and circuit evaluation.
@@ -176,7 +176,7 @@ The garbler converts the jointly decided function $f$ into a Boolean circuit $C$
 \end{table}
 
 \textbf{2. Input Encoding.}
-The gabler sends the wire keys corresponding to its input directly to the evaluator. To evaluate the garbled circuit $\widetilde{C}$, the evaluator needs the wire keys corresponding to his input. For each of the evaluator's input wire $i$ with corresponding input bit $c$, the evaluator and the gabler run an $1$-out-of-$2$-OT, where the gabler acts as a sender with inputs $\left(k_0^i,k_1^i\right)$, and the evaluator acts as a receiver with input $c$ and receives $k_c^i$. Recall that \ot (cf.~\autoref{subsubsec:OT}) guarantees that the gabler learns nothing about $c$ and the evaluator learns only $k_{c}^i$.
+The gabler sends the wire keys corresponding to his input directly to the evaluator. To evaluate the garbled circuit $\widetilde{C}$, the evaluator needs the wire keys corresponding to his input. For each of the evaluator's input wire $i$ with corresponding input bit $c$, the evaluator and the gabler run an $1$-out-of-$2$-OT, where the gabler acts as a sender with inputs $\left(k_0^i,k_1^i\right)$, and the evaluator acts as a receiver with input $c$ and receives $k_c^i$. Recall that \ot (cf.~\autoref{subsubsec:OT}) guarantees that the gabler learns nothing about $c$ and the evaluator learns only $k_{c}^i$.
 
 \textbf{3. Circuit Evaluation.}
 After receiving the garbled circuit $\widetilde{C}$ and the keys of input wires, the evaluator begins to evaluate the garbled circuit $\widetilde{C}$. For each gate $g$ with input wire $a$ and $b$, output wire $c$, the evaluator uses the input wire keys $\left(k^a,k^b\right)$ to decrypt the output key $k^c$. When all the gates in the garbled circuit $\widetilde{C}$ are evaluated, the evaluator obtains the keys for the output wires. To reconstruct the output, either the gabler sends the mapping from output wire keys to plaintext bits to the evaluator, or the evaluator sends the decrypted output wire keys to the gabler.
@@ -194,7 +194,7 @@ Three-halves garbling~\cite{rosulek2021three} requires $25\%$ less communication
 
 \paragraph{BMR Protocol.}
 \label{para:BMRProtocol}
-\bmr protocol~\cite{beaver1990round} extends Yao's Garbled Circuit protocol~\cite{yao1986generate} to the multi-party setting. Recall that in Yao's Garbled Circuit protocol, the circuit is garbled by one party and evaluated by another party. At a high level, the \bmr protocol enables the multi-party computation by having all parties jointly garbling the circuit in the offline phase. Then, each party sends the garbled labels that are associated with their private inputs to other parties. Next, each party plays the role of the evaluator and evaluates the garbled circuit locally. Finally, the parties use the received garbled label and the the result of local evaluation to compute the output.
+The \bmr protocol~\cite{beaver1990round} extends Yao's Garbled Circuit protocol~\cite{yao1986generate} to multi-party settings. Recall that in Yao's Garbled Circuit protocol, the circuit is garbled by one party and evaluated by another party. At a high level, the \bmr protocol enables the multi-party computation by having all parties jointly garbling the circuit in the offline phase. Then, each party sends the garbled labels that are associated with their private inputs to other parties. Next, each party plays the role of the evaluator and evaluates the garbled circuit locally. Finally, the parties use the received garbled label and the result of local evaluation to reveal the output.
 
 
 % \subsection{Secret Sharing and Sharing Conversions}
@@ -220,9 +220,9 @@ Three-halves garbling~\cite{rosulek2021three} requires $25\%$ less communication
 
 \subsection{SMPC Framework - MOTION}
 \label{subsection:MOTIONFramework}
-We build upon the \smpc framework MOTION~\cite{braun2022motion} that provides the following novel features:
+We build upon the MOTION~\cite{braun2022motion} framework that provides the following novel features:
 \begin{enumerate}
-    \item Support for \smpc with $N$ parties, full-threshold security (i.e., tolerating up to $N-1$ passive corruptions) and sharing conversions between $ABY$.
+    \item Support for \smpc with $N$ parties, full-threshold security (i.e., tolerating up to $N-1$ passive corruptions) and sharing conversions between $\left\{A,B,Y\right\} $.
     \item Implementation of primitive operations of \smpc protocols at the circuit's gate level and asynchronously evaluation, i.e., each gate is separately evaluated once their parent gates become ready.
     \item Support for \simd, i.e., vectors of data are processed instead of single data, that can reduce memory footprint and communication.
     \item Integration of HyCC compiler~\cite{buscher2018hycc} that can generate efficient circuits for hybrid MPC protocols with functionality described in C programming language.
@@ -256,7 +256,7 @@ In this section, we introduce essential probability theory and random variable s
     \end{equation}
 \end{definition}
 
-We use the probability density function to denote the corresponding probability distribution $P$ or a random variable $x \sim P$. For example, $Uni\left(a,b\right)$ denotes the continuous uniform distribution with parameters $a$ and $b$. We sometimes abuse notation and let $Uni\left( a,b\right)$ denote a random variable $x \sim Uni\left( a,b\right)$.
+We use the probability density function to denote the corresponding probability distribution or a random variable sampled from that distribution. For example, $Uni\left(a,b\right)$ denotes the continuous uniform distribution with parameters $a$ and $b$. We sometimes abuse notation and let $Uni\left( a,b\right)$ denote a random variable $x \sim Uni\left( a,b\right)$.
 
 
 \begin{definition}[Exponential Distribution]
@@ -400,7 +400,7 @@ The discrete Laplace distribution can be generated by reflecting a geometric dis
 \label{subsec:ProbabilitySamplingMethods}
 
 \paragraph{Inverse Transform Sampling Method.}
-The Inverse transform sampling method is a common method to generate random variables from a certain distribution $f$ using its inverted cumulative distribution function $F^{-1}$.
+The inverse transform sampling method is a common method to generate random variables from a certain distribution $f$ using its inverted cumulative distribution function $F^{-1}$.
 \begin{theorem}[Inverse Transform Sampling Method{~\cite[Theorem 2.1]{steele1987non}}]
     \label{theorem:inversionSamplingMethod}
     Let $F$ be a continuous distribution function on $\mathbb{R}$ with inverse $F^{-1}$ defined as follows:
@@ -436,7 +436,7 @@ The Inverse transform sampling method is a common method to generate random vari
 
 \paragraph{Inverse Sampling from a Laplace Distribution.}
 \label{algo:InverseTransform-BasedLaplaceSamplingMethod}
-A Laplace random variable $Y\sim Lap\left(b\right) $ can be sampled from an exponential distribuion with cumulative distribution function: $F\left(x\,|\, b\right) =1-e^{-\frac{x}{b}}$ as follows~\cite{mironov2012significance}:
+A Laplace random variable $Y\sim Lap\left(b\right) $ can be sampled from an exponential distribuion with the cumulative distribution function: $F\left(x\,|\, b\right) =1-e^{-\frac{x}{b}}$ as follows~\cite{mironov2012significance}:
 \begin{enumerate}
     \item Sample random variables $U\sim Uni\left(0,1\right)\setminus 1 $ and $Z \sim Bern\left(0.5\right) $
     \item Generate a geometric random variable with $  F^{-1}\left(U\right) =-b \cdot \ln\left(1-U\right)  $.
@@ -446,7 +446,7 @@ A Laplace random variable $Y\sim Lap\left(b\right) $ can be sampled from an expo
 
 
 \paragraph{Sampling from a Geometric Distribution.}
-\autoref{algo:Geometric}~\cite{walker1974fast, googleDP2019} generates a geometric random variable $x\sim Geo\left(0.5\right) $ by generating an $\ell$-bit random string $r\in \left\{0,1\right\}^\ell $ (i.e., $\ell$ Bernoulli trials) and counting its leading zeros (i.e., the number of trials before the first success trial). If there is no $1$ bit in the $\ell$-bit $r$, the algorithm fails. However, we can decrease the failure probability ($0.5^{\ell}$) by increasing the length of the random string $r$.
+\autoref{algo:Geometric}~\cite{walker1974fast, googleDP2019} generates a geometric random variable $x\sim Geo\left(0.5\right) $ by generating an $\ell$-bit random string $r\in \left\{0,1\right\}^\ell $ (i.e., $\ell$ Bernoulli trials) and counting its leading zeros (i.e., the number of trials before the first success trial). If there is no $1$ bit in the $\ell$-bit $r$, the algorithm fails. However, we can decrease the failure probability ($p=0.5^{\ell}$) by increasing the length of the random string $r$.
 
 \begin{algorithm}[tbh!]
     \centering
@@ -572,10 +572,10 @@ Samarati et al.~\cite{samarati1998protecting} introduced two techniques to achie
 
 
 \paragraph{l-Diversity.}
-Although \textit{k-anonymity} alleviates re-identification attacks, it is still vulnerable to the so-called homogeneity attacks and background knowledge attacks~\cite{machanavajjhala2007diversity}. Suppose we know one patient about thirty years old has visited the hospital, and his record appears in~\autoref{tabular:4-anonymousinpatientmicrodata}, then we could conclude that he has cancer. Afterward, the notion \textit{l-Diversity}~\cite{machanavajjhala2007diversity} was proposed to overcome the shortcoming of \textit{k-anonymity} by preventing the homogeneity of sensitive attributes in the \textit{equivalent} classes. Specifically, \textit{l-Diversity} requires that there exist at least $l$ different values for the sensitive attribute in each equivalent class. As \autoref{tabular:3-diverseinpatientmicrodata} shows, an adversary cannot infer if a man (with Zip Code: $1305*$ and Age $31$) has cancer or viral infection, even though it is very unlikely for a man who is less than forty years old to have heart disease.
+Although \textit{k-anonymity} alleviates the re-identification attack, it is still vulnerable to the so-called homogeneity attacks and background knowledge attacks~\cite{machanavajjhala2007diversity}. Suppose we know one patient about thirty years old has visited the hospital, and his record appears in~\autoref{tabular:4-anonymousinpatientmicrodata}, then we could conclude that he has cancer. Afterwards, the notion \textit{l-Diversity}~\cite{machanavajjhala2007diversity} was proposed to overcome the shortcoming of \textit{k-anonymity} by preventing the homogeneity of sensitive attributes in the \textit{equivalent} classes. Specifically, \textit{l-Diversity} requires that there exist at least $l$ different values for the sensitive attribute in each equivalent class. As \autoref{tabular:3-diverseinpatientmicrodata} shows, an adversary cannot infer if a man (with Zip Code: $1305*$ and Age $31$) has cancer or viral infection, even though it is very unlikely for a man who is less than forty years old to have heart disease.
 
 \paragraph{t-closeness.}
-However, the definition of \textit{l-Diversity} was later proved to suffer from attacks by Li et al.~\cite{li2007t}, who introduced the concept of \textit{t-closeness} as an enhancement of \textit{l-Diversity}. \textit{t-closeness} requires that the distance between the distribution of the sensitive attributes in each equivalent class and the distribution of the sensitive attributes in the whole table to be less than a given threshold. The distance can be measured by the Kullback-Leibler distance~\cite{kullback1951information} or Earth Mover's distance~\cite{rubner2000earth}. However, Li et al.~\cite{li2009closeness} showed that \textit{t-closeness} significantly affects the quantity of the valuable information in the released data.
+However, the definition of \textit{l-Diversity} was later proved to suffer from other attacks by Li et al.~\cite{li2007t}, who introduced the concept of \textit{t-closeness} as an enhancement of \textit{l-Diversity}. \textit{t-closeness} requires that the distance between the distribution of the sensitive attributes in each equivalent class and the distribution of the sensitive attributes in the whole table to be less than a given threshold. The distance can be measured by the Kullback-Leibler distance~\cite{kullback1951information} or Earth Mover's distance~\cite{rubner2000earth}. However, Li et al.~\cite{li2009closeness} showed that \textit{t-closeness} significantly affects the quantity of the valuable information in the released data.
 
 \begin{table}[htbp]
     \centering
@@ -611,7 +611,7 @@ Differential privacy~\cite{dwork2006differential, dwork2006calibrating} is a rob
 \subsubsection{Randomized Response}
 \label{subsubsection:randomizedresponse}
 In this part, we introduce differential privacy with a very early differentially private algorithm, the Randomized Response~\cite{warner1965randomized} using an example adapted from~\cite{KamathLec3AlgorithmsrivateDataAnalysis}.
-Suppose a psychologist wishes to study the psychological impact of cheating on high school students. The psychologist needs to find out the number of students who have cheated. Undoubtedly, most students would not admit if they had cheated in exams. Suppose there are $n$ students, and each student has a sensitive information bit $X_{i}\in \left\{ 0,1\right\} $, where $0$ denotes \textit{never cheated} and $1$ denotes \textit{cheated}. Every student want to keep their sensitive information $X_{i}$ secret, but they still need to answer whether they have cheated. Then, each student sends the psychologist an answer $Y_{i}$ that equals to $X_{i}$ or a random bit. Finally, the psychologist collects all the answers and estimates the fraction of cheating students $\overline{C}=\frac{1}{n}\sum ^{n}_{i=1}X_{i}$. \\
+Suppose a psychologist wishes to study the psychological impact of cheating on high school students. The psychologist needs to find out the number of students who have cheated. Undoubtedly, most students would not admit if they had cheated in exams. Suppose there are $n$ students, and each student has a sensitive information bit $X_{i}\in \left\{ 0,1\right\} $, where $0$ denotes \textit{never cheated} and $1$ denotes \textit{cheated}. Every student want to keep their sensitive information $X_{i}$ secret, but they still need to answer whether they have cheated. Then, each student sends the psychologist an answer $Y_{i}$ that equals to $X_{i}$ or a random bit. Finally, the psychologist collects all the answers and intends to estimate the real fraction of cheating students $\overline{C}=\frac{1}{n}\sum ^{n}_{i=1}X_{i}$ with $Y_i$. \\
 The students can apply following strategy:
 
 \begin{equation}
@@ -623,9 +623,9 @@ The students can apply following strategy:
 
 where $p$ is the probability that a student honestly answers the question.
 
-Suppose all students use the same strategy and answer either honestly ($p=1$) or dishonestly ($p=0$). Then, the psychologist could infer their sensitive information bit exactly since he knows if they are all lying or not. Hence, students have to take another strategy by setting $p=\frac{1}{2}$, i.e., each student answers honestly or lies with the same probability. Note that the answer $Y_{i}$ does not depend on $X_{i}$ any more and the psychologist could not infer anything about $X_{i}$. Further, $\frac{1}{n}\sum ^{n}_{i=1}Y_{i}$  is a binomial random variable $\frac{1}{n}\sum ^{n}_{i=1}Y_{i} \sim \frac{1}{n} \cdot Binomial\left(n,\frac{1}{2}\right)$ and completely independent of $\overline{C}$.
+Suppose all students use the same strategy and answer either honestly ($p=1$) or dishonestly ($p=0$). Then, the psychologist could infer their sensitive information bit exactly since he knows if they are all lying or not. Hence, students have to take another strategy by setting $p=\frac{1}{2}$, i.e., each student answers honestly or lies with the same probability. Note that the answer $Y_{i}$ does not depend on $X_{i}$ any more and the psychologist could not infer anything about $X_{i}$. In fact, $\frac{1}{n}\sum ^{n}_{i=1}Y_{i}$  is a binomial random variable $\frac{1}{n}\sum ^{n}_{i=1}Y_{i} \sim \frac{1}{n} \cdot Binomial\left(n,\frac{1}{2}\right)$ and completely independent of $\overline{C}$.
 
-So far, we have explored two strategies: the first strategy ($p=\left\{0,1\right\} $) leads to an accurate answer but is not privacy-preserving, while the second strategy ($p=\frac{1}{2}$) is perfectly private but delivers useless information. A more practical strategy is to find the trade-off between two strategies by setting $p=\frac{1}{2}+\gamma$, where $\gamma \in \left[ 0 ,\frac{1}{2}\right] $. $\gamma=\frac{1}{2}$ corresponds to the first strategy where all students are honest, and $\gamma=0$ corresponds to the second strategy where everyone answers randomly. The students can increase their privacy protection level by setting $\gamma \to 0$ or provide more accurate result by increasing $\gamma \to \frac{1}{2}$.
+So far, we have explored two strategies: the first strategy ($p=\left\{0,1\right\} $) leads to an accurate answer but is not privacy-preserving, while the second strategy ($p=\frac{1}{2}$) is perfectly private but delivers useless information. A more practical strategy is to find the trade-off between these two strategies by setting $p=\frac{1}{2}+\gamma$, where $\gamma \in \left[ 0 ,\frac{1}{2}\right] $. $\gamma=\frac{1}{2}$ corresponds to the first strategy where all students are honest, and $\gamma=0$ corresponds to the second strategy where everyone answers randomly. The students can increase their privacy protection level by setting $\gamma \to 0$ or provide more accurate result by increasing $\gamma \to \frac{1}{2}$.
 
 To measure the accuracy of the strategy, we start with the $Y_{i}$’s expectation $\mathbb{E}\left[ Y_{i}\right] =2\gamma X_{i}+\frac{1}{2}-\gamma$, then we obtain $\mathbb{E} \left[ \frac{1}{2\gamma } \left(Y_{i}-\frac{1}{2}+\gamma \right) \right] =X_{i}$. Next, we compute the sample mean $\tilde{C}=\frac{1}{n}\sum ^{n}_{i=1}\left[ \frac{1}{2\gamma}\left( Y_{i}-\frac{1}{2}+\gamma \right) \right] $, where $\mathbb{E}\left[ \tilde{C}\right] =\overline{C}$. The variance of $\tilde{C}$ is computed as follows:
 
@@ -764,7 +764,7 @@ To illustrate how \differentialprivacy solves such problems, we adapt an example
     \< \< \text{$b^{\prime}\gets 1$, otherwise} \\
     \< \< \text{if $b==b^{\prime}$, $A$ wins.}
     }}
-    \caption{A example of differentially privace mechanism.}
+    \caption{An example of differentially private mechanism.}
     \label{prot:motivationexampleDP}
 \end{protocol}
 \FloatBarrier
@@ -772,7 +772,7 @@ To illustrate how \differentialprivacy solves such problems, we adapt an example
 Suppose the adversary $A$ has chosen the following databases:
 \begin{itemize}
     \item $D_{0}=\left\{ 0, 0, 0,\ldots ,0\right\} $ ($100$ zeros)
-    \item $D_{1}=\left\{ 1, 0, 0,\ldots ,0\right\} $ ($0$ one and $99$ zeroes).
+    \item $D_{1}=\left\{ 1, 0, 0,\ldots ,0\right\} $ ($1$ one and $99$ zeroes).
 \end{itemize}
 
 The test set $Q$ is an interval $\left[ T,1\right] $ with a threshold $T$. After choosing the threshold $T$, the adversary output $b^{\prime} \gets 0$ when $T<M\left( D_{1-b}\right) < 1$, or $b^{\prime} \gets 1$ when $0<M\left( D_{1-b}\right) \leq T$. The adversary's goal is to find a \textit{good} threshold $T$ that helps him output a $b^{\prime}$ that equals $b$ with high probability and win the game.
@@ -781,7 +781,7 @@ The test set $Q$ is an interval $\left[ T,1\right] $ with a threshold $T$. After
 Suppose mechanism $M$ compute the mean value of the given databases $D_0$ and $D_1$, where $M\left( D_{0}\right) =0$ and $M\left( D_{1}\right) =0.01$. The adversary can set the test set $Q =\left[ 0.005,1\right] $ win every game. In \autoref{img:DPexamplenoisefree}, the blue line represents the value of $M\left( D_{0}\right)$, whereas the orange line represents the value of $M\left( D_{1}\right)$ (plotted upside down for clarity). The vertical dotted line is the threshold $T=0.005$ that separates $D_{0}$ and $D_{1}$ correctly.
 
 \begin{figure}[htbp]
-    \includegraphics[width=10cm]{DPexamplenoisefree}
+    \includegraphics[width=8cm]{DPexamplenoisefree}
     \centering
     \caption{Deterministic algorithm.}
     \label{img:DPexamplenoisefree}
@@ -794,7 +794,7 @@ The challenger takes some measures to \textit{blur} the outputs of $M\left( D_{0
 
 % \TODO{need reproduce following figures}
 \begin{figure}[htbp]
-    \includegraphics[width=10cm]{DPexamplesmallnoise}
+    \includegraphics[width=8cm]{DPexamplesmallnoise}
     \centering
     \caption{Indeterministic algorithm with small noise ($b=0.005$).}
     \label{img:DPexamplesmallnoise}
@@ -802,7 +802,7 @@ The challenger takes some measures to \textit{blur} the outputs of $M\left( D_{0
 \FloatBarrier
 
 \begin{figure}[htbp]
-    \includegraphics[width=10cm]{DPexamplelargenoise}
+    \includegraphics[width=8cm]{DPexamplelargenoise}
     \centering
     \caption{Indeterministic algorithm with large noise ($b=0.05$).}
     \label{img:DPexamplelargenoise}
@@ -855,7 +855,7 @@ The group privacy property indicates that \differentialprivacy can also be exten
     Suppose $M=\left( M_{1}\ldots M_{k}\right)$  is a sequence of $\left( \varepsilon_{i} ,\delta_{i} \right)$-\differentialprivacy mechanisms, where $M_{i}$ is chosen sequentially and adaptively. Then, $M$ is $\left(\sum_{i=1}^n\varepsilon_{i} ,\sum_{i=1}^n\delta_{i} \right)$-\differentialprivacy.
 \end{prop}
 
-The basic composition property provides a way to evaluate the overall privacy guarantee of the released result when $k$ \differentialprivacy mechanisms are applied to the same dataset.
+The basic composition property provides a way to evaluate the overall privacy guarantee of the released result when $k$ differentially private mechanisms are applied to the same dataset.
 
 % \subsection{Comparison between Differential Private Mechanisms}
 
@@ -922,17 +922,17 @@ The basic composition property provides a way to evaluate the overall privacy gu
 Differential privacy provides a method to guarantee and quantify individual privacy at the theoretical level. However, it faces a series of challenges in practical application scenarios.
 
 \paragraph{Sensitivity Calculation.}
-As discussed in~\cite{subsubsec:DPMechanisms}, we first need to compute or estimate the sensitivity of the query function before applying \differentialprivacy mechanism. Take a database with human ages as an example, the ages should be bounded in the interval $\left[0,150\right] $ (the longest human lifespan is $122$ years and $164$ days according to~\cite{whitney_1997}). However, the data with an unbounded value range brings great challenges. A common solution is to roughly estimate a \textit{reasonable} value range and limit the data within that range. If the value range is chosen too wide (i.e., a larger sensitivity estimation), the \differentialprivacy mechanism applies a too strong noise to perturb the data, and the utility of the result might be destroyed. Nevertheless, a narrow value range estimation may also decrease the utility as too much data beyond the value range is discarded.
+As discussed in~\autoref{subsubsec:DPMechanisms}, we first need to compute or estimate the sensitivity of the query function before applying differentially private mechanism. Take a database with human ages as an example, the ages should be bounded in the interval $\left[0,150\right] $ (the longest human lifespan is $122$ years and $164$ days according to~\cite{whitney_1997}). However, the data with an unbounded value range brings great challenges. A common solution is to roughly estimate a \textit{reasonable} value range and limit the data within that range. If the value range is chosen too wide (i.e., a larger sensitivity estimation), the differentially private mechanism applies too strong noise to perturb the data, and the utility of the result might be destroyed. Nevertheless, a narrow value range estimation may also decrease the utility as too much data beyond the value range is discarded.
 
 \paragraph{Security Issue in the Practical Implementation.}
 \label{para:SecurityIssueinthePracticalImplementation}
 Generally, the security analysis of differentially private mechanisms is based on two implicit assumptions: (i) Computations are performed on real numbers and require machines to have infinite precision, (ii) The noise is sampled from a probability distribution that is very close to the theoretically correct probability distribution.
 However, the practical implementation of differentially private mechanisms is typically based on floating-point or fixed-point arithmetic that only provides finite order of accuracy.
-Mironov~\cite{mironov2012significance} demonstrated that the Laplace random noise sampled with textbook algorithm~\autoref{algo:InverseTransform-BasedLaplaceSamplingMethod} under floating-point implementation could lead to violation of differential privacy.
-Specifically, for database $D$ and a Laplace Mechanism $M$ that samples the Laplace noise with~\autoref{algo:InverseTransform-BasedLaplaceSamplingMethod}, $M\left(D\right) $ fails to output certain floating-point numbers that can be related to database $D$. By comparing the missed out floating-point numbers, an adversary can differentiate between database $D$ and its neighboring database $D^{\prime}$ even extract the entire content of database $D$.
+Mironov~\cite{mironov2012significance} demonstrated that the Laplace random noise sampled with textbook algorithm (cf.~\autoref{algo:InverseTransform-BasedLaplaceSamplingMethod}) under floating-point implementation could lead to violation of differential privacy.
+Specifically, for database $D$ and a Laplace Mechanism $M$ that samples the Laplace noise with the methods introduced in~\autoref{algo:InverseTransform-BasedLaplaceSamplingMethod}, $M\left(D\right) $ fails to output certain floating-point numbers that can be related to database $D$. By comparing the missed out floating-point numbers, an adversary can differentiate between database $D$ and its neighboring database $D^{\prime}$ even extract the entire content of database $D$.
 Based on the similar vulnerability of floating-point numbers, Jin et al.~\cite{jin2022we} presented a series of floating-point attacks against the Gaussian noise sampling algorithms. In addition, they also constructed a timing attack against the discrete noise sampling algorithms, i.e., the magnitude of the discrete noise can be predicted by measuring the sampling time.
 Gazeau et al.~\cite{gazeau2016preserving} proved that any differentially private mechanisms perturb data by adding noise with a finite precision could lead to secret disclosure regardless of the actual implementation.
-This work aims to realize \differentialprivacy mechanisms with secure noise generation methods in \smpc that are free of the above attacks.
+This work aims to realize differentially private mechanisms with secure noise generation methods in \smpc that are free of the above attacks.
 
 % The theory of \differentialprivacy is built upon the real number arithmetic. The practical implementation of differentially private mechanisms relies on floating-point or fixed-point arithmetic only provides an approximation of the mathematical abstractions. Mironov~\cite{mironov2012significance} showed that the irregularities of floating-point implementations and porous distribution of the Laplace mechanism with textbook sampling algorithm lead to the breach of differential privacy. Further, 
 

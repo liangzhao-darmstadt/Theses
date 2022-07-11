@@ -13,16 +13,13 @@
 % The main goal of this thesis is to design efficient and secure protocols that combine MPC and DP to guarantee privacy under fixed/floating-point arithmetic. \CHANGED{We convert existing secure differentially private mechanisms that require floating-point and integer sampling methods into MPC protocols}. 
 
 
-Nowadays, the world has become an information-driven society where the distribution and processing of information is one important economic activity.
+Nowadays, the world has become an information-driven society where the distribution and processing of information are important economic activities.
 However, the centralized database may contain sensitive data that would lead to privacy violations if the data or its aggregate statistics are disclosed.
 \smpc enables multiple parties to compute an arbitrary function on their private inputs and reveals no information beyond the computation result.
 \differentialprivacy is a technique that can preserve the individual's privacy by perturbing the aggregate statistics with random noise.
 The hybrid approach combining \smpc and \differentialprivacy would provide a robust privacy guarantee and maintain the utility of the aggregate statistics.
 The theoretical definition of \differentialprivacy assumes precise noise sampling and arithmetic operations under real numbers. However, in the practical implementation of perturbation mechanisms, fixed-point or floating-point numbers are used to represent real numbers that lead to the violation of \differentialprivacy, as Mironov~\cite{mironov2012significance} and Jin et al.~\cite{jin2022we} showed.
-This thesis explores the possibilities of \textit{securely} generating distributed random noise in \smpc settings and builds a variety of perturbation mechanisms. Specifically, we evaluate the performance of fixed-point and floating-point arithmetic for noise generation in \smpc and choose the most efficient \smpc protocols to build the perturbation mechanisms.
-
-
-
+This thesis explores the possibilities of \textit{securely} generating distributed random noise in \smpc settings and maintaining the optimal utility of the aggregate statistics. Specifically, we evaluate the performance of fixed-point and floating-point arithmetic for noise generation in \smpc and choose the most efficient approach to build the perturbation mechanisms.
 
 
 

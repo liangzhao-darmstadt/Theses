@@ -4,7 +4,7 @@
 \babel@toc {english}{}\relax 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {protocol}{\numberline {2.1}{\ignorespaces A example of differentially privace mechanism.\relax }}{19}{protocol.caption.72}%
+\contentsline {protocol}{\numberline {2.1}{\ignorespaces An example of differentially private mechanism.\relax }}{19}{protocol.caption.72}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
@@ -13,14 +13,14 @@
 \contentsline {protocol}{\numberline {5.3}{\ignorespaces \ac {SMPC}\xspace protocol for $\text {clamp}_B\left (x\right ) $.\relax }}{50}{protocol.caption.139}%
 \contentsline {protocol}{\numberline {5.4}{\ignorespaces SMPC protocol for snapping mechanism (\ac {BGMW}\xspace ).\relax }}{51}{protocol.caption.142}%
 \contentsline {protocol}{\numberline {5.5}{\ignorespaces SMPC protocol for sampling from a geometric distribution $ Geo\left (p=1-e^{-\lambda }\right ) $ using binary search.\relax }}{53}{protocol.caption.145}%
-\contentsline {protocol}{\numberline {5.6}{\ignorespaces SMPC Protocol for sampling two-side geometric random variable $x\sim DLap\left (t\right ) $.\relax }}{54}{protocol.caption.148}%
+\contentsline {protocol}{\numberline {5.6}{\ignorespaces SMPC protocol for sampling two-side geometric random variable $x\sim DLap\left (t\right ) $.\relax }}{54}{protocol.caption.148}%
 \contentsline {protocol}{\numberline {5.7}{\ignorespaces \ac {SMPC}\xspace Protocol for Integer-Scaling Laplacian mechanism.\relax }}{55}{protocol.caption.149}%
 \contentsline {protocol}{\numberline {5.8}{\ignorespaces \ac {SMPC}\xspace protocol for sampling from a symmetrical binomial distribution $SymmBino\left (n,p=0.5\right ) $.\relax }}{56}{protocol.caption.152}%
 \contentsline {protocol}{\numberline {5.9}{\ignorespaces \ac {SMPC}\xspace protocol for Integer-Scaling Gaussian mechanism.\relax }}{57}{protocol.caption.153}%
-\contentsline {protocol}{\numberline {5.10}{\ignorespaces SMPC Protocol for sampling from a geometric distribution $Geo\left (1-e^{-\frac {n}{d}}\right ) $.\relax }}{57}{protocol.caption.154}%
-\contentsline {protocol}{\numberline {5.11}{\ignorespaces SMPC Protocol for sampling from a discrete Laplace distribution $DLap\left (t\right ) $.\relax }}{58}{protocol.caption.155}%
+\contentsline {protocol}{\numberline {5.10}{\ignorespaces SMPC protocol for sampling from a geometric distribution $Geo\left (1-e^{-\frac {n}{d}}\right ) $.\relax }}{57}{protocol.caption.154}%
+\contentsline {protocol}{\numberline {5.11}{\ignorespaces SMPC protocol for sampling from a discrete Laplace distribution $DLap\left (t\right ) $.\relax }}{58}{protocol.caption.155}%
 \contentsline {protocol}{\numberline {5.12}{\ignorespaces SMPC protocols for discrete Laplace mechanism.\relax }}{58}{protocol.caption.156}%
-\contentsline {protocol}{\numberline {5.13}{\ignorespaces SMPC Protocol for sampling from a discrete Gaussian distribuion $ DGauss\left (\mu =0,\sigma \right ) $.\relax }}{59}{protocol.caption.157}%
+\contentsline {protocol}{\numberline {5.13}{\ignorespaces SMPC protocol for sampling from a discrete Gaussian distribuion $ DGauss\left (\mu =0,\sigma \right ) $.\relax }}{59}{protocol.caption.157}%
 \contentsline {protocol}{\numberline {5.14}{\ignorespaces SMPC protocol for discrete Gaussian mechanism.\relax }}{59}{protocol.caption.158}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }

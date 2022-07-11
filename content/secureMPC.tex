@@ -1,4 +1,4 @@
-\chapter{SMPC Protocols for Differentially Private Mechanisms}
+\chapter{SMPC Protocols for Secure Differentially Private Mechanisms}
 \label{cha:MPCProtocolsforDifferentiallyPrivateMechanisms}
 
 In this chapter, we first present the SMPC-DP procedure that combines \smpc and differentially private mechanisms.
@@ -8,7 +8,7 @@ Then, we construct the \smpc protocols for the previously introduced secure diff
 Generally, we face two technical challenges when transforming the differentially private mechanisms into \smpc protocols.
 The first is to identify the most efficient \smpc protocols for arithmetic operations.
 The second is to determine the most efficient sampling algorithms for differentially private mechanisms in \smpc.
-For the first challenge, we implement \smpc protocols that support (signed) integer arithmetic, fixed-point arithmetic, floating-point arithmetic, and data type conversions in MOTION~\cite{braun2022motion} and compare their performance in~\cite{sec:ArithmeticOperationsPerformanceEvaluation}.
+For the first challenge, we implement \smpc protocols that support (signed) integer arithmetic, fixed-point arithmetic, floating-point arithmetic, and data type conversions in MOTION~\cite{braun2022motion} and compare their performance in~\autoref{sec:ArithmeticOperationsPerformanceEvaluation}.
 For the second challenge, we construct the \smpc protocols for the all previously introduced noise sampling algorithms and compare their performance in \autoref{sec:DifferentiallyPirvateMechanismBenchmarks}.
 
 \textbf{SMPC-DP Procedure Overview.}
@@ -132,9 +132,9 @@ We construct \smpc protocols based on the following building blocks (details can
 
       \item $\left\langle {y}\right\rangle ^{B,UINT} \gets \Uppi^{RandInt}\left(m\right) $ generate shares of a random integer $y$ in the interval $ \left[0,m-1\right] $.
 
-      \item $\left\langle \boldsymbol{y}\right\rangle^B \gets \Uppi^{COTMult}\left(\left\langle \boldsymbol{x}\right\rangle ^B,\left\langle b\right\rangle ^B\right) $~\cite{asharov2018privacy,schneider2019episode} computes the multiplication of a bit string $ \boldsymbol{x}$ and a single bit $ b$ with correlated-OT (cf.~\autoref{subsubsec:OT}).
+      \item $\left\langle \boldsymbol{y}\right\rangle^B \gets \Uppi^{COTMult}\left(\left\langle \boldsymbol{x}\right\rangle ^B,\left\langle b\right\rangle ^B\right) $~\cite{asharov2018privacy,schneider2019episode} computes the multiplication of a bit string $ \boldsymbol{x}$ and a single bit $ b$ with \correlatedot (cf.~\autoref{subsubsec:OT}).
 
-      \item $\left\langle \boldsymbol{y}\right\rangle ^B \gets  \Uppi^{MUX}\left(\left\langle a\right\rangle^B, \left\langle \boldsymbol{x_0}\right\rangle^B ,\left\langle \boldsymbol{x_1}\right\rangle^B  \right) $ outputs bit-string $ \boldsymbol{x_0} $ if $a=1$, $\boldsymbol{x_1} $ otherwise.
+      \item $\left\langle \boldsymbol{y}\right\rangle ^B \gets  \Uppi^{MUX}\left(\left\langle a\right\rangle^B, \left\langle \boldsymbol{x_0}\right\rangle^B ,\left\langle \boldsymbol{x_1}\right\rangle^B  \right) $ outputs a bit-string $\left\langle \boldsymbol{y}\right\rangle^{B} $, where $ \boldsymbol{y}=\boldsymbol{x_0} $ if $a=1$, $\boldsymbol{y}=\boldsymbol{x_1} $ otherwise.
 
 \end{enumerate}
 
@@ -147,7 +147,7 @@ In \smpc, we use \booleanGMW and \arithmeticGMW protocols to implement arithmeti
 % Further, our \smpc protocols use integer, fixed-point and floating-point arithmetic interchangeably to achieve the best \smpc performance (regarding the communication and computation cost).
 
 \paragraph{BGMW Signed/Unsigned Integer.}
-The MOTION framework~\cite{braun2022motion} supports \booleanGMW unsigned integer arithmetic operations, such as $+$, $-$, $*$, $/$, and $<$. We extend it to support further arithmetic operations, e.g., modulo reduction and conversion operations with \booleanGMW fixed-point and \booleanGMW floating-point.
+The MOTION framework~\cite{braun2022motion} supports \booleanGMW unsigned integer arithmetic operations, such as $+$, $-$, $*$, $/$, and $<$. We extend it to support other arithmetic operations, e.g., modulo reduction and conversion operations with \booleanGMW fixed-point and \booleanGMW floating-point.
 We also extend MOTION~\cite{braun2022motion} to support \booleanGMW signed integers with additional operations such as absolute value and negation.
 
 % We generate depth-optimized binary circuits for \booleanGMW-based unsigned integer with HyCC~\cite{} and CBMC-GC~\cite{}.
@@ -162,20 +162,20 @@ We consider $64$-bit floating-point arithmetic. For operations such as $+,$ $-$,
 We implement the \arithmeticGMW floating-point protocols primarily based on the work of Aliasgari et al.~\cite{aliasgari2012secure}.
 A floating-point number $u$ is represented as a quadruple $\left(v, p, z, s\right) $, where each term is defined as follows:
 \begin{enumerate}
-      \item $v\in \left[2^{\ell-1},2^{\ell}\right) $ is an $\ell$-bit mantissa (with the most significnant bit always set to one),
+      \item $v\in \left[2^{\ell-1},2^{\ell}\right) $ is an $\ell$-bit mantissa (with the most significant bit always set to one),
       \item $p\in \mathbb{Z} _k$ is a $k$-bit signed exponent,
       \item $z\in \left\{0,1\right\} $ is the zero bit that is set to $1$ when $u=0$,
       \item $s\in \left\{0,1\right\}$ is the sign bit of $u$.
 \end{enumerate}
 This quadruple $\left(v, p, z, s\right) $ represents the value $u= \left(1-2s\right) \cdot \left(1-z\right) \cdot v \cdot 2^p$.
 The \smpc protocols for floating-point in work~\cite{aliasgari2012secure} rely on the Shamir secret sharing~\cite{shamir1979share} operations performed over a prime field $\mathbb{F}_p$ (modulo $p$), whereas the arithmetic sharing operations in MOTION~\cite{braun2022motion} are performed in a ring (modulo $\mathbb{Z} _{2^{n}}$). One significant difference between finite field and ring is that there is no inverse element (i.e., $a^{-1}$ in a prime field) in the ring. The inverse operations in the work~\cite{aliasgari2012secure} are primarily for computing the logical right shifting of the shares.
-Therefore, we replace the protocols that involve inverse operations in the work~\cite{aliasgari2012secure} with the \smpc protocols in works~\cite{escudero2020improved,dalskov2020secure,makri2021rabbit} that support arithmetic sharing operations (e.g., logical/arithmetic right shifting, modulo reduction, etc.) over a ring.
+Therefore, we replace the protocols that involve inverse operations in the work~\cite{aliasgari2012secure} with the \smpc protocols that support arithmetic sharing operations (e.g., logical/arithmetic right shifting, modulo reduction, etc.) over a ring from the works~\cite{escudero2020improved,dalskov2020secure,makri2021rabbit}.
 
 \paragraph{BGMW Fixed-Point.}
 % We implement fixed-point arithmetic with two precision modes:
 % (i) 64-bit fixed-point with a $16$-bit fractional part,
 % (ii) 64-bit fixed-point with a $31$-bit fractional part.
-We implement fixed-point numbers with a $48$-bit signed integer and a $16$-bit fractional part.
+We implement fixed-point numbers with a $48$-bit signed integer part and a $16$-bit fractional part.
 This gives us precision $2^{-16}$ and covers the values with a integer part up to $47$ bits.
 We use HyCC~\cite{buscher2018hycc} to generate the depth-optimized circuits for fixed-point operations, such as $+$, $-$, $*$, $/$, and $<$.
 For operations such as exp2 and log2, we use polynomial approximations~\cite{hart1978computer,aly2019benchmarking} and generate corresponding binary circuits using CBMC-GC~\cite{buscher2016compiling}.
@@ -215,7 +215,7 @@ As \autoref{prot:RandBits} shows, to generate a random \booleanGMW $\ell$-bit st
       \fbox{
       \pseudocode[space=none, syntaxhighlight=auto, addkeywords={Protocol, Input, Output},linenumbering, skipfirstln, head=\textbf{Protocol: $\Uppi^{RandBits}\left(\ell\right) $}]{
       \textbf{Input: $\ell$} \pcskipln \\
-      \textbf{Output: $\left\langle \boldsymbol{b}\right\rangle ^{B}$, where $\boldsymbol{b} $ is a uniform random $\ell$-bit string} \\
+      \textbf{Output: $\left\langle \boldsymbol{b}\right\rangle ^{B}$, where $\boldsymbol{b} \sample \left\{0,1\right\}^{\ell} $} \\
       \text{Each party $P_i$ locally samples $\boldsymbol{r_i} \sample \left\{0,1\right\}^{\ell}$}\\
       \text{Set $\left\langle \boldsymbol{b}\right\rangle^B_i \gets \boldsymbol{r_i}$}
       }}
@@ -586,7 +586,7 @@ To generate such a uniform random fixed-point number in the range $\left[0,1\rig
                         \text{Set $\left\langle s \right\rangle^{B}$ as the sign bit of $\left\langle {g} \right\rangle^{B,UINT}$ }\\
                         \text{$\left\langle i\right\rangle^{B,UINT} \gets \left\langle {g} \right\rangle^{B,UINT}$}
                   }}
-            \caption{SMPC Protocol for sampling two-side geometric random variable $x\sim DLap\left(t\right) $.}
+            \caption{SMPC protocol for sampling two-side geometric random variable $x\sim DLap\left(t\right) $.}
             \label{prot:TwoSideGeometric}
       \end{protocol}
       \FloatBarrier
@@ -652,12 +652,12 @@ To generate such a uniform random fixed-point number in the range $\left[0,1\rig
 
 
 
-      \section{SMPC Protocol for Integer-Scaling Gaussian Mechanism}
+      \section{SMPC Protocols for Integer-Scaling Gaussian Mechanism}
       \label{sec:MPCProtocolforInteger-ScalingGaussianMechanism}
       Recall that the Integer-Scaling Gaussian Mechanism $M_{ISGauss}\left(f\left(D\right),r,\Delta_r,\varepsilon,\sigma\right)=f_r\left(D\right) +ir$ (cf.~\autoref{subsec:IntegerScalingGaussianMechanism}) use a symmetric binomial random variable $i\sim SymmBino\left(n,p=0.5\right)$ to simulate a Gaussian random variable.
       We provide the \smpc protocols for \autoref{algo:SymmetricBinomialLargeN} and the Integer-Scaling Gaussian mechanism in following part.
 
-      \subsubsection{SMPC Protocol for Symmetrical Binomial Sampling Algorithm}
+      \subsubsection{SMPC protocol for Symmetrical Binomial Sampling Algorithm}
       \label{subsec:MPCProtocolforSymmetricalBinomialSamplingAlgorithm}
 
       \autoref{prot:SymmBinomialLargeN} samples a symmetric binomial random variable $x\sim SymmBino\left(n,p=0.5\right) $ based on \autoref{algo:SymmetricBinomialLargeN}.
@@ -791,7 +791,7 @@ To generate such a uniform random fixed-point number in the range $\left[0,1\rig
                         \text{$\left\langle k\right\rangle^{B, UINT}\gets \Uppi^{ObliviousSelection}\left(0 , \ldots, ITER_2-1 , \left\langle b^2_0\right\rangle ^B, \ldots,\left\langle b^2_{ITER_1-1}\right\rangle ^B \right)  $}\\
                         \text{$\left\langle x\right\rangle^{B, UINT} \gets \Uppi^{UINT_\_Div} \left(\Uppi^{UINT\_Add} \left(\left\langle u\right\rangle^{B, UINT},\Uppi^{UINT\_Mul}\left(\left\langle k\right\rangle^{B, UINT}, d\right) \right),n\right)  $}
                   }}
-            \caption{SMPC Protocol for sampling from a geometric distribution $Geo\left(1-e^{-\frac{n}{d}}\right) $.}
+            \caption{SMPC protocol for sampling from a geometric distribution $Geo\left(1-e^{-\frac{n}{d}}\right) $.}
             \label{prot:GeometricEXP}
       \end{protocol}
       \FloatBarrier
@@ -816,7 +816,7 @@ To generate such a uniform random fixed-point number in the range $\left[0,1\rig
                         \text{Set $\left\langle s\right\rangle^B$ as the sign bit of $\left\langle {m}\right\rangle^{B,UINT}$}\\
                         \text{$\left\langle Y\right\rangle^{B,INT} \gets \left\langle {m}\right\rangle^{B,UINT}$}
                   }}
-            \caption{SMPC Protocol for sampling from a discrete Laplace distribution $DLap\left(t\right) $.}
+            \caption{SMPC protocol for sampling from a discrete Laplace distribution $DLap\left(t\right) $.}
             \label{prot:DiscreteLap}
       \end{protocol}
       \FloatBarrier
@@ -837,7 +837,7 @@ To generate such a uniform random fixed-point number in the range $\left[0,1\rig
 
 
 
-      \section{SMPC Protocol for Discrete Gaussian Mechanism}
+      \section{SMPC Protocols for Discrete Gaussian Mechanism}
       \label{MPCProtocolforDiscreteGaussianMechanism}
       Recall that the discrete Gaussian mechanism $M_{DGauss}\left(D\right)=f\left(D\right)+Y$ use \autoref{sec:DiscreteGaussianMechanism} to generate a discrete Gaussian random variable $Y$.
       We provide the \smpc protocols for \autoref{sec:DiscreteGaussianMechanism} and the discrete Gaussian mechanisms.
@@ -863,7 +863,7 @@ To generate such a uniform random fixed-point number in the range $\left[0,1\rig
                         \text{\t\t$\left\langle b_j\right\rangle ^B \gets \Uppi^{Bernoulli}\left(\Uppi^{FL\_Exp}\left(\frac{\left(\Uppi^{UI2FL}\left(\left\lvert \left\langle { Y_j}\right\rangle ^{B,INT}\right\rvert \right)  -\frac{\sigma ^{2}}{t}\right)^2 }{2\sigma^2}\right) \right) $}\\
                         \text{$\left\langle {Y}\right\rangle ^{B,INT}\gets \Uppi^{ObliviousSelection}\left(\left\langle {Y_0}\right\rangle ^{B,INT},\ldots,\left\langle b_0\right\rangle ^B,\ldots\right) $}
                   }}
-            \caption{SMPC Protocol for sampling from a discrete Gaussian distribuion $ DGauss\left(\mu=0,\sigma\right) $.}
+            \caption{SMPC protocol for sampling from a discrete Gaussian distribuion $ DGauss\left(\mu=0,\sigma\right) $.}
             \label{prot:DiscreteGauss}
       \end{protocol}
       \FloatBarrier
