@@ -474,9 +474,9 @@ To generate such a uniform random fixed-point number in the range $\left[0,1\rig
                   Then, the parties generate a uniform random floating-point $U_0$ with \autoref{prot:RandFloat1} and use the comparison result of $U_0$ and $Q_0$ to choose one subinterval (either $\left(L_0\ldots M_0\right] $ or $\left(M_0\ldots R_0\right] $) for further computation (line $8-12$).
       In line $13$, the parties compute a flag $fg_0$ that indicates whether the termination condition of the \textbf{WHILE} loop (cf.~\autoref{algo:GeometricExpBinarySearch}, line 2) is satisfied.
       In Line $15-26$, the parties execute the binary search in \smpc completely for $ITER-1$ times.
-      For $L_0\gets 0 $ and $R_0 \gets 2^52$, we set $ITER\gets 52$ because the binary search takes at most $\log_2\left(2^{52}\right)=52 $ iteration to finish the search.
+      For $L_0\gets 0 $ and $R_0 \gets 2^{52}$, we set $ITER\gets 52$ because the binary search takes at most $\log_2\left(2^{52}\right)=52 $ iteration to finish the search.
 
-      The $\left\langle {M_j}\right\rangle^{B,UINT}$ in line $15$ is compute as follows:
+      The $\left\langle {M_j}\right\rangle^{B,UINT}$ in line $15$ is computed as follows:
       \begin{equation}
             \label{eq:ISMiddlePointline15}
             \begin{split}
@@ -592,7 +592,7 @@ To generate such a uniform random fixed-point number in the range $\left[0,1\rig
       \FloatBarrier
 
       \textbf{Implementaion with SIMD.}
-      As discussed in \autoref{subsubsec:TwoSideGeometricSamplingAlgorithm}, \autoref{prot:TwoSideGeometric} iterates for $ITER$ times to decrease the failure probability ($p<2^{-40}$) for outputting the correct result. Since each iteration (line $2-4$) is independent, we uses \simd to eliminate the \textbf{FOR} loop and increase the efficiency of \autoref{prot:TwoSideGeometric}.
+      As discussed in \autoref{subsubsec:TwoSideGeometricSamplingAlgorithm}, \autoref{prot:TwoSideGeometric} iterates for $ITER$ times to decrease the failure probability ($p<2^{-40}$) for outputting the correct result. Since each iteration (line $2-4$) is independent, we uses \simd to eliminate the \textbf{FOR} loop in \autoref{prot:TwoSideGeometric} and sub-protocol \autoref{prot:GeometricExpBinarySearch}, and increase the efficiency of \autoref{prot:TwoSideGeometric}.
       % Specifically, we first generate $\left\langle s_{simd}\right\rangle^{B} =\left(\left\langle s_0\right\rangle ^B,\ldots, \left(\left\langle s_{ITER-1}\right\rangle ^B \right) \right) $ and $\left\langle g_{simd}\right\rangle^{B,UINT} =\left(\left\langle {g_0}\right\rangle ^{B,UINT} , \ldots, \left\langle {g_{ITER-1}}\right\rangle ^{B,UINT}\right) $ by running \autoref{prot:RandBits} and \autoref{prot:GeometricExpBinarySearch} for one time but with $ITER$ bits in each \booleanGMW wire. 
       % Note that $\left\langle s_{simd}\right\rangle^{B}$ and $\left\langle g_{simd}\right\rangle^{B,UINT} $ has the same number of Boolean GMW wires as $\left\langle s_{j}\right\rangle ^B$ and $\left\langle {g_j}\right\rangle ^{B,UINT} $ but $ITER$ number of bits in each wire. 
       % Then, we run the rest operations in the \textbf{FOR} loop with $\left\langle s_{SIMD}\right\rangle^{B}$ and $\left\langle g_{SIMD}\right\rangle^{B,UINT} $. We also applid this \textbf{FOR} loop elimination method in other \smpc protocols that has independent operations in their \textbf{FOR} loops.
@@ -674,7 +674,7 @@ To generate such a uniform random fixed-point number in the range $\left[0,1\rig
             \end{split}
       \end{equation}
       Note that \autoref{prot:SymmBinomialLargeN} can only be implemented with floating-point arithmetic because the intermediate value exceeds the value range of the built fixed-point numbers.
-      In line $13$, one way to generate the Bernoulli random variable $c_j $ is to compare $p_{Bern}$ with a uniform random variable $U\in \left(0,1\right) $ (sampled with \autoref{prot:RandFloat1}) as $c_j=\left(U<p_{Bern}\right) $.
+      In line $13$, one way to generate the Bernoulli random variable $c_j $ is to compare $p_{Bern}$ with a uniform random variable $U\in \left(0,1\right) $ (sampled with \autoref{prot:RandFloat1}), and get $c_j=\left(U<p_{Bern}\right) $.
       % Note that in line $15$, the parties compute the condition $\left\langle cond_{x_{min} \leq x_j \leq x_{max}}\right\rangle ^B\land \left\langle cond_{c_j==1}\right\rangle ^B$ to record if the \textbf{FOR} loop (cf.~\autoref{algo:SymmetricBinomialLargeN}) terminates.
       % In line $16$, the parties extract the result $\left\langle {i}\right\rangle ^{B,INT} $ based on flags $\left\langle fg_0\right\rangle^{B},\ldots, \left\langle fg_{ITER-1}\right\rangle^{B}$.
 

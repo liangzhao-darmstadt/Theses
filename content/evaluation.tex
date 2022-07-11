@@ -10,7 +10,7 @@
 % To answer the above questions, 
 
 In this chapter, we implement and measure the performance of all the protocols discussed in~\autoref{cha:MPCProtocolsforDifferentiallyPrivateMechanisms} in a semi-honest scenario.
-First, we benchmark the performance of fixed-point and floating-point operations in different \smpc protocols (\booleanGMW and \arithmeticGMW) and choose the most efficient \smpc protocols to build the differentially private mechanisms. For comparison, we also implement the \textit{insecure} differentially private mechanisms~\cite{eigner2014differentially} in \smpc.
+First, we benchmark the performance of fixed-point and floating-point operations in different \smpc protocols (\booleanGMW and \arithmeticGMW) and choose the most efficient \smpc protocols to build the differentially private mechanisms. For comparison, we also implement the \textit{insecure} differentially private mechanisms~\cite{eigner2014differentially} in MOTION~\cite{braun2022motion}.
 % Then, we implement the differentially private mechanisms and corresponding sampling algorithms.
 Our code is public on GitHub~\footnote{https://github.com/liangzhao-darmstadt/MOTION};
 
@@ -43,7 +43,7 @@ Finally, we choose \booleanGMW fixed-point as the primary data type for fixed-po
 
 \paragraph{Floating-Point Benchmarks.}
 \label{para:Floating-PointBenchmarking}
-We use the \booleanGMW floating-point numbers that have a $53$-bit mantissa, an $11$-bit exponent, and an $1$-bit sign. In contrast, the \arithmeticGMW floating-point numbers are represented by a quadruple $\left(v, p, z, s\right) $ (cf.~\autoref{para:AGMWFloating-Point}), where $v$, $p$, $z$, and $s$ are represented by $128$-bit arithmetic shares. As \autoref{fig:floatingpointBenchmarks} shows, the \booleanGMW floating-point is faster than the \arithmeticGMW floating-point in almost all the arithmetic operations except for the division operation in \twopc settings. For addition, subtraction and multiplication operations, the \booleanGMW floating-point is $1.59\times-4.22\times$ faster than the \arithmeticGMW floating-point. The primary overhead of \arithmeticGMW is the truncation and bit-decomposition operations~\cite{aliasgari2012secure}. The division operation is slightly faster for the \arithmeticGMW than the \booleanGMW floating-point only in the five-party setting. For base-2 exponential function (exp2), binary logarithm (log2) and square root operations, the \booleanGMW floating-point is substantially faster than the \arithmeticGMW floating-point by a factor up to $13.94\times$. The reason for the low efficient performance of the \arithmeticGMW floating-point is the multiply invocations of the floating-point multiplication in these operations~\cite{aliasgari2012secure}. The comparison operation of \arithmeticGMW floating-point is more expensive than that in the \booleanGMW floating-point. For the remaining conversion operations (fl2int and fl2fx), the \booleanGMW floating-point is more efficient as the conversion operation to integer or fixed-point can be realized through bit manipulation at low cost. Based on the above analysis, we choose \booleanGMW floating-point for floating-point arithmetic operations.
+We use the \booleanGMW floating-point numbers that have a $53$-bit mantissa, an $11$-bit exponent, and an $1$-bit sign. In contrast, the \arithmeticGMW floating-point numbers are represented by a quadruple $\left(v, p, z, s\right) $ (cf.~\autoref{para:AGMWFloating-Point}), where $v$, $p$, $z$, and $s$ are represented by $128$-bit arithmetic shares. As \autoref{fig:floatingpointBenchmarks} shows, the \booleanGMW floating-point is faster than the \arithmeticGMW floating-point in almost all the arithmetic operations except for the division operation in \twopc settings. For addition, subtraction and multiplication operations, the \booleanGMW floating-point is $1.59\times-4.22\times$ faster than the \arithmeticGMW floating-point. The primary overhead of \arithmeticGMW is the truncation and bit-decomposition operations~\cite{aliasgari2012secure}. The division operation is slightly faster for the \arithmeticGMW than the \booleanGMW floating-point only in the five-party setting. For base-2 exponential function (exp2), binary logarithm (log2) and square root operations, the \booleanGMW floating-point is substantially faster than the \arithmeticGMW floating-point by a factor up to $13.94\times$. The reason for the low efficient performance of the \arithmeticGMW floating-point is the multiply invocations of the floating-point multiplication as subroutine in these operations~\cite{aliasgari2012secure}. The comparison operation of \arithmeticGMW floating-point is more expensive than that in the \booleanGMW floating-point. For the remaining conversion operations (fl2int and fl2fx), the \booleanGMW floating-point is more efficient as the conversion operation to integer or fixed-point can be realized through bit manipulation at low cost. Based on the above analysis, we choose \booleanGMW floating-point for floating-point arithmetic operations.
 
 
 
@@ -896,7 +896,7 @@ We use the \booleanGMW floating-point numbers that have a $53$-bit mantissa, an 
 
 \section{Differentially Private Mechanism Benchmarks}
 \label{sec:DifferentiallyPirvateMechanismBenchmarks}
-In this seciton, we present the performance evaluation of the \smpc protocols for differentially private mechanisms.
+In this section, we present the performance evaluation of the \smpc protocols for differentially private mechanisms.
 
 \paragraph{Laplace Mechanisms.}
 Recall that Integer-Scaling Laplace mechanism $M_{ISLap} $ (cf.~\autoref{subsec:ISLap}) is a \textit{secure} implementation of the Laplace mechanism using a re-scaled discrete Laplace random variable to simulate the continuous Laplace random variable.
@@ -913,9 +913,9 @@ The major overhead of \booleanGMW fixed-point is the division operation.
 For comparison, we implement the \textit{insecure} Laplace mechanisms $M_{Lap}$~\cite{eigner2014differentially}.
 Note that Mironov~\cite{mironov2012significance} showed that $M_{Lap}$~\cite{eigner2014differentially} suffered from floating-point attacks and proposed the snapping mechanism $M_{SM}$ as a solution.
 
-The snapping mechanism $M_{SM}$ has the best total runtimes performance and it is $554\times-1373\times $ faster than $M_{ISLap}$ and $1.32\times- 1.62\times$ faster than $M_{Lap}$~\cite{eigner2014differentially}.
+The snapping mechanism $M_{SM}$ has the best total runtime performance and it is $554\times-1373\times $ faster than $M_{ISLap}$ and $1.32\times- 1.62\times$ faster than $M_{Lap}$~\cite{eigner2014differentially}.
 However, it is worth to mention that the snapping mechanism $M_{SM}$ introduces additional errors (beyond the necessary amount Laplace noise), that leads to a significant reduction in utility~\cite{Covington2019,googleDP2019}.
-In contrast, we could reduce the unnecessary errors of the Integer-Scaling Laplace mechanism $M_{ISLap}$ by setting an appropriate resolution parameter $r$.
+In contrast, we could reduce the redundant errors of the Integer-Scaling Laplace mechanism $M_{ISLap}$ by setting an appropriate resolution parameter $r$.
 
 % is $5500\times-9444\times$ slower than the \textit{insecure} floating-point implementation of $M_{Lap}$.
 
@@ -924,7 +924,7 @@ In contrast, we could reduce the unnecessary errors of the Integer-Scaling Lapla
 % In comparison to $M_{SM}$, $M_{ISLap}$ introduces relative low errors by setting appropriate resolution parameter $r$ (cf.~\autoref{sec:integerScalingMechanism}).
 
 \paragraph{Gaussian Mechanisms.}
-The Integer-Scaling Gaussian mechanism $M_{ISLap}$ (cf.~\autoref{subsec:IntegerScalingGaussianMechanism}) deploys the sampling protocol \autoref{prot:SymmBinomialLargeN} under \booleanGMW floating-point simulate the continuous Gaussian random variable.
+The Integer-Scaling Gaussian mechanism $M_{ISLap}$ (cf.~\autoref{subsec:IntegerScalingGaussianMechanism}) deploys the sampling protocol \autoref{prot:SymmBinomialLargeN} under \booleanGMW floating-point to simulate the continuous Gaussian random variable.
 We can see that the Integer-Scaling Gaussian mechanism $M_{ISGau}$ is $3,27\times-4.11\times$ slower than the Integer-Scaling Laplace mechanism $M_{ISLap}$ under \booleanGMW floating-point.
 % Recall that $M_{ISGau}$ realize similar differential privacy protection effect as Gaussian mechanism (cf.~\autoref{def:gaussianMechanism}).
 % We implement the Integer-Scaling Gaussian mechanism $M_{ISGau}$ under BGMW-based floating-point that has an online run-times of $18$ seconds in the LAN setting of two computation parties.
@@ -935,8 +935,8 @@ We also implement $M_{DLap}$~\cite{eigner2014differentially} for comparison.
 It can be seen, that $M_{DLap}$~\cite{eigner2014differentially} is at least $1764\times$ faster than our implementation of $M_{DLap}$ in \booleanGMW floating-point in the LAN setting. However, the security of $M_{DLap}$~\cite{eigner2014differentially} remains to prove as it applies similar noise generation procedure as $M_{Lap}$~\cite{eigner2014differentially}.
 
 \paragraph{Discrete Gaussian Mechanisms.}
-We encounter memory overflow when implement \booleanGMW $M_{DGau}$ with \autoref{prot:DGaussMechanism}. To get a rough estimation, we split \autoref{prot:DGaussMechanism} into several independent parts, save the intermediate result, and run MOTION~\cite{braun2022motion} for several times.
-As \autoref{tab:runtimes_differentially_private_mechanism} shows, the discrete Gaussian mechanism $M_{DGau}$ takes the longest runtime. To successfully generate a discrete Gaussian random variable, \autoref{prot:DGaussMechanism} needs about $23$ discrete Laplace random variables to be generated in its sub-protocol (cf.~\autoref{prot:DiscreteLap}).
+We encounter memory overflow when implement \booleanGMW $M_{DGau}$ with \autoref{prot:DGaussMechanism}. To get a rough estimation fo the runtime, we split \autoref{prot:DGaussMechanism} into several independent parts, save the intermediate result, and run MOTION~\cite{braun2022motion} for multiply times.
+As \autoref{tab:runtimes_differentially_private_mechanism} shows, the discrete Gaussian mechanism $M_{DGau}$ takes the longest runtime. To successfully generate a discrete Gaussian random variable, \autoref{prot:DGaussMechanism} needs about $23$ discrete Laplace random variables to be generated in the sub-protocol (cf.~\autoref{prot:DiscreteLap}).
 
 
 \begin{table}
